@@ -1,0 +1,8 @@
+<ul class="dashboard-item-list">
+    <li><a href="/nomenclature/{{project_id}}/{{branch.id}}/{{item.id}}">{{item.name}}</a></li>
+    {% if item.child %}
+        {% for child in item.child %}
+            {% include "nomenclature-list.twig" with {item: child} %}
+        {% endfor %}
+    {% endif %}
+</ul>

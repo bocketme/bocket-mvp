@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}Bocket.me | {{ page_name }} {% endblock %}</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+        <link rel="stylesheet" href="/stylesheets/reset.css" />
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500" rel="stylesheet">
+        <link rel="stylesheet" href="/stylesheets/header.css" />
+        <link rel="stylesheet" href="/stylesheets/{{assets_name}}.css" />
+        <link rel="stylesheet" href="/stylesheets/main.css" />
+        <link rel="stylesheet" href="/stylesheets/annotation_template.css" />
+        <link rel="stylesheet" href="/stylesheets/sidebar.css" />
+    </head>
+    <body>
+        {% block body %} {% endblock %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/viewer_functions_switch.js"></script>
+        <script src="/js/nomenclature-3d.js"></script>
+        <script src="/js/sidebar.js"></script>
+        <!-- Three.js script includes -->
+        <script src="/js/three.js/libs/three.min.js"></script>
+        <script src="/js/three.js/loaders/OBJLoader.js"></script>
+        <script src="/js/three.js/loaders/MTLLoader.js"></script>
+        <script src="/js/three.js/controls/OrbitControls.js"></script>
+        <script src="/js/three.js/controls/TransformControls.js"></script>
+        <script src="/js/three.js/postprocessing/EffectComposer.js"></script>
+        <script src="/js/three.js/postprocessing/OutlinePass.js"></script>
+        <script src="/js/three.js/postprocessing/RenderPass.js"></script>
+        <script src="/js/three.js/postprocessing/ShaderPass.js"></script>
+        <script src="/js/three.js/shaders/CopyShader.js"></script>
+        <script src="/js/three.js/shaders/FXAAShader.js"></script>
+        <!-- End of three.js includes -->
+        {% for key, value in annot_datas %}
+            <script id="annot_template" type="text/template">
+                <div class="annot-box" style="left: {{annot.left}}; top: {{annot.top}};">
+                    <div class="annot-box-content annot-icons">
+                        <img src="../img/trashcan.svg" class="delete-icon clickable-icon" />
+                    </div>
+                    <div class="annot-box-content annot-meta">
+                        <div class="text-content">{{user}}</div>
+                        <div class="annot-lifetime text-content">{{time}}</div>
+                    </div>
+                    <div class="annot-box-content annot-content text-content">{{content}}</div>
+                </div>
+            </script>
+        {% endfor %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/vanilla.js"></script>
+         <script src="/js/jq.js"></script>
+        <!-- Viewer  includes -->
+        <script src="/js/annotations.js"></script>
+        <script src="/js/init.js"></script>
+        <script src="/js/viewer3D.js"></script>
+        <!-- End of viewer includes -->
+    </body>
+</html>

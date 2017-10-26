@@ -1,0 +1,6 @@
+var path = require('path');
+
+const chemin = path.resolve('/Users/jean-adriendomage/bocket/bocketrepositories');
+
+
+module.exports = chemin;

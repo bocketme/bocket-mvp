@@ -1,0 +1,16 @@
+<div id="sidebar-info" class="sidebar container">
+    <div id="div-comments" class="pr-comments" style="height: 50%; overflow: auto;">
+        {% for comment in comments %}
+            <div class="speech-bubble">
+                <p>{{ comment.username }}</p>
+                <p>{{ comment.content }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    <div id="div-area" class="container">
+        <p class="comment-title">Comment :</p>
+        <p id="comment-empty" class="error-pl-text">Comment cannot be empty</p>
+        <textarea id="comment-area" rows="" cols=""></textarea>
+        <button id="pl-comment-button" class="comment-button">Envoyer</button>
+    </div>
+</div>

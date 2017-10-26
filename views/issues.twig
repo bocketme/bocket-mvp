@@ -1,0 +1,45 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+    {% include 'project-topbar.twig' %}
+    {% include "sidebar.twig" %}
+    <div id="main">
+        <div class="issues-content">
+            <div class="issues-content-top">
+                <div class="issues-content-top-new">
+                <button id="modalbutton" type="">New issue</button>
+                    <div id="pullrequest_modal" class="modal">
+                        <div class="modal-content">
+                            <span id="closepl" class="close">&times;</span>
+                            <h2 class="modal-title">Create an issue</h2>
+                            <form class="modal-form">
+                                <p id="issue-error-title" class="error-pl-text">Title cannot be empty..</p>
+                                <label for="issue-title">Issue title</label>
+                                <input id="issue-title" type="text" name="issue-title" placeholder="Enter title here..">
+                                <p id="issue-error-desc" class="error-pl-text">Description cannot be empty..</p>
+                                <label for="issue-content">Issue description</label>
+                                <textarea id="issue-description" rows="" cols="" placeholder="Enter desctiption here.."></textarea>
+                                <div id="issue-submitbtn" class="issues-button" type="">Continuer</div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="issues-table">
+                <thead>
+                    <th class="issue-title">Title</th>
+                    <th class="issue-title">Description</th>
+                    <th class="issue-title">Resolved</th>
+                </thead>
+                {% for key, value in titles %}
+                <tr>
+                    <td class="issue-title"><a href="/issues/{{ project_id }}/{{ issuesIds[key] }}">{{value}} </a></td>
+                    <td>{{contents[key]}}</td>
+                    <td>{{isResolved[key]}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

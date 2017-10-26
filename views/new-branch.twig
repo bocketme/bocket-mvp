@@ -1,0 +1,21 @@
+{% extends "layout.twig" %}
+
+{% block body %}
+
+    {% include 'project-topbar.twig' %}
+    <div class="main">
+        <h2>Create a new branch</h2>
+        <form action="/new-branch/{{project_id}}" method="post" class="new-form">
+            <label for="branch-parent">Select the base node for branch</label>        
+            <select id="parent_node" name="parent_node">
+                {% for key, value in nodeNames %}
+                    <option value="{{nodeIds[key]}}">{{value}}</option> 
+                {% endfor %}
+            </select>
+            <p id= "name-error" class="error-pl-text">Branch name cannot be empty..</p>  
+            <label for="branch_name">Branch name</label>
+            <input type="text" name="branch_name" id="branch_name" placeholder="Enter name here..">                         
+            <button type="submit" class="btn btn-warning btn-lg">Continue</button>
+        </form>
+    </div>
+{% endblock %}

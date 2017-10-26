@@ -1,0 +1,45 @@
+body
+{
+    height: 100vh;
+    margin: 0;
+}
+
+/* ************************************************************************** */
+
+.annotation
+{
+    /* bg #f5f4f4 */
+    background-color: rgba(245, 244, 244, 0.9);
+    /* bordure #b8b8b8 */
+    border: 1px solid rgba(184, 184, 184, 0.5);
+    display: flex;
+    font-family: "montserrat", sans-serif;
+    font-size: 10px;
+    max-width: 210px;
+    overflow-wrap: break-word;
+    padding: 5px;
+}
+
+/* ************************************************************************** */
+
+.viewer-div
+{
+    height:     100%;
+    overflow:   hidden;
+    position:   relative;
+    width:      100%;
+}
+
+.viewer-canvas
+{
+}
+
+
+.axis-canvas
+{
+    position:   absolute;
+    right:      10px;
+    top:        10px;
+}
+
+/* ************************************************************************** */

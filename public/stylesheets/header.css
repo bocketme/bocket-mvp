@@ -1,0 +1,136 @@
+header {
+    height: 70px;
+}
+
+.navbar-default {
+    background-color: white;
+    border-color: white;
+}
+
+
+/**
+Trying new css
+*/
+
+.navigation-bar {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    color: black;
+}
+
+.navigation-bar-card {
+    width: 29%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navigation-bar-card.card-left {
+    margin-left: 2%;
+}
+
+.navigation-bar-card.card-right {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 2%;
+}
+
+.navigation-bar-card.card-right img {
+    width: 50%;
+}
+
+.top-controls {
+    margin-right: 5%;
+    width: 8%;
+}
+
+
+/************************************************/
+
+.nav-logo {
+    max-width: 32% !important;
+    min-width: 30% !important;
+}
+
+@media (min-width: 768px) {
+    .navbar-nav.navbar-center {
+        position: absolute;
+        left: 50%;
+        transform: translatex(-50%);
+        top: 35%;
+    }
+    input {
+        width: 580px;
+    }
+}
+
+@media (max-width: 925px) and (min-width: 768px) {
+    .navbar-nav.navbar-center {
+        position: absolute;
+        left: 50%;
+        transform: translatex(-50%);
+        top: 35%;
+    }
+    input {
+        width: 430px;
+    }
+}
+
+.circle {
+    width: 26px;
+    height: 26px;
+    border: 2px solid black;
+    border-radius: 50%;
+}
+
+.controls-icon {
+    width: 60%;
+    margin-left: 4%;
+}
+
+.navbar-right {
+    margin-top: 1%;
+    margin-right: 0px !important;
+}
+
+
+/*
+* CSS Pop-up
+*/
+
+.modal {
+    background-color: transparent;
+    border-radius: 0px !important;
+}
+
+
+/*
+.modal-content {
+    opacity: 1;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+} */
+
+.button-build-color {
+    color: #3ae1c6;
+}
+
+.checkbox-color {
+    color: #55E4C4
+}
+
+.bocket-grey-color {
+    /*A redefinir*/
+    color: grey;
+}
+
+.bocket-grey-background {
+    /*A redefinir*/
+    background-color: grey;
+}

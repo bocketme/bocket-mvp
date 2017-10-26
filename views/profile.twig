@@ -1,0 +1,27 @@
+{% extends "layout.twig" %}
+
+{% block body %}
+    {% include "topbar.twig" %}
+    <div id="main">
+        <div class="profile-content">
+            <h2>Public profile</h2>
+            <hr>
+            
+            <label for="name">Name</label>
+            <p id="name-error" class="error-pl-text">Name cannot be empty..</p>
+            <input id="name"type="text" name="name" value="{{lastname}}">
+            <label for="firstname">Firstname</label>
+            <p id="firstname-error" class="error-pl-text">Firstname cannot be empty..</p>
+            <input id="firstname"type="text" name="firstname" value="{{firstname}}">
+            <label for="username">Username</label>
+            <p id="username-error" class="error-pl-text">Username cannot be empty..</p>
+            <input id="username"type="text" name="username" value="{{username}}">
+            <label for="email">Email</label>
+            <p id="email-error" class="error-pl-text">Email cannot be empty..</p>
+            <input id="email" type="email" name="email" value="{{email}}">
+            <label for="company">Company</label>
+            <input id="company" type="text" name="company" value="{{company}}">
+            <div id="profile-button" class="update-button">Update profile</div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+    {% include 'project-topbar.twig' %}
+    {% include "sidebar.twig" %}
+    <div id="main">
+        <div class="dashboard-content">
+            <div class="dashboard-content-leftbar">
+                <div class="dashboard-content-leftbar-cards">
+                    <div class="leftbar-title">
+                        <img src="/img/nodes.svg" alt=""/> Nodes
+                    </div>
+                    <div class="branches">
+                            {% for item in menu %}
+                                <ul class="dashboard-nomenclature-list">
+                                    <li class="dashboard-item">
+                                        <div class="dashboard-item-name"><a href="/nomenclature/{{project_id}}/{{item.id}}/{{item.nodes.id}}">{{ item.nodes.name }}</a></div>
+                                        {% if item.nodes.child %}
+                                            {% for child in item.nodes.child %}
+                                                {% include "nomenclature-list.twig" with {"item": child, "branch": item} %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    </li>
+                                </ul>
+                            {% endfor %}
+                    </div>
+                </div>
+                <div class="dashboard-content-leftbar-cards">
+                    <div class="leftbar-title">
+                        <img class="branch-icon" src="/img/branch-picto.svg" alt=""/> Branches
+                    </div>
+                    <div class="branches">
+                            {% for key, value in branches %}
+                                <p><a href="/dashboard/{{project_id}}/{{branchesIds[key]}}">{{value}}</a></p>
+                            {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-content-middle">
+                <div class="dashboard-content-middle-card">
+                    <div class="dashboard-content-title">
+                        <p>Timeline</p>
+                        <div class="dashboard-content-middle-chart">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-content-right">
+                <div class="dashboard-content-right-card">
+                    <div class="dashboard-content-title">
+                        <p>Statistics</p>
+                    </div>
+                    <div class="dashboard-content-right-state">
+                        <div class="state-card">
+                            <img class="state-card-icon" src="/img/shapeinprogress.svg" alt=""/>In progress
+                        </div>
+                        <div class="state-card">
+                            <img class="state-card-icon" src="/img/shapecompleted.svg" alt=""/>Completed
+                        </div>
+                        <div class="state-card">
+                            <img class="state-card-icon" src="/img/shapevalidated.svg" alt=""/>Validated
+                        </div>
+                    </div>
+                    <div class="dashboard-content-right-chart">
+                        <!-- Dynamiser le contenu -->
+                    </div>
+                </div>
+                <div class="dashboard-content-middle-card">
+                    <div class="dashboard-content-title">
+                        <p>Actions</p>
+                    </div>
+                    <div class="dashboard-content-middle-actions">
+                        <a class="action-card" href="/pullrequests/{{project_id}}" data-toggle="tooltip" data-placement="bottom" title="Click to go to the pull request page">
+                                <img src="/img/pullrequestaction.svg" alt=""> Pull request
+                        </a>
+                        <a class="action-card" href="/issues/{{project_id}}" data-toggle="tooltip" data-placement="bottom" title="Click to go the issues page">
+                                <img src="/img/issuesaction.svg" alt=""> Issues
+                        </a>
+                        <a class="action-card" href="/files/{{project_id}}" data-toggle="tooltip" data-placement="bottom" title="Click to go to the specfiles page">
+                                <img src="/img/filesaction.svg" alt=""> Files
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

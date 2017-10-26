@@ -1,0 +1,40 @@
+.home-content {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 5%;
+}
+
+.home-recently-modified {
+    font-size: 1.5rem;
+    color: #8D8D8D;
+    font-weight: bold;
+}
+
+.home-content-filters {
+    display: flex;
+    justify-content: flex-end;
+    color: #DCDCDC;
+}
+
+.filter-first {
+    margin-right: 5%;
+}
+
+.table-projects {
+    width: 100%;
+    margin-top: 3%;
+}
+
+.home-single-project-list:first-child {
+    border-top: 1px solid black;
+    margin-top: 1%;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+}
+
+.home-single-project-list {
+    width: 100%;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+}

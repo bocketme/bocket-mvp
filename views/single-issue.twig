@@ -1,0 +1,28 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+    {% include 'project-topbar.twig' %}
+    {% include "sidebar.twig" %}
+<div id="main">
+    <div class="single-pr-content">
+        <div class="pr-content-header">
+            <h2>{{ title }}</h2>
+            <p class="italic">{{ content }}</p>
+        </div>
+        <p class="comment-title">All comments :</p>
+        <div class="pr-comments">
+            {% for key, value in commentsContents %}
+                <div class="speech-bubble">
+                    <p>{{value}}</p>
+                    <p>{{commentsDateOfPublish[key]}}  {{ commentsAuthors[key] }}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <p class="comment-title">Comment :</p>
+        <p id="comment-empty" class="error-pl-text">Comment cannot be empty</p>
+        <textarea id="comment-area" rows="" cols=""></textarea>
+        <button id="pl-comment-button" class="comment-button">Envoyer</button>
+    </div>
+</div>
+    
+{% endblock %} 

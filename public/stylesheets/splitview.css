@@ -1,0 +1,16 @@
+body {
+    height: 100vh;
+    margin: 0;
+    width:  100vw;
+}
+
+.split-view {
+    display:    flex;
+    height:     100%;
+    width:      100%;
+}
+
+.splitted-view {
+    height: 100%;
+    width: 50%;
+}

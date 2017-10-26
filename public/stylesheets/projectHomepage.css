@@ -1,0 +1,81 @@
+.navHeader {
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+.userButton {
+    border-radius: 50%;
+    height: 32px;
+    margin-right: 5px;
+    width: 32px;
+}
+
+.navMenu {
+    background-color: #f8f8f8;
+    border-right: solid 1px #e7e7e7;
+    display: inline-block;
+    height: calc(100vh - 52px);
+    overflow: hidden;
+}
+
+.projDiv {
+    border-right: solid 1px #d6d6d6;
+    width: 33.35%;
+}
+
+.itemDiv {
+    border: none;
+    width: 66.67%;
+}
+
+.bar {
+    background-color: #f8f8f8;
+    border: 0px;
+    border-bottom: 1px solid #e7e7e7;
+    height: 4vw;
+}
+
+.searchBar {
+    border-radius: 5px;
+    width: 50%;
+}
+
+.notifButton {
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+}
+
+.mainFrame {
+    height: calc(100vh - 52px);
+}
+
+.viewer3d {
+    background-color: grey;
+    height: calc(500px + 20vw);
+    margin: 25px;
+    max-height: 900px;
+    max-width: 900px;
+}
+
+.collabDiv {
+    font-size: 2vw;
+    margin: 25px;
+}
+
+#sideBar {
+    background-color: #f8f8f8;
+    border-left: 1px solid #e7e7e7;
+    right: 0;
+    height: calc(100vh - 52px);
+    position: absolute;
+    width: 0px;
+}
+
+.noPadding {
+    padding: 0 0 0 0;
+}
+
+.noMargin {
+    margin: 0 0 0 0;
+}

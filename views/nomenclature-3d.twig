@@ -1,0 +1,83 @@
+{% extends 'layout-threejs.twig' %}
+
+{% block body %}
+    {% include 'project-topbar.twig' %}
+    {% include "sidebar.twig" %}
+    <div id="main">
+        <div class="dashboard-content">
+            <div class="dashboard-content-leftbar">
+                <div class="dashboard-content-leftbar-cards">
+                    <div class="leftbar-title">
+                        <img src="/img/nodes.svg" alt=""/> Nodes
+                    </div>
+                    <div class="branches">
+                        {% for item in menu %}
+                            <ul class="dashboard-nomenclature-list">
+                                <li class="dashboard-item">
+                                    <div class="dashboard-item-name"><a href="/nomenclature/{{project_id}}/{{item.id}}/{{item.nodes.id}}">{{ item.nodes.name }}</a></div>
+                                    {% if item.nodes.child %}
+                                        {% for child in item.nodes.child %}
+                                            {% include "nomenclature-list.twig" with {"item": child, "branch": item} %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="dashboard-content-leftbar-cards">
+                    <div class="leftbar-title">
+                        <img class="branch-icon" src="/img/branch-picto.svg" alt=""/> Branches
+                        <div class="branches">
+                            {% for key, value in branches %}
+                            <ul>
+                                <li><a href="/nomenclature/{{project_id}}/{{branchesIds[key]}}">{{value}}</a></li>
+                            </ul>
+
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-content-viewer">
+                <div id="renderDiv" class="viewer-div" data-object={{data3d}}>
+                    {# <canvas id="renderSurface" class="viewer-canvas"></canvas> #}
+                    {# <canvas id="axisCanvas" class="axis-canvas"></canvas> #}
+                </div>
+                <div class="viewer-toolbar">
+                        <div class="toolbar-button">
+                            <input type="image" id="visual-button" class="button-image" src="/img/visual.svg"></input>
+                        </div>
+                        <div class="toolbar-button">
+                            <input type="image" id="annot-button" class="button-image" src="/img/pin2.svg"></input>
+                        </div>
+                        {# <div class="toolbar-button">
+                            <input type="image" id="ruler-button" class="button-image" src="/img/ruler.svg"></input>
+                        </div> #}
+                        {# <div class="toolbar-button">
+                            <input type="image" id="param-button" class="button-image" src="/img/paramedit.svg"></input>
+                        </div> #}
+                        <div class="toolbar-button">
+                            <input type="image" id="resize-button" class="button-image" src="/img/target.svg"></input>
+                        </div>
+                        <div class="toolbar-button">
+                            <input type="button" id="translate" class="test-button"></input>
+                        </div>
+                        <div class="toolbar-button">
+                            <input type="button" id="rotate" class="test-button"></input>
+                        </div>
+                        <div class="toolbar-button">
+                            <input type="button" id="scale" class="test-button"></input>
+                        </div>
+                        <div class="toolbar-button">
+                            <input type="button" id="space" class="test-button"></input>
+                        </div>
+                    </div>
+            </div>
+
+            {% include "sidebar.twig" %}
+
+        </div>
+{% endblock %}

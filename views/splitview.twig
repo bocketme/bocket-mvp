@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="stylesheets/splitview.css" />
+    </head>
+    <body>
+        <div id="splitView" class="split-view">
+            <canvas id="surface1" class="splitted-view"></canvas>
+            <canvas id="surface2" class="splitted-view"></canvas>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="/js/three.js/libs/three.min.js"></script>
+        <script src="/js/three.js/loaders/OBJLoader.js"></script>
+        <script src="/js/three.js/loaders/MTLLoader.js"></script>
+        <script src="/js/three.js/controls/OrbitControls.js"></script>
+        <script src="/js/three.js/controls/TransformControls.js"></script>
+        <script src="/js/three.js/postprocessing/EffectComposer.js"></script>
+        <script src="/js/three.js/postprocessing/OutlinePass.js"></script>
+        <script src="/js/three.js/postprocessing/RenderPass.js"></script>
+        <script src="/js/three.js/postprocessing/ShaderPass.js"></script>
+        <script src="/js/three.js/shaders/CopyShader.js"></script>
+        <script src="/js/three.js/shaders/FXAAShader.js"></script>
+        <script src="js/diff.js"></script>
+        <script src="js/annotations.js"></script>
+        <script src="js/splitview.js"></script>
+    </body>
+</html>

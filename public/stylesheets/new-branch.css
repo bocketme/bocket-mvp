@@ -1,0 +1,41 @@
+.main {
+    width: 50%;
+    margin: 0 auto;
+}
+
+label,
+input {
+    display: block;
+    width: 100%;
+}
+
+.new-form {
+    width: 100%;
+}
+
+.new-form label {
+    margin-top: 5%;
+}
+
+.validate-button {
+    width: 30%;
+    margin: 0 auto;
+    text-align: center;
+    background-color: #45E3C9;
+    margin-top: 2%;
+    padding: 2%;
+    cursor: pointer;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+.error-pl-text {
+    display: none;
+    width: 70%;
+    margin-top: 3%;
+    margin-bottom: -3%;
+    color: #cc0000;
+    font-size: 12px;
+}
