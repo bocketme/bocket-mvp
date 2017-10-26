@@ -1,7 +1,0 @@
-# REQUEST TODO LIST
-
-## RIGHTS
-
-## RIGHTS_FILE
-
-## USER
