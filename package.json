@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/bocketme/bocket-mvp#readme",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "twig": "^1.10.5"
   }
 }
