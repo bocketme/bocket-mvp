@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="49px" height="41px" viewBox="0 0 49 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>Button Dashboard</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="0 41 49 41 49 0 0 0"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Maquette-3" transform="translate(-1125.000000, -171.000000)">
+            <g id="Button-Dashboard" transform="translate(1125.000000, 171.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Clip-5"></g>
+                <polygon id="Fill-4" fill="#FFFFFF" mask="url(#mask-2)" points="37 39 49 39 49 8 37 8"></polygon>
+                <path d="M13,17.1051655 L13,40.8759394 C9.85056689,40.8759394 6.68295524,41.2447731 3.68235898,40.710523 C2.31555955,40.4668693 0.362502009,38.5086976 0.254566891,37.2032498 C-0.154450395,32.2407598 0.254566891,27.219033 0.0182457927,22.2353072 C-0.157858872,18.5357933 0.898769118,16.6312701 5.02984371,17.0593408 C7.42032252,17.3085829 9.85852001,17.1051655 13,17.1051655" id="Fill-6" fill="#FFFFFF" mask="url(#mask-2)"></path>
+                <path d="M18,40.8454103 L18,0 L30.5497809,0 C30.66423,2.63748522 30.8744201,5.39214096 30.8876258,8.14909415 C30.9316446,17.1149357 30.7071484,26.0876696 30.9888692,35.0443213 C31.1253277,39.4198358 30.0468653,41.4967405 25.542634,40.8994006 C23.2371455,40.5926896 20.8634277,40.8454103 18,40.8454103" id="Fill-1" fill="#FFFFFF" mask="url(#mask-2)"></path>
+            </g>
+        </g>
+    </g>
+</svg>

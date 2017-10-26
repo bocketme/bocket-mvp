@@ -3,6 +3,6 @@
  */
 
 module.exports = {
-    port : "8080",
+    port : "4242",
     protocol : "http"
 };
