@@ -5,6 +5,7 @@
 const express = require("express");
 const index = require("./routes/index");
 const signin = require("./routes/signin");
+const signup = require("./routes/signup");
 const config = require("./config/server");
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
@@ -24,6 +25,7 @@ app.set("view engine", "twig");
 
 app.use("/", index);
 app.use("/signin", signin);
+app.use("/signup", signup);
 
 app.use(express.static('public'));
 

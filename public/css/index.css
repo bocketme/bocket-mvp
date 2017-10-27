@@ -1,0 +1,72 @@
+body {
+    background: #262626;
+}
+
+p {
+    color: white;
+}
+
+input::placeholder {
+    color: #9b9b9b; !important;
+}
+
+input {
+    background: white !important;
+    border-radius: 4px !important;
+    border: #9b9b9b solid 2px; !important;
+    height: 2.9em !important;
+}
+
+a {
+    font-weight: 400;
+    text-decoration: underline;
+    color: white;
+}
+
+#logo {
+    margin-top: 1em;
+    margin-left: 1em;
+}
+
+#overview {
+    width: 1000px;
+    height: 500px;
+}
+
+#beta_button {
+    background: #00ffc8;
+    padding-top: 0.5em;
+    color: #262626;
+    height: 3em;
+}
+
+.bocket-nav {
+    background: #262626;
+    box-shadow: none;
+}
+
+.info1 {
+    font-size: 30px;
+    font-weight: lighter;
+}
+
+.info2{
+    font-size: 40px;
+    font-weight: 500;
+}
+
+.main {
+    margin-top: 14.5%;
+}
+
+.content {
+    margin-left: 5em;
+}
+
+.informations {
+
+ }
+
+.subtitle {
+    font-weight: lighter;
+}
