@@ -23,7 +23,7 @@
                 </p>
                 <input id="email_beta" type="text" placeholder="Enter your email address..." class="validate col s6">
                 <div class="col 2"></div>
-                <a id="beta_button" class="waves-effect waves-light btn col s4">Join our beta</a>
+                <a id="beta_button" href="#popup1" class="waves-effect waves-light btn col s4">Join our beta</a>
                 <p style="margin-left: -0.5em !important;" class="col s12">
                     <span class="subtitle">Want to create an account ?</span>
                     <a href="#">Sign up here</a>
@@ -37,4 +37,28 @@
             </div>
         </div>
     </div>
+    <div id="popup1" class="overlay">
+        <div class="row popup">
+            <a id="close" href="#"><i class="material-icons">close</i></a>
+            <p id="popup-title" class="col s12">Thank you for your interest !</p>
+            <p id="popup-desc" class="col s12">
+                We will keep you in touch very soon <br>
+                Enjoy your day :)
+            </p>
+        </div>
+    </div>
+    <div id="blur"></div>
+{% endblock %}
+
+{% block js %}
+    <script type="application/javascript">
+        jQuery(function(){
+            $("#beta_button").on("click", function() {
+                $("#blur").css("visibility", "visible")
+            })
+            $("#close").on("click", function() {
+                $("#blur").css("visibility", "hidden")
+            })
+        });
+    </script>
 {% endblock %}
