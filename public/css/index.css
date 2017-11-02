@@ -88,7 +88,7 @@ a {
 }
 
 .main {
-    margin-top: 14.5%;
+    margin-top: 7em;
 }
 
 .content {
@@ -128,4 +128,11 @@ a {
 .popup {
     text-align: center;
     transition: all 1s ease-in-out;
+}
+
+
+@media screen and (max-width: 1280px)
+{
+    #beta_button {
+    }
 }
