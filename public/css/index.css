@@ -137,10 +137,9 @@ a {
     transition: all 1s ease-in-out;
 }
 
-@media screen and (max-width: 1280px)
+@media screen and (max-width: 1680px)
 {
-    #overview {
-        width: 800px;
-        height: 400px;
+    #beta_button {
+        width: auto;
     }
 }
