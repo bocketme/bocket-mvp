@@ -40,6 +40,38 @@ a {
     height: 3em;
 }
 
+#popup-title {
+    color: black;
+}
+
+#popup-desc {
+    color: black;
+    font-weight: lighter;
+}
+
+#close {
+    position: absolute;
+    right: 0;
+    color: #9b9b9b;
+}
+
+#close:hover {
+    color: #00ffc8;
+}
+
+#blur {
+    background: #d8d8d8;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    opacity: 0;
+    z-index: 1000;
+    visibility: hidden;
+    transition: all 1s ease-in-out;
+}
+
 .bocket-nav {
     background: #262626;
     box-shadow: none;
@@ -69,4 +101,31 @@ a {
 
 .subtitle {
     font-weight: lighter;
+}
+
+.overlay {
+    width: 35%;
+    height: 20%;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 1001;
+    visibility: hidden;
+    transition: all 1s ease-in-out;
+    box-shadow: 2px 2px 3px grey;
+}
+
+/*.overlay:target {
+    visibility: visible;
+    box-shadow: 2px 2px 3px grey;
+    opacity: 1;
+}*/
+
+.popup {
+    text-align: center;
+    transition: all 1s ease-in-out;
 }

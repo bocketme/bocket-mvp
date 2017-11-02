@@ -21,7 +21,7 @@
                     <br>
                     <br>
                 </p>
-                <input id="email_beta" type="text" placeholder="Enter your email address..." class="validate col s6">
+                <input id="email_beta" type="email" placeholder="Enter your email address..." class="validate col s6" required>
                 <div class="col 2"></div>
                 <a id="beta_button" class="waves-effect waves-light btn col s4">Join our beta</a>
                 <p style="margin-left: -0.5em !important;" class="col s12">
@@ -37,4 +37,45 @@
             </div>
         </div>
     </div>
+    <div id="popup1" class="overlay">
+        <div class="row popup">
+            <a id="close" href="#"><i class="material-icons">close</i></a>
+            <p class="col s12"><h5 id ="popup-title">Thank you for your interest !</h5></p>
+            <p id="popup-desc" class="col s12">
+                We will keep you in touch very soon <br>
+                Enjoy your day :)
+            </p>
+        </div>
+    </div>
+    <div id="blur"></div>
+{% endblock %}
+
+{% block js %}
+    <script type="application/javascript">
+        jQuery(function(){
+            $("#beta_button").on("click", function() {
+                var email = $("#email_beta").val();
+                if (email === "")
+                    return ;
+                socket.emit("betaRegistration", email);
+            });
+
+            $("#close").on("click", function() {
+                $("#popup1").css("opacity", "0").css("visibility", "hidden");
+
+                $("#blur").css("opacity", "0").css("visibility", "hidden");
+            });
+
+            socket.on("betaRegistration", function (ret) {
+                var title = ret.title;
+                var desc = ret.desc;
+                console.log(title, desc);
+                $("#popup1").css("visibility", "visible").css("opacity", "1");
+                $("#blur").css("opacity", "0.7").css("visibility", "visible");
+                $("#popup-title").text(title);
+                $("#popup-desc").text(desc);
+            });
+
+        });
+    </script>
 {% endblock %}

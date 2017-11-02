@@ -1,15 +1,5 @@
 const express = require("express");
 let router = express.Router();
-const MongoClient = require('mongodb').MongoClient;
-let uri = "mongodb://localhost/bocketmedev";
-let database = null;
-
-MongoClient.connect(uri, function(err, db) {
-    if (err)
-        throw err;
-    database = db;
-    console.log("Connection to mongodb succed ");
-});
 
 router.get("/", (req, res) => {
     res.render("signin");
