@@ -136,3 +136,11 @@ a {
     text-align: center;
     transition: all 1s ease-in-out;
 }
+
+@media screen and (max-width: 1280px)
+{
+    #overview {
+        width: 800px;
+        height: 400px;
+    }
+}
