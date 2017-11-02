@@ -40,7 +40,7 @@
     <div id="popup1" class="overlay">
         <div class="row popup">
             <a id="close" href="#"><i class="material-icons">close</i></a>
-            <p id="popup-title" class="col s12">Thank you for your interest !</p>
+            <p id="popup-title" class="col s12"><h5>Thank you for your interest !</h5></p>
             <p id="popup-desc" class="col s12">
                 We will keep you in touch very soon <br>
                 Enjoy your day :)
@@ -54,10 +54,14 @@
     <script type="application/javascript">
         jQuery(function(){
             $("#beta_button").on("click", function() {
-                $("#blur").css("visibility", "visible")
+                $("#popup1").css("transition", "");
+                $("#blur").css("opacity", "0.7");
+                $("#blur").css("visibility", "visible");
             })
             $("#close").on("click", function() {
-                $("#blur").css("visibility", "hidden")
+                $("#popup1").css("transition", "all 1s ease-in-out");
+                $("#blur").css("opacity", "0");
+                $("#blur").css("visibility", "hidden");
             })
         });
     </script>

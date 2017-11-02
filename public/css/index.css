@@ -69,6 +69,7 @@ a {
     opacity: 0.7;
     z-index: 1000;
     visibility: hidden;
+    transition: all 1s ease-in-out;
 }
 
 .bocket-nav {
@@ -103,8 +104,8 @@ a {
 }
 
 .overlay {
-    width: 50%;
-    height: 18%;
+    width: 35%;
+    height: 20%;
     margin: auto;
     position: absolute;
     top: 0;
@@ -125,7 +126,6 @@ a {
 }
 
 .popup {
-    width: 50%;
     text-align: center;
-    transition: all 5s ease-in-out;
+    transition: all 1s ease-in-out;
 }
