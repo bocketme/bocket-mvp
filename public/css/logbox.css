@@ -27,7 +27,7 @@
     cursor: pointer;
 }
 
-#logbox {
+.logbox {
     padding: 10px;
     margin: 50px auto;
     width: 340px;
@@ -37,7 +37,7 @@
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
 }
 
-h1#titleBox {
+h1.titleBox {
     text-align: center;
     font-size: 175%;
     color: #757575;
