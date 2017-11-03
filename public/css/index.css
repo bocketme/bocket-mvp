@@ -17,13 +17,6 @@ input#email_beta {
     height: 2.9em !important;
 }
 
-a {
-    font-weight: 400;
-    text-decoration: underline;
-    color: white;
-    cursor: pointer;
-}
-
 #logo {
     margin-top: 1em;
     margin-left: 1em;
@@ -59,6 +52,13 @@ a {
 
 #close:hover {
     color: #00ffc8;
+}
+
+#signUp, #signIn {
+    font-weight: 400;
+    text-decoration: underline;
+    color: white;
+    cursor: pointer;
 }
 
 #blur {

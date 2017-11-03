@@ -10,7 +10,7 @@
     z-index: 50000;
     position: relative;
     display: -webkit-flex;
-    display: flex;
+    display: none;
     align-items:center;
     width: 0;
     justify-content: center;
@@ -24,6 +24,7 @@
 
 #closeBox:hover {
     color: #00ffc8;
+    cursor: pointer;
 }
 
 #logbox {
