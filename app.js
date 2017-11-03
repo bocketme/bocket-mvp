@@ -1,39 +1,36 @@
-/**
- * Created by jean-adriendomage on 26/10/2017.
- */
-
 const express = require("express");
+const config = require("./config/server"); // SERVER CONFIGURATION
+const bodyParser = require('body-parser');
+const morgan = require('morgan'); // NODEJS DEBUGGER
+const Promise = require("promise");
+
+
+/* ROUTES */
 const index = require("./routes/index");
 const signin = require("./routes/signin");
 const signup = require("./routes/signup");
-const config = require("./config/server");
-const bodyParser = require('body-parser');
-const morgan = require('morgan');
-const isEmail = require('isemail');
-const BetaEmail = require("./models/BetaEmail");
 
 let app = express();
 let server = require('http').createServer(app);
 let io = require("socket.io")(server);
+let ioListener = require("./sockets/socketsListener")(io);
 
-const MongoClient = require('mongodb').MongoClient;
-let uri = "mongodb://localhost/bocketmedev";
-let database = null;
-const BetaEmailRepository = require("./mongoRepositories/BetaEmailRepository");
-let betaEmailRepository = null;
+server.listen(config.port);
 
-
-MongoClient.connect(uri, function(err, db) {
-    if (err)
-        throw err;
-    database = db;
-
-    betaEmailRepository = new BetaEmailRepository(db);
-
-    server.listen(config.port, () => {});
-    console.log("Connection to mongodb succed ");
+//Import the mongoose module
+let mongoose = require('mongoose');
+mongoose.Promise = Promise;
+//Set up default mongoose connection
+let mongoDB = config.mongoDB;
+mongoose.connect(mongoDB, {
+    useMongoClient: true
 });
 
+//Get the default connection
+let db = mongoose.connection;
+
+//Bind connection to error event (to get notification of connection errors)
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use(morgan('dev'));
 
@@ -52,46 +49,3 @@ app.use("/signin", signin);
 app.use("/signup", signup);
 
 app.use(express.static('public'));
-
-io.on("connection", (socket) => {
-    socket.on("a", () => {
-        console.log("Bonjour");
-    })
-    socket.on("betaRegistration", (email) => {
-        console.log("J'ai reçu : " , email);
-        internalError = {
-            title: "Internal error !",
-            desc: "Please, try again."
-        };
-        emailError = {
-            title: "Invalid email !",
-            desc: internalError.desc
-        }
-        sucess = {
-            title: "Thank you for your interest !",
-            desc: "We will keep you in touch very soon Enjoy your day :)"
-        };
-
-        if (isEmail.validate(email) === false) {
-            console.log("email invalid");
-            socket.emit("betaRegistration", emailError);
-            return ;
-        }
-        betaEmail = new BetaEmail(email);
-        betaEmailRepository.find(betaEmail)
-            .then(result => {
-                console.log(result);
-                if (result !== null) {
-                    socket.emit("betaRegistration", sucess);
-                    return ;
-                }
-                betaEmailRepository.add(betaEmail)
-                    .then(() => {
-                        socket.emit("betaRegistration", sucess);
-                    })
-            })
-            .catch(() => {
-                socket.emit("betaRegistration", internalError);
-            })
-    });
-})

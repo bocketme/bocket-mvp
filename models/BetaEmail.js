@@ -1,15 +1,9 @@
-class BetaEmail {
-    constructor(email) {
-        this._email = email;
-    }
+let mongoose = require("mongoose");
 
-    set email(value) {
-        this._email = value;
-    }
+let BetaEmailSchema = new mongoose.Schema({
+    email : {type: String, required: true}
+});
 
-    get email() {
-        return this._email;
-    }
-}
+let BetaEmail = mongoose.model("BetaEmail", BetaEmailSchema, "BetaEmails");
 
 module.exports = BetaEmail;

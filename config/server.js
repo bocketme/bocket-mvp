@@ -4,5 +4,6 @@
 
 module.exports = {
     port : "4242",
-    protocol : "http"
+    protocol : "http",
+    mongoDB : "mongodb://localhost/bocketmemvp"
 };
