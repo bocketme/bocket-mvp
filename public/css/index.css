@@ -10,10 +10,10 @@ input::placeholder {
     color: #9b9b9b; !important;
 }
 
-input {
+input#email_beta {
     background: white !important;
     border-radius: 4px !important;
-    border: #9b9b9b solid 2px; !important;
+    border: #9b9b9b solid 1px; !important;
     height: 2.9em !important;
 }
 
@@ -21,11 +21,13 @@ a {
     font-weight: 400;
     text-decoration: underline;
     color: white;
+    cursor: pointer;
 }
 
 #logo {
     margin-top: 1em;
     margin-left: 1em;
+    z-index: 50;
 }
 
 #overview {
