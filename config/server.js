@@ -5,5 +5,6 @@
 module.exports = {
     port : "4242",
     protocol : "http",
-    mongoDB : "mongodb://localhost/bocketmemvp"
+    mongoDB : "mongodb://localhost/bocketmemvp",
+    saltRounds : 10,
 };

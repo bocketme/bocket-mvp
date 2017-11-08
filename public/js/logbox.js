@@ -7,11 +7,83 @@ jQuery(function() {
 
     var lauchButtonId = "#signUp";
     var boxId = "#userSignUpBox";
+    var workspaceBoxId = "#workspaceSignUpBox";
+    var blurId = "#blur";
 
     signUp(lauchButtonId, boxId);
 
-    $("submit-btn").click(function () {
-        console.log("submit");
+    $("#userSignUp").on("submit", function(e) {
+        if ($( "#userSignUp" ).valid())
+        {
+            console.log("FORM VALIDE");
+            hideBox($(boxId), function () {
+                $("#hiddenEmail").val($("#email").val());
+                $("#hiddenPassword").val($("#password").val());
+                showBox($(workspaceBoxId));
+            });
+        }
+        else
+            console.log("FORM PAS VALIDE");
+        e.preventDefault();
+    });
+
+    $.validator.methods.email = function( value, element ) {
+        return this.optional( element ) || /[a-z]+@[a-z]+\.[a-z]+/.test( value );
+    };
+
+    $( "#userSignUp" ).validate({
+        rules: {
+            password: {
+                required: true,
+                minlength: 6,
+            },
+            cpassword: {
+                required: true,
+                equalTo: "#password"
+            },
+            email: {
+                required: true,
+                email: true
+            }
+        },
+        errorElement : 'div',
+        errorPlacement: function(error, element) {
+            var placement = $(element).data('error');
+            if (placement) {
+                $(placement).append(error)
+            } else {
+                error.insertAfter(element);
+            }
+        },
+    });
+
+    $( "#workspaceSignUp" ).validate({
+        rules: {
+            completeName: {
+                required: true,
+            },
+            companyName: {
+                required: true,
+            },
+            workspaceName: {
+                required: true,
+            },
+        },
+        errorElement : 'div',
+        errorPlacement: function(error, element) {
+            var placement = $(element).data('error');
+            if (placement) {
+                $(placement).append(error)
+            } else {
+                error.insertAfter(element);
+            }
+        },
+    });
+
+    $(".closeBox").click(function() {
+        hideBlur($(blurId));
+        hideBox($(boxId));
+        hideBox($(workspaceBoxId));
     });
 
     function signUp(lauchButtonId, boxId) {
@@ -20,29 +92,38 @@ jQuery(function() {
 
         var launchButton = $(lauchButtonId);
         var box = $(boxId);
-        var blur = $("#blur");
-
-        $("#closeBox").click(function() {
-            console.log("close");
-            hideBox(box);
-            blur.css("opacity", "0").css("visibility", "hidden");
-        });
+        var blur = $(blurId);
 
         launchButton.click(function() {
             console.log(box.css(visibility));
             if (box.css(visibility) === visible)
             {
                 hideBox(box);
-                blur.css("opacity", "0").css("visibility", "hidden");
+                hideBlur(blur);
             }
             else
             {
-                blur.css("opacity", "0.7").css("visibility", "visible");
+                showBlur(blur);
                 $("#userSignUp").get(0).reset();
                 $("input").val('');
                 showBox(box);
             }
         });
+    }
+
+    function showBlur(blur) {
+        blur.css({
+            opacity: 0,
+            visibility: "visible"
+        }).animate({opacity:0.7}, delay + 250);
+    }
+
+    function hideBlur(blur) {
+        blur.animate({opacity:0}, delay + 250, setInvisible);
+    }
+
+    function setInvisible(id) {
+        $(blurId).css({visibility : "hidden"});
     }
 
     function showBox(box) {
@@ -53,8 +134,7 @@ jQuery(function() {
         }).animate({opacity:1}, delay + 250);
     }
 
-    function hideBox(box) {
-        box.delay(delay).fadeOut('slow');
+    function hideBox(box, cb) {
+        box.delay(delay).fadeOut('slow', cb);
     }
-
 });

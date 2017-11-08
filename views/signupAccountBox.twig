@@ -1,38 +1,28 @@
 <div id="userSignUpBox" class="container containerBox">
     <div class="col-md-6">
+        <i class="material-icons closeBox">close</i>
         <div class="logbox row">
-            <i id="closeBox" class="material-icons">close</i>
-            <form id="userSignUp" method="post" action="/signup">
-                <h1 class="titleBox">create an account</h1>
+            <form id="userSignUp" method="post" action="/signup" novalidate="novalidate">
+                <h1 class="titleBox">Create an account</h1>
                 <div class="input-field col s12">
-                    <input id="username" name="username" class="validate" type="text" required>
-                    <label for="username">What's your username?</label>
-                </div>
-                <div class="input-field col s12">
-                    <input id="first-name" name="first-name" class="validate" type="text" required>
-                    <label for="first-name">First name</label>
-                </div>
-                <div class="input-field col s12">
-                    <input id="last_name" type="text" class="validate" required>
-                    <label for="last_name">Last name</label>
+                    <input id="email" name="email" type="email" class="validate" required>
+                    <label for="email">Email address</label>
                 </div>
                 <div class="input-field col s12">
                     <input id="password" name="password" type="password" class="validate" required>
                     <label for="password">Password</label>
                 </div>
                 <div class="input-field col s12">
-                    <input id="password2" name="password2" type="password" class="validate" required>
-                    <label for="password2">Confirm assword</label>
+                    <input id="cpassword" name="cpassword" type="password" class="validate" required>
+                    <label for="cpassword">Confirm password</label>
                 </div>
-                <div class="input-field col s12">
-                    <input id="last_name" type="email" class="validate" required>
-                    <label for="last_name">Email address</label>
-                </div>
-                <button id="submit-btn" class="btn waves-effect waves-light" type="submit" name="action">Submit
-                    <i class="material-icons right">send</i>
+                <button id="submit-btn-user" class="btn waves-effect waves-light submit-btn" type="submit" name="action">Sign me up !
                 </button>
-                <div class="text-center">
-                    already have an account? <a href="#" id="login_id">Sign in</a>
+                {% if signUpError %}
+                    <p class="error">{{ signUpError }}</p>
+                {% endif %}
+                <div class="already-have-an-account text-center">
+                    Already have an account? <a href="#" id="login_id">Sign in</a>
                 </div>
             </form>
         </div>

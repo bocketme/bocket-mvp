@@ -5,48 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container main">
-        <div class="row">
-            <div class="row col s3">
-                <img src="/img/logo.png" class="logo main" alt="bocket.me logo">
-            </div>
-            <form action="/signin" method="post" class="col s9">
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="username" type="text" name="username" class="validate" required>
-                        <label for="username">Username</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="firstname" type="text" name="firstname" class="validate" required>
-                        <label for="firstname">Firstname</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="lastname" type="text" name="lastname" class="validate" required>
-                        <label for="lastname">Lastname</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="email" type="email" name="email" class="validate" required>
-                        <label for="email">Email</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="password" type="password" name="password" class="validate" required>
-                        <label for="password">Password</label>
-                    </div>
-                </div>
-                {% if signInError%}
-                    <p class="error">{{ signInError }}</p>
-                {% endif %}
-                <p>No account ? <a href="/signup">Sign up</a> !</p>
-                <button type="submit" class="btn btn-warning btn-lg">Login</button>
-            </form>
-        </div>
+    <div class="container">
+
     </div>
 {% endblock %}

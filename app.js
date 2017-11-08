@@ -46,6 +46,14 @@ app.use(cookieParser);
 // parse application/json
 app.use(bodyParser.json());
 
+
+// Display body request
+app.use(function (req, res) {
+    res.setHeader('Content-Type', 'text/plain');
+    res.write('you posted:\n');
+    res.end(JSON.stringify(req.body, null, 2))
+});
+
 app.set("view engine", "twig");
 
 app.use("/", index);

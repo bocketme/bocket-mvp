@@ -1,0 +1,32 @@
+<div id="workspaceSignUpBox" class="container containerBox">
+    <div class="col-md-6">
+        <i class="material-icons closeBox">close</i>
+        <div class="logbox row">
+            <form id="workspaceSignUp" method="post" action="/signup" novalidate="novalidate">
+                <h1 class="titleBox">Create a new workspace</h1>
+                <div class="input-field col s12">
+                    <input id="completeName" name="completeName" type="text" class="validate" required>
+                    <label for="completeName">First name & Last name</label>
+                </div>
+                <div class="input-field col s12">
+                    <input id="companyName" name="companyName" type="text" class="validate" required>
+                    <label for="companyName">Organization name</label>
+                </div>
+                <div class="input-field col s12">
+                    <input id="workspaceName" name="workspaceName" type="text" class="validate" required>
+                    <label for="workspaceName">Workspace name</label>
+                </div>
+                <input id="hiddenEmail" name="hiddenEmail" type="hidden">
+                <input id="hiddenPassword" name="hiddenPassword" type="hidden">
+                <button id="submit-btn-workspace" class="btn waves-effect waves-light submit-btn"  style="color: white;" type="submit" name="action">Continue
+                </button>
+                {% if signUpError %}
+                    <p class="error">{{ signUpError }}</p>
+                {% endif %}
+                <div class="already-have-an-account text-center">
+                    Already have an account? <a href="#" id="login_id">Sign in</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -2,6 +2,24 @@ body {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+p {
+    color: white;
+}
+
+input::placeholder {
+    color: #9b9b9b; !important;
+}
+
+#logo {
+    margin-top: 3%;
+    margin-left: 2%;
+    z-index: 50;
+}
+
 .error {
-    color: #9b9b9b;
+    color: #FF5A92;
+}
+
+.bocket-nav {
+    background: #262626;
 }
