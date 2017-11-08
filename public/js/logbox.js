@@ -7,10 +7,23 @@ jQuery(function() {
 
     var lauchButtonId = "#signUp";
     var boxId = "#userSignUpBox";
-    //var boxId = "#workspaceSignUpBox";
+    var workspaceBoxId = "#workspaceSignUpBox";
     var blurId = "#blur";
 
     signUp(lauchButtonId, boxId);
+
+    $("#userSignUp").on("submit", function(e) {
+        if ($( "#userSignUp" ).valid())
+        {
+            console.log("FORM VALIDE");
+            hideBox($(boxId), function () {
+                showBox($(workspaceBoxId));
+            });
+        }
+        else
+            console.log("FORM PAS VALIDE");
+        e.preventDefault();
+    });
 
     $.validator.methods.email = function( value, element ) {
         return this.optional( element ) || /[a-z]+@[a-z]+\.[a-z]+/.test( value );
@@ -39,7 +52,38 @@ jQuery(function() {
             } else {
                 error.insertAfter(element);
             }
-        }
+        },
+    });
+
+    $( "#workspaceSignUp" ).validate({
+        rules: {
+            completeName: {
+                required: true,
+            },
+            companyName: {
+                required: true,
+                minlength: 6,
+            },
+            workspaceName: {
+                required: true,
+                minlength: 6,
+            },
+        },
+        errorElement : 'div',
+        errorPlacement: function(error, element) {
+            var placement = $(element).data('error');
+            if (placement) {
+                $(placement).append(error)
+            } else {
+                error.insertAfter(element);
+            }
+        },
+    });
+
+    $(".closeBox").click(function() {
+        hideBlur($(blurId));
+        hideBox($(boxId));
+        hideBox($(workspaceBoxId));
     });
 
     function signUp(lauchButtonId, boxId) {
@@ -49,11 +93,6 @@ jQuery(function() {
         var launchButton = $(lauchButtonId);
         var box = $(boxId);
         var blur = $(blurId);
-
-        $(".closeBox").click(function() {
-            hideBlur(blur);
-            hideBox(box);
-        });
 
         launchButton.click(function() {
             console.log(box.css(visibility));
@@ -95,7 +134,7 @@ jQuery(function() {
         }).animate({opacity:1}, delay + 250);
     }
 
-    function hideBox(box) {
-        box.delay(delay).fadeOut('slow');
+    function hideBox(box, cb) {
+        box.delay(delay).fadeOut('slow', cb);
     }
 });
