@@ -2,31 +2,31 @@
     <div class="col-md-6">
         <div class="logbox row">
             <i id="closeBox" class="material-icons">close</i>
-            <form id="userSignUp" method="post" action="/signup">
+            <form id="userSignUp" method="post" action="/signup" novalidate="novalidate">
                 <h1 class="titleBox">create an account</h1>
                 <div class="input-field col s12">
                     <input id="username" name="username" class="validate" type="text" required>
                     <label for="username">What's your username?</label>
                 </div>
                 <div class="input-field col s12">
-                    <input id="first-name" name="first-name" class="validate" type="text" required>
-                    <label for="first-name">First name</label>
+                    <input id="firstName" name="firstName" class="validate" type="text" required>
+                    <label for="firstName">First name</label>
                 </div>
                 <div class="input-field col s12">
-                    <input id="last_name" type="text" class="validate" required>
-                    <label for="last_name">Last name</label>
+                    <input id="lastName" name="lastName" type="text" class="validate" required>
+                    <label for="lastName">Last name</label>
                 </div>
                 <div class="input-field col s12">
                     <input id="password" name="password" type="password" class="validate" required>
                     <label for="password">Password</label>
                 </div>
                 <div class="input-field col s12">
-                    <input id="password2" name="password2" type="password" class="validate" required>
-                    <label for="password2">Confirm assword</label>
+                    <input id="cpassword" name="cpassword" type="password" class="validate" required>
+                    <label for="cpassword">Confirm password</label>
                 </div>
                 <div class="input-field col s12">
-                    <input id="last_name" type="email" class="validate" required>
-                    <label for="last_name">Email address</label>
+                    <input id="email" name="email" type="email" class="validate" required>
+                    <label for="email">Email address</label>
                 </div>
                 <button id="submit-btn" class="btn waves-effect waves-light" type="submit" name="action">Submit
                     <i class="material-icons right">send</i>

@@ -10,9 +10,44 @@ jQuery(function() {
 
     signUp(lauchButtonId, boxId);
 
-    $("submit-btn").click(function () {
-        console.log("submit");
-    });
+    $.validator.methods.email = function( value, element ) {
+        return this.optional( element ) || /[a-z]+@[a-z]+\.[a-z]+/.test( value );
+    };
+
+    $( "#userSignUp" ).validate({
+        rules: {
+            username: {
+                required: true,
+                minlength: 5
+            },
+            firstName: {
+                required: true,
+            },
+            lastName: {
+                required: true,
+            },
+            password: {
+                required: true,
+                minlength: 6,
+            },
+            cpassword: {
+                required: true,
+                equalTo: "#password"
+            },
+            email: {
+                required: true,
+                email: true
+            }
+        },
+        errorElement : 'div',
+        errorPlacement: function(error, element) {
+            var placement = $(element).data('error');
+            if (placement) {
+                $(placement).append(error)
+            } else {
+                error.insertAfter(element);
+            }
+        }    });
 
     function signUp(lauchButtonId, boxId) {
         var lauchButtonId = lauchButtonId;
