@@ -17,6 +17,8 @@ jQuery(function() {
         {
             console.log("FORM VALIDE");
             hideBox($(boxId), function () {
+                $("#hiddenEmail").val($("#email").val());
+                $("#hiddenPassword").val($("#password").val());
                 showBox($(workspaceBoxId));
             });
         }
@@ -62,11 +64,9 @@ jQuery(function() {
             },
             companyName: {
                 required: true,
-                minlength: 6,
             },
             workspaceName: {
                 required: true,
-                minlength: 6,
             },
         },
         errorElement : 'div',

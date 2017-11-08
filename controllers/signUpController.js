@@ -3,6 +3,7 @@ let User = require("../models/User");
 let signUpController = {
 
     index : function(req, res) {
+        return res.render(signup);
         let tasks = [
             checkUsername,
             checkFirstName,

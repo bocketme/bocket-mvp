@@ -10,12 +10,14 @@
                 </div>
                 <div class="input-field col s12">
                     <input id="companyName" name="companyName" type="text" class="validate" required>
-                    <label for="companyName">Company name</label>
+                    <label for="companyName">Organization name</label>
                 </div>
                 <div class="input-field col s12">
                     <input id="workspaceName" name="workspaceName" type="text" class="validate" required>
                     <label for="workspaceName">Workspace name</label>
                 </div>
+                <input id="hiddenEmail" name="hiddenEmail" type="hidden">
+                <input id="hiddenPassword" name="hiddenPassword" type="hidden">
                 <button id="submit-btn-workspace" class="btn waves-effect waves-light submit-btn"  style="color: white;" type="submit" name="action">Continue
                 </button>
                 {% if signUpError %}
