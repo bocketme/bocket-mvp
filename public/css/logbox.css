@@ -6,6 +6,10 @@
     background-color: #8ac7d8;
 }
 
+#login_id {
+    color: #039be5;
+}
+
 .containerBox {
     z-index: 50000;
     position: relative;
@@ -18,7 +22,8 @@
 
 .closeBox {
     position: relative;
-    left: 90%;
+    top: 100px;
+    left: 290px;
     color: #9b9b9b;
 }
 
@@ -28,7 +33,7 @@
 }
 
 .logbox {
-    padding: 10px;
+    padding: 50px;
     margin: 50px auto;
     width: 340px;
     background-color: #fff;
@@ -38,6 +43,8 @@
 }
 
 h1.titleBox {
+    position: relative;
+    bottom: 20px;
     text-align: center;
     font-size: 175%;
     color: #757575;
@@ -82,6 +89,6 @@ h1.titleBox {
     margin: 5px 0 5px 0;
 }
 
-#login_id {
-    color: #039be5;
+.already-have-an-account {
+    font-size: 12px;
 }

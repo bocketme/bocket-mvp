@@ -48,6 +48,7 @@ input#email_beta {
 }
 
 #blur {
+    width: 100%;
     background: #d8d8d8;
     position: absolute;
     top: 0;

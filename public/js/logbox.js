@@ -7,6 +7,8 @@ jQuery(function() {
 
     var lauchButtonId = "#signUp";
     var boxId = "#userSignUpBox";
+    //var boxId = "#workspaceSignUpBox";
+    var blurId = "#blur";
 
     signUp(lauchButtonId, boxId);
 
@@ -16,16 +18,6 @@ jQuery(function() {
 
     $( "#userSignUp" ).validate({
         rules: {
-            username: {
-                required: true,
-                minlength: 5
-            },
-            firstName: {
-                required: true,
-            },
-            lastName: {
-                required: true,
-            },
             password: {
                 required: true,
                 minlength: 6,
@@ -47,7 +39,8 @@ jQuery(function() {
             } else {
                 error.insertAfter(element);
             }
-        }    });
+        }
+    });
 
     function signUp(lauchButtonId, boxId) {
         var lauchButtonId = lauchButtonId;
@@ -55,12 +48,11 @@ jQuery(function() {
 
         var launchButton = $(lauchButtonId);
         var box = $(boxId);
-        var blur = $("#blur");
+        var blur = $(blurId);
 
         $(".closeBox").click(function() {
-            console.log("close");
+            hideBlur(blur);
             hideBox(box);
-            blur.css("opacity", "0").css("visibility", "hidden");
         });
 
         launchButton.click(function() {
@@ -68,16 +60,31 @@ jQuery(function() {
             if (box.css(visibility) === visible)
             {
                 hideBox(box);
-                blur.css("opacity", "0").css("visibility", "hidden");
+                hideBlur(blur);
             }
             else
             {
-                blur.css("opacity", "0.7").css("visibility", "visible");
+                showBlur(blur);
                 $("#userSignUp").get(0).reset();
                 $("input").val('');
                 showBox(box);
             }
         });
+    }
+
+    function showBlur(blur) {
+        blur.css({
+            opacity: 0,
+            visibility: "visible"
+        }).animate({opacity:0.7}, delay + 250);
+    }
+
+    function hideBlur(blur) {
+        blur.animate({opacity:0}, delay + 250, setInvisible);
+    }
+
+    function setInvisible(id) {
+        $(blurId).css({visibility : "hidden"});
     }
 
     function showBox(box) {
@@ -91,5 +98,4 @@ jQuery(function() {
     function hideBox(box) {
         box.delay(delay).fadeOut('slow');
     }
-
 });
