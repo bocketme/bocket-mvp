@@ -31,6 +31,9 @@
                 <button id="submit-btn" class="btn waves-effect waves-light" type="submit" name="action">Submit
                     <i class="material-icons right">send</i>
                 </button>
+                {% if signUpError %}
+                    <p class="error">{{ signUpError }}</p>
+                {% endif %}
                 <div class="text-center">
                     already have an account? <a href="#" id="login_id">Sign in</a>
                 </div>

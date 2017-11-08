@@ -2,25 +2,11 @@ body {
     background: #262626;
 }
 
-p {
-    color: white;
-}
-
-input::placeholder {
-    color: #9b9b9b; !important;
-}
-
 input#email_beta {
     background: white !important;
     border-radius: 4px !important;
     border: #9b9b9b solid 1px; !important;
     height: 2.9em !important;
-}
-
-#logo {
-    margin-top: 1em;
-    margin-left: 1em;
-    z-index: 50;
 }
 
 #overview {
@@ -71,11 +57,6 @@ input#email_beta {
     opacity: 0;
     z-index: 1000;
     visibility: hidden;
-}
-
-.bocket-nav {
-    background: #262626;
-    box-shadow: none;
 }
 
 .info1 {
@@ -136,9 +117,14 @@ input#email_beta {
     text-align: center;
 }
 
+.bocket-nav {
+    box-shadow: none;
+}
+
 @media screen and (max-width: 1680px)
 {
     #beta_button {
         width: auto;
     }
 }
+
