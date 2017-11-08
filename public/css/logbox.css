@@ -16,14 +16,14 @@
     justify-content: center;
 }
 
-#closeBox {
+.closeBox {
     position: relative;
     left: 90%;
     color: #9b9b9b;
 }
 
-#closeBox:hover {
-    color: #00ffc8;
+.closeBox:hover {
+    color: #FF2E63;
     cursor: pointer;
 }
 
@@ -71,9 +71,13 @@ h1.titleBox {
     outline: none;
 }
 
-#submit-btn {
+.submit-btn:hover {
+    background: #ff2e78;
+}
+
+.submit-btn {
     width: 100%;
-    background: #00ffc8;
+    background: #FF2E63;
     color: #262626;
     margin: 5px 0 5px 0;
 }

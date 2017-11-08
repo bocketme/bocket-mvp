@@ -57,7 +57,7 @@ jQuery(function() {
         var box = $(boxId);
         var blur = $("#blur");
 
-        $("#closeBox").click(function() {
+        $(".closeBox").click(function() {
             console.log("close");
             hideBox(box);
             blur.css("opacity", "0").css("visibility", "hidden");

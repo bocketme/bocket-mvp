@@ -1,7 +1,7 @@
 <div id="userSignUpBox" class="container containerBox">
     <div class="col-md-6">
         <div class="logbox row">
-            <i id="closeBox" class="material-icons">close</i>
+            <i class="material-icons closeBox">close</i>
             <form id="userSignUp" method="post" action="/signup" novalidate="novalidate">
                 <h1 class="titleBox">create an account</h1>
                 <div class="input-field col s12">
@@ -28,7 +28,7 @@
                     <input id="email" name="email" type="email" class="validate" required>
                     <label for="email">Email address</label>
                 </div>
-                <button id="submit-btn" class="btn waves-effect waves-light" type="submit" name="action">Submit
+                <button id="submit-btn-user" class="btn waves-effect waves-light submit-btn" type="submit" name="action">Sign me up !
                     <i class="material-icons right">send</i>
                 </button>
                 {% if signUpError %}
