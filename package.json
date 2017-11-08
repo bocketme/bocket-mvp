@@ -4,7 +4,7 @@
   "description": "Bocket web application.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nodemon app.js -e js,twig,css,json",
     "start": "nodemon app.js -e js,twig,css,json"
   },
   "repository": {
@@ -19,8 +19,10 @@
   "homepage": "https://github.com/bocketme/bocket-mvp#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
     "isemail": "^3.0.0",
+    "jsonwebtoken": "^8.0.1",
     "mongodb": "^2.2.33",
     "mongoose": "^4.13.0",
     "morgan": "^1.9.0",

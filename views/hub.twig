@@ -1,0 +1,72 @@
+{% extends 'layout.twig' %}
+
+{% block css %}
+    <link rel="stylesheet" href="/css/hub.css">
+{% endblock %}
+
+{% block js %}
+  <script src="/js/hub.js"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+<!--
+Partie noire du hub:
+    Il contient les informations sur :
+    - toutes les parts d'un ???
+    - une liste des favoris
+    - les collections
+    - la maturité des parts
+    - les applications liés au projet ??? - Scenario utilisateur à définir
+-->
+<div class = "col s3 first_column">
+  <!-- Dropdown avec les informations utilisateurs (à définir) -->
+
+  <!-- Dropdown Trigger -->
+  <a class='dropdown-button btn' belowOrigin='true' href='#' data-activates='user_dropdown'>
+  <h1>{{ project_name }}</h1> <i class="material-icons">arrow_drop_down</i>
+    <br> {{ user_name }}
+  </a>
+
+  <!-- Dropdown Structure -->
+  <ul id='user_dropdown' class='dropdown-content'>
+    <li><a href="#!">Je ne sais pas</a></li>
+    <li><a href="#!">Je ne sais pas</a></li>
+    <li class="divider"></li>
+    <li><a href="#!">Je ne sais pas</a></li>
+    <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
+    <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+  </ul>
+
+  <!-- Informations sur les parts -->
+  <p>All parts <span class='right-align badge'>{{ parts }}</span></p>
+  <p>Last updates<span class='right-align badge'>{{ last_updates }}</span></p>
+  <p>Duplicates<span class='right-align badge'>{{ duplicates }}</span></p>
+
+</div>
+
+<div class = "col s3 second_column">
+    <nav>
+        <div class="nav-wrapper">
+            {{ data_header }}
+        </div>
+        <div>
+
+        </div>
+        <div>
+            {{ data }}
+            <!-- Gérer avec du javascript -->
+        </div>
+        <div>
+            {{ files }}
+        </div>
+    </nav>
+</div>
+<!--
+Alors ici ...
+-->
+<div class = "col s6 third_column">
+<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem, delectus et facilis inventore tenetur veniam voluptate? Ab deleniti distinctio dolorum illum iure maxime nam nemo nesciunt rerum, sequi ullam vitae. </p>
+</div>
+    </div>
+{% endblock %}

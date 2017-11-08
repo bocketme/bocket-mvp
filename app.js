@@ -3,12 +3,13 @@ const config = require("./config/server"); // SERVER CONFIGURATION
 const bodyParser = require('body-parser');
 const morgan = require('morgan'); // NODEJS DEBUGGER
 const Promise = require("promise");
-
+const cookieParser = require("cookie-parser");
 
 /* ROUTES */
 const index = require("./routes/index");
 const signin = require("./routes/signin");
 const signup = require("./routes/signup");
+const project = require("./routes/project");
 
 let app = express();
 let server = require('http').createServer(app);
@@ -39,6 +40,9 @@ module.exports = app;
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// parse the cookies of the application
+app.use(cookieParser);
+
 // parse application/json
 app.use(bodyParser.json());
 
@@ -47,5 +51,6 @@ app.set("view engine", "twig");
 app.use("/", index);
 app.use("/signin", signin);
 app.use("/signup", signup);
+app.use("/project", project)
 
 app.use(express.static('public'));

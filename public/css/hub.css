@@ -1,0 +1,24 @@
+.first_column
+{
+    background-color: #262626;
+}
+
+.second_column
+{
+    background-color: #9b9b9b;
+}
+
+.third_column
+{
+    background-color: mintcream;
+}
+
+header, main {
+    padding-left: 300px;
+}
+
+@media only screen and (max-width : 992px) {
+    header, main {
+        padding-left: 0;
+    }
+}
