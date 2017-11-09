@@ -6,6 +6,28 @@
 
 {% block js %}
   <script src="/js/hub.js"></script>
+    {% if viewer == true %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+        <script src="/js/viewer/three.js/libs/three.min.js"></script>
+
+        <script src="/js/viewer/three.js/loaders/OBJLoader.js"></script>
+        <script src="/js/viewer/three.js/loaders/MTLLoader.js"></script>
+
+        <script src="/js/viewer/three.js/controls/OrbitControls.js"></script>
+        <script src="/js/viewer/three.js/controls/TransformControls.js"></script>
+
+        <script src="/js/viewer/three.js/shaders/CopyShader.js"></script>
+        <script src="/js/viewer/three.js/shaders/FXAAShader.js"></script>
+
+        <script src="/js/viewer/three.js/postprocessing/EffectComposer.js"></script>
+        <script src="/js/viewer/three.js/postprocessing/RenderPass.js"></script>
+        <script src="/js/viewer/three.js/postprocessing/ShaderPass.js"></script>
+        <script src="/js/viewer/three.js/postprocessing/OutlinePass.js"></script>
+
+        <script src="js/viewer/annotations.js"></script>
+        <script src="js/viewer/viewer3D.js"></script>
+    {% endif %}
 {% endblock %}
 
 {% block body %}
@@ -58,7 +80,7 @@ Partie noire du hub:
         <div>
             <a class='dropdown-button btn' data-beloworigin="true" href='#' data-activates='assembly_view'>Assembly view</a>
             <ul id="assembly_view" class="dropdown-content">
-            {% if files is null %}
+            {% if node is null %}
                 <li> There is no node </li>
             {% else %}
                 <script>
@@ -82,8 +104,10 @@ Partie noire du hub:
     </nav>
 </div>
 
-<div class = "col s6 third_column">
-<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem, delectus et facilis inventore tenetur veniam voluptate? Ab deleniti distinctio dolorum illum iure maxime nam nemo nesciunt rerum, sequi ullam vitae. </p>
+<div class = "col s6 third_column container">
+    {% if viewer == true %}
+        {% include 'viewer.twig' %}
+    {% endif %}
 </div>
     </div>
 {% endblock %}

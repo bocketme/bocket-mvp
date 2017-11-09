@@ -29,7 +29,8 @@ module.exports = {
             files: [{ name: 'doc_1' }, { name: 'doc_2' }, ],
             all_parts: 100,
             last_updates: 10,
-            duplicates: 35
+            duplicates: 35,
+            viewer :true
         });
     },
     /**
