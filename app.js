@@ -3,7 +3,7 @@ const config = require("./config/server"); // SERVER CONFIGURATION
 const bodyParser = require('body-parser');
 const morgan = require('morgan'); // NODEJS DEBUGGER
 const Promise = require("promise");
-const cookieParser = require("cookie-parser");
+// const cookieParser = require("cookie-parser");
 
 /* ROUTES */
 const index = require("./routes/index");
@@ -41,22 +41,23 @@ module.exports = app;
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse the cookies of the application
-app.use(cookieParser);
+// app.use(cookieParser);
 
 // parse application/json
 app.use(bodyParser.json());
 
 
 // Display body request
-app.use(function (req, res) {
-    res.setHeader('Content-Type', 'text/plain');
-    res.write('you posted:\n');
-    res.end(JSON.stringify(req.body, null, 2))
-});
+// app.use(function (req, res) {
+//     res.setHeader('Content-Type', 'text/plain');
+//     res.write('you posted:\n');
+//     res.end(JSON.stringify(req.body, null, 2))
+// });
 
 app.set("view engine", "twig");
 
 app.use("/", index);
+
 app.use("/signin", signin);
 app.use("/signup", signup);
 app.use("/project", project)

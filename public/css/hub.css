@@ -1,24 +1,49 @@
-.first_column
-{
-    background-color: #262626;
+.row {
+    height: 100vh;
 }
 
-.second_column
-{
+.first_column {
+    background-color: #262626;
+    height: 100vh;
+}
+
+.bl {
+    margin-top: 20px;
+    background-color: #262626;
+    padding-bottom: 80px;
+}
+
+.little_name {
+    font-size: 60%
+}
+
+.coloriage {
+    background-color: #262626 !important;
+    color: white !important;
+}
+
+.dropdown-content {
+    color: #262626;
+}
+
+.second_column {
+    height: 100vh;
     background-color: #9b9b9b;
 }
 
-.third_column
-{
+.third_column {
+    height: 100vh;
     background-color: mintcream;
 }
 
-header, main {
+header,
+main {
     padding-left: 300px;
 }
 
-@media only screen and (max-width : 992px) {
-    header, main {
+@media only screen and (max-width: 992px) {
+    header,
+    main {
         padding-left: 0;
     }
 }

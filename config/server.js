@@ -3,8 +3,8 @@
  */
 
 module.exports = {
-    port : "4242",
-    protocol : "http",
-    mongoDB : "mongodb://localhost/bocketmemvp",
-    saltRounds : 10,
+    port: "8080",
+    protocol: "http",
+    mongoDB: "mongodb://localhost/bocketmemvp",
+    saltRounds: 10,
 };

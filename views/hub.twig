@@ -1,4 +1,4 @@
-{% extends 'layout.twig' %}
+{% extends 'layout_nonavbar.twig' %}
 
 {% block css %}
     <link rel="stylesheet" href="/css/hub.css">
@@ -23,25 +23,27 @@ Partie noire du hub:
   <!-- Dropdown avec les informations utilisateurs (à définir) -->
 
   <!-- Dropdown Trigger -->
-  <a class='dropdown-button btn' belowOrigin='true' href='#' data-activates='user_dropdown'>
-  <h1>{{ project_name }}</h1> <i class="material-icons">arrow_drop_down</i>
-    <br> {{ user_name }}
+  <a class='dropdown-button btn bl' href='#' data-activates='user_dropdown'>
+  {{ project_name }} <i class="medium material-icons">arrow_drop_down</i>
+  <br> <span class='right-align little_name'>{{ user_name }}</span>
   </a>
+
 
   <!-- Dropdown Structure -->
   <ul id='user_dropdown' class='dropdown-content'>
-    <li><a href="#!">Je ne sais pas</a></li>
-    <li><a href="#!">Je ne sais pas</a></li>
-    <li class="divider"></li>
-    <li><a href="#!">Je ne sais pas</a></li>
-    <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
-    <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+        {% for org in organizations %}
+        <li><a href="/{{ org }}">{{ org }}</a></li>
+        {% endfor %}
   </ul>
 
+  <div class="collection coloriage">
+    <a href="/{{ org }}/all_parts"  class="collection-item">All parts<span class='right-align badge'>{{ all_parts }}</span></a>
+    <a href="/{{ org }}/last_updates"  class="collection-item">Last updates<span class='right-align badge'>{{ last_updates }}</span></a>
+    <a href="/{{ org }}/duplicates"  class="collection-item">Duplicates<span class='right-align badge'>{{ duplicates }}</span></a>
+  </div>
   <!-- Informations sur les parts -->
-  <p>All parts <span class='right-align badge'>{{ parts }}</span></p>
-  <p>Last updates<span class='right-align badge'>{{ last_updates }}</span></p>
-  <p>Duplicates<span class='right-align badge'>{{ duplicates }}</span></p>
+  <ul>
+  <li><li><li></ul>
 
 </div>
 
@@ -54,17 +56,32 @@ Partie noire du hub:
 
         </div>
         <div>
-            {{ data }}
-            <!-- Gérer avec du javascript -->
+            <a class='dropdown-button btn' data-beloworigin="true" href='#' data-activates='assembly_view'>Assembly view</a>
+            <ul id="assembly_view" class="dropdown-content">
+            {% if files is null %}
+                <li> There is no node </li>
+            {% else %}
+                <script>
+                    // Je ne sais pas quoi faireeeeeeeeeee
+                </script>
+            {% endif %}
+            </ul>
         </div>
         <div>
-            {{ files }}
+            <a class='dropdown-button btn' data-beloworigin="true" href='#' data-activates='files'></a>
+            <ul id="files" class="dropdown-content">
+            {% if files is null %}
+                <li> There is no node </li>
+            {% else %}
+            {% for file in files %}
+                <li><a href="/{{ org }}/files/{{ file }}">{{ file }}</a></li>
+            {% endfor %}
+            {% endif %}
+            </ul>
         </div>
     </nav>
 </div>
-<!--
-Alors ici ...
--->
+
 <div class = "col s6 third_column">
 <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem, delectus et facilis inventore tenetur veniam voluptate? Ab deleniti distinctio dolorum illum iure maxime nam nemo nesciunt rerum, sequi ullam vitae. </p>
 </div>
