@@ -53,7 +53,7 @@ app.use(bodyParser.json());
 app.set("view engine", "twig");
 
 app.use("/", index);
-app.use("/signin", signin);
-app.use("/signup", signup);
+//app.use("/signin", signin);
+//app.use("/signup", signup);
 
 app.use(express.static('public'));
