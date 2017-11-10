@@ -28,8 +28,20 @@ jQuery(function() {
     });
 
     $.validator.methods.email = function( value, element ) {
-        return this.optional( element ) || /[a-z]+@[a-z]+\.[a-z]+/.test( value );
+        return this.optional(element) || /[a-z]+@[a-z]+\.[a-z]+/.test(value);
     };
+
+    $.validator.methods.completeName = function (value, element) {
+        return this.optional(element) || /[A-Z][a-z]+ [A-Z][a-z]+/.test(value);
+    };
+
+    $.validator.addMethod(
+        "completeName",
+        function(value, element) {
+            return this.optional(element) || /[A-Z][a-z]+ [A-Z][a-z]+/.test(value);
+        },
+        "Please check your input."
+    );
 
     $( "#userSignUp" ).validate({
         rules: {
@@ -50,7 +62,7 @@ jQuery(function() {
         errorPlacement: function(error, element) {
             var placement = $(element).data('error');
             if (placement) {
-                $(placement).append(error)
+                $(placement).append(error);
             } else {
                 error.insertAfter(element);
             }
@@ -61,6 +73,7 @@ jQuery(function() {
         rules: {
             completeName: {
                 required: true,
+                completeName: true,
             },
             companyName: {
                 required: true,

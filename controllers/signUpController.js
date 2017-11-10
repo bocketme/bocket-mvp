@@ -3,25 +3,22 @@ let User = require("../models/User");
 let signUpController = {
 
     index : function(req, res) {
-        return res.render(signup);
         let tasks = [
-            checkUsername,
-            checkFirstName,
-            checkLastName,
-            checkPassword,
-            checkCPassword,
             checkEmail,
+            checkPassword,
+            checkCompleteName,
+            checkOrganizationName,
+            checkWorkspaceName,
         ];
         for (let i = 0 ; i < tasks.length ; i++) {
             if (tasks[i](req.body) === false) {
-                console.log("Error occured on signing up user");
+                console.log("Error occured on signing up user on task[" + i + "]");
                 return res.redirect("/");
             }
         }
+        res.send(req.body);
         let newUser = new User({
-            username : req.body.username,
-            firstName : req.body.firstName,
-            lastName : req.body.lastName,
+            completeName: req.body.completeName,
             password : req.body.password,
             email : req.body.email
         });
@@ -33,28 +30,10 @@ let signUpController = {
             console.log("error : " + err);
         });
         console.log("Body = ", req.body);
-        return res.render("signupOrga");
     },
-
-};
-
-let usernameInfo = {
-    minlength: 5
-};
-
-let firstNameInfo = {
-    minlength: 1
-};
-
-let lastNameInfo = {
-    minlength: 1
 };
 
 let passwordInfo = {
-    minlength: 6
-};
-
-let cpasswordInfo = {
     minlength: 6
 };
 
@@ -62,27 +41,36 @@ let emailInfo = {
   minlength: 4
 };
 
-function checkUsername(body) {
-    return basicCheck(body.username, usernameInfo);
+let organizationNameInfo = {
+    minlength: 1
+};
+
+let completeNameInfo = {
+    minlength: 3
+};
+
+let workspaceNameInfo = {
+    minlength: 1
+};
+
+function checkOrganizationName(body) {
+    return basicCheck(body.organizationName, organizationNameInfo);
 }
 
-function checkFirstName(body) {
-    return basicCheck(body.firstName, firstNameInfo);
+function checkCompleteName(body) {
+    return basicCheck(body.completeName, completeNameInfo);
 }
 
-function checkLastName(body) {
-    return basicCheck(body.lastName, lastNameInfo);
+function checkWorkspaceName(body) {
+    return basicCheck(body.workspaceName, workspaceNameInfo);
 }
 
 function checkPassword(body) {
     return basicCheck(body.password, passwordInfo);
 }
 
-function checkCPassword(body) {
-    return basicCheck(body.cpassword, cpasswordInfo);
-}
-
 function checkEmail(body) {
+    console.log("Email:", body.email);
     return basicCheck(body.email, emailInfo);
 }
 
