@@ -45,7 +45,7 @@ app.use(bodyParser.json());
 
 // Display body request
 app.use(function (req, res, next) {
-    console.log("You posted:\n" + JSON.stringify(req.body, null, 2))
+    //console.log("You posted:\n" + JSON.stringify(req.body, null, 2))
     next();
 });
 

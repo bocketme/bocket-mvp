@@ -16,7 +16,6 @@ let signUpController = {
                 return res.redirect("/");
             }
         }
-        res.send(req.body);
         let newUser = new User({
             completeName: req.body.completeName,
             password : req.body.password,
@@ -30,6 +29,7 @@ let signUpController = {
             console.log("error : " + err);
         });
         console.log("Body = ", req.body);
+        res.send(req.body);
     },
 };
 
@@ -58,7 +58,9 @@ function checkOrganizationName(body) {
 }
 
 function checkCompleteName(body) {
-    return basicCheck(body.completeName, completeNameInfo);
+    let regex = /[A-Z][a-z]+ [A-Z][a-z]+/;
+    let completeName = body.completeName;
+    return basicCheck(completeName, completeNameInfo) && regex.test(completeName);
 }
 
 function checkWorkspaceName(body) {

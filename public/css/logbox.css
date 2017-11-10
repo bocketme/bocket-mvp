@@ -11,7 +11,7 @@
 }
 
 .containerBox {
-    z-index: 50000;
+    z-index: 4000;
     position: relative;
     display: -webkit-flex;
     display: none;

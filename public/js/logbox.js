@@ -13,18 +13,24 @@ jQuery(function() {
     signUp(lauchButtonId, boxId);
 
     $("#userSignUp").on("submit", function(e) {
+        e.preventDefault();
+        var email = $("#email");
         if ($( "#userSignUp" ).valid())
         {
-            console.log("FORM VALIDE");
-            hideBox($(boxId), function () {
-                $("#hiddenEmail").val($("#email").val());
-                $("#hiddenPassword").val($("#password").val());
-                showBox($(workspaceBoxId));
-            });
+            checkIfEmailAlreadyExist(email.val(),
+                function () {
+                    hideBox($(boxId), function () {
+                        $("#hiddenEmail").val(email.val());
+                        $("#hiddenPassword").val($("#password").val());
+                        showBox($(workspaceBoxId));
+                    });
+                },
+                function () {
+                console.log("AFTER::");
+                    $("#email").after("<div class='error'>This email is already taken</div>");
+                }
+            );
         }
-        else
-            console.log("FORM PAS VALIDE");
-        e.preventDefault();
     });
 
     $.validator.methods.email = function( value, element ) {
@@ -150,4 +156,11 @@ jQuery(function() {
     function hideBox(box, cb) {
         box.delay(delay).fadeOut('slow', cb);
     }
+
+    function checkIfEmailAlreadyExist(email, emailNotTakenCb, takenEmailCb) {
+        socket.on("emailNotTaken", emailNotTakenCb);
+        socket.on("takenEmail", takenEmailCb);
+        socket.emit("checkIfEmailAlreadyExist", email);
+    };
+
 });

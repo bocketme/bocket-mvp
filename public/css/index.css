@@ -103,7 +103,7 @@ input#email_beta {
     left: 0;
     right: 0;
     background: white;
-    z-index: 1001;
+    z-index: 5001;
     visibility: hidden;
     box-shadow: 2px 2px 3px grey;
 }
