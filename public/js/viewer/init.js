@@ -80,23 +80,38 @@ var Viewer = function (renderingDiv) {
         // var matrix = new THREE.Matrix4().compose(data.position, new THREE.Quaternion().setFromEuler(data.rotation), data.scale);
     }
 
-/* ************************************************************************** */
+
+    var loadObjectFromJSON = function (jsonObj, colors) {
+
+        var geometry = new THREE.BufferGeometry();
+// create a simple square shape. We duplicate the top left and bottom right
+// vertices because each vertex needs to appear once per triangle.
+        var vertices = new Float32Array( jsonObj.geometry.geometry );
+
+// itemSize = 3 because there are 3 values (components) per vertex
+        geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+        var material = new THREE.MeshBasicMaterial( { color: colors } );
+        var mesh = new THREE.Mesh( geometry, material );
+        return mesh;
+
+
+       /* var geometry = new THREE.BufferGeometry();
+        geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+        var material = new THREE.MeshBasicMaterial( { color: colors } );
+        var mesh = new THREE.Mesh( geometry, material );
+        scene.add(mesh);*/
+    };
 
     function getObject () {
         return new Promise(function (resolve, reject) {
             var objLoader = new THREE.OBJLoader();
 
-                $.get('/obj')
+                $.get('/node')
                 .done(function (data) {
-                    if (data.mtl)
-                        objLoader.setMaterials(new THREE.MTLLoader().parse(data.mtl));
-                    if (data.obj) {
-                        object = objLoader.parse(data.obj);
-                        object.name = data.filename;
-                        p_scene.add(object);
-                    }
+                    console.log(data);
 
-                    objectInit(object, data);
+                    object = loadObjectFromJSON(data, 0xd6d6d6);
+                    //objectInit(object, data);
                     // this.fitToScreen();
 
                     resolve(object);
