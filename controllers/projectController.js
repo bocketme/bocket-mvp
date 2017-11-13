@@ -9,29 +9,36 @@ module.exports = {
      * ALPHA - Ne marche qu'avec un seul utilisateur, dont on a enregistré les donnée dans un JWT
      */
     usejwt: (req, res, next) => {
-        console.log('pourquoi ?');
-        let token = jwt.sign({ email: 'baba@bocket.me', username: 'baba' },
-            "je suis ingenieur informaticien, jaime les ordinateurs", { algorithm: 'HS512', expiresIn: 2, subject: 'user' },
+        let data = {
+            email: 'baba@bocket.me',
+            username: 'baba'
+        };
+        let token = jwt.sign(data,
+            "je suis ingenieur informaticien, jaime les ordinateurs", { algorithm: 'HS256', expiresIn: 2, subject: 'user' },
             (err, token) => {
-                if (err)
+                if (err) {
                     console.log(err);
-                else
-                    console.log(token);
+                    next();
+                } else {
+                    res.cookie('jwt', token);
+                    next();
+                }
             });
-        next();
     },
     index: (req, res) => {
+        // jwt.decode(req.cookie.jwt);
         res.render('hub.twig', {
-            user_name: 'Alexis Dupont',
-            project_name: 'motor 3d construction',
+            user: 'Alexis Dupont',
+            workspace: 'motor 3d construction',
             data_header: 'All parts',
             parts: [{ name: 'parts_1' }, { name: 'parts_2' }, , { name: 'parts_3' }, { name: 'parts_4' }, , { name: 'parts_5' }],
             files: [{ name: 'doc_1' }, { name: 'doc_2' }, ],
             all_parts: 100,
             last_updates: 10,
             duplicates: 35,
-            viewer :true
+            type: 'viewer'
         });
+
     },
     /**
      * Ajoute un projet à l'utilisateur X

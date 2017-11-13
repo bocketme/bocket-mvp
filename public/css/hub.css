@@ -1,9 +1,44 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+}
 .row {
     height: 100vh;
 }
 
+#selected{
+    font-family: 'Montserrat', semi-bold;
+    color: white;
+}
+.material-icons.md-14{
+    font-size: 14px;
+}
+.notbutton{
+    background-color: inherit;
+    border: none;
+    color: grey;
+    width: 100%;
+    text-align: left;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+}
+
+.data-header{
+    color: grey;
+    border-bottom: 2px inset;
+    padding: 7px 0px 7px 0px;
+    margin: 7px 0px 7px 0px;
+}
+
+.notbutton:active, .notbutton:focus{
+    background-color: inherit;
+}
+
+.notbutton:hover{
+    background-color: #535151;
+}
 .first_column {
-    background-color: #262626;
+    background-color: #3c3c3c;
     height: 100vh;
 }
 
@@ -28,8 +63,11 @@
 
 .second_column {
     height: 100vh;
-    background-color: #9b9b9b;
+    background-color: mintcream;
+    border-right: 5px inset;
 }
+
+.
 
 .third_column {
     height: 100vh;

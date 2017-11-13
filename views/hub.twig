@@ -1,83 +1,38 @@
 {% extends 'layout_nonavbar.twig' %}
 
 {% block css %}
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/css/hub.css">
-{% endblock %}
-
-{% block js %}
-  <script src="/js/hub.js"></script>
-    {% if viewer == true %}
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-        <script src="/js/viewer/three.js/libs/three.min.js"></script>
-
-        <script src="/js/viewer/three.js/loaders/OBJLoader.js"></script>
-        <script src="/js/viewer/three.js/loaders/MTLLoader.js"></script>
-
-        <script src="/js/viewer/three.js/controls/OrbitControls.js"></script>
-        <script src="/js/viewer/three.js/controls/TransformControls.js"></script>
-
-        <script src="/js/viewer/three.js/shaders/CopyShader.js"></script>
-        <script src="/js/viewer/three.js/shaders/FXAAShader.js"></script>
-
-        <script src="/js/viewer/three.js/postprocessing/EffectComposer.js"></script>
-        <script src="/js/viewer/three.js/postprocessing/RenderPass.js"></script>
-        <script src="/js/viewer/three.js/postprocessing/ShaderPass.js"></script>
-        <script src="/js/viewer/three.js/postprocessing/OutlinePass.js"></script>
-
-        <script src="js/viewer/init.js"></script>
-        <script src="js/viewer/annotations.js"></script>
-        <script src="js/viewer/viewer3D.js"></script>
-    {% endif %}
+    <link rel="stylesheet" href="/css/dropdown.css">
 {% endblock %}
 
 {% block body %}
     <div class="row">
-<!--
-Partie noire du hub:
-    Il contient les informations sur :
-    - toutes les parts d'un ???
-    - une liste des favoris
-    - les collections
-    - la maturité des parts
-    - les applications liés au projet ??? - Scenario utilisateur à définir
--->
 <div class = "col s3 first_column">
-  <!-- Dropdown avec les informations utilisateurs (à définir) -->
 
-  <!-- Dropdown Trigger -->
-  <a class='dropdown-button btn bl' href='#' data-activates='user_dropdown'>
-  {{ project_name }} <i class="medium material-icons">arrow_drop_down</i>
-  <br> <span class='right-align little_name'>{{ user_name }}</span>
-  </a>
+    <button class="notbutton" style="margin-top: 20px; padding-bottom: 5px; padding-top: 5px">
+        <spann style="color: white;">
+            {{ workspace }} <i class="tiny material-icons">arrow_drop_down</i>
+        </spann>
+        <br> <spann style="color: grey;">{{ user }}</spann>
+    </button>
 
-
-  <!-- Dropdown Structure -->
-  <ul id='user_dropdown' class='dropdown-content'>
-        {% for org in organizations %}
-        <li><a href="/{{ org }}">{{ org }}</a></li>
-        {% endfor %}
-  </ul>
-
-  <div class="collection coloriage">
-    <a href="/{{ org }}/all_parts"  class="collection-item">All parts<span class='right-align badge'>{{ all_parts }}</span></a>
-    <a href="/{{ org }}/last_updates"  class="collection-item">Last updates<span class='right-align badge'>{{ last_updates }}</span></a>
-    <a href="/{{ org }}/duplicates"  class="collection-item">Duplicates<span class='right-align badge'>{{ duplicates }}</span></a>
-  </div>
-  <!-- Informations sur les parts -->
-  <ul>
-  <li><li><li></ul>
-
+<div style="padding: 10px;">
+    <button class="notbutton">All parts <span class='right-align badge'>{{ all_parts }}</span></button>
+    <button class="notbutton" id="selected">Last updates <span class='right-align badge'>{{ last_updates }}</span></button>
+    <button class="notbutton">duplicates<span class='right-align badge'>{{ duplicates }}</span></button>
+</div>
 </div>
 
 <div class = "col s3 second_column">
-    <nav>
-        <div class="nav-wrapper">
+        <div class="data-header">
+            <p>
+            <i class="material-icons" style="color: grey">star</i>
             {{ data_header }}
+            </p>
         </div>
-        <div>
 
-        </div>
         <div>
             <a class='dropdown-button btn' data-beloworigin="true" href='#' data-activates='assembly_view'>Assembly view</a>
             <ul id="assembly_view" class="dropdown-content">
@@ -102,13 +57,43 @@ Partie noire du hub:
             {% endif %}
             </ul>
         </div>
-    </nav>
 </div>
 
 <div class = "col s6 third_column container">
-    {% if viewer == true %}
+    <div class="data-header">
+        {{ type }}
+    </div>
+    {% if type == 'viewer' %}
         {% include 'viewer.twig' %}
     {% endif %}
 </div>
     </div>
+{% endblock %}
+
+{% block js %}
+    <script src="/js/hub.js"></script>
+
+    {% if type == 'viewer' %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+        <script src="/js/viewer/three.js/libs/three.min.js"></script>
+
+        <script src="/js/viewer/three.js/loaders/OBJLoader.js"></script>
+        <script src="/js/viewer/three.js/loaders/MTLLoader.js"></script>
+
+        <script src="/js/viewer/three.js/controls/OrbitControls.js"></script>
+        <script src="/js/viewer/three.js/controls/TransformControls.js"></script>
+
+        <script src="/js/viewer/three.js/shaders/CopyShader.js"></script>
+        <script src="/js/viewer/three.js/shaders/FXAAShader.js"></script>
+
+        <script src="/js/viewer/three.js/postprocessing/EffectComposer.js"></script>
+        <script src="/js/viewer/three.js/postprocessing/RenderPass.js"></script>
+        <script src="/js/viewer/three.js/postprocessing/ShaderPass.js"></script>
+        <script src="/js/viewer/three.js/postprocessing/OutlinePass.js"></script>
+
+        <script src="js/viewer/init.js"></script>
+        <script src="js/viewer/annotations.js"></script>
+        <script src="js/viewer/viewer3D.js"></script>
+    {% endif %}
 {% endblock %}
