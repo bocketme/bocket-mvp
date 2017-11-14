@@ -1,6 +1,6 @@
 let project = require('../models/project'),
-    jwt = require('jsonwebtoken');
-
+    jwt = require('jsonwebtoken'),
+    key = require('../utils/keys');
 // ALPHA - Ne marche qu'avec un seul utilisateur, dont on a enregistré les donnée dans un JWT
 
 module.exports = {
@@ -13,8 +13,7 @@ module.exports = {
             email: 'baba@bocket.me',
             username: 'baba'
         };
-        let token = jwt.sign(data,
-            "je suis ingenieur informaticien, jaime les ordinateurs", { algorithm: 'HS256', expiresIn: 2, subject: 'user' },
+        let token = jwt.sign(data, key, { algorithm: 'HS256', expiresIn: 2, subject: 'user' },
             (err, token) => {
                 if (err) {
                     console.log(err);
@@ -26,19 +25,17 @@ module.exports = {
             });
     },
     index: (req, res) => {
-        // jwt.decode(req.cookie.jwt);
-        res.render('hub.twig', {
+
+    res.render('hub.twig', {
             user: 'Alexis Dupont',
             workspace: 'motor 3d construction',
             data_header: 'All parts',
-            parts: [{ name: 'parts_1' }, { name: 'parts_2' }, , { name: 'parts_3' }, { name: 'parts_4' }, , { name: 'parts_5' }],
-            files: [{ name: 'doc_1' }, { name: 'doc_2' }, ],
+            node: JSON.stringify(require('../test/node.json')),
             all_parts: 100,
             last_updates: 10,
             duplicates: 35,
             type: 'viewer'
         });
-
     },
     /**
      * Ajoute un projet à l'utilisateur X

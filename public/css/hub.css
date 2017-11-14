@@ -23,12 +23,6 @@ body {
     font-size: 16px;
 }
 
-.data-header{
-    color: grey;
-    border-bottom: 2px inset;
-    padding: 7px 0px 7px 0px;
-    margin: 7px 0px 7px 0px;
-}
 
 .notbutton:active, .notbutton:focus{
     background-color: inherit;
@@ -37,6 +31,29 @@ body {
 .notbutton:hover{
     background-color: #535151;
 }
+
+.assembly-view{
+    background-color: #262626;
+    border: none;
+    color: grey;
+    width: 100%;
+    text-align: left;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+}
+
+.assembly-view:active, .assembly-view:focus{
+    background-color: #262626;
+}
+
+.data-header{
+    color: grey;
+    border-bottom: 2px inset;
+    padding: 7px 5px 7px 5px;
+    margin: 7px 0px 7px 0px;
+}
+
 .first_column {
     background-color: #3c3c3c;
     height: 100vh;
@@ -65,9 +82,8 @@ body {
     height: 100vh;
     background-color: mintcream;
     border-right: 5px inset;
+    padding: 0 !important;
 }
-
-.
 
 .third_column {
     height: 100vh;

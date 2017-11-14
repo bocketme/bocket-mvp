@@ -4,7 +4,6 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/css/hub.css">
-    <link rel="stylesheet" href="/css/dropdown.css">
 {% endblock %}
 
 {% block body %}
@@ -19,44 +18,20 @@
     </button>
 
 <div style="padding: 10px;">
-    <button class="notbutton">All parts <span class='right-align badge'>{{ all_parts }}</span></button>
-    <button class="notbutton" id="selected">Last updates <span class='right-align badge'>{{ last_updates }}</span></button>
+    <button class="notbutton" id="selected">All parts <span class='right-align badge'>{{ all_parts }}</span></button>
+    <button class="notbutton">Last updates <span class='right-align badge'>{{ last_updates }}</span></button>
     <button class="notbutton">duplicates<span class='right-align badge'>{{ duplicates }}</span></button>
 </div>
 </div>
 
 <div class = "col s3 second_column">
         <div class="data-header">
-            <p>
-            <i class="material-icons" style="color: grey">star</i>
-            {{ data_header }}
-            </p>
+            <p style="color:black;"><i class="material-icons" style="color: grey">star</i>{{ data_header }}</p>            
         </div>
-
-        <div>
-            <a class='dropdown-button btn' data-beloworigin="true" href='#' data-activates='assembly_view'>Assembly view</a>
-            <ul id="assembly_view" class="dropdown-content">
-            {% if node is null %}
-                <li> There is no node </li>
-            {% else %}
-                <script>
-                    // Je ne sais pas quoi faireeeeeeeeeee
-                </script>
-            {% endif %}
+            <button class="assembly-view valign-wrapper"> <i class="tiny material-icons">arrow_drop_down</i> Assembly View</button>
+            <ul id='assembly-view-content node' class='dropdown-content'>
             </ul>
-        </div>
-        <div>
-            <a class='dropdown-button btn' data-beloworigin="true" href='#' data-activates='files'></a>
-            <ul id="files" class="dropdown-content">
-            {% if files is null %}
-                <li> There is no node </li>
-            {% else %}
-            {% for file in files %}
-                <li><a href="/{{ org }}/files/{{ file }}">{{ file }}</a></li>
-            {% endfor %}
-            {% endif %}
-            </ul>
-        </div>
+                        
 </div>
 
 <div class = "col s6 third_column container">
@@ -73,6 +48,41 @@
 {% block js %}
     <script src="/js/hub.js"></script>
 
+    <script>
+
+        $(document).ready(
+            function() {
+
+                function () {
+                    var node = {{ node }}
+                    node = JSON.parse(node);
+                    console.log(node)
+                    var div = document.getElementById('node');
+                    div.appendChild(node_constructor(node));
+                }
+
+                var node_constructor = function (node, selector) {
+                    var text = document.createTextNode(node.title);
+                    if (node.child) {
+                        var ul = document.createElement("button");
+                        var attr = document.createAttribute("class");
+                        attr.value = "notbutton"
+                        ul.setAttribute(attr);
+                        li.appendChild(text);
+                        node.children.forEach(child => {
+                            ul.appenChlid(node_constructor(child));
+                        }); 
+                    } else {
+                        var li = document.createElement("li");
+                        var attr = document.createAttribute("class");
+                        attr.value = "notbutton"
+                        li.setAttribute(attr);
+                        li.appendChild(text);
+                        return li;
+                    }
+                }
+        });        
+    </script>
     {% if type == 'viewer' %}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 

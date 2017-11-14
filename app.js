@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan'); // NODEJS DEBUGGER
 const Promise = require("promise");
 // const cookieParser = require("cookie-parser");
+const twig = require('twig');
 
 /* ROUTES */
 const index = require("./routes/index");
@@ -17,6 +18,7 @@ let server = require('http').createServer(app);
 let io = require("socket.io")(server);
 let ioListener = require("./sockets/socketsListener")(io);
 
+//configure and verify the server
 server.listen(config.port);
 
 //Import the mongoose module
@@ -55,7 +57,11 @@ app.use(bodyParser.json());
 //     res.end(JSON.stringify(req.body, null, 2))
 // });
 
+app.engine('twig', require('twig').__express);
 app.set("view engine", "twig");
+app.set('twig options', { 
+    strict_variables: false,
+});
 
 app.use("/", index);
 
