@@ -27,8 +27,9 @@ module.exports = {
     index: (req, res) => {
 
     res.render('hub.twig', {
+        title: 'motor 3d construction',
             user: 'Alexis Dupont',
-            workspace: 'motor 3d construction',
+            workspaces: ['moi', 'je0', 'suis', 'beau'],
             data_header: 'All parts',
             node: JSON.stringify(require('../test/node.json')),
             all_parts: 100,
