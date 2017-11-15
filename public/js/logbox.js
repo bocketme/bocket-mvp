@@ -13,23 +13,41 @@ jQuery(function() {
     signUp(lauchButtonId, boxId);
 
     $("#userSignUp").on("submit", function(e) {
+        e.preventDefault();
+        var email = $("#email");
         if ($( "#userSignUp" ).valid())
         {
-            console.log("FORM VALIDE");
-            hideBox($(boxId), function () {
-                $("#hiddenEmail").val($("#email").val());
-                $("#hiddenPassword").val($("#password").val());
-                showBox($(workspaceBoxId));
-            });
+            checkIfEmailAlreadyExist(email.val(),
+                function () {
+                    hideBox($(boxId), function () {
+                        $("#hiddenEmail").val(email.val());
+                        $("#hiddenPassword").val($("#password").val());
+                        showBox($(workspaceBoxId));
+                    });
+                },
+                function () {
+                console.log("AFTER::");
+                    $("#email").after("<div class='error'>This email is already taken</div>");
+                }
+            );
         }
-        else
-            console.log("FORM PAS VALIDE");
-        e.preventDefault();
     });
 
     $.validator.methods.email = function( value, element ) {
-        return this.optional( element ) || /[a-z]+@[a-z]+\.[a-z]+/.test( value );
+        return this.optional(element) || /[a-z]+@[a-z]+\.[a-z]+/.test(value);
     };
+
+    $.validator.methods.completeName = function (value, element) {
+        return this.optional(element) || /[A-Z][a-z]+ [A-Z][a-z]+/.test(value);
+    };
+
+    $.validator.addMethod(
+        "completeName",
+        function(value, element) {
+            return this.optional(element) || /[A-Z][a-z]+ [A-Z][a-z]+/.test(value);
+        },
+        "Please check your input."
+    );
 
     $( "#userSignUp" ).validate({
         rules: {
@@ -50,7 +68,7 @@ jQuery(function() {
         errorPlacement: function(error, element) {
             var placement = $(element).data('error');
             if (placement) {
-                $(placement).append(error)
+                $(placement).append(error);
             } else {
                 error.insertAfter(element);
             }
@@ -61,6 +79,7 @@ jQuery(function() {
         rules: {
             completeName: {
                 required: true,
+                completeName: true,
             },
             companyName: {
                 required: true,
@@ -137,4 +156,11 @@ jQuery(function() {
     function hideBox(box, cb) {
         box.delay(delay).fadeOut('slow', cb);
     }
+
+    function checkIfEmailAlreadyExist(email, emailNotTakenCb, takenEmailCb) {
+        socket.on("emailNotTaken", emailNotTakenCb);
+        socket.on("takenEmail", takenEmailCb);
+        socket.emit("checkIfEmailAlreadyExist", email);
+    };
+
 });

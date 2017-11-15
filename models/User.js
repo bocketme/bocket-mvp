@@ -3,9 +3,7 @@ let mongoose = require("mongoose");
 let bcrypt = require("bcrypt");
 
 let UserSchema = new mongoose.Schema({
-    username : {type: String, required: true},
-    firstName: {type: String, required: true},
-    lastName: {type: String, required: true},
+    completeName: {type: String, required: true},
     password: {type: String, required: true},
     email: {type: String, required: true, index: { unique: true }},
 });
