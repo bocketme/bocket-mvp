@@ -1,5 +1,6 @@
 let serverConfiguration = require("../config/server");
 let mongoose = require("mongoose");
+let uniqueValidator = require('mongoose-unique-validator');
 
 let User = new mongoose.Schema({
     completeName: {type: String, required: true},
@@ -11,12 +12,14 @@ let Node = new mongoose.Schema({
 });
 
 let OrganizationSchema = new mongoose.Schema({
+    name: {type: String, required: true, index: { unique: true }},
     owner : {type: [User], require: true },
     member : [User],
     // adresse : String,
-    name: {type: String, require: true , index: { unique: true }},
     node: [Node]
 });
+
+OrganizationSchema.plugin(uniqueValidator);
 
 let Organization = mongoose.model("Organization", OrganizationSchema, "Organizations");
 

@@ -8,6 +8,7 @@ let listenerName = "checkUniqueField";
 
 module.exports = function (socket) {
     socket.on(listenerName, (modelName, fieldName, value) => {
+        console.log("LISTENER = ", modelName, fieldName, value);
         let model = require("../models/" + modelName);
         if (model === undefined)
         {
@@ -18,7 +19,7 @@ module.exports = function (socket) {
         query[fieldName] = value;
         model.findOne(query)
             .then(result => {
-                console.log(result);
+                console.log("Result = ", result);
                 if (result !== null)
                     socket.emit("uniqueFieldAlreadyUsed");
                 else

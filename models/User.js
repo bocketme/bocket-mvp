@@ -1,7 +1,7 @@
 let serverConfiguration = require("../config/server");
 let mongoose = require("mongoose");
 let bcrypt = require("bcrypt");
-let Workspace = require("./Workspace");
+let uniqueValidator = require('mongoose-unique-validator');
 
 let NestedWorkspaceSchema = require("./nestedSchema/NesttedWorkspaceSchema");
 let NestedUserSchema = require('./nestedSchema/NestedUserSchema');
@@ -9,7 +9,7 @@ let NestedOrganizationSchema = require('./nestedSchema/NestedOrganizationSchema'
 
 let UserSchema = new mongoose.Schema({
     completeName: {type: String, required: true},
-    email: {type: String, required: true, index: { unique: true }},
+    email: {type: String, required: true, unique: true },
     password: {type: String, required: true},
     active: Boolean,
     createDate: Date,
@@ -44,6 +44,8 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
         cb(null, isMatch);
     });
 };
+
+UserSchema.plugin(uniqueValidator);
 
 let User = mongoose.model("User", UserSchema, "Users");
 

@@ -32,24 +32,29 @@ jQuery(function() {
         }
     });
 
-    /*$("#submit-btn-workspace").on("submit", function(e) {
-        e.preventDefault();
-        if ($( "#submit-btn-workspace" ).valid())
+    let already = false;
+
+    $("#workspaceSignUp").on("submit", function(e) {
+        if (already)
         {
-            checkUniqueField("User", "email", email.val(),
+            already = false;
+            return true;
+        }
+        if ($( "#workspaceSignUp" ).valid())
+        {
+            e.preventDefault();
+            var organizationName = $("#companyName");
+            checkUniqueField("Organization", "name", organizationName.val(),
                 function () {
-                    hideBox($(boxId), function () {
-                        $("#hiddenEmail").val(email.val());
-                        $("#hiddenPassword").val($("#password").val());
-                        showBox($(workspaceBoxId));
-                    });
+                    $("#workspaceSignUp").submit();
+                    already = true;
                 },
                 function () {
-                    $("#email").after("<div class='error'>This email is already taken</div>");
+                    organizationName.after("<div class='error'>This organization name is already taken</div>");
                 }
             );
         }
-    });*/
+    });
 
     $.validator.methods.email = function( value, element ) {
         return this.optional(element) || /[a-z]+@[a-z]+\.[a-z]+/.test(value);
