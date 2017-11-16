@@ -17,7 +17,7 @@ jQuery(function() {
         var email = $("#email");
         if ($( "#userSignUp" ).valid())
         {
-            checkIfEmailAlreadyExist(email.val(),
+            checkUniqueField("User", "email", email.val(),
                 function () {
                     hideBox($(boxId), function () {
                         $("#hiddenEmail").val(email.val());
@@ -26,12 +26,30 @@ jQuery(function() {
                     });
                 },
                 function () {
-                console.log("AFTER::");
                     $("#email").after("<div class='error'>This email is already taken</div>");
                 }
             );
         }
     });
+
+    /*$("#submit-btn-workspace").on("submit", function(e) {
+        e.preventDefault();
+        if ($( "#submit-btn-workspace" ).valid())
+        {
+            checkUniqueField("User", "email", email.val(),
+                function () {
+                    hideBox($(boxId), function () {
+                        $("#hiddenEmail").val(email.val());
+                        $("#hiddenPassword").val($("#password").val());
+                        showBox($(workspaceBoxId));
+                    });
+                },
+                function () {
+                    $("#email").after("<div class='error'>This email is already taken</div>");
+                }
+            );
+        }
+    });*/
 
     $.validator.methods.email = function( value, element ) {
         return this.optional(element) || /[a-z]+@[a-z]+\.[a-z]+/.test(value);
@@ -157,10 +175,9 @@ jQuery(function() {
         box.delay(delay).fadeOut('slow', cb);
     }
 
-    function checkIfEmailAlreadyExist(email, emailNotTakenCb, takenEmailCb) {
-        socket.on("emailNotTaken", emailNotTakenCb);
-        socket.on("takenEmail", takenEmailCb);
-        socket.emit("checkIfEmailAlreadyExist", email);
+    function checkUniqueField(modelName, uniqueFieldName, value, NotTakenCb, takenCb) {
+        socket.on("uniqueFieldNotUsed", NotTakenCb);
+        socket.on("uniqueFieldAlreadyUsed", takenCb);
+        socket.emit("checkUniqueField", modelName, uniqueFieldName, value);
     };
-
 });
