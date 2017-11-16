@@ -1,5 +1,5 @@
 let betaRegistrationListener = require("./betaRegistrationSListener");
-let checkEmailIfAlreadyExistListener = require("./checkEmailIfAlreadyExist");
+let checkEmailIfAlreadyExistListener = require("./checkUniqueField");
 
 module.exports = function(io) {
     io.on('connection', function (socket) {
