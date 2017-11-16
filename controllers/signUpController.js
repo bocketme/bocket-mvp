@@ -19,43 +19,42 @@ let signUpController = {
             }
         }
 
-        // TODO: Check if user already exist
-        // TODO: Check if  organization already exist
-
-        let newUser = createUser(req, [], []);
-        newUser.save()
-            .then(result => {
-                console.log("new user has been add", result);
-                let organization = createOrganization(req.body.organizationName, newUser);
+        let user = createUser(req, [], []);
+        user.save()
+            .then(newUser => {
+                console.log("new user has been add", newUser);
+                let organization = createOrganization(req.body.organizationName, user);
                 organization.save()
                     .then(newOrga => {
                         console.log("\n\nnew organization has been add", newOrga);
-                        newUser.organizations.push({_id: newOrga._id, name: newOrga.name});
-                        let workspace = createWorkspace(req.body.workspaceName, newOrga)
+                        user.organizations.push({_id: newOrga._id, name: newOrga.name});
+                        let workspace = createWorkspace(req.body.workspaceName, newOrga);
                         workspace.save()
                             .then(newWorkspace => {
                                 console.log("\n\nnew workspace has been add", newWorkspace);
-                                newUser.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
-                                newUser.save()
+                                user.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
+                                user.save()
                                     .catch(err => {
-                                        //TODO: Delete Orga & user & workspace
                                         console.log("error on updating user: " + err);
+                                        newOrga.remove();
+                                        newUser.remove();
+                                        newWorkspace.remove();
                                     })
                             })
                             .catch(err => {
-                                //TODO: Delete Orga & user
                                 console.log("error on creating workspace: " + err);
+                                newOrga.remove();
+                                newUser.remove();
                             })
                     })
                     .catch(err => {
-                        // TODO: Delete User
                         console.log("error on creating organization: " + err);
+                        newUser.remove();
                     });
             })
             .catch(err => {
             console.log("error on creating user: " + err);
         });
-        console.log("Body = ", req.body);
         res.send(req.body);
     },
 };

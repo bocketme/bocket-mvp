@@ -1,6 +1,7 @@
 let serverConfiguration = require("../config/server");
 let mongoose = require("mongoose");
 let bcrypt = require("bcrypt");
+let Workspace = require("./Workspace");
 
 let NestedWorkspaceSchema = require("./nestedSchema/NesttedWorkspaceSchema");
 let NestedUserSchema = require('./nestedSchema/NestedUserSchema');
