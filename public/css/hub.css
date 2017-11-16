@@ -1,8 +1,6 @@
 body {
-    font-family: 'Montserrat', sans-serif;
-}
-.row {
-    height: 100vh;
+    font-family: 'Montserrat';
+    font-weight: 400;
 }
 
 #selected{
@@ -54,10 +52,6 @@ body {
     margin: 7px 0px 7px 0px;
 }
 
-.first_column {
-    background-color: #3c3c3c;
-    height: 100vh;
-}
 
 .bl {
     margin-top: 20px;
@@ -78,17 +72,6 @@ body {
     color: #262626;
 }
 
-.second_column {
-    height: 100vh;
-    background-color: mintcream;
-    border-right: 5px inset;
-    padding: 0 !important;
-}
-
-.third_column {
-    height: 100vh;
-    background-color: mintcream;
-}
 
 header,
 main {
@@ -100,4 +83,23 @@ main {
     main {
         padding-left: 0;
     }
+}
+
+
+.first_column {
+    background-color: #3c3c3c;
+    height: 100vh;
+    padding: 0 !important;
+}
+
+.second_column {
+    height: 100vh;
+    background-color: mintcream;
+    border-right: 5px inset;
+    padding: 0 !important;
+}
+
+.third_column {
+    height: 100vh;
+    background-color: mintcream;
 }

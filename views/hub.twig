@@ -16,7 +16,7 @@
         
         <button class="notbutton" onclick="dropdown()" style="margin-top: 20px; padding-bottom: 5px; padding-top: 5px">
             <spann style="color: white;">
-                {{ title }} <i class="tiny material-icons">arrow_drop_down</i>
+                {{ in_use }} <i class="tiny material-icons">arrow_drop_down</i>
             </spann>
             <br> <spann style="color: grey;">{{ user }}</spann>
         </button>
@@ -27,10 +27,10 @@
             {% endfor %}
         </div>
 
-        <div style="padding: 10px;">
-            <button class="notbutton" id="selected">All parts <span class='right-align badge'>{{ all_parts }}</span></button>
-            <button class="notbutton">Last updates <span class='right-align badge'>{{ last_updates }}</span></button>
-            <button class="notbutton">duplicates<span class='right-align badge'>{{ duplicates }}</span></button>
+        <div class="">
+            <button class="notbutton" {% if "All parts" in title  %}     id="selected" {% endif %}>All parts<span class='right-align badge'>{{ all_parts }}</span></button>
+            <button class="notbutton" {% if "Last updates" in title  %}  id="selected" {% endif %}>Last updates <span class='right-align badge'>{{ last_updates }}</span></button>
+            <button class="notbutton" {% if "duplicates" in title  %}    id="selected" {% endif %}>duplicates<span class='right-align badge'>{{ duplicates }}</span></button>
         </div>
     </div>
     
@@ -38,7 +38,7 @@
         <div class="data-header">
             <p style="color:black;"><i class="material-icons" style="color: grey">star</i>{{ data_header }}</p>            
         </div>
-        {% include "collapside.twig" %} 
+            {% include "collapside.twig" %} 
     </div>
     
     <div class = "col s6 third_column container">

@@ -1,5 +1,49 @@
 .collapsible-header{
-	padding: 0;
+	padding:  4.5px 0px 4.5px 0px;
 	text-align: center;
-	
+	box-shadow: 0;
+	border: 0;
+	border-image-slice: 0%;
+}
+
+.collapsible{
+	box-shadow: 0;
+}
+
+.row.colla{
+	margin: 0;
+}
+
+.collapsible-header.assembly{
+	background: #262626;
+	color: white;
+	box-shadow: 0;
+    font-weight: 500;  	
+}
+
+.selected-accordion{
+    color: #000000;
+    font-family: 'Montserrat';
+    font-weight: 700;  
+    background-color: #e9e8e9;
+}
+.collapsible-header.node:hover{
+    background-color: #f5f5f5;    
+} 
+.collapsible-header.assembly{
+    font-size: 14px;
+}
+ul.collapsible{
+	border: 0px;
+	box-shadow: none;
+}
+.pad-right {
+    padding-right: 15px;
+}
+
+div.collapsible-body{
+	border-bottom-width:0px;
+}
+.collapsible-header.node:first{
+	padding-left: 2px !important
 }

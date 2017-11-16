@@ -26,11 +26,21 @@ module.exports = {
     },
     index: (req, res) => {
 
-    res.render('hub.twig', {
-        title: 'motor 3d construction',
+        var title = 'motor 3d construction - Last updates';
+
+        var in_use, data_header;
+
+        var array = title.split(' - ');
+
+        in_use = array[0];
+        data_header = array[1];
+
+        res.render('hub.twig', {
+            title: title,
+            in_use: in_use,
+            data_header: data_header,            
             user: 'Alexis Dupont',
             workspaces: ['moi', 'je0', 'suis', 'beau'],
-            data_header: 'All parts',
             node: JSON.stringify(require('../test/node.json')),
             all_parts: 100,
             last_updates: 10,
