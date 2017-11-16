@@ -12,7 +12,7 @@ module.exports = function (socket) {
                     user.comparePassword(accountInformation.password, (err, isMatch) => {
                         if (err) throw err;
                         if (isMatch)
-                            socket.emit("signinSucced");
+                            socket.emit("signinSucced", user.workspaces);
                         else
                             socket.emit("signinFailed");
                     });

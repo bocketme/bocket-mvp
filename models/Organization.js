@@ -1,11 +1,7 @@
 let serverConfiguration = require("../config/server");
 let mongoose = require("mongoose");
 let uniqueValidator = require('mongoose-unique-validator');
-
-let User = new mongoose.Schema({
-    completeName: {type: String, required: true},
-    email: {type: String, required: true, index: { unique: true }},    
-});
+let User = require("./nestedSchema/NestedUserSchema");
 
 let Node = new mongoose.Schema({
     name: {type: String, required: true}
