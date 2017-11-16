@@ -7,14 +7,14 @@ let User = new mongoose.Schema({
 })
 
 let Node = new mongoose.Schema({
-    nmae: {type: String, required: true}
+    name: {type: String, required: true}
 });
 
 let OrganizationSchema = new mongoose.Schema({
     owner : {type: [User], require: true },
     member : [User],
     // adresse : String,
-    nom: {type: String, require: true },
+    name: {type: String, require: true },
     node: [Node]
 });
 

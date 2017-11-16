@@ -11,7 +11,7 @@ let Node = new mongoose.Schema({
     name: {type: String, required: true}
 });
 
-let organization= new mongoose.Schema({
+let Organization= new mongoose.Schema({
     _id: {type: mongoose.SchemaTypes.ObjectId, required: true},
     name: {type: String, required: true}
 });

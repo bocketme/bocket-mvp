@@ -2,15 +2,25 @@ let serverConfiguration = require("../config/server");
 let mongoose = require("mongoose");
 let bcrypt = require("bcrypt");
 
+let NestedWorkspaceSchema = require("./nestedSchema/NesttedWorkspaceSchema");
+let NestedUserSchema = require('./nestedSchema/NestedUserSchema');
+let NestedOrganizationSchema = require('./nestedSchema/NestedOrganizationSchema');
+
 let UserSchema = new mongoose.Schema({
     completeName: {type: String, required: true},
-    password: {type: String, required: true},
     email: {type: String, required: true, index: { unique: true }},
+    password: {type: String, required: true},
+    active: Boolean,
+    createDate: Date,
+    workspaces: { type : [NestedWorkspaceSchema]},
+    organizations: {type: [NestedOrganizationSchema]}
 });
 
 UserSchema.pre('save', function(next) {
     let user = this;
 
+    user.active = true;
+    user.createDate = new Date();
     // only hash the password if it has been modified (or is new)
     if (!user.isModified('password')) return next();
 
