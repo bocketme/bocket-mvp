@@ -1,4 +1,6 @@
 let User = require("../models/User");
+let Organization = require("../models/Organization");
+let Workspace = require("../models/Workspace");
 
 let signUpController = {
 
@@ -16,22 +18,71 @@ let signUpController = {
                 return res.redirect("/");
             }
         }
-        let newUser = new User({
-            completeName: req.body.completeName,
-            password : req.body.password,
-            email : req.body.email
-        });
-        newUser.save()
-            .then(result => {
-                console.log("new user has been add");
+
+        let user = createUser(req, [], []);
+        user.save()
+            .then(newUser => {
+                console.log("new user has been add", newUser);
+                let organization = createOrganization(req.body.organizationName, user);
+                organization.save()
+                    .then(newOrga => {
+                        console.log("\n\nnew organization has been add", newOrga);
+                        user.organizations.push({_id: newOrga._id, name: newOrga.name});
+                        let workspace = createWorkspace(req.body.workspaceName, newOrga);
+                        workspace.save()
+                            .then(newWorkspace => {
+                                console.log("\n\nnew workspace has been add", newWorkspace);
+                                user.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
+                                user.save()
+                                    .catch(err => {
+                                        console.log("error on updating user: " + err);
+                                        newOrga.remove();
+                                        newUser.remove();
+                                        newWorkspace.remove();
+                                    })
+                            })
+                            .catch(err => {
+                                console.log("error on creating workspace: " + err);
+                                newOrga.remove();
+                                newUser.remove();
+                            })
+                    })
+                    .catch(err => {
+                        console.log("error on creating organization: " + err);
+                        newUser.remove();
+                    });
             })
             .catch(err => {
-            console.log("error : " + err);
+            console.log("error on creating user: " + err);
         });
-        console.log("Body = ", req.body);
         res.send(req.body);
     },
 };
+
+function createWorkspace(name, organization) {
+    return new Workspace({
+       name : name,
+        organization: {_id: organization._id, name: organization.name, }
+    });
+}
+
+function createOrganization(name, owner) {
+    return new Organization({
+        owner: {completeName: owner.completeName, email: owner.email},
+        name: name,
+    })
+}
+
+function createUser (req, workspaces, organizations) {
+    return  new User({
+        completeName: req.body.completeName,
+        password : req.body.password,
+        email : req.body.email,
+        workspaces: workspaces,
+        organizations: organizations
+    });
+
+}
 
 let passwordInfo = {
     minlength: 6

@@ -60,3 +60,9 @@ typings/
 # dotenv environment variables file
 .env
 
+# config server
+config/
+
+test/
+
+converter/

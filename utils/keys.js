@@ -1,0 +1,1 @@
+module.exports = "je suis ingenieur informaticien, j'aime les ordinateurs";

@@ -1,0 +1,88 @@
+{% extends 'layout_nonavbar.twig' %}
+
+{% block css %}
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="/css/hub.css">
+<link rel="stylesheet" href="/css/accordeon.css">
+<link rem="stylesheet" href="/css/dropdown.css">
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class = "col s3 first_column">
+        
+        <button class="notbutton" onclick="dropdown()" style="margin-top: 20px; padding-bottom: 5px; padding-top: 5px">
+            <spann style="color: white;">
+                {{ title }} <i class="tiny material-icons">arrow_drop_down</i>
+            </spann>
+            <br> <spann style="color: grey;">{{ user }}</spann>
+        </button>
+        
+        <div id='user-dropdown' class="dropdown-content">
+            {% for workspace in workspaces %}
+               <a href="/{{workspace}}">{{ workspace }}</a>  
+            {% endfor %}
+        </div>
+
+        <div style="padding: 10px;">
+            <button class="notbutton" id="selected">All parts <span class='right-align badge'>{{ all_parts }}</span></button>
+            <button class="notbutton">Last updates <span class='right-align badge'>{{ last_updates }}</span></button>
+            <button class="notbutton">duplicates<span class='right-align badge'>{{ duplicates }}</span></button>
+        </div>
+    </div>
+    
+    <div class = "col s3 second_column">
+        <div class="data-header">
+            <p style="color:black;"><i class="material-icons" style="color: grey">star</i>{{ data_header }}</p>            
+        </div>
+        <ul class="cd-accordion-menu">
+            <li class="has-children"> 
+                <input type="checkbox" name ="group-1" id="nona" checked>
+                <label for="nona"><i class="tiny material-icons">arrow_drop_down</i>Assembly View</label>
+                <ul class="data-node">
+                </ul>           
+            </li>
+        </ul>
+    </div>
+    
+    <div class = "col s6 third_column container">
+        <div class="data-header">
+            {{ type }}
+        </div>
+        {% if type == 'viewer' %}
+        {% include 'viewer.twig' %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+
+<script> var twignode = {{ node }} </script>
+<script src="/js/hub.js"></script>
+
+{% if type == 'viewer' %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script src="/js/viewer/three.js/libs/three.min.js"></script>
+
+<script src="/js/viewer/three.js/loaders/OBJLoader.js"></script>
+<script src="/js/viewer/three.js/loaders/MTLLoader.js"></script>
+
+<script src="/js/viewer/three.js/controls/OrbitControls.js"></script>
+<script src="/js/viewer/three.js/controls/TransformControls.js"></script>
+
+<script src="/js/viewer/three.js/shaders/CopyShader.js"></script>
+<script src="/js/viewer/three.js/shaders/FXAAShader.js"></script>
+
+<script src="/js/viewer/three.js/postprocessing/EffectComposer.js"></script>
+<script src="/js/viewer/three.js/postprocessing/RenderPass.js"></script>
+<script src="/js/viewer/three.js/postprocessing/ShaderPass.js"></script>
+<script src="/js/viewer/three.js/postprocessing/OutlinePass.js"></script>
+
+<script src="js/viewer/init.js"></script>
+<script src="js/viewer/annotations.js"></script>
+<script src="js/viewer/viewer3D.js"></script>
+{% endif %}
+{% endblock %}
