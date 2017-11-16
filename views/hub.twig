@@ -8,6 +8,8 @@
 <link rem="stylesheet" href="/css/dropdown.css">
 {% endblock %}
 
+{% block title %}{{ title }}    {% endblock title %}
+
 {% block body %}
 <div class="row">
     <div class = "col s3 first_column">
@@ -36,14 +38,7 @@
         <div class="data-header">
             <p style="color:black;"><i class="material-icons" style="color: grey">star</i>{{ data_header }}</p>            
         </div>
-        <ul class="cd-accordion-menu">
-            <li class="has-children"> 
-                <input type="checkbox" name ="group-1" id="nona" checked>
-                <label for="nona"><i class="tiny material-icons">arrow_drop_down</i>Assembly View</label>
-                <ul class="data-node">
-                </ul>           
-            </li>
-        </ul>
+        {% include "collapside.twig" %} 
     </div>
     
     <div class = "col s6 third_column container">
@@ -59,7 +54,8 @@
 
 {% block js %}
 
-<script> var twignode = {{ node }} </script>
+<script> var twignode = {{ node  }} </script>
+<script src="/js/accordion.js"></script>
 <script src="/js/hub.js"></script>
 
 {% if type == 'viewer' %}

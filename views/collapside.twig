@@ -1,0 +1,14 @@
+
+<ul class="collapsible" data-collapsible="accordion">
+    <li>
+        <div class="collapsible-header"><i class="material-icons">arrow_drop_down</i>Assembly View</div>
+        <div class="collapsible-body">
+            {% if node is null %}
+            <span>There is no node in this scope</span>
+            {% else %}
+                <div class="row node_constructor">
+                </div>
+            {% endif %}
+        </div>
+    </li>
+</ul>
