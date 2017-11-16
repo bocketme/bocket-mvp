@@ -5,6 +5,8 @@ const morgan = require('morgan'); // NODEJS DEBUGGER
 const Promise = require("promise");
 // const cookieParser = require("cookie-parser");
 const twig = require('twig');
+const favicon = require('serve-favicon');
+const path = require('path');
 
 /* ROUTES */
 const index = require("./routes/index");
@@ -17,6 +19,9 @@ let app = express();
 let server = require('http').createServer(app);
 let io = require("socket.io")(server);
 let ioListener = require("./sockets/socketsListener")(io);
+
+//Initialize the favicon
+app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon-bocket.png')))
 
 //configure and verify the server
 server.listen(config.port);

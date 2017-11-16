@@ -23,13 +23,14 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
     "isemail": "^3.0.0",
-    "jsonwebtoken": "^8.0.1",
     "jquery-validation": "^1.17.0",
+    "jsonwebtoken": "^8.0.1",
     "mongodb": "^2.2.33",
     "mongoose": "^4.13.0",
     "morgan": "^1.9.0",
     "nodemon": "^1.12.1",
     "promise": "^8.0.1",
+    "serve-favicon": "^2.4.5",
     "socket.io": "^2.0.4",
     "twig": "^1.10.5"
   }
