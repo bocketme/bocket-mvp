@@ -35,5 +35,31 @@ function checkUniqueField(modelName, uniqueFieldName, value, NotTakenCb, takenCb
     socket.emit("checkUniqueField", modelName, uniqueFieldName, value);
 };
 
+function begin(lauchButtonId, boxId, toResetId) {
+    var lauchButtonId = lauchButtonId;
+    var boxId = boxId;
+
+    var launchButton = $(lauchButtonId);
+    var box = $(boxId);
+    var blur = $(blurId);
+    var toReset = $(toResetId);
+
+    launchButton.click(function() {
+        console.log(box.css(visibility));
+        if (box.css(visibility) === visible)
+        {
+            hideBox(box);
+            hideBlur(blur);
+        }
+        else
+        {
+            showBlur(blur);
+            toReset.get(0).reset();
+            $("input").val('');
+            showBox(box);
+        }
+    });
+}
+
 $(document).ready(function() {
 });

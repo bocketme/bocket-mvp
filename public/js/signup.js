@@ -1,11 +1,12 @@
 $(document).ready(function() {
     var lauchButtonId = "#signUp";
     var boxId = "#userSignUpBox";
+    var toReset = "#userSignUp";
     var visibility = "display";
     var workspaceBoxId = "#workspaceSignUpBox";
     var already = false;
 
-    signUp(lauchButtonId, boxId);
+    begin(lauchButtonId, boxId, toReset);
 
     $("#userSignUp").on("submit", function(e) {
         e.preventDefault();
@@ -32,31 +33,6 @@ $(document).ready(function() {
         hideBox($(boxId));
         hideBox($(workspaceBoxId));
     });
-
-    function signUp(lauchButtonId, boxId) {
-        var lauchButtonId = lauchButtonId;
-        var boxId = boxId;
-
-        var launchButton = $(lauchButtonId);
-        var box = $(boxId);
-        var blur = $(blurId);
-
-        launchButton.click(function() {
-            console.log(box.css(visibility));
-            if (box.css(visibility) === visible)
-            {
-                hideBox(box);
-                hideBlur(blur);
-            }
-            else
-            {
-                showBlur(blur);
-                $("#userSignUp").get(0).reset();
-                $("input").val('');
-                showBox(box);
-            }
-        });
-    }
 
     $("#workspaceSignUp").on("submit", function(e) {
         if (already)
