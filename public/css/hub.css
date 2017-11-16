@@ -1,0 +1,103 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+.row {
+    height: 100vh;
+}
+
+#selected{
+    font-family: 'Montserrat', semi-bold;
+    color: white;
+}
+.material-icons.md-14{
+    font-size: 14px;
+}
+.notbutton{
+    background-color: inherit;
+    border: none;
+    color: grey;
+    width: 100%;
+    text-align: left;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+}
+
+
+.notbutton:active, .notbutton:focus{
+    background-color: inherit;
+}
+
+.notbutton:hover{
+    background-color: #535151;
+}
+
+.assembly-view{
+    background-color: #262626;
+    border: none;
+    color: grey;
+    width: 100%;
+    text-align: left;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+}
+
+.assembly-view:active, .assembly-view:focus{
+    background-color: #262626;
+}
+
+.data-header{
+    color: grey;
+    border-bottom: 2px inset;
+    padding: 7px 5px 7px 5px;
+    margin: 7px 0px 7px 0px;
+}
+
+.first_column {
+    background-color: #3c3c3c;
+    height: 100vh;
+}
+
+.bl {
+    margin-top: 20px;
+    background-color: #262626;
+    padding-bottom: 80px;
+}
+
+.little_name {
+    font-size: 60%
+}
+
+.coloriage {
+    background-color: #262626 !important;
+    color: white !important;
+}
+
+.dropdown-content {
+    color: #262626;
+}
+
+.second_column {
+    height: 100vh;
+    background-color: mintcream;
+    border-right: 5px inset;
+    padding: 0 !important;
+}
+
+.third_column {
+    height: 100vh;
+    background-color: mintcream;
+}
+
+header,
+main {
+    padding-left: 300px;
+}
+
+@media only screen and (max-width: 992px) {
+    header,
+    main {
+        padding-left: 0;
+    }
+}

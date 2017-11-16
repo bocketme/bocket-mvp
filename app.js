@@ -3,18 +3,22 @@ const config = require("./config/server"); // SERVER CONFIGURATION
 const bodyParser = require('body-parser');
 const morgan = require('morgan'); // NODEJS DEBUGGER
 const Promise = require("promise");
-
+// const cookieParser = require("cookie-parser");
+const twig = require('twig');
 
 /* ROUTES */
 const index = require("./routes/index");
 const signin = require("./routes/signin");
 const signup = require("./routes/signup");
+const project = require("./routes/project");
+const node = require("./routes/node");
 
 let app = express();
 let server = require('http').createServer(app);
 let io = require("socket.io")(server);
 let ioListener = require("./sockets/socketsListener")(io);
 
+//configure and verify the server
 server.listen(config.port);
 
 //Import the mongoose module
@@ -39,6 +43,9 @@ module.exports = app;
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// parse the cookies of the application
+// app.use(cookieParser);
+
 // parse application/json
 app.use(bodyParser.json());
 
@@ -49,10 +56,17 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.engine('twig', require('twig').__express);
 app.set("view engine", "twig");
+app.set('twig options', { 
+    strict_variables: false,
+});
 
 app.use("/", index);
+
 app.use("/signin", signin);
 app.use("/signup", signup);
+app.use("/project", project);
+app.use("/node", node);
 
 app.use(express.static('public'));
