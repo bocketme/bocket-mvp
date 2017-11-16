@@ -49,10 +49,12 @@
     <div id="blur"></div>
     {% include "signupAccountBox.twig" %}
     {% include "signupWorkspace.twig" %}
+    {% include "signinAccountBox.twig" %}
 {% endblock %}
 
 {% block js %}
-    <script src="/js/betaRegistration.js"></script>
-    <script src="/js/checkEmail.js"></script>
-    <script src="/js/logbox.js"></script>
+    <script type="application/javascript" src="/js/betaRegistration.js"></script>
+    <script type="application/javascript" src="/js/checkEmail.js"></script>
+    <script type="application/javascript" src="/js/logbox.js"></script>
+    <script type="application/javascript" src="/js/signup.js"></script>
 {% endblock %}

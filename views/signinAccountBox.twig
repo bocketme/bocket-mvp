@@ -1,0 +1,26 @@
+<div id="userSignInBox" class="container containerBox">
+    <div class="col-md-6">
+        <i class="material-icons closeBox">close</i>
+        <div class="logbox row">
+            <form id="userSignIn" method="post" action="/signin" novalidate="novalidate">
+                <h1 class="titleBox">Account Login</h1>
+                <div class="input-field col s12">
+                    <input id="email" name="email" type="email" class="validate" required>
+                    <label for="email">Email address</label>
+                </div>
+                <div class="input-field col s12">
+                    <input id="password" name="password" type="password" class="validate" required>
+                    <label for="password">Password</label>
+                </div>
+                <button id="submit-btn-user" class="btn waves-effect waves-light submit-btn" type="submit" name="action">Sign me up !
+                </button>
+                {% if signUpError %}
+                    <p class="error">{{ signUpError }}</p>
+                {% endif %}
+                <div class="already-have-an-account text-center">
+                    <a href="#" id="login_id">Create an account</a> - <a href="#" id="login_id">Forget password</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
