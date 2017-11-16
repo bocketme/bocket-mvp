@@ -1,11 +1,14 @@
 var lauchButtonId = "#signIn";
-var boxId = "#userSignInBox";
+//var boxId = "#userSignInBox";
+var boxId = "#workplacesPickerBox";
 var toReset = "#userSignIn";
 var visibility = "display";
 var already = false;
 
 $(document).ready(function() {
     begin(lauchButtonId, boxId, toReset);
+
+    $()
 
     $(".closeBox").click(function() {
         hideBlur($(blurId));
