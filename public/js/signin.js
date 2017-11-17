@@ -142,7 +142,7 @@ $(document).ready(function() {
             for (var i = 0 ; i < user.organizations.length ; i++)
             {
                 $('#organizationSelect').append($(document.createElement("option")).
-                attr("value","val").text(user.organizations[i].name));
+                attr("value", user.organizations[i]._id).text(user.organizations[i].name));
             }
             $("#hiddenEmailWorkspace").val($("#emailSignIn").val());
             $("#hiddenPasswordWorkspace").val($("#passwordSignIn").val());
@@ -150,4 +150,8 @@ $(document).ready(function() {
         });
     });
 
+    $('#workspaceCreation').submit(function(){
+        $(this).attr('action',$(this).attr('action')+$(organizationSelect).text());
+        return true;
+    });
 });
