@@ -106,7 +106,7 @@ main {
 }
 
 .third_column {
-    padding: 0;
+    padding: 0 !important;
     height: 100vh;
     background-color: #f7f7f7;
 }

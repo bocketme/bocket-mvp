@@ -60,3 +60,14 @@ div.collapsible-body{
 .collapsible-header.node:first{
 	padding-left: 2px !important
 }
+
+img.node.has-child{
+	content:url("/img/07-Assembly%20icon.svg");
+}
+img.node.no-child{
+	content:url("/img/07-Part%20icon.svg");	
+}
+
+div.collapsible-body{
+	padding: 0;
+}
