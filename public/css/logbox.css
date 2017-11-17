@@ -55,8 +55,9 @@ h1.titleBox {
     bottom: 20px;
     text-align: center;
     font-size: 175%;
-    color: #757575;
-    font-weight: 300;
+    color: #262626;
+    text-transform: unset;
+    font-weight: bolder;
 }
 
 .inputButton {
@@ -93,8 +94,10 @@ h1.titleBox {
 .submit-btn {
     width: 100%;
     background: #FF2E63;
-    color: #262626;
     margin: 5px 0 5px 0;
+    color: white;
+    font-weight: bolder;
+    text-transform: unset;
 }
 
 .already-have-an-account {
