@@ -1,3 +1,4 @@
+let escape = require('escape-html');
 let Workspace = require("../models/Workspace");
 
 let controller = {
@@ -15,7 +16,15 @@ let controller = {
             }
         });
     },
-    createWorkspace: (req, res) => {
+    createWorkspace: (req, res) => { // req = { organizationId, workspaceName, email, password, organizatioName }
+        let organizationId = escape(req.organizationName);
+        let workspaceName = escape(req.workspaceName);
+        let email = escape(req.email);
+        let password = escape(req.password);
+        let organizationName = escape(req.organizationName);
+
+
+
         res.send(req.body);
     }
 };

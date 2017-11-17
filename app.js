@@ -75,5 +75,3 @@ app.use(express.static('public'));
 
 // TODO: Sauvegarder workspace
 // TODO: Bouton "connectez vous" ne fonctionne pas
-// TODO: On peut créer qu'un compte (error on creating organization: WriteError({"code":11000,"index":0,"errmsg":"E11000 duplicate key error collection: bocketmemvp.Organizations index: member.email_1 dup key: { : null }","op":{"name":"123456","_id":"5a0f2874f2df9d4644c0482b","node":[],"member":[],"owner":[{"completeName":"Vincent Mesquita","email":"vincentt@free.fr","_id":"5a0f2874f2df9d4644c0482c"}],"__v":0}}))
-// TODO: Faille XSS
