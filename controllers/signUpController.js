@@ -1,3 +1,4 @@
+let escape = require('escape-html');
 let User = require("../models/User");
 let Organization = require("../models/Organization");
 let Workspace = require("../models/Workspace");
@@ -107,25 +108,30 @@ let workspaceNameInfo = {
 };
 
 function checkOrganizationName(body) {
+    body.organizationName = escape(body.organizationName);
     return basicCheck(body.organizationName, organizationNameInfo);
 }
 
 function checkCompleteName(body) {
     let regex = /[A-Z][a-z]+ [A-Z][a-z]+/;
     let completeName = body.completeName;
+    body.completeName = escape(body.completeName);
     return basicCheck(completeName, completeNameInfo) && regex.test(completeName);
 }
 
 function checkWorkspaceName(body) {
+    body.workspaceName = escape(body.workspaceName);
     return basicCheck(body.workspaceName, workspaceNameInfo);
 }
 
 function checkPassword(body) {
+    body.password = escape(body.password);
     return basicCheck(body.password, passwordInfo);
 }
 
 function checkEmail(body) {
     console.log("Email:", body.email);
+    body.email = escape(body.email);
     return basicCheck(body.email, emailInfo);
 }
 

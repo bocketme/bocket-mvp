@@ -21,6 +21,7 @@
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
+    "escape-html": "^1.0.3",
     "express": "^4.16.2",
     "isemail": "^3.0.0",
     "jquery-validation": "^1.17.0",
