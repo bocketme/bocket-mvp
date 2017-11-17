@@ -71,10 +71,10 @@ module.exports = function (socket) {
                 .then(result => {
                     if (result === null)
                     {
+                        sendMail("leads@bocket.me", "Yeeepa! New user incoming 🚀🚀🚀", email);
                         let betaEmail = new BetaEmail({email : email});
                         betaEmail.save();
                     }
-                    sendMail("leads@bocket.me", "Yeeepa! New user incoming 🚀🚀🚀", email);
                     socket.emit("betaRegistration", sucess);
                 })
                 .catch(err => {
