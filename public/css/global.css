@@ -6,13 +6,18 @@ p {
     color: white;
 }
 
+input, button {
+    border-radius: 4px !important;
+}
+
 input::placeholder {
     color: #9b9b9b; !important;
 }
 
 #logo {
-    margin-top: 3%;
-    margin-left: 2%;
+    width: 70%;
+    margin-top: 9%;
+    margin-left: 9%;
     z-index: 50;
 }
 
