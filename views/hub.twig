@@ -30,37 +30,55 @@
         </div>
         
         <div class="">
-            <button class="notbutton" {% if "All parts" in title  %}     id="selected" {% endif %}>All parts<span class='right-align badge'>{{ all_parts }}</span></button>
-            <button class="notbutton" {% if "Last updates" in title  %}  id="selected" {% endif %}>Last updates <span class='right-align badge'>{{ last_updates }}</span></button>
-            <button class="notbutton" {% if "duplicates" in title  %}    id="selected" {% endif %}>duplicates<span class='right-align badge'>{{ duplicates }}</span></button>
+            <a href="/project/{{ in_use }}">
+                <button class="notbutton" {% if "All Parts" in title  %}     id="selected" {% endif %}>All parts<span class='right-align badge'>{{ all_parts }}</span></button>
+            </a>
+            <a href="/project/{{ in_use }}/updates">
+                <button class="notbutton" {% if "Last Updates" in title  %}  id="selected" {% endif %}>Last updates <span class='right-align badge'>{{ last_updates }}</span></button>
+            </a>
+            <a href="/project/{{ in_use }}/duplicates">
+                <button class="notbutton" {% if "Duplicates" in title  %}    id="selected" {% endif %}>duplicates<span class='right-align badge'>{{ duplicates }}</span></button>
+            </a>
+            
         </div>
     </div>
     
     <div class = "col s3 second_column">
         <div class="data-header">
-            <i class="material-icons favorite" style="color: #9b9b9b; font-size:10px; ">star</i>{{ data_header }}            
-            <img class="triple-dots"></img>                   
+            <i class="material-icons favorite" style="color: #9b9b9b; font-size:10px;">star</i>{{ data_header }}            
+            <a  data-activates='options-node' >
+                <img class="triple-dots"></img>                             
+            </a>  
         </div>
+        
+        {#  #}
+        <ul id='options-node' class='dropdown-content'>
+            <li><button>Create new Part</button></li>
+            <li><button>Create new Assembly</button></li>
+            <li><button>Insert existing part</button></li>
+            <li><button>Insert existing Assembly</button></li>
+        </ul>
+        
         {% include "search.twig" %}
         {% include "collapside.twig" %}         
     </div>
-
-<div class = "col s6 third_column">
-    <div class="data-header valign-wrapper">
-        {{ type }}
+    
+    <div class = "col s6 third_column">
+        <div class="data-header valign-wrapper">
+            {{ type }}
+        </div>
+        <div class="container">
+            {% if type == 'viewer' %}
+            {% include 'viewer.twig' %}
+            {% endif %}        
+        </div>
     </div>
-    <div class="container">
-        {% if type == 'viewer' %}
-        {% include 'viewer.twig' %}
-        {% endif %}        
-    </div>
-</div>
 </div>
 
 {% endblock %}
 
-{% block js %}
 
+{% block js %}
 <script> var twignode = {{ node  }} </script>
 <script src="/js/accordion.js"></script>
 <script src="/js/hub.js"></script>
