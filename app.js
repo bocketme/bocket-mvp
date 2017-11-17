@@ -64,11 +64,10 @@ app.set('twig options', {
 });
 
 app.use("/", index);
-
-app.use("/signin", signin);
-app.use("/signup", signup);
-app.use("/project", project);
-app.use("/node", node);
-app.use("/workspace", workspace);
+//app.use("/signin", signin);
+//app.use("/signup", signup);
+//app.use("/project", project);
+//app.use("/node", node);
+//app.use("/workspace", workspace);
 
 app.use(express.static('public'));
