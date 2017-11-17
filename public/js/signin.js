@@ -83,8 +83,8 @@ $(document).ready(function() {
     socket.on(signInSucceed, function (workspaces) {
         //console.log("workspaces : ", workspaces);
         var ul = $("ul");
-        /*ul.empty();
-        ul.append("<li></li>");*/
+        ul.empty(); // delete all <ul>
+        ul.append("<li></li>"); // Add one <li> in order to add the next <li> after it
         workspaces.forEach(function (workspace) {
             //console.log("je rajoute un W : ", workspace);
             $("#workspacesPicker ul li:last").after('                    <li class="collection-item avatar workspace">' +
