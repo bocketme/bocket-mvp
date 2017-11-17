@@ -88,6 +88,9 @@ main {
     }
 }
 
+.row{
+    margin-bottom: 0px;
+}
 
 .first_column {
     background-color: #3c3c3c;
@@ -97,7 +100,7 @@ main {
 
 .second_column {
     height: 100vh;
-    background-color: mintcream;
+    background-color: #f7f7f7;
     border-right: 5px inset;
     padding: 0 !important;
 }
@@ -105,7 +108,7 @@ main {
 .third_column {
     padding: 0;
     height: 100vh;
-    background-color: mintcream;
+    background-color: #f7f7f7;
 }
 
 .triple-dots{
@@ -155,3 +158,53 @@ main {
     font-weight: 400;
 }
 
+div.search-and-branch{
+    padding:  5px 5px;
+}
+
+input[type='text']#search{
+    height: 26px;
+    box-sizing:  border-box;
+    border-bottom-width: 0px;
+    border: 0 !important;
+    font-size: 11px;
+    background-color: #e9e8e9;
+    background-image: url('/img/08-Search icon.svg');
+    background-size: 11px;
+    background-position: 10px 6px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    margin-bottom: 5px;
+}
+
+input[type='text']#search:focus{
+     border-bottom: none!important;
+  box-shadow: none!important;
+}
+
+input[type='text']#branch{
+    height: 26px;
+    border: 0 !important;    
+    box-sizing:  border-box;
+    border-bottom-width: 0px;
+    font-size: 11px;
+    background-color: #e9e8e9;
+    background-image: url('/img/08-Branch icon.svg');
+    background-size: 11px;
+    background-position: 10px 6px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    margin-bottom: 5px;    
+}
+
+input[type='text']#branch:focus{
+     border-bottom: none!important;
+  box-shadow: none!important;
+}
+
+.search-input, .branch-input{
+    padding-top: 3.5px;
+    padding-bottom: 3.5px;
+    padding-left: 7px;
+    padding-right: 7px; 
+}
