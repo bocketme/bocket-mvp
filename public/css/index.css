@@ -27,16 +27,12 @@ input#email_beta {
 
 #popup-title {
     color: black;
-}
-
-#popup-desc {
-    color: black;
-    font-weight: lighter;
+    font-weight: bolder;
 }
 
 #close {
     position: absolute;
-    right: 0;
+    right: 10px;
     color: #9b9b9b;
 }
 
@@ -62,6 +58,19 @@ input#email_beta {
     opacity: 0;
     z-index: 1000;
     visibility: hidden;
+}
+
+.popup-desc {
+    color: black;
+    font-weight: lighter;
+    margin-bottom: 0;
+    font-size: 18px;
+}
+
+@-moz-document url-prefix() {
+    .popup-desc {
+        color: grey;
+    }
 }
 
 .info1 {

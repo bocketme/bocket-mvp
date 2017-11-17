@@ -60,7 +60,8 @@ module.exports = function (socket) {
             };
             let sucess = {
                 title: "Thank you for your interest !",
-                desc: "We will keep you in touch very soon Enjoy your day :)"
+                desc: "We will keep you in touch very soon.",
+                subDesc: "Enjoy your day :)"
             };
             if (isEmail.validate(email) === false) {
                 console.log("email invalid");
