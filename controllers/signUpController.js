@@ -4,6 +4,8 @@ let Workspace = require("../models/Workspace");
 
 let signUpController = {
 
+    // TODO: FAILLE XSS
+
     index : function(req, res) {
         let tasks = [
             checkEmail,

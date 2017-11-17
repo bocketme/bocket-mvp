@@ -1,0 +1,29 @@
+<div id="workspaceCreationBox" class="container containerBox">
+    <div class="col-md-6">
+        <i class="material-icons closeBox">close</i>
+        <div class="logbox row">
+            <form id="workspaceCreation" method="post" action="/workspace/create" novalidate="novalidate">
+                <h1 class="titleBox">Create a new workspace</h1>
+                <div class="input-field col s12">
+                    <input id="disabledName" name="disabledName" type="text" class="validate" disabled>
+                </div>
+                    <label>Organizations</label>
+                    <select id="organizationSelect" name="organizationName" class="browser-default">
+                        <option value="" disabled selected>Choose your organization</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                    </select>
+                <div class="input-field col s12">
+                    <input id="newWorkspaceName" name="workspaceName" type="text" class="validate" required>
+                    <label for="newWorkspaceName">Workspace name</label>
+                </div>
+                <input id="hiddenEmailWorkspace" name="email" type="hidden">
+                <input id="hiddenPasswordWorkspace" name="password" type="hidden">
+                <input id="hiddenOrganizationWorkspace" name="organizationWorkspace" type="hidden">
+                <button id="submit-btn-workspace" class="btn waves-effect waves-light submit-btn"  style="color: white;" type="submit">Continue
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

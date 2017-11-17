@@ -19,11 +19,18 @@ jQuery(function(){
     function showPopUp(ret) {
         var title = ret.title;
         var desc = ret.desc;
+        var subDesc = ret.subDesc;
+
+        console.log("desc : ", desc);
         $("#popup1").css("transition", "all 1s ease-in-out");
         $("#popup1").css("visibility", "visible").css("opacity", "1");
         $("#blur").css("transition", "all 1s ease-in-out");
         $("#blur").css("opacity", "0.7").css("visibility", "visible");
         $("#popup-title").text(title);
-        $("#popup-desc").text(desc);
+        $("#first-desc").text(desc);
+        if (subDesc)
+            $("#second-desc").text(subDesc);
+        else
+            $("#second-desc").text("");
     }
 });

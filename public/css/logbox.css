@@ -32,6 +32,14 @@
     cursor: pointer;
 }
 
+#bigger-logbox {
+    width: 500px !important;
+}
+
+#bigger-close {
+    left: 450px;
+}
+
 .logbox {
     padding: 50px;
     margin: 50px auto;

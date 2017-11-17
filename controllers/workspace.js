@@ -14,5 +14,10 @@ let controller = {
                 _id: res.locals.organization._id,
             }
         });
+    },
+    createWorkspace: (req, res) => {
+        res.send(req.body);
     }
-}
+};
+
+module.exports = controller;
