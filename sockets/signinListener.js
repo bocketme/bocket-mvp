@@ -1,5 +1,6 @@
 let internalErrorEmitter = require("./emitter/internalErrorEmitter");
 let User = require("../models/User");
+let Workspaces = require("../models/Workspace");
 
 module.exports = function (socket) {
     socket.on("signin", (accountInformation) => {
@@ -12,7 +13,15 @@ module.exports = function (socket) {
                     user.comparePassword(accountInformation.password, (err, isMatch) => {
                         if (err) throw err;
                         if (isMatch)
-                            socket.emit("signinSucced", user.workspaces);
+                        {
+                            findAllWorkspaces(user.workspaces)
+                                .then(workspaces => {
+                                    socket.emit("signinSucced", workspaces);
+                                })
+                                .catch(err => {
+                                    socket.emit("signinFailed");
+                                });
+                        }
                         else
                             socket.emit("signinFailed");
                     });
@@ -26,3 +35,26 @@ module.exports = function (socket) {
             });
     });
 };
+
+function findAllWorkspaces(nestedWorkspaces) {
+    let workspaces = [];
+
+    return new Promise((resolve, reject) => {
+        let i = 0;
+        nestedWorkspaces.forEach(workspace => {
+            Workspaces.findOne({_id : workspace._id})
+                .then(w => {
+                    workspaces.push(w);
+                    i += 1;
+                    if (i === nestedWorkspaces.length)
+                    {
+                        console.log("findAllWorkspaces : ", workspaces);
+                        resolve(workspaces);
+                    }
+                })
+                .catch(err => {
+                    reject(err);
+                })
+        });
+    });
+}

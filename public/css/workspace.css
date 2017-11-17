@@ -1,0 +1,11 @@
+.workspace:hover {
+    background-color: #E9E9E9;
+}
+
+.chosen-workspace {
+    background-color: #E4E4E4 !important;
+}
+
+.workspace-id {
+    display: none;
+}

@@ -4,6 +4,7 @@ var workspacesPicker = "#workspacesPickerBox";
 var toReset = "#userSignIn";
 var visibility = "display";
 var already = false;
+var workspacesInformation = [];
 
 $(document).ready(function() {
     begin(lauchButtonId, boxId, toReset);
@@ -41,23 +42,31 @@ $(document).ready(function() {
     });
 
     socket.on("signinSucced", function (workspaces) {
-        console.log("workspaces : ", workspaces);
-        $("ul").empty();
-        $("ul").append("<li></li>");
+        //console.log("workspaces : ", workspaces);
+        var ul = $("ul");
+        /*ul.empty();
+        ul.append("<li></li>");*/
         workspaces.forEach(function (workspace) {
-            console.log("je rajoute un W");
-            $("#workspacesPicker ul li:last").after('                    <li class="collection-item avatar">' +
+            //console.log("je rajoute un W : ", workspace);
+            $("#workspacesPicker ul li:last").after('                    <li class="collection-item avatar workspace">' +
                 '                        <i class="material-icons circle">folder</i>' +
                 '                        <span class="title">' + workspace.name + '</span>' +
-                '                        <p style="color: lightslategray">First Line <br>' +
-                '                            Second Line' +
+                '                        <p style="color: lightslategray">' + workspace.organization.name +
                 '                        </p>' +
+                '                        <span class="workspace-id">' + workspace._id + '</span>' +
                 '                    </li>');
         });
+        $(".workspace").on("click", chosenWorkspace);
         hideBox($(boxId), function () {
             showBox($(workspacesPicker));
         });
     });
+
+    // Change color when a workspace is choose
+    function chosenWorkspace(e) {
+        $(".workspace").removeClass("chosen-workspace");
+        $(e.currentTarget).addClass("chosen-workspace");
+    }
 
     $("#userSignIn").on("submit", function(e) {
         e.preventDefault();

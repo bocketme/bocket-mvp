@@ -16,6 +16,10 @@ input::placeholder {
     z-index: 50;
 }
 
+.noborder {
+    border: none !important;
+}
+
 .error {
     color: #FF5A92;
 }
