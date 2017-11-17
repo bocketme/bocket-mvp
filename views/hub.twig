@@ -41,8 +41,9 @@
             <i class="material-icons favorite" style="color: #9b9b9b; font-size:10px; ">star</i>{{ data_header }}            
             <img class="triple-dots"></img>                   
         </div>
+        {% include "search.twig" %}
+        {% include "collapside.twig" %}         
     </div>
-    {% include "collapside.twig" %} 
 </div>
 
 <div class = "col s6 third_column">
@@ -65,26 +66,6 @@
 <script src="/js/hub.js"></script>
 
 {% if type == 'viewer' %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-<script src="/js/viewer/three.js/libs/three.min.js"></script>
-
-<script src="/js/viewer/three.js/loaders/OBJLoader.js"></script>
-<script src="/js/viewer/three.js/loaders/MTLLoader.js"></script>
-
-<script src="/js/viewer/three.js/controls/OrbitControls.js"></script>
-<script src="/js/viewer/three.js/controls/TransformControls.js"></script>
-
-<script src="/js/viewer/three.js/shaders/CopyShader.js"></script>
-<script src="/js/viewer/three.js/shaders/FXAAShader.js"></script>
-
-<script src="/js/viewer/three.js/postprocessing/EffectComposer.js"></script>
-<script src="/js/viewer/three.js/postprocessing/RenderPass.js"></script>
-<script src="/js/viewer/three.js/postprocessing/ShaderPass.js"></script>
-<script src="/js/viewer/three.js/postprocessing/OutlinePass.js"></script>
-
-<script src="js/viewer/init.js"></script>
-<script src="js/viewer/annotations.js"></script>
-<script src="js/viewer/viewer3D.js"></script>
+{% include "require_viewer.twig" %}
 {% endif %}
 {% endblock %}

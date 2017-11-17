@@ -46,7 +46,7 @@ span.badge {
     color: #4a4a4a;
     font-weight: 600;
     font-size: 14px;
-    padding: 20px 0;
+    padding: 16px 0;
     border-bottom: 2px inset;
     height: 52px;
     box-shadow: 0px 1px 2px 0px;
@@ -111,6 +111,7 @@ main {
 .triple-dots{
     content:url("/img/01-dots icon.svg");
     height: 16px;
+    padding-top: 2px;
     padding-right: 14px;
     float: right;
 }
