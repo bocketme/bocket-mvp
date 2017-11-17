@@ -6,6 +6,9 @@ var workspacesPickerId = "#workspacesPicker";
 var chosenWorkspaceId = "#chosenWorkspace";
 var toReset = "#userSignIn";
 var workspacesPicker = "#workspacesPickerBox";
+var disabledNameId = "#disabledName";
+var disabledOrganizationName = "#disabledOrganizationName";
+var organizationSelect = "#organizationSelect";
 /* !ID */
 
 /* CLASS NAME */
@@ -20,9 +23,12 @@ var signInSucceed = "signinSucced";
 /* VARIABLES */
 var visibility = "display";
 var already = false;
+var user = null;
 /* !VARIABLES */
 
 $(document).ready(function() {
+    $('select').material_select();
+
     begin(lauchButtonId, boxId, toReset);
 
     $(".closeBox").click(function() {
@@ -80,7 +86,9 @@ $(document).ready(function() {
         $("#signIn-btn").after("<div class='error'>Invalid email or password</div>")
     });
 
-    socket.on(signInSucceed, function (workspaces) {
+    socket.on(signInSucceed, function (signinInfo) {
+        var workspaces = signinInfo.workspaces;
+        user = signinInfo.user;
         //console.log("workspaces : ", workspaces);
         var ul = $("ul");
         ul.empty(); // delete all <ul>
@@ -119,4 +127,27 @@ $(document).ready(function() {
             socket.emit("signin", {email: $("#emailSignIn").val(), password: $("#passwordSignIn").val()});
         }
     });
+
+    $("#create_account").on("click", function () {
+        hideBox($(boxId), function () {
+            showBox($("#userSignUpBox"));
+        });
+    });
+
+    $("#createWorkspace").on("click", function () {
+        hideBox($(workspacesPicker), function () {
+            $(disabledNameId).val(user.completeName);
+            console.log("ici3");
+            $('select').empty();
+            for (var i = 0 ; i < user.organizations.length ; i++)
+            {
+                $('#organizationSelect').append($(document.createElement("option")).
+                attr("value","val").text(user.organizations[i].name));
+            }
+            $("#hiddenEmailWorkspace").val($("#emailSignIn").val());
+            $("#hiddenPasswordWorkspace").val($("#passwordSignIn").val());
+            showBox($("#workspaceCreationBox"));
+        });
+    });
+
 });

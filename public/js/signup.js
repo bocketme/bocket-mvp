@@ -32,6 +32,7 @@ $(document).ready(function() {
         hideBlur($(blurId));
         hideBox($(boxId));
         hideBox($(workspaceBoxId));
+        hideBox($("#workspaceCreationBox"));
     });
 
     $("#workspaceSignUp").on("submit", function(e) {

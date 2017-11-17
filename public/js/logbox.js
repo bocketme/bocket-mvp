@@ -45,8 +45,8 @@ function begin(lauchButtonId, boxId, toResetId) {
     var toReset = $(toResetId);
 
     launchButton.click(function() {
-        console.log(box.css(visibility));
-        if (box.css(visibility) === visible)
+        console.log(box.css("visibility"));
+        if (box.css("visibility") === visible)
         {
             hideBox(box);
             hideBlur(blur);

@@ -12,6 +12,7 @@ const signin = require("./routes/signin");
 const signup = require("./routes/signup");
 const project = require("./routes/project");
 const node = require("./routes/node");
+const workspace = require("./routes/workspace");
 
 let app = express();
 let server = require('http').createServer(app);
@@ -68,5 +69,6 @@ app.use("/signin", signin);
 app.use("/signup", signup);
 app.use("/project", project);
 app.use("/node", node);
+app.use("/workspace", workspace);
 
 app.use(express.static('public'));

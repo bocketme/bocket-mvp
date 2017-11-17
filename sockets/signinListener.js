@@ -16,7 +16,7 @@ module.exports = function (socket) {
                         {
                             findAllWorkspaces(user.workspaces)
                                 .then(workspaces => {
-                                    socket.emit("signinSucced", workspaces);
+                                    socket.emit("signinSucced", {workspaces : workspaces, user: user});
                                 })
                                 .catch(err => {
                                     socket.emit("signinFailed");
