@@ -2,20 +2,25 @@
 var lauchButtonId = "#signIn";
 var boxId = "#userSignInBox";
 var userSignIn = "#userSignIn";
+var workspacesPickerId = "#workspacesPicker";
 var chosenWorkspaceId = "#chosenWorkspace";
 var toReset = "#userSignIn";
 var workspacesPicker = "#workspacesPickerBox";
+/* !ID */
 
 /* CLASS NAME */
 var chosenWorkspaceClass = "chosen-workspace";
+/* !CLASS NAME */
 
 /* LISTENER NAME */
 var signInFailed = "signinFailed";
 var signInSucceed = "signinSucced";
+/* !LISTENER NAME */
 
-/* Some variables */
+/* VARIABLES */
 var visibility = "display";
 var already = false;
+/* !VARIABLES */
 
 $(document).ready(function() {
     begin(lauchButtonId, boxId, toReset);
@@ -36,6 +41,29 @@ $(document).ready(function() {
                 required: true,
                 minlength: 6,
             },
+        },
+        errorElement : 'div',
+        errorPlacement: function(error, element) {
+            var placement = $(element).data('error');
+            if (placement) {
+                $(placement).append(error);
+            } else {
+                error.insertAfter(element);
+            }
+        },
+    });
+
+    $(workspacesPickerId).validate({
+        ignore: ":hidden:not(#chosenWorkspace)",
+        rules: {
+            workspaceId: {
+                required: true,
+            },
+        },
+        messages:{
+          workspaceId: {
+              required: "You have to choose a workspace",
+          }
         },
         errorElement : 'div',
         errorPlacement: function(error, element) {
@@ -91,5 +119,4 @@ $(document).ready(function() {
             socket.emit("signin", {email: $("#emailSignIn").val(), password: $("#passwordSignIn").val()});
         }
     });
-
 });
