@@ -1,10 +1,21 @@
+/* ID */
 var lauchButtonId = "#signIn";
 var boxId = "#userSignInBox";
-var workspacesPicker = "#workspacesPickerBox";
+var userSignIn = "#userSignIn";
+var chosenWorkspaceId = "#chosenWorkspace";
 var toReset = "#userSignIn";
+var workspacesPicker = "#workspacesPickerBox";
+
+/* CLASS NAME */
+var chosenWorkspaceClass = "chosen-workspace";
+
+/* LISTENER NAME */
+var signInFailed = "signinFailed";
+var signInSucceed = "signinSucced";
+
+/* Some variables */
 var visibility = "display";
 var already = false;
-var workspacesInformation = [];
 
 $(document).ready(function() {
     begin(lauchButtonId, boxId, toReset);
@@ -15,7 +26,7 @@ $(document).ready(function() {
         hideBox($(workspacesPicker));
     });
 
-    $( "#userSignIn" ).validate({
+    $(userSignIn).validate({
         rules: {
             email: {
                 required: true,
@@ -37,11 +48,11 @@ $(document).ready(function() {
         },
     });
 
-    socket.on("signinFailed", function () {
+    socket.on(signInFailed, function () {
         $("#signIn-btn").after("<div class='error'>Invalid email or password</div>")
     });
 
-    socket.on("signinSucced", function (workspaces) {
+    socket.on(signInSucceed, function (workspaces) {
         //console.log("workspaces : ", workspaces);
         var ul = $("ul");
         /*ul.empty();
@@ -50,13 +61,15 @@ $(document).ready(function() {
             //console.log("je rajoute un W : ", workspace);
             $("#workspacesPicker ul li:last").after('                    <li class="collection-item avatar workspace">' +
                 '                        <i class="material-icons circle">folder</i>' +
+                '                        <span class="workspace-id">' + workspace._id + '</span>' +
                 '                        <span class="title">' + workspace.name + '</span>' +
                 '                        <p style="color: lightslategray">' + workspace.organization.name +
                 '                        </p>' +
-                '                        <span class="workspace-id">' + workspace._id + '</span>' +
                 '                    </li>');
         });
         $(".workspace").on("click", chosenWorkspace);
+        $("#emailWorkspace").val($("#emailSignIn").val());
+        $("#passwordlWorkspace").val($("#passwordSignIn").val());
         hideBox($(boxId), function () {
             showBox($(workspacesPicker));
         });
@@ -64,8 +77,11 @@ $(document).ready(function() {
 
     // Change color when a workspace is choose
     function chosenWorkspace(e) {
-        $(".workspace").removeClass("chosen-workspace");
-        $(e.currentTarget).addClass("chosen-workspace");
+        var currentTarget = $(e.currentTarget);
+
+        $(".workspace").removeClass(chosenWorkspaceClass);
+        currentTarget.addClass(chosenWorkspaceClass);
+        $(chosenWorkspaceId).val($("span:first", currentTarget).text());
     }
 
     $("#userSignIn").on("submit", function(e) {
