@@ -4,29 +4,31 @@
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="/css/hub.css">
-<link rel="stylesheet" href="/css/accordeon.css">
+<link rel="stylesheet" href="/css/accordion.css">
 <link rem="stylesheet" href="/css/dropdown.css">
 {% endblock %}
 
-{% block title %}{{ title }}    {% endblock title %}
+{% block title %}{{ title }}{% endblock title %}
 
 {% block body %}
 <div class="row">
     <div class = "col s3 first_column">
         
-        <button class="notbutton" onclick="dropdown()" style="margin-top: 20px; padding-bottom: 5px; padding-top: 5px">
-            <spann style="color: white;">
+        <button class="dropdown-button" onclick="dropdown()">
+            <div>
                 {{ in_use }} <i class="tiny material-icons">arrow_drop_down</i>
-            </spann>
-            <br> <spann style="color: grey;">{{ user }}</spann>
+            </div>
+            <div class="username-dropdown">
+                {{ user }}                
+            </div>
         </button>
         
         <div id='user-dropdown' class="dropdown-content">
             {% for workspace in workspaces %}
-               <a href="/{{workspace}}">{{ workspace }}</a>  
+            <a href="/{{workspace}}">{{ workspace }}</a>  
             {% endfor %}
         </div>
-
+        
         <div class="">
             <button class="notbutton" {% if "All parts" in title  %}     id="selected" {% endif %}>All parts<span class='right-align badge'>{{ all_parts }}</span></button>
             <button class="notbutton" {% if "Last updates" in title  %}  id="selected" {% endif %}>Last updates <span class='right-align badge'>{{ last_updates }}</span></button>
@@ -36,19 +38,23 @@
     
     <div class = "col s3 second_column">
         <div class="data-header">
-            <p style="color:black;"><i class="material-icons" style="color: grey">star</i>{{ data_header }}</p>            
+            <i class="material-icons favorite" style="color: #9b9b9b; font-size:10px; ">star</i>{{ data_header }}            
+            <img class="triple-dots"></img>                   
         </div>
-            {% include "collapside.twig" %} 
     </div>
-    
-    <div class = "col s6 third_column container">
-        <div class="data-header">
-            {{ type }}
-        </div>
+    {% include "collapside.twig" %} 
+</div>
+
+<div class = "col s6 third_column">
+    <div class="data-header valign-wrapper">
+        {{ type }}
+    </div>
+    <div class="container">
         {% if type == 'viewer' %}
         {% include 'viewer.twig' %}
-        {% endif %}
+        {% endif %}        
     </div>
+</div>
 </div>
 {% endblock %}
 

@@ -16,7 +16,7 @@ var child_cascade = function(node, padding) {
     text_header = document.createTextNode(node.title);
     padding += 24;
     image.setAttribute('class', 'responsive-img pad-right');
-    header.setAttribute('class', 'collapsible-header node');
+    header.setAttribute('class', 'collapsible-header node valign-wrapper');
     
     if (node.children) {
         padding -= 12;

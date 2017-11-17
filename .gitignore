@@ -63,6 +63,4 @@ typings/
 # config server
 config/
 
-test/
-
 converter/
