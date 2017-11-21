@@ -1,0 +1,30 @@
+<div id="workspacesPickerBox" class="container containerBox">
+    <div class="col-md-6">
+        <i id="bigger-close" class="material-icons closeBox">close</i>
+        <div id="bigger-logbox" class="logbox row">
+            <form id="workspacesPicker" method="post" action="/signin" novalidate="novalidate">
+                <h1 class="titleBox">Connect to your workspace</h1>
+                <div class="row">
+                    <div class="col s12">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="text" id="autocomplete-input" class="autocomplete">
+                                <label for="autocomplete-input">Find your workspace</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="collection noborder" style="height: 300px; overflow: auto">
+                </ul>
+                <input type="hidden" id="emailWorkspace" name="email">
+                <input type="hidden" id="passwordlWorkspace" name="password">
+                <input type="hidden" id="chosenWorkspace" name="workspaceId">
+                <button id="signIn-btn" class="btn waves-effect waves-light submit-btn" type="submit">Continue
+                </button>
+                <div class="text-center center">
+                    <a id="createWorkspace" href="#">Create an workspace</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

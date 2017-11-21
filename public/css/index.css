@@ -7,11 +7,13 @@ input#email_beta {
     border-radius: 4px !important;
     border: #9b9b9b solid 1px !important;
     height: 2.9em !important;
+    padding-left: 8px !important;
+    margin-bottom: 0 !important;
 }
 
 #overview {
-    width: 800px;
-    height: 500px;
+    width: 90%;
+    height: 90%;
 }
 
 #beta_button {
@@ -19,20 +21,18 @@ input#email_beta {
     padding-top: 0.5em;
     color: #262626;
     height: 3em;
+    text-transform: unset;
+    font-weight: bolder;
 }
 
 #popup-title {
     color: black;
-}
-
-#popup-desc {
-    color: black;
-    font-weight: lighter;
+    font-weight: bolder;
 }
 
 #close {
     position: absolute;
-    right: 0;
+    right: 10px;
     color: #9b9b9b;
 }
 
@@ -40,7 +40,7 @@ input#email_beta {
     color: #00ffc8;
 }
 
-#signUp, #signIn {
+#signUp, #signIn, #slackRequest {
     font-weight: 400;
     text-decoration: underline;
     color: white;
@@ -58,6 +58,19 @@ input#email_beta {
     opacity: 0;
     z-index: 1000;
     visibility: hidden;
+}
+
+.popup-desc {
+    color: black;
+    font-weight: lighter;
+    margin-bottom: 0;
+    font-size: 18px;
+}
+
+@-moz-document url-prefix() {
+    .popup-desc {
+        color: grey;
+    }
 }
 
 .info1 {

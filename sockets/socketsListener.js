@@ -1,9 +1,11 @@
 let betaRegistrationListener = require("./betaRegistrationSListener");
-let checkEmailIfAlreadyExistListener = require("./checkUniqueField");
+let checkUniqueField = require("./checkUniqueField");
+let signinListener = require("./signinListener");
 
 module.exports = function(io) {
     io.on('connection', function (socket) {
         betaRegistrationListener(socket);
-        checkEmailIfAlreadyExistListener(socket);
+        checkUniqueField(socket);
+        signinListener(socket);
     });
 };
