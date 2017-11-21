@@ -12,9 +12,8 @@ var create_class = (sub_level) => {
 
     var sheet_nochild = document.createElement('style');
     var sheet_haschild = document.createElement('style');
-    level = (sub_level * 13) 
-    console.log("sub-level : ", sub_level, " nochild : ",(level+30) + " child : " + level)
-    var text_sheet1 = ".group-"+sub_level+" { padding-left : " + (level+30) + "px }"
+    level = (sub_level * 17) 
+    var text_sheet1 = ".group-"+sub_level+" { padding-left : " + (level+6) + "px }"
     sheet_nochild.innerHTML = text_sheet1;
     var text_sheet2 = ".group-"+sub_level+"-has-child { padding-left:" + level + "px }"
     sheet_haschild.innerHTML = text_sheet2;
@@ -53,7 +52,6 @@ var child_cascade = function(node, sub_level) {
         li.appendChild(header);
 
         sub_level++
-        console.log(node.title + " has a child !\n A new sub-level " + sub_level + " was created.");
         create_class(sub_level);    
         node.children.forEach(function(child){
             var result = body_cascade(child, sub_level);
@@ -74,7 +72,6 @@ var child_cascade = function(node, sub_level) {
 };
 
 var result = body_cascade(twignode, 0);
-console.log(result)
 var accordeon = document.querySelector('.node_constructor');
 accordeon.appendChild(result);
 

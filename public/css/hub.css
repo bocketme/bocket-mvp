@@ -1,7 +1,57 @@
+/**
+*
+*
+*
+*
+*/
+
 body {
     font-family: 'Montserrat';
     font-weight: 400;
 }
+
+header,
+main {
+    padding-left: 300px;
+}
+
+@media only screen and (max-width: 992px) {
+    header,
+    main {
+        padding-left: 0;
+    }
+}
+
+/*
+*
+* The Principal div
+*   First, second and third collumn
+*/
+
+#first_column {
+    background-color: #3c3c3c;
+    height: 100vh;
+    padding: 0 !important;
+}
+
+#second_column {
+    height: 100vh;
+    background-color: #f7f7f7;
+    border-right: 5px inset;
+    padding: 0 !important;
+}
+
+#third_column {
+    padding: 0 !important;
+    height: 100vh;
+    background-color: #f7f7f7;
+}
+
+/*
+*
+* Rhe 
+*
+*/
 
 #selected{
     font-family: 'Montserrat';
@@ -18,13 +68,65 @@ span.badge {
     font-size: 14px;
 }
 
-.notbutton:active, .notbutton:focus{
+/*
+*
+* Scrollbar
+*
+*
+*/
+
+.scrollbar::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+.scrollbar::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+.scrollbar::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
+}
+
+/*
+*
+*
+*
+*
+*/
+
+.not-a-button{
+    background-color: inherit;
+    border: none;
+    color: grey;
+    width: 100%;
+    text-align: left;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+}
+
+.not-a-button:active, .not-a-button:focus{
     background-color: inherit;
 }
 
-.notbutton:hover{
+.not-a-button:hover{
     background-color: #535151;
 }
+
+/*
+*
+*
+*
+*
+*/
 
 .assembly-view{
     background-color: #262626;
@@ -71,46 +173,6 @@ span.badge {
     color: white !important;
 }
 
-.dropdown-content {
-    color: #262626;
-}
-
-
-header,
-main {
-    padding-left: 300px;
-}
-
-@media only screen and (max-width: 992px) {
-    header,
-    main {
-        padding-left: 0;
-    }
-}
-
-.row{
-    margin-bottom: 0px;
-}
-
-.first_column {
-    background-color: #3c3c3c;
-    height: 100vh;
-    padding: 0 !important;
-}
-
-.second_column {
-    height: 100vh;
-    background-color: #f7f7f7;
-    border-right: 5px inset;
-    padding: 0 !important;
-}
-
-.third_column {
-    padding: 0 !important;
-    height: 100vh;
-    background-color: #f7f7f7;
-}
-
 .triple-dots{
     content:url("/img/01-dots icon.svg");
     height: 16px;
@@ -119,39 +181,6 @@ main {
     float: right;
 }
 
-
-.notbutton{
-    background-color: inherit;
-    border: none;
-    color: grey;
-    width: 100%;
-    text-align: left;
-    text-decoration: none;
-    display: block;
-    font-size: 14px;
-}
-
-.dropdown-button{
-    background-color:  inherit;
-    border: none;
-    color: white;
-    width: 100%;
-    text-align: left;
-    text-decoration: none;
-    display: block;
-    font-size: 16px;
-    font-weight: 700;
-    padding-bottom: 10px; 
-    padding-top: 20px;
-}
-
-.dropdown-button:hover{
-    background-color:  #262626;    
-}
-.dropdown-button:focus{
-    background-color:  #262626;
-    color: white;
-}
 .username-dropdown{
     font-size: 11px;
     color: #9b9b9b;
@@ -207,4 +236,49 @@ input[type='text']#branch:focus{
     padding-bottom: 3.5px;
     padding-left: 7px;
     padding-right: 7px; 
+}
+
+.row{
+    margin-bottom: 0px;
+}
+
+/*
+*
+* Modal Modification
+*
+*/
+
+.modal-body{
+    color: black;
+}
+.modal-header{
+    text-align: center;
+}
+
+.files-button {
+    color: rgb(161, 160, 160);
+    float: right !important;
+    background-color: #727171; 
+    color: #fff;
+}
+.files-button:hover, .files-button:focus {
+    transition: none;
+    background-color: #727171;
+}
+.file-path-wrapper{
+    padding-right: 15px;
+    padding-left: 0px !important;
+}
+
+div.modal-body>p{
+    margin: 0;
+    padding-top: 10px;
+}
+.button-form-validate[type=submit]{
+    width: 100%;
+    background-color: rgb(143, 16, 143);
+    margin: 0;
+    border: none;
+    padding: 20px 0;
+    text-align: center;
 }

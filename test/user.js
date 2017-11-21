@@ -9,6 +9,21 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('Users', _ => {
-    it('should list all users on /users GET');
+describe('SignUp', _ => {
+    it('Should add a new user, organization and workspace in the database', done => {
+
+        const SignUpInfo = {}
+
+        chai.request(server)
+            .post('/')
+            .send(SignUpInfo)
+            .end((err, res) => {
+                /**
+                 * Ici tu mets tout ce que ta réponse doit contenir
+                 * Exemple :
+                 *   res.body.user.should.have.property('name');
+                 */
+                done();
+            });
+    });
 });

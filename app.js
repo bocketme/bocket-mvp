@@ -75,6 +75,11 @@ app.use("/signup", signup);
 app.use("/project", project);
 app.use("/node", node);
 app.use("/workspace", workspace);
+app.post("/test", (req, res) => {
+    console.log(req.query);
+    console.log(req.params);
+    res.send(req.query);
+})
 
 app.use(express.static('public'));
 
