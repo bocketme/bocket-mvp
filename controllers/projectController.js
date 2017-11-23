@@ -37,6 +37,9 @@ module.exports = {
             duplicates: 35
         });
     },
+    indexPOST: (req, res) => {
+        res.redirect(req.originalUrl);
+    },
     last_updates: (req, res) => {
         res.render('hub.twig', {
             title: req.params.workspace + ' - Last Updates',

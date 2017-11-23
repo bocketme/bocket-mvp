@@ -3,7 +3,8 @@ controllers = require('../controllers/projectController.js');
 
 
 // router.get('/jwt', controllers.usejwt);
-router.post('/:workspace/', controllers.index);
+router.post('/:workspace/', controllers.indexPOST);
+router.get('/:workspace/', controllers.index);
 router.get('/:workspace/updates', controllers.last_updates);
 router.get('/:workspace/duplicates', controllers.duplicates);
 router.post('/', controllers.add);
