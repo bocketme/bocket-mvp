@@ -123,4 +123,10 @@ $(document).ready(function() {
         },
     });
 
+    $("#login_id").on("click", function () {
+        hideBox($(boxId), function () {
+            showBox($("#userSignInBox"));
+        });
+    });
+
 });
