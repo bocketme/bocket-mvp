@@ -1,5 +1,4 @@
 var pieces = (selector) => {
-    console.log(this);
     if($(selector).hasClass('has-child')) {
         $("[href='#assemblyorpart']").html('ASSEMBLY');
         // CHANGE THE CONTENT OF THE ASSEMBLY HERE        

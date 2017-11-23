@@ -1,12 +1,22 @@
 .indicator{
-    background-color: #727171 !important;
+    background-color: #000000 !important;
 }
 
 li.tab>a{
-    color: #727171 !important;  
-    font-size: 11px;
     text-align: center;
-    padding: 0;  
+    padding: 0; 
+    color: grey !important;
+    font-weight: 400;
+    font-size: 12px !important;
+}
+
+li.tab>a:hover{
+    border-bottom: 2px solid grey
+}
+
+li.tab>a.active{
+    color: #000000 !important;
+    font-weight: 600;
 }
 
 .breadcrumb{

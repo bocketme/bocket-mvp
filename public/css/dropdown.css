@@ -21,6 +21,10 @@
     color: white;
 }
 
+.dropdown-content li>a, .dropdown-content li>span{
+    
+}
+
 .dropdown {
     position: relative;
     display: inline-block;
