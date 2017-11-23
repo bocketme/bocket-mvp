@@ -34,8 +34,7 @@ module.exports = {
             node: JSON.stringify(require('../test/node.json')),
             all_parts: 100,
             last_updates: 10,
-            duplicates: 35,
-            type: 'viewer'
+            duplicates: 35
         });
     },
     last_updates: (req, res) => {
@@ -48,8 +47,7 @@ module.exports = {
             node: JSON.stringify(require('../test/node.json')),
             all_parts: 100,
             last_updates: 10,
-            duplicates: 35,
-            type: 'viewer'
+            duplicates: 35
         });
     },
     duplicates: (req, res) => {
@@ -62,8 +60,7 @@ module.exports = {
             node: JSON.stringify(require('../test/node.json')),
             all_parts: 100,
             last_updates: 10,
-            duplicates: 35,
-            type: 'viewer'
+            duplicates: 35
         });
     },
     /**

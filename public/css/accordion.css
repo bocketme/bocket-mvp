@@ -1,13 +1,13 @@
 .collapsible-header{
 	padding:  4.5px 0px 4.5px 0px;
 	text-align: center;
-	box-shadow: 0;
+	box-shadow: none;
 	border: 0;
 	border-image-slice: 0%;
 }
 
 .collapsible{
-	box-shadow: 0;
+	box-shadow: none;
 }
 
 .row.colla{
@@ -17,7 +17,7 @@
 .collapsible-header.assembly{
 	background: #413c49;
 	color: white;
-	box-shadow: 0;
+	box-shadow: none;
 	font-weight: 600;
 	padding-top: 0px;
 	padding-bottom: 0px; 	
@@ -34,9 +34,17 @@
     font-weight: 800 !important;  
     background-color: #e9e8e9 !important;
 }
+
 .collapsible-header.node:hover{
     background-color: #f5f5f5;    
 } 
+
+.collapsible-header.active>i{
+	-webkit-transform : rotate(90deg);
+    -moz-transform : rotate(90deg);
+    -ms-transform : rotate(90deg);
+    transform : rotate(90deg);
+}
 
 .collapsible-header{
 	color: #4a4a4a;

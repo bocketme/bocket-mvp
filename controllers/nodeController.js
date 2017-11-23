@@ -10,7 +10,7 @@ let nodeController = {
         // let module = new plugin(plugin_path);
         // let obj = module.run("cube");
         // module.release();
-        res.send({geometry : null});
+        res.send({geometry : require('../test/converter.json')});
     },
     post: function(req, res){
 

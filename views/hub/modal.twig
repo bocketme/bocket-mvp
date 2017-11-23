@@ -1,0 +1,43 @@
+<!-- Modal Structure -->
+<div id="create-part" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Create a new Part</h4>
+            </div>
+            <div class="modal-body">
+                <form id="form-create-part" method="post" action="/test">
+                    <p>Part Name</p>
+                    <input type="text" name="part-name" id="part-name">
+                    
+                    <p>Description</p>
+                    <input type="text" name="Description" id="Description">
+                    
+                    <p>3D Model</p>                    
+                    <div class="file-field input-field">
+                        <div class="files-button btn">
+                            <span>...</span>
+                            <input type="file">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                        </div>
+                    </div>
+                    
+                    <p>Specs File</p>                    
+                    <div class="file-field input-field">
+                        <div class="files-button btn">
+                            <span>...</span>
+                            <input type="file" multiple>
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                        </div>
+                    </div>
+                    <br>
+                    <p>Tags</p>
+                    <div id="tags-create-part" class="chips"></div>
+                    <button class="button-form-validate" type="submit">Create new Part</button>
+                </form>
+            </div>
+        </div>
+    </div>

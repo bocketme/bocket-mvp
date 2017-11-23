@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="/css/hub.css">
 <link rel="stylesheet" href="/css/accordion.css">
 <link rel="stylesheet" href="/css/dropdown.css">
+<link rel="stylesheet" href="/css/tabs.css">
+<link rel="stylesheet" href="/css/viewer.css">
 {% endblock %}
 
 {% block title %}{{ title }}{% endblock title %}
@@ -58,77 +60,34 @@
             <li class="option-node" href="#insert-assembly" > <a id="insert-assembly-button">  Insert existing Assembly</a></li>
         </ul>
         
-        <!-- Modal Structure -->
-        <div id="create-part" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4>Create a new Part</h4>
-                </div>
-                <div class="modal-body">
-                    <form id="form-create-part" method="post" action="/test">
-                        <p>Part Name</p>
-                        <input type="text" name="part-name" id="part-name">
-                        
-                        <p>Description</p>
-                        <input type="text" name="Description" id="Description">
-                        
-                        <p>3D Model</p>                    
-                        <div class="file-field input-field">
-                            <div class="files-button btn">
-                                <span>...</span>
-                                <input type="file">
-                            </div>
-                            <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text">
-                            </div>
-                        </div>
-                        
-                        <p>Specs File</p>                    
-                        <div class="file-field input-field">
-                            <div class="files-button btn">
-                                <span>...</span>
-                                <input type="file" multiple>
-                            </div>
-                            <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text">
-                            </div>
-                        </div>
-                        <br>
-                        <p>Tags</p>
-                        <div id="tags-create-part" class="chips"></div>
-                        <button class="button-form-validate" type="submit">Create new Part</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+        {% include "hub/modal.twig" %}        
         
-        
-        <div id= class="scrollable scrollbar">
-            {% include "search.twig" %}
-            {% include "collapside.twig" %}                     
+        <div id="second_column_content">
+            {% include "hub/search.twig" %}
+            {% include "hub/node_tree.twig" %}
+            {% include "hub/content.twig" %}                     
         </div>
     </div>
     
     <div id="third_column" class = "col s6">
-        <div class="data-header valign-wrapper">
-            {{ type }}
-        </div>
-        <div class="container">
-            {% if type == 'viewer' %}
-            {% include 'viewer.twig' %}
-            {% endif %}        
+        {% include "hub/third_collumn_header.twig" %}
+        
+        {% include 'hub/viewer.twig' %}
+        <div id="third_column_content">
+            {% include "hub/tabs.twig" %}
         </div>
     </div>
+</div>
 </div>
 
 {% endblock %}
 
 
 {% block js %}
-<script> var twignode = {{ node  }} </script>
-<script src="/js/accordion.js"></script>
+<script> var twignode = {{ node }} </script>
 <script src="/js/hub.js"></script>
-{% if type == 'viewer' %}
+<script src="/js/hub/tabs.js"></script>
+<script src="/js/hub/content.js"></script>
+<script src="/js/accordion.js"></script>
 {% include "require_viewer.twig" %}
-{% endif %}
 {% endblock %}

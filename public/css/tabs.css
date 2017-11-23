@@ -1,0 +1,22 @@
+.indicator{
+    background-color: #727171 !important;
+}
+
+li.tab>a{
+    color: #727171 !important;  
+    font-size: 11px;
+    text-align: center;
+    padding: 0;  
+}
+
+.breadcrumb{
+    color: black;
+    font-size: 11px;    
+}
+
+.breadcrumb:before {
+    color: black !important;
+    margin: 0 !important;
+    vertical-align: unset !important;
+    font-size: 11px !important;
+}

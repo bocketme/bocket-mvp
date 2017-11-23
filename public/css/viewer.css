@@ -1,0 +1,16 @@
+.viewer-div
+{
+    position:   relative;
+}
+
+.viewer-canvas
+{
+
+}
+
+.axis-canvas
+{
+    position:   absolute;
+    right:      10px;
+    top:        10px;
+}

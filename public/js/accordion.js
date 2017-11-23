@@ -27,9 +27,12 @@ var child_cascade = function(node, sub_level) {
     var li = document.createElement('li'),        
     image = document.createElement('img'),
     header = document.createElement('div'),
-    text_header = document.createTextNode(node.title);
+    text_header = document.createTextNode(node.title),
+    span = document.createElement('span');
+
     image.setAttribute('class', 'responsive-img pad-right');
-    
+    span.appendChild(text_header);
+
     if (node.children) {
         header.setAttribute('class', 'collapsible-header node has-child valign-wrapper group-'+sub_level+'-has-child ');
         
@@ -37,8 +40,8 @@ var child_cascade = function(node, sub_level) {
         var body = document.createElement('div'),
         row = document.createElement('div'),
         data = document.createElement('div'),
-        icon = document.createElement('icon'),
-        text_icon = document.createTextNode('arrow_drop_down');
+        icon = document.createElement('i'),
+        text_icon = document.createTextNode('keyboard_arrow_right');
         
         icon.setAttribute('class', 'material-icons');
         body.setAttribute('class','collapsible-body');
@@ -47,7 +50,7 @@ var child_cascade = function(node, sub_level) {
         icon.appendChild(text_icon);
         header.appendChild(icon);
         header.appendChild(image);
-        header.appendChild(text_header);
+        header.appendChild(span);
         
         li.appendChild(header);
 
@@ -65,7 +68,7 @@ var child_cascade = function(node, sub_level) {
         header.setAttribute('class', 'collapsible-header node no-child valign-wrapper group-'+sub_level);
         image.setAttribute('src', '/img/07-Part icon.svg');
         header.appendChild(image);
-        header.appendChild(text_header);
+        header.appendChild(span);
         li.appendChild(header);
     }
     return li;
@@ -81,6 +84,9 @@ $(document).ready(() => {
     $('.collapsible').css({'margin':'0'})
     $('.collapsible-header.node').click(function(el){
         $('.collapsible-header.node').removeClass('selected-accordion');
-        $(this).addClass('selected-accordion')
+        $(this).addClass('selected-accordion');
+        var value = $(this).contents().filter("span").html()
+        fill_content(value)
+    pieces(this);    
     });
 });

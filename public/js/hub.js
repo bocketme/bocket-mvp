@@ -4,6 +4,11 @@
     //initialize all modals           
     $('.modal').modal();
     
+    $('ul.tabs').tabs();
+
+    $('.collapsible').collapsible();
+    $('.collapsible').collapsible('open', 1);
+
     $('.dropdown-button').dropdown({
       inDuration: 300,
       outDuration: 225,
