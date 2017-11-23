@@ -1,5 +1,9 @@
 let escape = require('escape-html');
+
 let Workspace = require("../models/Workspace");
+let Organization = require("../models/Organization");
+let User = require("../models/User");
+
 let ModelsMaker = require("../models/utils/create/ModelsMaker");
 
 let controller = {
@@ -31,16 +35,46 @@ let controller = {
 
         console.log("orga : ", organization);
 
-        let newWorkspace = ModelsMaker.CreateWorkspace(workspaceName, organization);
-
-        newWorkspace.save()
-            .then(result => {
-                res.send(req.body + "<br><br>" + result);
+        User.findOne({email: email})
+            .then(user => {
+                let newWorkspace = ModelsMaker.CreateWorkspace(workspaceName, organization, user);
+                newWorkspace.save()
+                    .then(w => {
+                        Organization.findOne({_id: organizationId, name: organizationName})
+                            .then(organization => {
+                                if (organization === null)
+                                {
+                                    console.log("[wokspace controller] error on finding organization (null): ", err);
+                                    res.sendStatus(500);
+                                    return ;
+                                }
+                                organization.workspaces.push({_id: w._id, name: w.name});
+                                user.workspaces.push({_id: w._id, name: w.name});
+                                organization.save()
+                                    .then(() => user.save())
+                                    .catch(err => {
+                                        console.log("[workspace controller] error on adding workspace to organization & user : ", err);
+                                        w.remove();
+                                        organization.workspaces.pop();
+                                        user.workspaces.pop();
+                                        res.sendStatus(500);
+                                    });
+                            })
+                            .catch(err => {
+                                console.log("[wokspace controller] error on finding organization : ", err);
+                                res.sendStatus(500);
+                            });
+                        res.send(w);
+                    })
+                    .catch(err => {
+                        console.log("[wokspace controller] error on saving new workspace : ", err);
+                        res.sendStatus(500);
+                    })
             })
             .catch(err => {
-                console.log("error = ", err);
-                res.redirect("/");
-            })
+                console.log("[wokspace controller] error on saving new workspace : ", err);
+                res.sendStatus(404);
+            });
     }
 };
 

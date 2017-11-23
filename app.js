@@ -73,5 +73,4 @@ app.use("/workspace", workspace);
 
 app.use(express.static('public'));
 
-// TODO: Sauvegarder workspace
 // TODO: Bouton "connectez vous" ne fonctionne pas
