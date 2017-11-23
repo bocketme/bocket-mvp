@@ -21,6 +21,7 @@
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
+    "escape-html": "^1.0.3",
     "express": "^4.16.2",
     "isemail": "^3.0.0",
     "jquery-validation": "^1.17.0",
@@ -32,7 +33,12 @@
     "nodemailer": "^4.4.0",
     "nodemon": "^1.12.1",
     "promise": "^8.0.1",
+    "serve-favicon": "^2.4.5",
     "socket.io": "^2.0.4",
     "twig": "^1.10.5"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0"
   }
 }

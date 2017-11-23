@@ -151,7 +151,7 @@ $(document).ready(function() {
     });
 
     $('#workspaceCreation').submit(function(){
-        $(this).attr('action',$(this).attr('action')+$(organizationSelect).text());
+        $("#hiddenOrganizationNameWorkspace").val($(organizationSelect).text());
         return true;
     });
 });

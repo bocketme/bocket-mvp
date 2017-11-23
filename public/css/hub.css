@@ -1,18 +1,108 @@
+/**
+*
+*
+*
+*
+*/
+
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat';
+    font-weight: 400;
 }
-.row {
+
+header,
+main {
+    padding-left: 300px;
+}
+
+@media only screen and (max-width: 992px) {
+    header,
+    main {
+        padding-left: 0;
+    }
+}
+
+/*
+*
+* The Principal div
+*   First, second and third collumn
+*/
+
+#first_column {
+    background-color: #3c3c3c;
+    padding: 0 !important;
     height: 100vh;
 }
 
-#selected{
-    font-family: 'Montserrat', semi-bold;
-    color: white;
+#second_column {
+    background-color: #f7f7f7;
+    border-right: 5px inset;
+    padding: 0 !important;
+    height: 100vh;
 }
+
+#third_column {
+    padding: 0 !important;
+    background-color: #f7f7f7;
+    height: 100vh;
+}
+
+#second_column_content {
+    overflow-y: scroll;
+    max-height: 90vh;
+    height: 100vh;
+}
+
+#third_column_content{
+    overflow-y: scroll;
+}
+
+#second_column_content::-webkit-scrollbar-track, third_column_content::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+#second_column_content::-webkit-scrollbar, third_column_content::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+#second_column_content::-webkit-scrollbar-thumb, third_column_content::-webkit-scrollbar-thumb
+{
+	background-color: #000000;
+}
+
+/*
+*
+* Rhe 
+*
+*/
+
+#selected{
+    font-family: 'Montserrat';
+    font-weight: 600;
+    color: white;
+    background-color: #535151; 
+}
+
+span.badge {
+    color: inherit !important;
+}
+
 .material-icons.md-14{
     font-size: 14px;
 }
-.notbutton{
+
+/*
+*
+*
+*
+*
+*/
+
+.not-a-button{
     background-color: inherit;
     border: none;
     color: grey;
@@ -20,17 +110,23 @@ body {
     text-align: left;
     text-decoration: none;
     display: block;
-    font-size: 16px;
+    font-size: 14px;
 }
 
-
-.notbutton:active, .notbutton:focus{
+.not-a-button:active, .not-a-button:focus{
     background-color: inherit;
 }
 
-.notbutton:hover{
+.not-a-button:hover{
     background-color: #535151;
 }
+
+/*
+*
+*
+*
+*
+*/
 
 .assembly-view{
     background-color: #262626;
@@ -48,15 +144,18 @@ body {
 }
 
 .data-header{
-    color: grey;
+    background: white;
+    color: #4a4a4a;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 16px 0;
     border-bottom: 2px inset;
-    padding: 7px 5px 7px 5px;
-    margin: 7px 0px 7px 0px;
+    height: 52px;
+    box-shadow: 0px 1px 2px 0px;
 }
 
-.first_column {
-    background-color: #3c3c3c;
-    height: 100vh;
+.favorite{
+    padding: 0px 10px 0px 14px;
 }
 
 .bl {
@@ -74,30 +173,117 @@ body {
     color: white !important;
 }
 
-.dropdown-content {
-    color: #262626;
+.triple-dots{
+    content:url("/img/01-dots icon.svg");
+    height: 16px;
+    padding-top: 2px;
+    padding-right: 14px;
+    float: right;
 }
 
-.second_column {
-    height: 100vh;
-    background-color: mintcream;
-    border-right: 5px inset;
-    padding: 0 !important;
+.username-dropdown{
+    font-size: 11px;
+    color: #9b9b9b;
+    font-weight: 400;
 }
 
-.third_column {
-    height: 100vh;
-    background-color: mintcream;
+div.search-and-branch{
+    padding:  5px 5px;
 }
 
-header,
-main {
-    padding-left: 300px;
+input[type='text']#search{
+    height: 26px;
+    box-sizing:  border-box;
+    border-bottom-width: 0px;
+    border: 0 !important;
+    font-size: 11px;
+    background-color: #e9e8e9;
+    background-image: url('/img/08-Search icon.svg');
+    background-size: 11px;
+    background-position: 10px 6px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    margin-bottom: 5px;
 }
 
-@media only screen and (max-width: 992px) {
-    header,
-    main {
-        padding-left: 0;
-    }
+input[type='text']#search:focus{
+     border-bottom: none!important;
+  box-shadow: none!important;
+}
+
+input[type='text']#branch{
+    height: 26px;
+    border: 0 !important;    
+    box-sizing:  border-box;
+    border-bottom-width: 0px;
+    font-size: 11px;
+    background-color: #e9e8e9;
+    background-image: url('/img/08-Branch icon.svg');
+    background-size: 11px;
+    background-position: 10px 6px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    margin-bottom: 5px;    
+}
+
+input[type='text']#branch:focus{
+     border-bottom: none!important;
+  box-shadow: none!important;
+}
+
+.search-input, .branch-input{
+    padding-top: 3.5px;
+    padding-bottom: 3.5px;
+    padding-left: 7px;
+    padding-right: 7px; 
+}
+
+.row{
+    margin-bottom: 0px;
+}
+
+/*
+*
+* Modal Modification
+*
+*/
+
+.modal-body{
+    color: black;
+}
+.modal-header{
+    text-align: center;
+}
+
+.files-button {
+    color: rgb(161, 160, 160);
+    float: right !important;
+    background-color: #727171; 
+    color: #fff;
+}
+.files-button:hover, .files-button:focus {
+    transition: none;
+    background-color: #727171;
+}
+.file-path-wrapper{
+    padding-right: 15px;
+    padding-left: 0px !important;
+}
+
+div.modal-body>p{
+    margin: 0;
+    padding-top: 10px;
+}
+.button-form-validate[type=submit]{
+    width: 100%;
+    background-color: rgb(143, 16, 143);
+    margin: 0;
+    border: none;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.preloader-wrapper.active{
+    margin: auto !important;
+    padding: 10px !important;    
 }

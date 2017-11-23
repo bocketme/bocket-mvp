@@ -7,5 +7,6 @@ let router = express.Router();
 let controller = require("../controllers/nodeController");
 
 router.get("/", controller.index);
+router.get("/:node", controller.get);
 
 module.exports = router;

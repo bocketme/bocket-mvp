@@ -11,8 +11,14 @@ let NestedProject = mongoose.Schema({
     name: {type: String, require: true}
 });
 
+let NestedPiece = mongoose.Schema({
+
+});
+
 let NodeSchema = mongoose.Schema({
     name: {type:String, require:true },
+    piece: NestedPiece,
+    assembly: NestedAssembly,
     object: {type:Object, require: true},
     Workspace: NestedWorkspace,
     Project: NestedProject,

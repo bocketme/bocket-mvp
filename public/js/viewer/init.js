@@ -56,7 +56,7 @@ var Viewer = function (renderingDiv) {
     .then(function () {
     })
     .catch(function (error) {
-        console.log(error);
+        $('#renderDiv').html("<h4>No Preview Aviable<h4>")
     });
 
     this.annotation = new Annotation(renderArea, p_camera);

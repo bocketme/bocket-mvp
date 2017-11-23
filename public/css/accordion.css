@@ -1,0 +1,81 @@
+.collapsible-header{
+	padding:  4.5px 0px 4.5px 0px;
+	text-align: center;
+	box-shadow: none;
+	border: 0;
+	border-image-slice: 0%;
+}
+
+.collapsible{
+	box-shadow: none;
+}
+
+.row.colla{
+	margin: 0;
+}
+
+.collapsible-header.assembly{
+	background: #413c49;
+	color: white;
+	box-shadow: none;
+	font-weight: 600;
+	padding-top: 0px;
+	padding-bottom: 0px; 	
+	font-size: 11px;
+}
+
+.collapsible-header i{
+	margin-right: 7px;
+}
+
+.selected-accordion{
+    color: #000000 !important;
+    font-family: 'Montserrat' !important;
+    font-weight: 800 !important;  
+    background-color: #e9e8e9 !important;
+}
+
+.collapsible-header.node:hover{
+    background-color: #f5f5f5;    
+} 
+
+.collapsible-header.active>i{
+	-webkit-transform : rotate(90deg);
+    -moz-transform : rotate(90deg);
+    -ms-transform : rotate(90deg);
+    transform : rotate(90deg);
+}
+
+.collapsible-header{
+	color: #4a4a4a;
+	font-weight: 600;
+	font-size: 12px; 
+	padding-top: 7px;
+	padding-bottom: 7px;  
+}
+
+ul.collapsible{
+	border: 0px;
+	box-shadow: none;
+}
+.pad-right {
+    padding-right: 9px;
+}
+
+div.collapsible-body{
+	border-bottom-width:0px;
+}
+.collapsible-header.node:first{
+	padding-left: 2px !important
+}
+
+img.node.has-child{
+	content:url("/img/07-Assembly%20icon.svg");
+}
+img.node.no-child{
+	content:url("/img/07-Part%20icon.svg");	
+}
+
+div.collapsible-body{
+	padding: 0;
+}

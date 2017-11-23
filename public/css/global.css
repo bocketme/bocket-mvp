@@ -6,8 +6,29 @@ p {
     color: white;
 }
 
-input, button {
-    border-radius: 4px !important;
+button {
+    border-radius: 5px !important;
+}
+
+input {
+    border-bottom: 1px solid #9b9b9b !important;
+    -webkit-box-shadow: 0 1px 0 0 #9b9b9b !important;
+    -moz-box-shadow: 0 1px 0 0 #9b9b9b !important;
+    box-shadow: 0 1px 0 0 #9b9b9b !important;
+}
+
+input.valid {
+    border-bottom: 1px solid #9b9b9b !important;
+    -webkit-box-shadow: 0 1px 0 0 #9b9b9b !important;
+    -moz-box-shadow: 0 1px 0 0 #9b9b9b !important;
+    box-shadow: 0 1px 0 0 #9b9b9b !important;
+}
+
+input.invalid {
+    border-bottom: 1px solid #9b9b9b !important;
+    -webkit-box-shadow: 0 1px 0 0 #9b9b9b !important;
+    -moz-box-shadow: 0 1px 0 0 #9b9b9b !important;
+    box-shadow: 0 1px 0 0 #9b9b9b !important;
 }
 
 input::placeholder {

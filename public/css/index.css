@@ -5,7 +5,7 @@ body {
 input#email_beta {
     background: white !important;
     border-radius: 4px !important;
-    border: #9b9b9b solid 1px; !important;
+    border: #9b9b9b solid 1px !important;
     height: 2.9em !important;
     padding-left: 8px !important;
     margin-bottom: 0 !important;

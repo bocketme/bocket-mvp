@@ -4,85 +4,90 @@
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="/css/hub.css">
-<link rel="stylesheet" href="/css/accordeon.css">
-<link rem="stylesheet" href="/css/dropdown.css">
+<link rel="stylesheet" href="/css/accordion.css">
+<link rel="stylesheet" href="/css/dropdown.css">
+<link rel="stylesheet" href="/css/tabs.css">
+<link rel="stylesheet" href="/css/viewer.css">
 {% endblock %}
+
+{% block title %}{{ title }}{% endblock title %}
 
 {% block body %}
 <div class="row">
-    <div class = "col s3 first_column">
+    <div id="first_column" class="col s3">
         
-        <button class="notbutton" onclick="dropdown()" style="margin-top: 20px; padding-bottom: 5px; padding-top: 5px">
-            <spann style="color: white;">
-                {{ title }} <i class="tiny material-icons">arrow_drop_down</i>
-            </spann>
-            <br> <spann style="color: grey;">{{ user }}</spann>
+        <button class="dropdown-button" data-beloworigin="true" data-activates='workspaces-dropdown'>
+            <div>
+                {{ in_use }} <i class="tiny material-icons">arrow_drop_down</i>
+            </div>
+            <div class="username-dropdown">
+                {{ user }}                
+            </div>
         </button>
         
-        <div id='user-dropdown' class="dropdown-content">
+        <ul id="workspaces-dropdown" class="dropdown-content">
             {% for workspace in workspaces %}
-               <a href="/{{workspace}}">{{ workspace }}</a>  
+            <li><a href="/project/{{workspace}}">{{ workspace }}</a></li>
             {% endfor %}
-        </div>
-
-        <div style="padding: 10px;">
-            <button class="notbutton" id="selected">All parts <span class='right-align badge'>{{ all_parts }}</span></button>
-            <button class="notbutton">Last updates <span class='right-align badge'>{{ last_updates }}</span></button>
-            <button class="notbutton">duplicates<span class='right-align badge'>{{ duplicates }}</span></button>
-        </div>
-    </div>
-    
-    <div class = "col s3 second_column">
-        <div class="data-header">
-            <p style="color:black;"><i class="material-icons" style="color: grey">star</i>{{ data_header }}</p>            
-        </div>
-        <ul class="cd-accordion-menu">
-            <li class="has-children"> 
-                <input type="checkbox" name ="group-1" id="nona" checked>
-                <label for="nona"><i class="tiny material-icons">arrow_drop_down</i>Assembly View</label>
-                <ul class="data-node">
-                </ul>           
-            </li>
+            <li><a href="/logout">Log Out</a></li>
         </ul>
+        
+        <div id="project-categories">
+            <a href="/project/{{ in_use }}">
+                <button class="not-a-button" {% if "All Parts" in title  %}     id="selected" {% endif %}>All parts<span class='right-align badge'>{{ all_parts }}</span></button>
+            </a>
+            <a href="/project/{{ in_use }}/updates">
+                <button class="not-a-button" {% if "Last Updates" in title  %}  id="selected" {% endif %}>Last updates <span class='right-align badge'>{{ last_updates }}</span></button>
+            </a>
+            <a href="/project/{{ in_use }}/duplicates">
+                <button class="not-a-button" {% if "Duplicates" in title  %}    id="selected" {% endif %}>duplicates<span class='right-align badge'>{{ duplicates }}</span></button>
+            </a>
+        </div>
+        
     </div>
     
-    <div class = "col s6 third_column container">
+    <div id="second_column" class="col s3">
         <div class="data-header">
-            {{ type }}
+            <i class="material-icons favorite" style="color: #9b9b9b; font-size:10px;">star</i>{{ data_header }}            
+            <img class="triple-dots" data-activates='options-node'></img>                             
         </div>
-        {% if type == 'viewer' %}
-        {% include 'viewer.twig' %}
-        {% endif %}
+        
+        {#  #}
+        <ul id='options-node' class='dropdown-content'>
+            <li class="option-node"     href="#create-part" > <a id="create-part-button">  Create new Part</a></li>
+            <li class="option-node" href="#create-assembly" > <a id="create-assembly-button">  Create new Assembly</a></li>
+            <li class="option-node"     href="#insert-part" > <a id="insert-part-button">  Insert existing part</a></li>
+            <li class="option-node" href="#insert-assembly" > <a id="insert-assembly-button">  Insert existing Assembly</a></li>
+        </ul>
+        
+        {% include "hub/modal.twig" %}        
+        
+        <div id="second_column_content">
+            {% include "hub/search.twig" %}
+            {% include "hub/node_tree.twig" %}
+            {% include "hub/content.twig" %}                     
+        </div>
+    </div>
+    
+    <div id="third_column" class = "col s6">
+        {% include "hub/third_collumn_header.twig" %}
+        
+        {% include 'hub/viewer.twig' %}
+        <div id="third_column_content">
+            {% include "hub/tabs.twig" %}
+        </div>
     </div>
 </div>
+</div>
+
 {% endblock %}
 
-{% block js %}
 
+{% block js %}
 <script> var twignode = {{ node }} </script>
 <script src="/js/hub.js"></script>
-
-{% if type == 'viewer' %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-<script src="/js/viewer/three.js/libs/three.min.js"></script>
-
-<script src="/js/viewer/three.js/loaders/OBJLoader.js"></script>
-<script src="/js/viewer/three.js/loaders/MTLLoader.js"></script>
-
-<script src="/js/viewer/three.js/controls/OrbitControls.js"></script>
-<script src="/js/viewer/three.js/controls/TransformControls.js"></script>
-
-<script src="/js/viewer/three.js/shaders/CopyShader.js"></script>
-<script src="/js/viewer/three.js/shaders/FXAAShader.js"></script>
-
-<script src="/js/viewer/three.js/postprocessing/EffectComposer.js"></script>
-<script src="/js/viewer/three.js/postprocessing/RenderPass.js"></script>
-<script src="/js/viewer/three.js/postprocessing/ShaderPass.js"></script>
-<script src="/js/viewer/three.js/postprocessing/OutlinePass.js"></script>
-
-<script src="js/viewer/init.js"></script>
-<script src="js/viewer/annotations.js"></script>
-<script src="js/viewer/viewer3D.js"></script>
-{% endif %}
+<script src="/js/hub/tabs.js"></script>
+<script src="/js/hub/content.js"></script>
+<script src="/js/accordion.js"></script>
+{% include "require_viewer.twig" %}
 {% endblock %}

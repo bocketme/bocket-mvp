@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>team</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="CONSULTER-PART/ASM/NODE" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Select-a-node-+-option-menu-Copy-2" transform="translate(-1320.000000, -20.000000)" stroke="#CAC8CA">
+            <g id="selected-part" transform="translate(726.000000, 0.000000)">
+                <g id="Toolbar" transform="translate(560.000000, 21.000000)">
+                    <g id="team" transform="translate(35.000000, 0.000000)">
+                        <circle id="Oval-3" stroke-width="0.7" fill="#CAC8CA" cx="11" cy="11" r="11"></circle>
+                        <g id="Button-Team" transform="translate(4.000000, 6.000000)" stroke-width="0.8" fill="#FFFFFF">
+                            <path d="M4.03299481,9.99215686 C3.8050957,7.9031042 4.7551248,6.60390296 6.96601578,5.94267178 C5.65357318,3.4718633 5.7671856,1.91029045 7.34697138,0.697634209 C8.66986498,-0.3176447 10.4903608,-0.215022169 11.6864939,0.941875833 C13.0572598,2.26810101 13.0788361,3.99865896 11.7100929,5.96422251 C12.6577621,6.14860099 13.4668714,6.55703867 14.0433617,7.34244311 C14.6147951,8.12032189 14.8069585,8.99227133 14.6569362,9.99215686 L4.03299481,9.99215686 Z" id="Fill-4-Copy"></path>
+                            <path d="M0.0329948062,9.99215686 C-0.194904295,7.9031042 0.755124799,6.60390296 2.96601578,5.94267178 C1.65357318,3.4718633 1.7671856,1.91029045 3.34697138,0.697634209 C4.66986498,-0.3176447 6.49036076,-0.215022169 7.68649391,0.941875833 C9.05725981,2.26810101 9.07883605,3.99865896 7.71009293,5.96422251 C8.65776212,6.14860099 9.46687136,6.55703867 10.0433617,7.34244311 C10.6147951,8.12032189 10.8069585,8.99227133 10.6569362,9.99215686 L0.0329948062,9.99215686 Z" id="Fill-4"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

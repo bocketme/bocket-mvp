@@ -1,6 +1,5 @@
-let User = require("../models/User");
-let Organization = require("../models/Organization");
-let Workspace = require("../models/Workspace");
+let escape = require('escape-html');
+let ModelsMaker = require("../models/utils/create/ModelsMaker");
 
 let signUpController = {
 
@@ -21,16 +20,16 @@ let signUpController = {
             }
         }
 
-        let user = createUser(req, [], []);
+        let user = ModelsMaker.CreateUser(req, [], []);
         user.save()
             .then(newUser => {
                 console.log("new user has been add", newUser);
-                let organization = createOrganization(req.body.organizationName, user);
+                let organization = ModelsMaker.CreateOrganization(req.body.organizationName, user);
                 organization.save()
                     .then(newOrga => {
                         console.log("\n\nnew organization has been add", newOrga);
                         user.organizations.push({_id: newOrga._id, name: newOrga.name});
-                        let workspace = createWorkspace(req.body.workspaceName, newOrga);
+                        let workspace = ModelsMaker.CreateWorkspace(req.body.workspaceName, newOrga);
                         workspace.save()
                             .then(newWorkspace => {
                                 console.log("\n\nnew workspace has been add", newWorkspace);
@@ -61,31 +60,6 @@ let signUpController = {
     },
 };
 
-function createWorkspace(name, organization) {
-    return new Workspace({
-       name : name,
-        organization: {_id: organization._id, name: organization.name, }
-    });
-}
-
-function createOrganization(name, owner) {
-    return new Organization({
-        owner: {completeName: owner.completeName, email: owner.email},
-        name: name,
-    })
-}
-
-function createUser (req, workspaces, organizations) {
-    return  new User({
-        completeName: req.body.completeName,
-        password : req.body.password,
-        email : req.body.email,
-        workspaces: workspaces,
-        organizations: organizations
-    });
-
-}
-
 let passwordInfo = {
     minlength: 6
 };
@@ -107,25 +81,30 @@ let workspaceNameInfo = {
 };
 
 function checkOrganizationName(body) {
+    body.organizationName = escape(body.organizationName);
     return basicCheck(body.organizationName, organizationNameInfo);
 }
 
 function checkCompleteName(body) {
     let regex = /[A-Z][a-z]+ [A-Z][a-z]+/;
     let completeName = body.completeName;
+    body.completeName = escape(body.completeName);
     return basicCheck(completeName, completeNameInfo) && regex.test(completeName);
 }
 
 function checkWorkspaceName(body) {
+    body.workspaceName = escape(body.workspaceName);
     return basicCheck(body.workspaceName, workspaceNameInfo);
 }
 
 function checkPassword(body) {
+    body.password = escape(body.password);
     return basicCheck(body.password, passwordInfo);
 }
 
 function checkEmail(body) {
     console.log("Email:", body.email);
+    body.email = escape(body.email);
     return basicCheck(body.email, emailInfo);
 }
 
