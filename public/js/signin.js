@@ -118,7 +118,6 @@ $(document).ready(function() {
         $(".workspace").removeClass(chosenWorkspaceClass);
         currentTarget.addClass(chosenWorkspaceClass);
         $(chosenWorkspaceId).val($("span:first", currentTarget).text());
-        $(workspacesPickerId).attr("action", $(workspacesPickerId).attr("action") + "/" + $("span:last", currentTarget).text());
     }
 
     $("#userSignIn").on("submit", function(e) {

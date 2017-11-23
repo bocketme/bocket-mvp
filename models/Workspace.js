@@ -3,21 +3,17 @@ let mongoose = require("mongoose");
 
 let Organization = require("./nestedSchema/NestedOrganizationSchema");
 let User  = require("./nestedSchema/NestedUserSchema");
+let Node = require("./nestedSchema/NestedNodeSchema");
 
 let Stripe = new mongoose.Schema({
     name: String
-});
-
-let Node = new mongoose.Schema({
-    _id: {type: String, required: true},
-    name: {type: String, required: true}
 });
 
 let WorkspaceSchema = new mongoose.Schema({
     name: { type: String, require: true, unique: true },
     owner: {type: User, require: true},
     description: String,
-    node_master: Node,
+    node_master: { type: Node , default: {title: "My Bocket", children: []}},
     creation: {type:Date, default: new Date()},
     organization: {type: Organization, required: true} // /!\ WITHOUT END VARIABLE /!\
 });
