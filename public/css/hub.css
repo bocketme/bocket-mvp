@@ -55,6 +55,7 @@ main {
 
 #third_column_content{
     overflow-y: scroll;
+    margin-top: 9px;
 }
 
 #second_column_content::-webkit-scrollbar-track, third_column_content::-webkit-scrollbar-track
@@ -149,9 +150,16 @@ span.badge {
     font-weight: 600;
     font-size: 14px;
     padding: 16px 0;
-    border-bottom: 2px inset;
     height: 52px;
     box-shadow: 0px 1px 2px 0px;
+}
+
+.data-header-third-collumn{
+    background: white;
+    color: #4a4a4a;
+    font-weight: 600;
+    font-size: 14px;
+    height: 52px;
 }
 
 .favorite{
@@ -175,10 +183,12 @@ span.badge {
 
 .triple-dots{
     content:url("/img/01-dots icon.svg");
-    height: 16px;
+    height: 22px;
+    margin-top: -2px; 
     padding-top: 2px;
     padding-right: 14px;
     float: right;
+    opacity: 0.3;       
 }
 
 .username-dropdown{
@@ -286,4 +296,32 @@ div.modal-body>p{
 .preloader-wrapper.active{
     margin: auto !important;
     padding: 10px !important;    
+}
+
+.image-right{
+    float: right;
+    margin-top: 14px;
+    padding-right: 10px;
+    height: 22px;
+    opacity: 0.3;   
+}
+
+.image-right:hover, .triple-dots:hover{
+    opacity: 0.6; 
+    cursor: pointer;
+}
+
+.image-right.active, .triple-dots.active{
+    opacity: 1
+}
+
+p{
+    margin: 0px;
+}
+.node-selector{
+    padding-top: 2px;
+}
+
+.breadcrumb:last-child{
+    color:#9b9b9b;
 }

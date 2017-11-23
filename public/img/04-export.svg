@@ -4,12 +4,12 @@
     <title>export</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="CONSULTER-PART/ASM/NODE" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Select-a-node-+-option-menu-Copy-2" transform="translate(-1355.000000, -20.000000)">
+    <g id="CREER-NEW-PART" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Select-a-node-+-option-menu" transform="translate(-1355.000000, -20.000000)">
             <g id="selected-part" transform="translate(726.000000, 0.000000)">
                 <g id="Toolbar" transform="translate(560.000000, 21.000000)">
                     <g id="export" transform="translate(70.000000, 0.000000)">
-                        <circle id="Oval-3" stroke="#CAC8CA" stroke-width="0.7" fill="#CAC8CA" cx="11" cy="11" r="11"></circle>
+                        <circle id="Oval-3" stroke="#707070" stroke-width="0.7" fill="#707070" cx="11" cy="11" r="11"></circle>
                         <g id="Group-2" transform="translate(6.000000, 6.000000)">
                             <rect id="Rectangle-3" fill="#FFFFFF" x="0" y="7" width="10" height="3"></rect>
                             <g id="Group-2-Copy" transform="translate(5.000000, 3.500000) scale(1, -1) translate(-5.000000, -3.500000) translate(2.000000, 0.000000)" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">

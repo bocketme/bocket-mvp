@@ -5,12 +5,12 @@
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="CREER-NEW-PART" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Select-a-node-+-right-click" transform="translate(-683.000000, -20.000000)">
+        <g id="Select-a-node-+-option-menu" transform="translate(-683.000000, -20.000000)">
             <g id="Middle-panel" transform="translate(360.000000, 0.000000)">
                 <g id="Selected-list-header">
                     <g>
                         <g id="dots-icon" transform="translate(324.000000, 21.000000)">
-                            <circle id="Oval-3" stroke="#CAC8CA" stroke-width="0.7" fill="#CAC8CA" cx="11" cy="11" r="11"></circle>
+                            <circle id="Oval-3" stroke="#707070" stroke-width="0.7" fill="#707070" cx="11" cy="11" r="11"></circle>
                             <circle id="Oval-3" fill="#FFFFFF" cx="4.5" cy="11.5" r="1.5"></circle>
                             <circle id="Oval-3-Copy" fill="#FFFFFF" cx="10.5" cy="11.5" r="1.5"></circle>
                             <circle id="Oval-3-Copy-2" fill="#FFFFFF" cx="16.5" cy="11.5" r="1.5"></circle>

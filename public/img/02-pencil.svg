@@ -4,12 +4,12 @@
     <title>pencil</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="CONSULTER-PART/ASM/NODE" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Select-a-node-+-option-menu-Copy-2" transform="translate(-1285.000000, -20.000000)">
+    <g id="CREER-NEW-PART" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Select-a-node-+-option-menu" transform="translate(-1285.000000, -20.000000)">
             <g id="selected-part" transform="translate(726.000000, 0.000000)">
                 <g id="Toolbar" transform="translate(560.000000, 21.000000)">
                     <g id="pencil">
-                        <circle id="Oval-3" stroke="#CAC8CA" stroke-width="0.7" fill="#CAC8CA" cx="11" cy="11" r="11"></circle>
+                        <circle id="Oval-3" stroke="#707070" stroke-width="0.7" fill="#707070" cx="11" cy="11" r="11"></circle>
                         <path d="M5.38837047,14.0628382 L7.85795873,16.5255519 L5.26960729,17.1526117 C5.09527439,17.1835453 4.96866232,17.1835453 4.88977107,17.1526117 C4.86159347,17.0791362 4.86159347,16.9472525 4.88977107,16.7569605 L5.38837047,14.0628382 Z" id="Path-3" stroke="#FFFFFF" stroke-width="0.5" fill="#FFFFFF" stroke-linecap="round" stroke-linejoin="round"></path>
                         <path d="M13.2619363,6.28003854 C14.1179628,5.36010674 14.7031088,4.90034298 15.0173742,4.90074724 C15.4887722,4.90135365 15.9417266,5.32750022 16.3765592,5.74089809 C16.8113918,6.15429596 17.1556012,6.46542861 17.1492004,6.9749565 C17.1449332,7.31464177 16.675032,7.89564552 15.7394966,8.71796776 L13.2619363,6.28003854 Z" id="Path-2-Copy" stroke="#FFFFFF" stroke-width="0.5" fill="#FFFFFF" stroke-linecap="round" stroke-linejoin="round"></path>
                         <polygon id="Path-2" stroke="#FFFFFF" stroke-width="0.5" fill="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" points="6.12369453 13.356723 12.5480474 6.99001448 15.0207003 9.4431976 8.60576341 15.8065829"></polygon>
