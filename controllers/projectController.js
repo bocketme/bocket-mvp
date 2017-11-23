@@ -26,8 +26,8 @@ module.exports = {
     },
     index: (req, res) => {
         res.render('hub.twig', {
-            title: req.params.organization + ' - All Parts',
-            in_use: req.params.organization,
+            title: req.params.workspace + ' - All Parts',
+            in_use: req.params.workspace,
             data_header: 'All Parts',            
             user: 'Alexis Dupont',
             workspaces: ['moi', 'je0', 'suis', 'beau'],
@@ -39,8 +39,8 @@ module.exports = {
     },
     last_updates: (req, res) => {
         res.render('hub.twig', {
-            title: req.params.organization + ' - Last Updates',
-            in_use: req.params.organization,
+            title: req.params.workspace + ' - Last Updates',
+            in_use: req.params.workspace,
             data_header: 'Last Updates',            
             user: 'Alexis Dupont',
             workspaces: ['moi', 'je0', 'suis', 'beau'],
@@ -52,8 +52,8 @@ module.exports = {
     },
     duplicates: (req, res) => {
         res.render('hub.twig', {
-            title: req.params.organization + ' - Duplicates',
-            in_use:req.params.organization,
+            title: req.params.workspace + ' - Duplicates',
+            in_use:req.params.workspace,
             data_header: 'Duplicates',            
             user: 'Alexis Dupont',
             workspaces: ['moi', 'je0', 'suis', 'beau'],
