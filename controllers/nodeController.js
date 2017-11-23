@@ -16,7 +16,7 @@ let nodeController = {
 
     },
     get: function(req, res){
-
+        res.status(500);
     },
     update: function (req, res){
         
