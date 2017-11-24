@@ -53,7 +53,7 @@ function findAllWorkspaces(nestedWorkspaces) {
                     i += 1;
                     if (i === nestedWorkspaces.length)
                     {
-                        console.log("findAllWorkspaces : ", workspaces);
+                        //console.log("findAllWorkspaces : ", workspaces);
                         resolve(workspaces);
                     }
                 })

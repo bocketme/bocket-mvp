@@ -13,7 +13,7 @@ let WorkspaceSchema = new mongoose.Schema({
     name: { type: String, require: true, unique: true },
     owner: {type: User, require: true},
     description: String,
-    node_master: { type: Node , default: {title: "My Bocket", children: []}},
+    node_master: { type: Node , default: {_id: mongoose.Types.ObjectId(), title: "My Bocket", children: []}},
     creation: {type:Date, default: new Date()},
     organization: {type: Organization, required: true} // /!\ WITHOUT END VARIABLE /!\
 });

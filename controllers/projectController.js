@@ -1,5 +1,6 @@
 let project = require('../models/project'),
     Workspace = require("../models/Workspace"),
+    User = require("../models/User"),
     jwt = require('jsonwebtoken'),
     key = require('../utils/keys');
 
@@ -29,28 +30,38 @@ module.exports = {
     index: (req, res) => {
         Workspace.findById({_id: req.params.workspaceId})
             .then(workspace => {
-                console.log("WORKSPACE = ", workspace);
-                console.log("NODE_MASTER = ", workspace.node_master);
                 if (workspace !== null)
                 {
-                    res.render('hub.twig', {
-                        title: workspace.name + ' - All Parts',
-                        in_use: workspace.name,
-                        data_header: 'All Parts',
-                        user: 'Alexis Dupont',
-                        workspaces: ['moi', 'je0', 'suis', 'beau'],
-                        node: JSON.stringify(workspace.node_master),
-                        all_parts: 100,
-                        last_updates: 10,
-                        duplicates: 35
-                    });
+                    User.findOne({email: req.session.userMail})
+                        .then(user => {
+                            if (user !== null)
+                            {
+                                res.render('hub.twig', {
+                                    title: workspace.name + ' - All Parts',
+                                    in_use: workspace.name,
+                                    data_header: 'All Parts',
+                                    user: user.completeName,
+                                    workspaces: user.workspaces,
+                                    node: JSON.stringify(workspace.node_master),
+                                    all_parts: 100,
+                                    last_updates: 10,
+                                    duplicates: 35
+                                });
+                            }
+                            else
+                                res.redirect("/");
+                        })
+                        .catch(err => {
+                            console.log("[projectController.indexPOST] :", err);
+                            res.sendStatus(500);
+                        });
                 }
                 else
                     res.redirect("/");
             })
             .catch(err => {
                 if (err.name == "CastError") // Workspace not found
-                    res.redirect("/");
+                    res.sendStatus(404);
                 else {
                     console.log(err);
                     res.sendStatus(500);
@@ -59,14 +70,40 @@ module.exports = {
     },
     indexPOST: (req, res) => { //email, password & workspaceId
         // TODO: CHECK SI L'UTILISATEUR EST CONNECTEE ET A LE DROIT D'AVOIR ACCES A CE WSP
-        if (!req.body.email || !req.body.password || !req.body.workspaceId)
-        {
+        if (!req.body.email || !req.body.password || !req.body.workspaceId) {
             console.log("Nice try");
             res.redirect("/");
             return ;
         }
-        res.redirect(req.originalUrl + "/" + req.body.workspaceId);
+        if (!req.session.userMail) {
+            console.log("User n'a pas de session");
+            User.findOne({email: req.body.email})
+                .then(result => {
+                    result.comparePassword(req.body.password, (err, isMatch) => {
+                        if (err) {
+                            console.log("[projectController.indexPOST] :", err);
+                            res.sendStatus(500);
+                        }
+                        else if (!isMatch) {
+                            console.log("result not matches !");
+                            res.redirect("/");
+                        }
+                        else {
+                            req.session.userMail = result.email;
+                            res.redirect(req.originalUrl + "/" + req.body.workspaceId);
+                        }
+                    });
+                })
+                .catch(err => {
+                    console.log("[projectController.indexPOST] : ", err);
+                });
+        }
+        else {
+            console.log("User a une session");
+            res.redirect(req.originalUrl + "/" + req.body.workspaceId);
+        }
     },
+
     last_updates: (req, res) => {
         res.render('hub.twig', {
             title: req.params.workspaceId + ' - Last Updates',

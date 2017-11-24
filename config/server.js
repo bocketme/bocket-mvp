@@ -9,4 +9,5 @@ module.exports = {
     saltRounds: 10,
     photo: require('path').resolve("../photo"),
     gitfiles: require('path').resolve("../../bocket"),
+    secretSession: "kdjqskdjkqsjdsjqdklqsjdkjziooajdiazjdskjdqklsjdjaziodjsqjdlj"
 };

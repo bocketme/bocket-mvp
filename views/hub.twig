@@ -27,7 +27,7 @@
         
         <ul id="workspaces-dropdown" class="dropdown-content">
             {% for workspace in workspaces %}
-            <li><a href="/project/{{workspace}}">{{ workspace }}</a></li>
+            <li><a href="/project/{{workspace._id}}">{{ workspace.name }}</a></li>
             {% endfor %}
             <li><a href="/logout">Log Out</a></li>
         </ul>
