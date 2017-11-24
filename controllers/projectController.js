@@ -28,45 +28,14 @@ module.exports = {
         });
     },
     index: (req, res) => {
-        Workspace.findById({_id: req.params.workspaceId})
-            .then(workspace => {
-                if (workspace !== null)
-                {
-                    User.findOne({email: req.session.userMail})
-                        .then(user => {
-                            if (user !== null)
-                            {
-                                res.render('hub.twig', {
-                                    title: workspace.name + ' - All Parts',
-                                    in_use: workspace.name,
-                                    data_header: 'All Parts',
-                                    user: user.completeName,
-                                    workspaces: user.workspaces,
-                                    node: JSON.stringify(workspace.node_master),
-                                    all_parts: 100,
-                                    last_updates: 10,
-                                    duplicates: 35
-                                });
-                            }
-                            else
-                                res.redirect("/");
-                        })
-                        .catch(err => {
-                            console.log("[projectController.indexPOST] :", err);
-                            res.sendStatus(500);
-                        });
-                }
-                else
-                    res.redirect("/");
-            })
+        getRenderInformation(req.params.workspaceId, req.session.userMail)
+            .then(context => res.render("hub", context))
             .catch(err => {
-                if (err.name == "CastError") // Workspace not found
-                    res.sendStatus(404);
-                else {
-                    console.log(err);
-                    res.sendStatus(500);
-                }
-            });
+                if (err === 404 || err === 500)
+                    res.sendStatus(err);
+                else
+                    res.redirect(err);
+            })
     },
     indexPOST: (req, res) => { //email, password & workspaceId
         // TODO: CHECK SI L'UTILISATEUR EST CONNECTEE ET A LE DROIT D'AVOIR ACCES A CE WSP
@@ -86,7 +55,7 @@ module.exports = {
                         }
                         else if (!isMatch) {
                             console.log("result not matches !");
-                            res.redirect("/");
+                            res.redirect("/sigin");
                         }
                         else {
                             req.session.userMail = result.email;
@@ -105,30 +74,24 @@ module.exports = {
     },
 
     last_updates: (req, res) => {
-        res.render('hub.twig', {
-            title: req.params.workspaceId + ' - Last Updates',
-            in_use: req.params.workspaceId,
-            data_header: 'Last Updates',            
-            user: 'Alexis Dupont',
-            workspaces: ['moi', 'je0', 'suis', 'beau'],
-            node: JSON.stringify(require('../test/node.json')),
-            all_parts: 100,
-            last_updates: 10,
-            duplicates: 35
-        });
+        getRenderInformation(req.params.workspaceId, req.session.userMail)
+            .then(context => res.render("hub", context))
+            .catch(err => {
+                if (err == 400 || err == 500)
+                    res.sendStatus(err);
+                else
+                    res.redirect(err);
+            });
     },
     duplicates: (req, res) => {
-        res.render('hub.twig', {
-            title: req.params.workspaceId + ' - Duplicates',
-            in_use:req.params.workspaceId,
-            data_header: 'Duplicates',            
-            user: 'Alexis Dupont',
-            workspaces: ['moi', 'je0', 'suis', 'beau'],
-            node: JSON.stringify(require('../test/node.json')),
-            all_parts: 100,
-            last_updates: 10,
-            duplicates: 35
-        });
+        getRenderInformation(req.params.workspaceId, req.session.userMail)
+            .then(context => res.render("hub", context))
+            .catch(err => {
+                if (err === 400 || err === 500)
+                    res.sendStatus(err);
+                else
+                    res.redirect(err);
+            })
     },
     /**
     * Ajoute un projet à l'utilisateur X
@@ -154,4 +117,56 @@ module.exports = {
     delete: (req, res) => {
         // project.findByIdAndRemove()
     }
+}
+
+function getRenderInformation(workspaceId, userMail) {
+    console.log("getRenderInformation", workspaceId, userMail);
+    return new Promise((resolve, reject) => {
+        Workspace.findById({_id: workspaceId})
+            .then(workspace => {
+                if (workspace !== null)
+                {
+                    User.findOne({email: userMail})
+                        .then(user => {
+                            if (user !== null)
+                            {
+                                console.log("RESOLVE");
+                                resolve({
+                                    title: workspace.name + ' - All Parts',
+                                    in_use: {name: workspace.name, id: workspace._id},
+                                    data_header: 'All Parts',
+                                    user: user.completeName,
+                                    workspaces: user.workspaces,
+                                    node: JSON.stringify(workspace.node_master),
+                                    all_parts: 100,
+                                    last_updates: 10,
+                                    duplicates: 35
+                                });
+                            }
+                            else
+                                console.log("[projectController.indexPOST] : ", "User not found");
+                                reject("/signin")
+                        })
+                        .catch(err => {
+                            console.log("[projectController.indexPOST] :", err);
+                            reject(500);
+                        });
+                }
+                else {
+                    console.log("[projectController.indexPOST] : ", "Workspace not found1");
+                    reject(404);
+                }
+            })
+            .catch(err => {
+                if (err.name === "CastError") // Workspace not found
+                {
+                    console.log("[projectController.indexPOST] : ", "Workspace not found2");
+                    reject(404);
+                }
+                else {
+                    console.log("[projectController.indexPOST] : ", err);
+                    reject(500);
+                }
+            });
+    });
 }
