@@ -28,7 +28,7 @@ module.exports = {
         });
     },
     index: (req, res) => {
-        getRenderInformation(req.params.workspaceId, req.session.userMail)
+        getRenderInformation(req.params.workspaceId, req.session.userMail, "All Parts")
             .then(context => res.render("hub", context))
             .catch(err => {
                 if (err === 404 || err === 500)
@@ -74,7 +74,7 @@ module.exports = {
     },
 
     last_updates: (req, res) => {
-        getRenderInformation(req.params.workspaceId, req.session.userMail)
+        getRenderInformation(req.params.workspaceId, req.session.userMail, "Last Updates")
             .then(context => res.render("hub", context))
             .catch(err => {
                 if (err == 400 || err == 500)
@@ -83,8 +83,9 @@ module.exports = {
                     res.redirect(err);
             });
     },
+
     duplicates: (req, res) => {
-        getRenderInformation(req.params.workspaceId, req.session.userMail)
+        getRenderInformation(req.params.workspaceId, req.session.userMail, "Duplicates")
             .then(context => res.render("hub", context))
             .catch(err => {
                 if (err === 400 || err === 500)
@@ -119,7 +120,7 @@ module.exports = {
     }
 }
 
-function getRenderInformation(workspaceId, userMail) {
+function getRenderInformation(workspaceId, userMail, title) {
     console.log("getRenderInformation", workspaceId, userMail);
     return new Promise((resolve, reject) => {
         Workspace.findById({_id: workspaceId})
@@ -132,7 +133,7 @@ function getRenderInformation(workspaceId, userMail) {
                             {
                                 console.log("RESOLVE");
                                 resolve({
-                                    title: workspace.name + ' - All Parts',
+                                    title: workspace.name + ' - ' + title,
                                     in_use: {name: workspace.name, id: workspace._id},
                                     data_header: 'All Parts',
                                     user: user.completeName,
