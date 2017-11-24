@@ -13,7 +13,7 @@
 {% block title %}{{ title }}{% endblock title %}
 
 {% block body %}
-<div class="row">
+<div id="hub" class="row">
     <div id="first_column" class="col s3">
         
         <button class="dropdown-button" data-beloworigin="true" data-activates='workspaces-dropdown'>
@@ -62,8 +62,8 @@
         
         {% include "hub/modal.twig" %}        
         
-        <div id="second_column_content">
-            {% include "hub/search.twig" %}
+        <div id="second_column_content" class="clear">
+            {# {% include "hub/search.twig" %} #}
             {% include "hub/node_tree.twig" %}
             {% include "hub/content.twig" %}                     
         </div>

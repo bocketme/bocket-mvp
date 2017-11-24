@@ -5,6 +5,10 @@
 *
 */
 
+body, html {
+    height: 100%;
+}
+
 body {
     font-family: 'Montserrat';
     font-weight: 400;
@@ -28,29 +32,31 @@ main {
 *   First, second and third collumn
 */
 
+#hub {
+    height: 100%;
+}
+
 #first_column {
     background-color: #3c3c3c;
     padding: 0 !important;
-    height: 100vh;
+    height: 100%;
 }
 
 #second_column {
     background-color: #f7f7f7;
     border-right: 5px inset;
     padding: 0 !important;
-    height: 100vh;
+    height: 100%;
 }
 
 #third_column {
     padding: 0 !important;
     background-color: #f7f7f7;
-    height: 100vh;
+    height: 100%;
 }
 
 #second_column_content {
-    overflow-y: scroll;
-    max-height: 90vh;
-    height: 100vh;
+    height: 94%;
 }
 
 #third_column_content{
@@ -86,6 +92,10 @@ main {
     font-weight: 600;
     color: white;
     background-color: #535151; 
+}
+
+#content-part {
+    margin-top: 500px;
 }
 
 span.badge {
@@ -150,7 +160,7 @@ span.badge {
     font-weight: 600;
     font-size: 14px;
     padding: 16px 0;
-    height: 52px;
+    height: 6%;
     box-shadow: 0px 1px 2px 0px;
 }
 
@@ -159,7 +169,7 @@ span.badge {
     color: #4a4a4a;
     font-weight: 600;
     font-size: 14px;
-    height: 52px;
+    height: 6%;
 }
 
 .favorite{
@@ -324,4 +334,8 @@ p{
 
 .breadcrumb:last-child{
     color:#9b9b9b;
+}
+
+.clear {
+    clear: both;
 }
