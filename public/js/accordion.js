@@ -90,10 +90,9 @@ $(document).ready(() => {
         $('.collapsible-header.node').removeClass('selected-accordion');
         $(this).addClass('selected-accordion');
         var fill_value = $(this).contents().filter("span").html()
-        fill_content(fill_value)
-        pieces(this);    
+        // fill_content(fill_value)
+        // pieces(this);    
         $("span.fil").html('')
         var breadcrumbs_value = $(this).contents().filter("span").attr("data-breadcrumbs");
-        breadcrumbs(breadcrumbs_value);
     });
 });

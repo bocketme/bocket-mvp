@@ -39,6 +39,7 @@ main {
     border-right: 5px inset;
     padding: 0 !important;
     height: 100vh;
+    resize: horizontal;
 }
 
 #third_column {

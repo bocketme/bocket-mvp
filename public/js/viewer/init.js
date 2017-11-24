@@ -316,22 +316,11 @@ Viewer.prototype.resize = function () {
     this.cameras[0].aspect = (element.clientWidth       ) / (element.clientHeight       );
     this.cameras[1].aspect = (element.clientWidth * 0.15) / (element.clientHeight * 0.15);
 
-    console.log("client offsetHeight before:  ",document.getElementById('renderDiv').offsetHeight);
-    console.log("client offsetWidth before: ",document.getElementById('renderDiv').offsetWidth);
-    console.log("client clientHeight before: ",document.getElementById('renderDiv').clientHeight);
-    console.log("client clientWidth before: ",document.getElementById('renderDiv').clientWidth);
-
-
     this.renderers[0].setSize((element.offsetWidth        ), (element.offsetHeight       ));
-    this.renderers[1].setSize((element.offsetWidth * 0.15), (element.offsetHeight * 0.15));
+    this.renderers[1].setSize((element.offsetHeight * 0.15), (element.offsetHeight * 0.15));
 
     this.cameras[0].updateProjectionMatrix();
     this.cameras[1].updateProjectionMatrix();
-
-    console.log("client offsetHeight after : ",document.getElementById('renderDiv').offsetHeight);
-    console.log("client offsetWidth  after : ",document.getElementById('renderDiv').offsetWidth);
-    console.log("client clientHeight after : ",document.getElementById('renderDiv').clientHeight);
-    console.log("client clientWidth  after : ",document.getElementById('renderDiv').clientWidth);
 };
 
 /* ************************************************************************** */
