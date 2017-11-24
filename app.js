@@ -16,6 +16,10 @@ const project = require("./routes/project");
 const node = require("./routes/node");
 const workspace = require("./routes/workspace");
 
+/* SESSION */
+let session = require("express-session");
+const MongoStore = require('connect-mongo')(session); //session store
+
 let app = express();
 let server = require('http').createServer(app);
 let io = require("socket.io")(server);
@@ -44,6 +48,20 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use(morgan('dev'));
 
+app.use(session({
+    secret: config.secretSession,
+    store: new MongoStore({ url: config.mongoDB}),
+    resave: false,
+    saveUninitialized: false
+}));
+
+
+// Add the session in sockets (deprecated)
+/*io.use(function(socket, next) {
+    //console.log(socket);
+    session(socket.request, socket.request.res, next);
+});*/
+
 module.exports = app;
 
 // parse application/x-www-form-urlencoded
@@ -57,10 +75,13 @@ app.use(bodyParser.json());
 
 
 // Display body request
-app.use(function (req, res, next) {
-    //console.log("You posted:\n" + JSON.stringify(req.body, null, 2))
+/*app.use(function (req, res, next) {
+    console.log("You posted:\n" + JSON.stringify(req.body, null, 2));
     next();
-});
+});*/
+
+//TODO: Make an middleware which escape HTML characters for req.body & req.params
+//TODO: Make an middleware which check if user have permissions
 
 app.engine('twig', require('twig').__express);
 app.set("view engine", "twig");
