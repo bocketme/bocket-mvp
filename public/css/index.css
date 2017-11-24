@@ -1,5 +1,10 @@
 body {
     background: #262626;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+p {
+    color: white;
 }
 
 input#email_beta {
@@ -17,7 +22,7 @@ input#email_beta {
 }
 
 #beta_button {
-    background: #00ffc8;
+    background: #00ffc8 !important;
     padding-top: 0.5em;
     color: #262626;
     height: 3em;

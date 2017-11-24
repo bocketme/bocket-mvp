@@ -325,3 +325,8 @@ p{
 .breadcrumb:last-child{
     color:#9b9b9b;
 }
+
+.disabled-link {
+    pointer-events: none;
+    opacity:0.6;
+}

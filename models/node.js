@@ -21,7 +21,7 @@ let NodeSchema = mongoose.Schema({
     assembly: NestedAssembly,
     object: {type:Object, require: true},
     Workspace: NestedWorkspace,
-    Project: NestedProject,
+    //Project: NestedProject,
 })
 
 let Node = mongoose.model("Node", NodeSchema, "Nodes");
