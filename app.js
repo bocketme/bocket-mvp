@@ -7,6 +7,7 @@ const Promise = require("promise");
 const twig = require('twig');
 const favicon = require('serve-favicon');
 const path = require('path');
+const fs = require('fs');
 
 /* ROUTES */
 const index = require("./routes/index");
@@ -54,7 +55,6 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
-
 
 // Add the session in sockets (deprecated)
 /*io.use(function(socket, next) {
@@ -110,3 +110,13 @@ app.post("/test", (req, res) => {
 app.use(express.static('public'));
 
 // TODO: Bouton "connectez vous" ne fonctionne pas
+server.on("listening", () => {
+    fs.access(config.avatar, (err) => {
+        if (err.errno == -4058)
+            console.log("Create the directory avatar in" + config.avatar);
+    });
+    fs.access(config.gitfiles, (err) => {
+        if (err.errno== -4058)
+            console.log("Create the directory bocket in" + config.gitfiles);
+    });
+});
