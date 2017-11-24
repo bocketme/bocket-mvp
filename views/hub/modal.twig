@@ -1,36 +1,38 @@
 <!-- Modal Structure -->
 <div id="create-part" class="modal">
+    <div class="modal-header">
+        <h4 style="font-weight: bolder !important;">Create a new Part</h4>
+    </div>
         <div class="modal-content container">
-            <div class="modal-header">
-                <h4>Create a new Part</h4>
-            </div>
             <div class="modal-body">
                 <form id="form-create-part" method="post" action="/test">
-                    <p>Part Name</p>
-                    <input type="text" name="part-name" id="part-name">
-                    
-                    <p>Description</p>
-                    <input type="text" name="Description" id="Description">
-                    
-                    <p>3D Model</p>                    
-                    <div class="file-field input-field">
-                        <div class="files-button btn">
+                    <div class="input-field col s12">
+                        <input id="part-name" type="text" name="part-name" class="validate">
+                        <label for="last_name">Part Name</label>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <input id="Description" type="text" name="Description" class="validate">
+                        <label for="last_name">Description</label>
+                    </div>
+
+                    <div class="file-field input-field col s12">
+                        <div class="files-button btn upload_button">
                             <span>...</span>
                             <input type="file">
                         </div>
                         <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text">
+                            <input class="file-path validate" type="text" placeholder="Upload your 3D Model">
                         </div>
                     </div>
                     
-                    <p>Specs File</p>                    
-                    <div class="file-field input-field">
-                        <div class="files-button btn">
+                    <div class="file-field input-field col s12">
+                        <div class="files-button btn upload_button">
                             <span>...</span>
                             <input type="file" multiple>
                         </div>
                         <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text">
+                            <input class="file-path validate" type="text" placeholder="Upload your Specs File">
                         </div>
                     </div>
                     <br>
