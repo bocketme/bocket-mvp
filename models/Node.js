@@ -15,6 +15,10 @@ let NestedPiece = mongoose.Schema({
 
 });
 
+let NestedAssembly = mongoose.Schema({
+
+});
+
 let NodeSchema = mongoose.Schema({
     name: {type:String, require:true },
     piece: NestedPiece,

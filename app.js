@@ -90,11 +90,6 @@ app.set('twig options', {
 });
 
 app.use("/", index);
-//app.use("/signin", signin);
-//app.use("/signup", signup);
-//app.use("/project", project);
-//app.use("/node", node);
-//app.use("/workspace", workspace);
 
 app.use("/signin", signin);
 app.use("/signup", signup);
@@ -112,11 +107,15 @@ app.use(express.static('public'));
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on("listening", () => {
     fs.access(config.avatar, (err) => {
-        if (err.errno == -4058)
+        if (err){
+            if (err.errno == -4058)
             console.log("Create the directory avatar in" + config.avatar);
+        }
     });
     fs.access(config.gitfiles, (err) => {
-        if (err.errno== -4058)
+        if (err){
+            if (err.errno== -4058)
             console.log("Create the directory bocket in" + config.gitfiles);
+        }
     });
 });

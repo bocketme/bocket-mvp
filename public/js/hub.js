@@ -47,18 +47,9 @@
   
   $('.chips').material_chip();
   
-  $('.chips').on('chip.add', function(e, chip){
+  $('#tags-create-part.chips').on('chip.add', function(e, chip){
     // you have the added chip here
-    console.log(e);
   });
-  
-  $('.button-form-validate').click((event) => {
-    event.preventDefault();
-    $.post('/test',function( data ) {
-      console.log( $('#form-create-part').serialize(), $('#tags-create-part').material_chip('data'));
-    }
-  );
-});
 
 });
 })(jQuery); // end of jQuery name space

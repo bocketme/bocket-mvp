@@ -84,13 +84,14 @@
 
 
 {% block js %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.8/vue.js"></script>
-<script> var twignode = {{ node }} </script>
-<script src="/js/hub.js"></script>
-<script src="/js/hub/vue.js"></script>
-<script src="/js/hub/tabs.js"></script>
-<script src="/js/hub/content.js"></script>
-<script src="/js/accordion.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.8/vue.js"></script>
+    <script> var twignode = {{ node }} </script>
+    <script src="/js/hub/vue.js"></script>
+    <script src="/js/hub.js"></script>
+    <script src="/js/accordion.js"></script>
+    <script src="/js/hub/tabs.js"></script>
+    <script src="/js/hub/content.js"></script>
+    <script src="/js/hub/createPart.js"></script>
 {% include "require_viewer.twig" %}
 {% endblock %}

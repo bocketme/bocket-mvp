@@ -1,11 +1,11 @@
-    <div class="data-header-third-collumn">
+    <div class="data-header-third-column">
         <div class="row">
             {% verbatim %}
             <div id="node-header" class="col s8">
-                <p class="node-selector">{{selected}}</p>
+                <div class="node-selector">{{selected}}</div>
                 <span v-if="crumbs">
                     <span class="fil">
-                        <a class="breadcrumb" v-for="crumb in crumbs" :href="crumb">{{crumb}}</a>
+                        <a class="breadcrumb" v-for="crumb in crumbs">{{crumb}}</a>
                     </span>                
                 </span>
             </div>

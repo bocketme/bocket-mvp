@@ -39,38 +39,7 @@ module.exports = {
     },
     indexPOST: (req, res) => { //email, password & workspaceId
         // TODO: CHECK SI L'UTILISATEUR EST CONNECTEE ET A LE DROIT D'AVOIR ACCES A CE WSP
-        if (!req.body.email || !req.body.password || !req.body.workspaceId) {
-            console.log("Nice try");
-            res.redirect("/");
-            return ;
-        }
-        if (!req.session.userMail) {
-            console.log("User n'a pas de session");
-            User.findOne({email: req.body.email})
-                .then(result => {
-                    result.comparePassword(req.body.password, (err, isMatch) => {
-                        if (err) {
-                            console.log("[projectController.indexPOST] :", err);
-                            res.sendStatus(500);
-                        }
-                        else if (!isMatch) {
-                            console.log("result not matches !");
-                            res.redirect("/sigin");
-                        }
-                        else {
-                            req.session.userMail = result.email;
-                            res.redirect(req.originalUrl + "/" + req.body.workspaceId);
-                        }
-                    });
-                })
-                .catch(err => {
-                    console.log("[projectController.indexPOST] : ", err);
-                });
-        }
-        else {
-            console.log("User a une session");
-            res.redirect(req.originalUrl + "/" + req.body.workspaceId);
-        }
+       
     },
 
     last_updates: (req, res) => {
@@ -131,7 +100,7 @@ function getRenderInformation(workspaceId, userMail, title) {
                         .then(user => {
                             if (user !== null)
                             {
-                                console.log("RESOLVE");
+                                console.log(workspace.node_master);
                                 resolve({
                                     title: workspace.name + ' - ' + title,
                                     in_use: {name: workspace.name, id: workspace._id},

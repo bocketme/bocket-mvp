@@ -6,7 +6,7 @@ var body_cascade = function(node, sub_level, breadcrumbs) {
     ul.appendChild(result);
     
     return ul;
-}
+};
 
 var create_class = (sub_level) => {
     
@@ -21,7 +21,7 @@ var create_class = (sub_level) => {
     document.body.appendChild(sheet_nochild);
     document.body.appendChild(sheet_haschild);
     
-}
+};
 
 var child_cascade = function(node, sub_level, breadcrumbs) {
     var li = document.createElement('li'),        
@@ -31,12 +31,15 @@ var child_cascade = function(node, sub_level, breadcrumbs) {
     span = document.createElement('span');
     
     breadcrumbs += (node.title);
-    
+
     image.setAttribute('class', 'responsive-img pad-right');
     span.setAttribute("data-breadcrumbs", breadcrumbs);
+    span.setAttribute("href", node._id)
+    span.setAttribute('v-on:click.native', "selectNode('"+node.title +"','" + breadcrumbs +"')");
     span.appendChild(text_header);
-    
-    if (node.children) {
+
+    console.log(node.children.length);
+    if (node.children && !node.children.length == 0) {
         breadcrumbs+= "/";
         header.setAttribute('class', 'collapsible-header node has-child valign-wrapper group-'+sub_level+'-has-child ');
         
@@ -58,7 +61,7 @@ var child_cascade = function(node, sub_level, breadcrumbs) {
         
         li.appendChild(header);
         
-        sub_level++
+        sub_level++;
         create_class(sub_level);    
         node.children.forEach(function(child){
             var result = body_cascade(child, sub_level, breadcrumbs);
@@ -79,20 +82,21 @@ var child_cascade = function(node, sub_level, breadcrumbs) {
 };
 
 var result = body_cascade(twignode, 0, "");
-var accordeon = document.querySelector('.node_constructor');
-accordeon.appendChild(result);
+var garbage = document.createElement('div');
+garbage.appendChild(result);
+var node_three = Vue.extend({
+    template: garbage.innerHTML
+});
+new node_three().$mount('.node_constructor');
 
 $(document).ready(() => {
-    console.log($('.collapsible-header.node:first'))
-    $('.collapsible-header.node:first').css({'padding-left' : '0px'});
-    $('.collapsible').css({'margin':'0'})
+   $('.collapsible').css({'margin':'0'})
     $('.collapsible-header.node').click(function(el){
         $('.collapsible-header.node').removeClass('selected-accordion');
         $(this).addClass('selected-accordion');
-        var fill_value = $(this).contents().filter("span").html()
-        // fill_content(fill_value)
-        // pieces(this);    
-        $("span.fil").html('')
+        var fill_value = $(this).contents().filter("span").html();
         var breadcrumbs_value = $(this).contents().filter("span").attr("data-breadcrumbs");
+        third_column.selectNode(fill_value, breadcrumbs_value);
+
     });
 });

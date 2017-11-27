@@ -5,18 +5,18 @@
                 <h4>Create a new Part</h4>
             </div>
             <div class="modal-body">
-                <form id="form-create-part" method="post" action="/test">
+                <form id="form-create-part" v-on:submit.prevent="submitPart">
                     <p>Part Name</p>
-                    <input type="text" name="part-name" id="part-name">
+                    <input type="text" name="part-name" id="part-name" v-model="part_name">
                     
                     <p>Description</p>
-                    <input type="text" name="Description" id="Description">
+                    <input type="text" name="Description" id="Description" v-model="description">
                     
                     <p>3D Model</p>                    
                     <div class="file-field input-field">
                         <div class="files-button btn">
                             <span>...</span>
-                            <input type="file">
+                            <input type="file" name="create-part-files3D" @change="chargefile">
                         </div>
                         <div class="file-path-wrapper">
                             <input class="file-path validate" type="text">
@@ -27,7 +27,7 @@
                     <div class="file-field input-field">
                         <div class="files-button btn">
                             <span>...</span>
-                            <input type="file" multiple>
+                            <input type="file" multiple name="create-part-specFiles" @change="chargespecFiles">
                         </div>
                         <div class="file-path-wrapper">
                             <input class="file-path validate" type="text">
