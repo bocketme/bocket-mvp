@@ -54,10 +54,16 @@
         
         {#  #}
         <ul id='options-node' class='dropdown-content'>
-            <li class="option-node"  href="#create-part" > <a id="create-part-button">  Create new Part</a></li>
-            <li class="option-node disabled-link" href="#create-assembly" > <a id="create-assembly-button">  Create new Assembly</a></li>
-            <li class="option-node disabled-link"     href="#insert-part" > <a id="insert-part-button">  Insert existing part</a></li>
-            <li class="option-node disabled-link" href="#insert-assembly" > <a id="insert-assembly-button">  Insert existing Assembly</a></li>
+            <!-- NODE MENU -->
+            <li class="option-node disabled-link" href="#create-assembly" > <a class="dropdown-menu" id="create-new-node">          New node... </a></li> <!-- Create empty node -->
+            <li class="divider"></li> <!-- CONTENT MENU -->
+            <li class="option-node disabled-link" href="#create-assembly" > <a class="dropdown-menu" id="add-new-part-button">      Import Part... </a></li> <!-- display panel create new part US2 -->
+            <li class="option-node disabled-link" href="#create-assembly" > <a class="dropdown-menu" id="add-new-assembly-button">  Import Assembly... </a></li> <!-- display panel create new assemby US2 -->
+            <li class="option-node disabled-link"     href="#insert-part" > <a class="dropdown-menu" id="insert-part-button">       Update 3D file... </a></li> <!-- display local explorer window -->
+            <li class="option-node disabled-link"     href="#insert-part" > <a class="dropdown-menu" id="insert-part-button">       Import file...</a></li> <!-- display local explorer window -->
+            <li class="divider"></li> <!-- MORE ACTIONS MENU voir menu déroulant dans gdrive --> 
+            <li class="option-node disabled-link"     href="#insert-part" > <a class="dropdown-menu" id="insert-part-button">  Insert existing part</a></li>
+            <li class="option-node disabled-link" href="#insert-assembly" > <a class="dropdown-menu" id="insert-assembly-button">  Insert existing Assembly</a></li>
         </ul>
         
         {% include "hub/modal.twig" %}        

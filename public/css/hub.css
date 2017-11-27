@@ -225,6 +225,7 @@ input[type='text']#search{
     background-repeat: no-repeat;
     padding: 12px 20px 12px 40px;
     margin-bottom: 5px;
+    box-shadow: none !important;
 }
 
 input[type='text']#search:focus{
@@ -245,6 +246,7 @@ input[type='text']#branch{
     background-repeat: no-repeat;
     padding: 12px 20px 12px 40px;
     margin-bottom: 5px;    
+    box-shadow: none !important;    
 }
 
 input[type='text']#branch:focus{
@@ -355,4 +357,26 @@ p{
 
 .clear {
     clear: both;
+}
+
+a.dropdown-menu{
+    font-family: 'Montserrat';
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    color: #4a4a4a !important;
+    margin: 5px;
+    padding-top:0px !important; 
+    padding-bottom:0px !important; 
+}
+
+a.dropdown-menu:hover{
+    background-color: #4885ed;
+    color: white !important;
+}
+
+li.option-node{
+    min-height: 0px;
+}
+li.option-node:hover{
+    background-color: initial !important;
 }
