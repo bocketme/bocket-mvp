@@ -1,42 +1,44 @@
 <!-- Modal Structure -->
 <div id="create-part" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4>Create a new Part</h4>
-            </div>
+    <div class="modal-header">
+        <h4 style="font-weight: bolder !important;">Create a new Part</h4>
+    </div>
+        <div class="modal-content container">
             <div class="modal-body">
-                <form id="form-create-part" v-on:submit.prevent="submitPart">
-                    <p>Part Name</p>
-                    <input type="text" name="part-name" id="part-name" v-model="part_name">
-                    
-                    <p>Description</p>
-                    <input type="text" name="Description" id="Description" v-model="description">
-                    
-                    <p>3D Model</p>                    
-                    <div class="file-field input-field">
-                        <div class="files-button btn">
+                <form id="form-create-part" method="post" action="/test">
+                    <div class="input-field col s12">
+                        <input id="part-name" type="text" name="part-name" class="validate">
+                        <label for="last_name">Part Name</label>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <input id="Description" type="text" name="Description" class="validate">
+                        <label for="last_name">Description</label>
+                    </div>
+
+                    <div class="file-field input-field col s12">
+                        <div class="files-button btn upload_button">
                             <span>...</span>
                             <input type="file" name="create-part-files3D" @change="chargefile">
                         </div>
                         <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text">
+                            <input class="file-path validate" type="text" placeholder="Upload your 3D Model">
                         </div>
                     </div>
                     
-                    <p>Specs File</p>                    
-                    <div class="file-field input-field">
-                        <div class="files-button btn">
+                    <div class="file-field input-field col s12">
+                        <div class="files-button btn upload_button">
                             <span>...</span>
                             <input type="file" multiple name="create-part-specFiles" @change="chargespecFiles">
                         </div>
                         <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text">
+                            <input class="file-path validate" type="text" placeholder="Upload your Specs File">
                         </div>
                     </div>
                     <br>
                     <p>Tags</p>
                     <div id="tags-create-part" class="chips"></div>
-                    <button class="button-form-validate" type="submit">Create new Part</button>
+                    <button class="btn button-form-validate" type="submit">Create new Part</button>
                 </form>
             </div>
         </div>

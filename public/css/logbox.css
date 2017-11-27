@@ -87,6 +87,10 @@ h1.titleBox {
     outline: none;
 }
 
+.submit-btn:target {
+    background: #ff2e78;
+}
+
 .submit-btn:hover {
     background: #ff2e78;
 }

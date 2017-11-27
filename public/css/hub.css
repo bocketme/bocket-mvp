@@ -274,6 +274,7 @@ input[type='text']#branch:focus{
 }
 .modal-header{
     text-align: center;
+    margin-top: 2% !important;
 }
 
 .files-button {
@@ -336,6 +337,21 @@ p{
 .breadcrumb:last-child{
     color:#9b9b9b;
 }
+
+.disabled-link {
+    pointer-events: none;
+    opacity:0.6;
+}
+
+.upload_button:hover {
+    background-color: #4a4a4a !important;
+}
+
+.upload_button {
+    background-color: #9b9b9b !important;
+}
+
+.modal { width: 35% !important ; height: 75% !important ; }
 
 .clear {
     clear: both;
