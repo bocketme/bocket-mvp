@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var lauchButtonId = "#signUp";
-    var boxId = "#userSignUpBox";
+    1;5000;0c    var boxId = "#userSignUpBox";
     var toReset = "#userSignUp";
     var visibility = "display";
     var workspaceBoxId = "#workspaceSignUpBox";
@@ -121,12 +121,6 @@ $(document).ready(function() {
                 error.insertAfter(element);
             }
         },
-    });
-
-    $("#login_id").on("click", function () {
-        hideBox($(boxId), function () {
-            showBox($("#userSignInBox"));
-        });
     });
 
 });

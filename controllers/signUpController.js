@@ -29,12 +29,19 @@ let signUpController = {
                     .then(newOrga => {
                         console.log("\n\nnew organization has been add", newOrga);
                         user.organizations.push({_id: newOrga._id, name: newOrga.name});
-                        let workspace = ModelsMaker.CreateWorkspace(req.body.workspaceName, newOrga);
+                        let workspace = ModelsMaker.CreateWorkspace(req.body.workspaceName, newOrga, user);
                         workspace.save()
                             .then(newWorkspace => {
                                 console.log("\n\nnew workspace has been add", newWorkspace);
                                 user.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
                                 user.save()
+                                    .then(() => {
+                                        newOrga.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
+                                        newOrga.save()
+                                            .catch(err => {
+                                                throw err
+                                            });
+                                    })
                                     .catch(err => {
                                         console.log("error on updating user: " + err);
                                         newOrga.remove();

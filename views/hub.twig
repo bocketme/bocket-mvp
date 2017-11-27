@@ -13,12 +13,12 @@
 {% block title %}{{ title }}{% endblock title %}
 
 {% block body %}
-<div class="row">
+<div id="hub" class="row">
     <div id="first_column" class="col s3">
         
         <button class="dropdown-button" data-beloworigin="true" data-activates='workspaces-dropdown'>
             <div>
-                {{ in_use }} <i class="tiny material-icons">arrow_drop_down</i>
+                {{ in_use.name }} <i class="tiny material-icons">arrow_drop_down</i>
             </div>
             <div class="username-dropdown">
                 {{ user }}                
@@ -27,19 +27,19 @@
         
         <ul id="workspaces-dropdown" class="dropdown-content">
             {% for workspace in workspaces %}
-            <li><a href="/project/{{workspace}}">{{ workspace }}</a></li>
+            <li><a href="/project/{{workspace._id}}">{{ workspace.name }}</a></li>
             {% endfor %}
             <li><a href="/logout">Log Out</a></li>
         </ul>
         
         <div id="project-categories">
-            <a href="/project/{{ in_use }}">
+            <a href="/project/{{ in_use.id }}">
                 <button class="not-a-button" {% if "All Parts" in title  %}     id="selected" {% endif %}>All parts<span class='right-align badge'>{{ all_parts }}</span></button>
             </a>
-            <a href="/project/{{ in_use }}/updates">
+            <a href="/project/{{ in_use.id }}/updates">
                 <button class="not-a-button" {% if "Last Updates" in title  %}  id="selected" {% endif %}>Last updates <span class='right-align badge'>{{ last_updates }}</span></button>
             </a>
-            <a href="/project/{{ in_use }}/duplicates">
+            <a href="/project/{{ in_use.id }}/duplicates">
                 <button class="not-a-button" {% if "Duplicates" in title  %}    id="selected" {% endif %}>duplicates<span class='right-align badge'>{{ duplicates }}</span></button>
             </a>
         </div>
@@ -62,7 +62,7 @@
         
         {% include "hub/modal.twig" %}        
         
-        <div id="second_column_content">
+        <div id="second_column_content" class="clear">
             {% include "hub/search.twig" %}
             {% include "hub/node_tree.twig" %}
             {% include "hub/content.twig" %}                     
