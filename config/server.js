@@ -1,6 +1,4 @@
 /**
- * Created by jean-adriendomage on 26/10/2017.
- * 
  * YOU MUST BUILD THE DIRECTORY 
  */
 
@@ -12,5 +10,6 @@ module.exports = {
     photo: require('path').resolve("../photo"),
     gitfiles: require('path').resolve("../bocket"),
     avatar: require('path').resolve("../avatar"),
+    specfiles: require('path').resolve("../spec"),
     secretSession: "kdjqskdjkqsjdsjqdklqsjdkjziooajdiazjdskjdqklsjdjaziodjsqjdlj"
 };

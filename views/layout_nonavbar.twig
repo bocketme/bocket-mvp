@@ -7,7 +7,7 @@
     {% block meta %}
     {% endblock %}
     <title>Bocket.me - {% block title %}{% endblock %}</title>
-
+    
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,500,600,300,800,900" rel="stylesheet">
@@ -18,12 +18,14 @@
     {% endblock %}
 </head>
 <body>
-
+    
     {% block body %}
     {% endblock %}
-
+    
     <!--Import jQuery before materialize.js-->
     <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.8/vue.js"></script>
+    <script src="/js/hub/vue.js"></script>
     <script
     src="https://code.jquery.com/jquery-2.2.4.min.js"
     integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="

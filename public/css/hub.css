@@ -300,11 +300,11 @@ div.modal-body>p{
 }
 .button-form-validate[type=submit]{
     width: 100%;
-    background-color: rgb(143, 16, 143);
     margin: 0;
     border: none;
     padding: 20px 0;
     text-align: center;
+    height: 100%;        
 }
 
 .preloader-wrapper.active{

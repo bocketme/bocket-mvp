@@ -20,12 +20,15 @@ let NestedAssembly = mongoose.Schema({
 });
 
 let NodeSchema = mongoose.Schema({
-    name: {type:String, require:true },
-    piece: NestedPiece,
-    assembly: NestedAssembly,
-    object: {type:Object, require: true},
-    Workspace: NestedWorkspace,
-    //Project: NestedProject,
+    name: {type:String, require: true, default: 'My Bocket'},
+    description: String,
+    // piece: NestedPiece,
+    // assembly: NestedAssembly,
+    type: { type:String, require: true },
+    path: { type:String, require: false },
+    specpath: {type: [String], require: true, default: []},
+    tags: {type: [String], require:true, default:[]},
+    Workspace: { type: [NestedWorkspace], require: true},
 })
 
 let Node = mongoose.model("Node", NodeSchema, "Nodes");

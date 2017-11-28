@@ -100,8 +100,8 @@ function getRenderInformation(workspaceId, userMail, title) {
                         .then(user => {
                             if (user !== null)
                             {
-                                console.log(workspace.node_master);
                                 resolve({
+                                    workspaceId: workspaceId,
                                     title: workspace.name + ' - ' + title,
                                     in_use: {name: workspace.name, id: workspace._id},
                                     data_header: 'All Parts',

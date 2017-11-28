@@ -64,6 +64,8 @@ app.use(session({
 
 module.exports = app;
 
+// for parsing application/json
+app.use(bodyParser.json())
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -108,14 +110,23 @@ app.use(express.static('public'));
 server.on("listening", () => {
     fs.access(config.avatar, (err) => {
         if (err){
-            if (err.errno == -4058)
-            console.log("Create the directory avatar in" + config.avatar);
+            logError(err, "avatar", config.avatar);
         }
     });
     fs.access(config.gitfiles, (err) => {
         if (err){
-            if (err.errno== -4058)
-            console.log("Create the directory bocket in" + config.gitfiles);
+            logError(err, "bocket", config.gitfiles)
         }
     });
+    fs.access(config.specfiles, (err) => {
+        if (err){
+            logError(err, "spec", config.specfiles)
+        }
+    })
 });
+
+function logError(err, name, path){
+    if(err.errno== -4058)
+    console.log("Create the directory "+ name +" in" + path);
+    else console.log(err);
+}
