@@ -12,25 +12,54 @@ let NestedProject = mongoose.Schema({
 });
 
 let NestedPiece = mongoose.Schema({
-
+    // _id:
+    name: {type: String, require: true},
+    description: {type: String, default: "No description aviable"},
+    path: { type:String, require: true },
+    specFiles: { type: [String], default: [] }
 });
 
 let NestedAssembly = mongoose.Schema({
-
+    // _id:
+    name: {type: String, require: true},
+    description: {type: String, default: "No description aviable"},
+    path: { type:String, require: true },
+    specFiles: { type: [String], default: [] }
 });
 
 let NodeSchema = mongoose.Schema({
     name: {type:String, require: true, default: 'My Bocket'},
     description: String,
-    // piece: NestedPiece,
-    // assembly: NestedAssembly,
+    piece: {type: NestedPiece, require: false},
+    assembly: {type: NestedAssembly, require: false},
     type: { type:String, require: true },
-    path: { type:String, require: false },
     specpath: {type: [String], require: true, default: []},
     tags: {type: [String], require:true, default:[]},
     Workspace: { type: [NestedWorkspace], require: true},
+    // matrice de donnée ???
 })
 
 let Node = mongoose.model("Node", NodeSchema, "Nodes");
+// Node.bind()
+
+Node.initializeNode = (name, description, Workspace) => {
+    return new Promise((resolve, reject) => {
+        if (!name || !description || !Workspace)
+        reject(new Error("The Node Must have all the parameters"));
+        resolve(new Node({
+            name : name,
+            description : description,
+            Workspace: Workspace,
+        }));
+    });
+}
+
+Node.createPart = (node, part) => {
+
+}
+
+Node.createAssembly = (node, part) => {
+
+}
 
 module.exports = Node;
