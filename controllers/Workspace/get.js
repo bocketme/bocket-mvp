@@ -1,4 +1,6 @@
-let Workspace = require('../../models/Workspace');
+let project = require('../../models/project'),
+Workspace = require("../../models/Workspace"),
+User = require("../../models/User");
 
 let get = {
     index : (req, res) => {
