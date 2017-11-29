@@ -5,21 +5,21 @@
     </div>
         <div class="modal-content container">
             <div class="modal-body">
-                <form id="form-create-part" method="post" action="/test">
+                <form id="form-import-assembly" method="post" action="/test">
                     <div class="input-field col s12">
-                        <input id="part-name" type="text" name="part-name" class="validate">
-                        <label for="last_name">Assembly Name</label>
+                        <input id="part-name" type="text" name="name" class="validate">
+                        <label for="name">Assembly Name</label>
                     </div>
 
                     <div class="input-field col s12">
-                        <input id="Description" type="text" name="Description" class="validate">
-                        <label for="last_name">Description</label>
+                        <input id="description" type="text" name="description" class="validate">
+                        <label for="description">Description</label>
                     </div>
 
                     <div class="file-field input-field col s12">
                         <div class="files-button btn upload_button">
                             <span>...</span>
-                            <input type="file" name="create-part-files3D" @change="chargefile">
+                            <input type="file" name="import_assembly-file3d" @change="chargefile">
                         </div>
                         <div class="file-path-wrapper">
                             <input class="file-path validate" type="text" placeholder="Upload your 3D Model">
@@ -29,7 +29,7 @@
                     <div class="file-field input-field col s12">
                         <div class="files-button btn upload_button">
                             <span>...</span>
-                            <input type="file" multiple name="create-part-specFiles" @change="chargespecFiles">
+                            <input type="file" multiple name="import_assembly-specfiles" @change="chargespecFiles">
                         </div>
                         <div class="file-path-wrapper">
                             <input class="file-path validate" type="text" placeholder="Upload your Specs File">
@@ -37,8 +37,8 @@
                     </div>
                     <br>
                     <p>Tags</p>
-                    <div id="tags-create-part" class="chips"></div>
-                    <button class="btn button-form-validate" type="submit">Import an Assembly</button>
+                    <div id="tags-import-assembly" class="chips"></div>
+                    <button id="submit-import-assembly" class="btn button-form-validate" type="submit">Import an Assembly</button>
                 </form>
             </div>
         </div>

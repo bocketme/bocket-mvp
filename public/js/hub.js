@@ -1,7 +1,7 @@
 
 (function ($) {
   $(function () {
-    //initialize all modals           
+    //initialize all modals
     $('.modal').modal({
       dismissible: true, // Modal can be dismissed by clicking outside of the modal
       opacity: .7, // Opacity of modal background
@@ -10,12 +10,12 @@
       startingTop: '2%', // Starting top style attribute
       endingTop: '10%', // Ending top style attribute
     });
-    
+
     $('ul.tabs').tabs();
-    
+
     $('.collapsible').collapsible();
     $('.collapsible').collapsible('open', 1);
-    
+
     $('.dropdown-button').dropdown({
       inDuration: 300,
       outDuration: 225,
@@ -26,7 +26,7 @@
       alignment: 'left', // Displays dropdown with edge aligned to the left of button
       stopPropagation: false // Stops event propagation
     });
-    
+
     $(".triple-dots").dropdown({
       inDuration: 300,
       outDuration: 225,
@@ -39,10 +39,10 @@
     });
 
     $('.chips').material_chip();
-    
+
     $('#tags-create-part.chips').on('chip.add', function(e, chip){
       // you have the added chip here
-    });  
+    });
   });
 })(jQuery); // end of jQuery name space
 

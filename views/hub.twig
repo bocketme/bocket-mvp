@@ -15,23 +15,23 @@
 {% block body %}
 <div id="hub" class="row">
     <div id="first_column" class="col s3">
-        
+
         <button class="dropdown-button" data-beloworigin="true" data-activates='workspaces-dropdown'>
             <div>
                 {{ in_use.name }} <i class="tiny material-icons">arrow_drop_down</i>
             </div>
             <div class="username-dropdown">
-                {{ user }}                
+                {{ user }}
             </div>
         </button>
-        
+
         <ul id="workspaces-dropdown" class="dropdown-content">
             {% for workspace in workspaces %}
             <li><a href="/project/{{workspace._id}}">{{ workspace.name }}</a></li>
             {% endfor %}
             <li><a href="/logout">Log Out</a></li>
         </ul>
-        
+
         <div id="project-categories">
             <a href="/project/{{ in_use.id }}">
                 <button class="not-a-button" {% if "All Parts" in title  %}     id="selected" {% endif %}>All parts<span class='right-align badge'>{{ all_parts }}</span></button>
@@ -43,28 +43,28 @@
                 <button class="not-a-button" {% if "Duplicates" in title  %}    id="selected" {% endif %}>duplicates<span class='right-align badge'>{{ duplicates }}</span></button>
             </a>
         </div>
-        
+
     </div>
-    
+
     <div id="second_column" class="col s3">
         <div class="data-header">
-            <i class="material-icons favorite" style="color: #9b9b9b; font-size:10px;">star</i>{{ data_header }}            
-            <img class="triple-dots" data-activates='options-node'></img>                             
+            <i class="material-icons favorite" style="color: #9b9b9b; font-size:10px;">star</i>{{ data_header }}
+            <img class="triple-dots" data-activates='options-node'></img>
         </div>
-        
+
         <ul id='options-node' class='dropdown-content'>
             <!-- NODE MENU -->
-            <li class="option-node"  > <a class="dropdown-menu modal-trigger" href="#create-new-node" >          New node... </a></li> <!-- Create empty node -->
+            <li class="option-node"  >                      <a class="dropdown-menu modal-trigger modal-node-selector" href="#create-new-node" >          New node... </a></li> <!-- Create empty node -->
             <li class="divider"></li> <!-- CONTENT MENU -->
-            <li class="option-node"  >         <a class="dropdown-menu modal-trigger" href="#import-part" >      Import Part... </a></li> <!-- display panel create new part US2 -->
-            <li class="option-node"  >     <a class="dropdown-menu modal-trigger" href="#import-assembly" >  Import Assembly... </a></li> <!-- display panel create new assemby US2 -->
-            <li class="option-node disabled-link"  >       <a class="dropdown-menu modal-trigger" href="#upload-file3d">       Update 3D file... </a></li> <!-- display local explorer window -->
-            <li class="option-node disabled-link"  >    <a class="dropdown-menu modal-trigger" href="#import-specfiles">       Import file...</a></li> <!-- display local explorer window -->
-            <li class="divider"></li> <!-- MORE ACTIONS MENU voir menu déroulant dans gdrive --> 
-            <li class="option-node disabled-link"      > <a class="dropdown-menu modal-trigger" href="#insert-part">  Insert existing part</a></li>
-            <li class="option-node disabled-link"  > <a class="dropdown-menu modal-trigger" href="#insert-assembly">  Insert existing Assembly</a></li>
+            <li class="option-node"  >                      <a class="dropdown-menu modal-trigger modal-node-selector" href="#import-part" >      Import Part... </a></li> <!-- display panel create new part US2 -->
+            <li class="option-node"  >                      <a class="dropdown-menu modal-trigger modal-node-selector" href="#import-assembly" >  Import Assembly... </a></li> <!-- display panel create new assemby US2 -->
+            <li class="option-node"  >                      <a class="dropdown-menu modal-trigger modal-node-selector" href="#upload-file3d">       Update 3D file... </a></li> <!-- display local explorer window -->
+            <li class="option-node"  >                      <a class="dropdown-menu modal-trigger modal-node-selector" href="#import-specfiles">       Import file...</a></li> <!-- display local explorer window -->
+            <li class="divider"></li> <!-- MORE ACTIONS MENU voir menu déroulant dans gdrive -->
+            <li class="option-node"  >                      <a class="dropdown-menu modal-trigger modal-node-selector" href="#insert-part">  Insert existing part</a></li>
+            <li class="option-node"  >                      <a class="dropdown-menu modal-trigger modal-node-selector" href="#insert-assembly">  Insert existing Assembly</a></li>
         </ul>
-        
+
         {# Modals #}
         {% include "modals/create_part.twig" %}
         {% include "modals/new_node.twig" %}
@@ -72,17 +72,17 @@
         {% include "modals/import_assembly.twig" %}
         {% include "modals/upload_files3d.twig" %}
         {% include "modals/import_specfiles.twig" %}
-        
+
         <div id="second_column_content" class="clear">
             {% include "hub/search.twig" %}
             {% include "hub/node_tree.twig" %}
-            {% include "hub/content.twig" %}                     
+            {% include "hub/content.twig" %}
         </div>
     </div>
-    
+
     <div id="third_column" class = "col s6">
         {% include "hub/third_collumn_header.twig" %}
-        
+
         <div id="third_column_content">
             {% include "hub/tabs.twig" %}
             {% include 'hub/viewer.twig' %}
@@ -95,9 +95,9 @@
 
 
 {% block js %}
-    <script> 
-        var workspaceId = "{{ workspaceId }}";
-        var twignode = {{ node }} ;
+    <script>
+        const workspaceId = "{{ workspaceId }}";
+        const twignode = {{ node }} ;
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script src="/js/hub.js"></script>
