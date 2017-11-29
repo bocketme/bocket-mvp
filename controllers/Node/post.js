@@ -21,26 +21,25 @@ let post = {
 }
 
 /**
-* Create a new node inside the database 
+* Create a new node inside the database
 *      Used Models [Node, Workspaces]
-*      Required 
+*      Required
 */
 function createNewNode(req, res){
-    
+
     // Initialisation des variables
     let nodeParent =    escape(req.params.nodeParent);
     let description =   escape(req.body.description);
     let specFiles =     escape(req.files);
     let name =          escape(req.body.name);
-    let workspaceId =   escape(req.body.workspaceId);
-    
+
     // let node;
     let workspace = res.locals.workspace;
     let types_mime = [];
     let createFiles = [];
-    
+
     //TODO - Vérifier les droits de l'utilisateur -- Fonction bis
-    
+
     //Créer le noeud
     Node.initialize(name, description, { _id : workspace._id, name: workspace.name })
         .then((node) => {
@@ -53,26 +52,30 @@ function createNewNode(req, res){
                 //Initialiser des fichiers
                 createFiles.push(addSpec(file, node._id));
             })
-            
+
             Promise.all(types_mime)
             .then(() => {
                 return Promise.all(createFiles)
             })
             .then((paths) => {
                 console.log("chemin des fichiers crées : ", paths);
-                //TODO - Ajouter les chemins aux Node                 
+                //TODO - Ajouter les chemins aux Node
                 node.specpath = paths;
-                
+
                 //TODO - Ajouter le noeud au workspace
-            })            
+                return addNodetoWorkspace(workspace, nodeParent, { _id: node._id, title: node.name, children: [] })
+            })
+            .then(workspace => {
+                workspace.save().catch((err) => {throw err})
+            })
             .catch((err) => {
                 node.remove();
                 throw (err)
             })
         })
-        .then(() => { 
-            res.send() 
-            
+        .then(() => {
+            res.send()
+
         })
         .catch((err) => {
             console.log(err);
@@ -81,12 +84,12 @@ function createNewNode(req, res){
     }
 
     /**
-    * Create a new node inside an empty Node 
+    * Create a new node inside an empty Node
     *      Used Models [Node]
-    *      Required 
+    *      Required
     */
     function insertNewPart(req, res){
-        
+
         let nom;
         let description;
         let file3D;
@@ -95,42 +98,42 @@ function createNewNode(req, res){
 
         res.send();
     }
-    
+
     /**
-    * Create a new assembly inside an empty Node 
+    * Create a new assembly inside an empty Node
     *      Used Models [Node]
-    *      Required 
+    *      Required
     */
     function insertNewAssembly(req, res){
-        
-        res.send(); 
+
+        res.send();
     }
-    
-    
+
+
     /********************************************************/
-    /*                                                      */ 
-    /*                                                      */ 
-    /*                      Verification                    */ 
-    /*                                                      */ 
-    /*                                                      */ 
+    /*                                                      */
+    /*                                                      */
+    /*                      Verification                    */
+    /*                                                      */
+    /*                                                      */
     /********************************************************/
-    
+
     function verificationWriteInWorkspace(req, res, next){
-        let user = req.cookie.user;
+        let userMail = req.session.userMail;
         let workspaceId = req.body.workspaceId;
-        
-        if (!user)
+
+        if (!userMail)
          next("Error : User Not Found");
 
         Workspaces.findById({_id: workspaceId})
         .then((workspace) => {
             return new Promise((resolve, reject) => {
-                if (workspace.User.completeName == user.completeName)
+                if (workspace.User.email == userMail)
                 resolve();
                 else {
                     if(workspace.users && workspace.users.length !== 0){
                         workspace.users.forEach(worker => {
-                            if (worker.completeName == user.completeName){
+                            if (worker.email == userMail){
                                 resolve
                             }
                         });
@@ -141,27 +144,27 @@ function createNewNode(req, res){
         })
         //En cas de succès passe à la fonction suivante de la route spécifié.
         .thne(() => next())
-        //En cas de succès passe à la fonction de gestion d'erreur de la route spécifié.        
+        //En cas de succès passe à la fonction de gestion d'erreur de la route spécifié.
         .catch((err) => next(err));
     }
-    
+
     /********************************************************/
-    /*                                                      */ 
-    /*                                                      */ 
-    /*                      Promises                        */ 
-    /*                                                      */ 
-    /*                                                      */ 
+    /*                                                      */
+    /*                                                      */
+    /*                      Promises                        */
+    /*                                                      */
+    /*                                                      */
     /********************************************************/
-    
+
     function verifyTypes(type){
         return new Promise((resolve, reject) => {
             if (type !== null)
             resolve();
-            else 
+            else
             reject("Nous n'acceptons pas ce type de fichier");
         });
     }
-    
+
     function addSpec(file, nodeId){
         return new Promise((resolve, reject)=> {
             let relativePath = "./" + nodeId +  "/" + file.originalname;
@@ -172,10 +175,10 @@ function createNewNode(req, res){
                 if (err) reject(err);
                 fs.access(path.resolve(chemin, nodeId), (err) => {
                     if (err){
-                        fs.mkdir(path.resolve(chemin, nodeId), (err) => { 
+                        fs.mkdir(path.resolve(chemin, nodeId), (err) => {
                             if(err)
                             reject(err);
-                        })    
+                        })
                     }
                     fs.writeFile(path.resolve(chemin, nodeId, file.originalname), file.buffer.toString, (err) => {
                         if (err)
@@ -183,22 +186,22 @@ function createNewNode(req, res){
                         else
                         {
                             console.log(file.originalname + " created in : " + path + nodeId + file.originalname )
-                            resolve();  
-                        } 
+                            resolve();
+                        }
                     })
                 });
             })
         });
     }
-    
+
     /********************************************************/
-    /*                                                      */ 
-    /*                                                      */ 
-    /*                      Function                        */ 
-    /*                                                      */ 
-    /*                                                      */ 
+    /*                                                      */
+    /*                                                      */
+    /*                      Function                        */
+    /*                                                      */
+    /*                                                      */
     /********************************************************/
-    
+
     function deleteFiles(paths){
         paths.forEach((chemin) => {
             fs.open(path.resolve(chemin), (err) => {
@@ -212,9 +215,22 @@ function createNewNode(req, res){
             });
         });
     }
-    
-    function addNodetoWorkspace(workspace, cible, node){
-        wo
+
+    function addNodetoWorkspace(workspace, cible, data){
+
+        function createNode (node) {
+            node.children.forEach(child => {
+                node.children = createNode(node);
+            })
+            if (node.title == cible) {
+                node.children.push(data);
+            }
+            return node;
+        }
+
+        workspace.node_master = createNode(workspace.node_master)
+
+        return workspace
     }
-    
+
     module.exports = post;

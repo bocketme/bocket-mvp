@@ -42,7 +42,7 @@ let NodeSchema = mongoose.Schema({
 let Node = mongoose.model("Node", NodeSchema, "Nodes");
 // Node.bind()
 
-Node.initializeNode = (name, description, Workspace) => {
+Node.prototype.initializeNode = (name, description, Workspace) => {
     return new Promise((resolve, reject) => {
         if (!name || !description || !Workspace)
         reject(new Error("The Node Must have all the parameters"));
@@ -54,11 +54,11 @@ Node.initializeNode = (name, description, Workspace) => {
     });
 }
 
-Node.createPart = (node, part) => {
+Node.prototype.createPart = (node, part) => {
 
 }
 
-Node.createAssembly = (node, part) => {
+Node.prototype.createAssembly = (node, part) => {
 
 }
 
