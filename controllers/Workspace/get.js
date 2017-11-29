@@ -21,7 +21,7 @@ let get = {
                 res.sendStatus(err);
             else
                 res.redirect(err);
-        });       
+        });
     },
     duplicates : (req, res) => {
         let workspaceId = req.params.workspaceId;
@@ -32,9 +32,10 @@ let get = {
                 res.sendStatus(err);
             else
                 res.redirect(err);
-        });        
+        });
     },
     indexredirect : (req, res) => {
+         console.log(req.body);
         if (!req.body.email || !req.body.password || !req.body.workspaceId) {
             console.log("Nice try");
             res.redirect("/");

@@ -69,20 +69,22 @@
                 let formData =  new FormData(form);
                 var request = new XMLHttpRequest();
 
-                let chips = $('#tags-import-assembly').material_chip('data');
+                let chips = $('#tags-import-part').material_chip('data');
                 if(chips.length !== 0){
                     formData.append('tags', JSON.stringify(chips));
                 }
 
-                request.open("POST", "/part/child/" +cible, true);
+                request.open("POST", "/part/" +cible, true);
                 request.onload = function(oEvent) {
                     if (request.status == 200) {
-                        console.log("Uploaded!");
+
                     } else {
-                        console.log("Error " + request.status + " occurred when trying to upload your file.<br \/>");
+
                     }
                 };
-                request.onerror = () => {}
+                request.onerror = (err) => {
+                    console.error(err);
+                }
                 request.send(formData);
             }
             else {
@@ -90,7 +92,7 @@
             }
         });
         // Submit the insert of
-        $('#submit-import-part').click(event => {
+        $('#submit-import-assembly').click(event => {
             event.preventDefault();
             var cible = third_column.$data.selected;
             let form = document.querySelector("#form-import-part");
@@ -104,7 +106,7 @@
                     formData.append('tags', JSON.stringify(chips));
                 }
 
-                request.open("POST", "/part/child/" +cible, true);
+                request.open("POST", "/assembly/child/" +cible, true);
                 request.onload = function(oEvent) {
                     if (request.status == 200) {
                         console.log("Uploaded!");

@@ -26,6 +26,10 @@ let server = require('http').createServer(app);
 let io = require("socket.io")(server);
 let ioListener = require("./sockets/socketsListener")(io);
 
+
+// // parse the cookies of the application
+// app.use(cookieParser);
+
 //Initialize the favicon
 app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon-bocket.png')));
 
@@ -69,9 +73,6 @@ app.use(bodyParser.json())
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// parse the cookies of the application
-// app.use(cookieParser);
-
 // parse application/json
 app.use(bodyParser.json());
 
@@ -87,7 +88,7 @@ app.use(bodyParser.json());
 
 app.engine('twig', require('twig').__express);
 app.set("view engine", "twig");
-app.set('twig options', { 
+app.set('twig options', {
     strict_variables: false,
 });
 

@@ -90,7 +90,7 @@ var node_three = Vue.extend({
 new node_three().$mount('.node_constructor');
 
 $(document).ready(() => {
-   $('.collapsible').css({'margin':'0'})
+    $('.collapsible').css({'margin':'0'})
     $('.collapsible-header.node').click(function(el){
         $('.collapsible-header.node').removeClass('selected-accordion');
         $(this).addClass('selected-accordion');
