@@ -104,7 +104,6 @@ var Viewer = function (renderingDiv) {
 
     function getObject () {
         return new Promise(function (resolve, reject) {
-            var objLoader = new THREE.OBJLoader();
 
                 $.get('/node')
                 .done(function (data) {
