@@ -26,6 +26,10 @@ let server = require('http').createServer(app);
 let io = require("socket.io")(server);
 let ioListener = require("./sockets/socketsListener")(io);
 
+
+// // parse the cookies of the application
+// app.use(cookieParser);
+
 //Initialize the favicon
 app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon-bocket.png')));
 
@@ -64,12 +68,10 @@ app.use(session({
 
 module.exports = app;
 
+// for parsing application/json
+app.use(bodyParser.json())
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
-
-// parse the cookies of the application
-// app.use(cookieParser);
-
 // parse application/json
 app.use(bodyParser.json());
 
@@ -90,11 +92,6 @@ app.set('twig options', {
 });
 
 app.use("/", index);
-//app.use("/signin", signin);
-//app.use("/signup", signup);
-//app.use("/project", project);
-//app.use("/node", node);
-//app.use("/workspace", workspace);
 
 app.use("/signin", signin);
 app.use("/signup", signup);
@@ -113,15 +110,23 @@ app.use(express.static('public'));
 server.on("listening", () => {
     fs.access(config.avatar, (err) => {
         if (err){
-            if (err.errno == -4058)
-            console.log("Create the directory avatar in" + config.avatar);
-
+            logError(err, "avatar", config.avatar);
         }
     });
     fs.access(config.gitfiles, (err) => {
         if (err){
-            if (err.errno== -4058)
-            console.log("Create the directory bocket in" + config.gitfiles);
+            logError(err, "bocket", config.gitfiles)
         }
     });
+    fs.access(config.specfiles, (err) => {
+        if (err){
+            logError(err, "spec", config.specfiles)
+        }
+    })
 });
+
+function logError(err, name, path){
+    if(err.errno== -4058)
+    console.log("Create the directory "+ name +" in" + path);
+    else console.log(err);
+}
