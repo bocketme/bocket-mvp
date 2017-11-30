@@ -3,7 +3,7 @@
  * @author bocket.me
  * @param {HTMLElement} renderingDiv
  */
-var Viewer = function (renderingDiv) {
+var Viewer = function (renderDiv, file3D) {
     if (!(this instanceof Viewer))
         return console.error(new Error('Bad instanciation'));
 
@@ -53,8 +53,6 @@ var Viewer = function (renderingDiv) {
 /* ************************************************************************** */
 
     initScenes()
-    .then(function () {
-    })
     .catch(function (error) {
         $('#renderDiv').html("<h4>No Preview Aviable<h4>")
     });
@@ -105,20 +103,11 @@ var Viewer = function (renderingDiv) {
     function getObject () {
         return new Promise(function (resolve, reject) {
 
-                $.get('/node')
-                .done(function (data) {
-                    console.log(data);
-
-                    object = loadObjectFromJSON(data, 0xd6d6d6);
+                    object = loadObjectFromJSON(file3D, 0xd6d6d6);
                     //objectInit(object, data);
                     // this.fitToScreen();
 
                     resolve(object);
-                })
-                .fail(function (error) {
-                    console.log(error);
-                    reject(error);
-                });
         });
     }
 
@@ -315,11 +304,11 @@ Viewer.prototype.resize = function () {
     this.cameras[0].aspect = (element.clientWidth       ) / (element.clientHeight       );
     this.cameras[1].aspect = (element.clientWidth * 0.15) / (element.clientHeight * 0.15);
 
-    this.renderers[0].setSize((element.offsetWidth        ), (element.offsetHeight       ));
-    this.renderers[1].setSize((element.offsetHeight * 0.15), (element.offsetHeight * 0.15));
-
     this.cameras[0].updateProjectionMatrix();
     this.cameras[1].updateProjectionMatrix();
+
+    this.renderers[0].setSize((element.offsetWidth        ), (element.offsetHeight       ));
+    this.renderers[1].setSize((element.offsetHeight * 0.15), (element.offsetHeight * 0.15));
 };
 
 /* ************************************************************************** */

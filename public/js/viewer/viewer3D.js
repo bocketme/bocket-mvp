@@ -5,8 +5,11 @@
 /* ************************************************************************** */
 
 
-var renderArea = document.getElementById('renderDiv'),
-    viewer     = new Viewer(renderArea);
+var renderArea = document.getElementById('renderDiv');
+
+socket.on ("nodeObject", (file3D) => {
+    viewer     = new Viewer(renderArea, file3D);
+})
 
 // var socket = io.connect('http://localhost:8080');
 // var truc;

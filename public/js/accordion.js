@@ -94,8 +94,10 @@ $(document).ready(() => {
     $('.collapsible-header.node').click(function(el){
         $('.collapsible-header.node').removeClass('selected-accordion');
         $(this).addClass('selected-accordion');
-        var fill_value = $(this).contents().filter("span").html();
-        var breadcrumbs_value = $(this).contents().filter("span").attr("data-breadcrumbs");
+        let fill_value = $(this).contents().filter("span").html();
+        let breadcrumbs_value = $(this).contents().filter("span").attr("data-breadcrumbs");
+        let nodeID = $(this).contents().filter("span").attr("href");
         third_column.selectNode(fill_value, breadcrumbs_value);
+        socket.emit("nodeInformation", nodeID)
     });
 });

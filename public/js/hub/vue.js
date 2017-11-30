@@ -93,3 +93,41 @@ var create_part = new Vue({
         }
     }
 });
+
+var content = new Vue({
+    el:'#content',
+    data: {
+        title: "Not Aviable",
+        styleObject: {
+            height: '14px',
+            width: '14px',
+            color: 'grey'
+        },
+        users: [],
+        organization: "Not Aviable",
+        used: "Not Aviable",
+        pourcent: "0%",
+        url: "",
+    },
+    methods: {
+
+    }
+});
+
+var content = new Vue({
+    el:'#location',
+    data: {
+        title: "Not Aviable",
+        styleObject: {
+            height: '14px',
+            width: '14px',
+            color: 'grey'
+        },
+        users: [],
+        created: "",
+        modified: "",
+    },
+    methods: {
+
+    }
+});
