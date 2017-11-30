@@ -1,15 +1,13 @@
 let Node = require('../../Node');
 
-function CreateNode(name, description, Workspace){
-    return new Promise((resolve, reject) => {
-        if (!name || !description || !Workspace)
-            reject(new Error("The Node Must have all the parameters"));
-        resolve(new Node({
-            name : name,
-            description : description,
-            Workspace: Workspace,
-        }));
+function CreateNode(name, description, workspaceId) {
+    if (!name || !description || !workspaceId)
+        throw("CreateNode failed with : name :", name, " description:", description, " workspaceId :", workspaceId);
+    return new Node({
+        name: name,
+        description: description,
+        Workspace: workspaceId,
     });
 }
 
-module.exports = CreateNode
+module.exports = CreateNode;

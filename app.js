@@ -18,15 +18,20 @@ const node = require("./routes/node");
 const workspace = require("./routes/workspace");
 
 /* SESSION */
-let session = require("express-session");
-const MongoStore = require('connect-mongo')(session); //session store
+let expressSession = require("express-session");
+const MongoStore = require('connect-mongo')(expressSession); //session store
+let session = expressSession({
+    secret: config.secretSession,
+    store: new MongoStore({ url: config.mongoDB}),
+    resave: false,
+    saveUninitialized: false
+});
+let sharedsession = require("express-socket.io-session");
 
 let app = express();
 let server = require('http').createServer(app);
 let io = require("socket.io")(server);
 let ioListener = require("./sockets/socketsListener")(io);
-
-
 // // parse the cookies of the application
 // app.use(cookieParser);
 
@@ -53,18 +58,8 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use(morgan('dev'));
 
-app.use(session({
-    secret: config.secretSession,
-    store: new MongoStore({ url: config.mongoDB}),
-    resave: false,
-    saveUninitialized: false
-}));
-
-// Add the session in sockets (deprecated)
-/*io.use(function(socket, next) {
-    //console.log(socket);
-    session(socket.request, socket.request.res, next);
-});*/
+app.use(session);
+io.use(sharedsession(session));
 
 module.exports = app;
 
@@ -102,7 +97,7 @@ app.post("/test", (req, res) => {
     console.log(req.query);
     console.log(req.params);
     res.send(req.query);
-})
+});
 
 app.use(express.static('public'));
 

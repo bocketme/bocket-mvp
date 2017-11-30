@@ -1,5 +1,8 @@
 let serverConfiguration = require("../config/server");
 let mongoose = require("mongoose");
+let NestedNode = require("./nestedSchema/NestedNodeSchema");
+let uniqueValidator = require('mongoose-unique-validator');
+let createNode = require("./utils/create/createNode");
 
 let NestedWorkspace = mongoose.Schema({
     _id: {type: mongoose.SchemaTypes.ObjectId, require: true},
@@ -30,36 +33,28 @@ let NestedAssembly = mongoose.Schema({
 let NodeSchema = mongoose.Schema({
     name: {type:String, require: true, default: 'My Bocket'},
     description: String,
-    piece: {type: NestedPiece, require: false},
-    assembly: {type: NestedAssembly, require: false},
-    type: { type:String, require: true },
-    specpath: {type: [String], require: true, default: []},
-    tags: {type: [String], require:true, default:[]},
-    Workspace: { type: [NestedWorkspace], require: true},
+    piece: {type: NestedPiece},
+    assembly: {type: NestedAssembly},
+    //type: { type:String, require: true },
+    //specpath: {type: [String], require: true, default: []},
+    //tags: {type: [String], require:true, default:[]},
+    children: {type: [NestedNode], default: []}
     // matrice de donnée ???
 })
 
 let Node = mongoose.model("Node", NodeSchema, "Nodes");
 // Node.bind()
 
-Node.prototype.initializeNode = (name, description, Workspace) => {
-    return new Promise((resolve, reject) => {
-        if (!name || !description || !Workspace)
-        reject(new Error("The Node Must have all the parameters"));
-        resolve(new Node({
-            name : name,
-            description : description,
-            Workspace: Workspace,
-        }));
-    });
-}
+NodeSchema.plugin(uniqueValidator);
 
 Node.prototype.createPart = (node, part) => {
 
-}
+};
 
 Node.prototype.createAssembly = (node, part) => {
 
-}
+};
+
+Node.prototype.create = createNode;
 
 module.exports = Node;

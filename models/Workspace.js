@@ -10,10 +10,10 @@ let Stripe = new mongoose.Schema({
 });
 
 let WorkspaceSchema = new mongoose.Schema({
-    name: { type: String, require: true, unique: true },
+    name: { type: String, require: true },
     owner: {type: User, require: true},
     description: String,
-    node_master: { type: Node , default: {_id: mongoose.Types.ObjectId(), title: "My Bocket", children: []}},
+    node_master: { type: Node },
     creation: { type:Date, default: new Date() },
     users: {type: [User], required: false, default: []},
     organization: {type: Organization, required: true} // /!\ WITHOUT END VARIABLE /!\
