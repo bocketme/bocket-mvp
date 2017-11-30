@@ -22,7 +22,7 @@ var Viewer = function (renderingDiv) {
 
     var p_scene = new THREE.Scene();
 
-    var p_renderer = new THREE.WebGLRenderer({alpha: true, antialias: true, logarithmicDepthBuffer: true});
+    var p_renderer = new THREE.WebGLRenderer({canvas: renderSurface, alpha: true, antialias: true, logarithmicDepthBuffer: true});
         p_renderer.localClippingEnabled = true;
         p_renderer.setClearColor(0xffffff);
         p_renderer.setSize(p_width, p_height);
@@ -38,7 +38,7 @@ var Viewer = function (renderingDiv) {
 
     var p_scene2 = new THREE.Scene();
 
-    var p_renderer2 = new THREE.WebGLRenderer({alpha: true, antialias: true, logarithmicDepthBuffer: true});
+    var p_renderer2 = new THREE.WebGLRenderer({canvas: axisCanvas,alpha: true, antialias: true, logarithmicDepthBuffer: true});
         p_renderer2.setSize(p_axisSize, p_axisSize);
 
     var p_camera2 = new THREE.OrthographicCamera(p_axisSize / -2, p_axisSize / 2, p_axisSize / 2, p_axisSize / -2, 1, 2147483647);
@@ -181,7 +181,6 @@ var Viewer = function (renderingDiv) {
         return new Promise(function (resolve, reject) {
             initMainScene()
             .then(function () {
-                p_renderer.domElement.className += 'viewer-canvas';
                 renderArea.appendChild(p_renderer.domElement);
             })
             .catch(function (error) {
@@ -190,7 +189,6 @@ var Viewer = function (renderingDiv) {
 
             initAxisScene()
             .then(function () {
-                p_renderer2.domElement.className += 'axis-canvas';
                 renderArea.appendChild(p_renderer2.domElement);
             })
             .catch(function (error) {
@@ -318,11 +316,11 @@ Viewer.prototype.resize = function () {
     this.cameras[0].aspect = (element.clientWidth       ) / (element.clientHeight       );
     this.cameras[1].aspect = (element.clientWidth * 0.15) / (element.clientHeight * 0.15);
 
-    this.cameras[0].updateProjectionMatrix();
-    this.cameras[1].updateProjectionMatrix();
-
     this.renderers[0].setSize((element.offsetWidth        ), (element.offsetHeight       ));
     this.renderers[1].setSize((element.offsetHeight * 0.15), (element.offsetHeight * 0.15));
+
+    this.cameras[0].updateProjectionMatrix();
+    this.cameras[1].updateProjectionMatrix();
 };
 
 /* ************************************************************************** */
