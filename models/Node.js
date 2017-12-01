@@ -33,19 +33,18 @@ let NestedAssembly = mongoose.Schema({
 let NodeSchema = mongoose.Schema({
     name: {type:String, require: true, default: 'My Bocket'},
     description: String,
-    piece: {type: NestedPiece},
-    assembly: {type: NestedAssembly},
-    //type: { type:String, require: true },
+    piece: {type: NestedPiece, default: null},
+    assembly: {type: NestedAssembly, default: null},
+    type: { type:String, require: true },
     //specpath: {type: [String], require: true, default: []},
     //tags: {type: [String], require:true, default:[]},
     children: {type: [NestedNode], default: []}
     // matrice de donnée ???
-})
-
-let Node = mongoose.model("Node", NodeSchema, "Nodes");
-// Node.bind()
+});
 
 NodeSchema.plugin(uniqueValidator);
+
+let Node = mongoose.model("Node", NodeSchema, "Nodes");
 
 Node.prototype.createPart = (node, part) => {
 

@@ -50,7 +50,7 @@ function AddNode(node, parentId) {
             .then(parent => {
                 if (parent === null)
                     resolve(null);
-                parent.children.push({_id: node._id, title: node.name, children: node.children});
+                parent.children.push({_id: node._id, title: node.name, children: node.children, type: node.type});
                 parent.save()
                     .then(n => resolve({parent: n, child: node}))
                     .catch(err => reject(err))

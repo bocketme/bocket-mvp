@@ -1,7 +1,9 @@
-let project = require('../models/project'),
-Workspace = require("../models/Workspace"),
-User = require("../models/User");
-Node = require("../models/Node");
+let project = require('../models/project');
+let Workspace = require("../models/Workspace");
+let User = require("../models/User");
+let Node = require("../models/Node");
+
+let NodeTypeEnum = require("../enum/NodeTypeEnum");
 
 module.exports = {
     /**
@@ -134,7 +136,8 @@ function getRenderInformation(workspaceId, userMail, title) {
                                     node: JSON.stringify(node),
                                     all_parts: 100,
                                     last_updates: 10,
-                                    duplicates: 35
+                                    duplicates: 35,
+                                    NodeTypeEnum: JSON.stringify(NodeTypeEnum) /* const for fronst end */
                                 });
                             })
                             .catch(err => {
