@@ -13,18 +13,19 @@ function newNodeListener(socket) {
                     return ;
                 }
                 //TODO: check if use has the rights
-                console.log("ICI");
                 let node = ModelsMaker.CreateNode(context.node.name, context.node.description, context.workspaceId);
-                console.log("ICI");
                 node.save()
                     .then(node => {
-                        AddNode(workspace, node)
+                        AddNode(node, context.parent)
+                            .then(n => {
+                                if (n !== null)
+                                    socket.emit("newNode", n)
+                            })
+                            .catch((err) => {
+                                console.log("[newNodeListener] : ", err);
+                                internalErrorEmitter(socket)
+                            });
                     })
-                    .then(w => socket.emit("newNode", w.node_master))
-                    .catch((err) => {
-                        console.log("[newNodeListener] : ", err);
-                        internalErrorEmitter(socket)
-                    });
             })
             .catch((err) => {
                 console.log("[newNodeListener2] : ", err);
@@ -38,13 +39,14 @@ function newNodeListener(socket) {
 
 module.exports = newNodeListener;
 
-function AddNode(workspace, node) {
+function AddNode(node, parentId) {
     return new Promise((resolve, reject) => {
-        console.log("AddNode");
-        Node.findById(workspace.node_master._id)
-            .then(node => {
-                node.children.push({_id: node._id, title: node.name, children: node.children});
-                node.save()
+        Node.findById(parent)
+            .then(parent => {
+                if (parent === null)
+                    resolve(null);
+                parent.children.push({_id: node._id, title: node.name, children: node.children});
+                parent.save()
                     .then(n => resolve(n))
                     .catch(err => reject(err))
             })

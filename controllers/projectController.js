@@ -120,7 +120,7 @@ function getRenderInformation(workspaceId, userMail, title) {
                                 let i = 0;
                                 while (i < node_master.children.length)
                                 {
-                                    node.children.push({title: node_master.children[i].name, _id: node_master.children[i]._id, children: []});
+                                    node.children.push({title: node_master.children[i].title, _id: node_master.children[i]._id, children: []});
                                     i += 1;
                                 }
                                 console.log("NODES = ", node);
