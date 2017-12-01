@@ -1,0 +1,14 @@
+#content-maturity{
+    display: inline-block;
+}
+div#content>p {
+    font-size: 12px;
+}
+div#content>h5 {
+    margin: 0;
+    font-size: 14px;
+}
+
+div#content>p>span.right, div#content>span.right, div#content>h5>span.right {
+    margin-right: 30%;
+}

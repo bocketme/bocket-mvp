@@ -1,25 +1,3 @@
-var second_collumn = new Vue ({
-    el: "#second_column_content",
-    data: {
-        content: "Select a Node to see more information",
-    },
-    methods:{
-        loadingNewContent: () => {
-            return this.content = '<div class="preloader-wrapper big active">'
-                + '<div class="spinner-layer spinner-blue-only">'
-                + '<div class="circle-clipper left">'
-                + '<div class="circle"></div>'
-                + '</div><div class="gap-patch">'
-                + '<div class="circle"></div>'
-                + '</div><div class="circle-clipper right">'
-                + '<div class="circle"></div>'
-                + '</div>'
-                + '</div>'
-                + '</div>'
-        },
-    }
-});
-
 var third_column = new Vue ({
     el: "#third_column",
     data: {
@@ -101,31 +79,35 @@ var content = new Vue({
         styleObject: {
             height: '14px',
             width: '14px',
-            color: 'grey'
+            'background-color': 'grey',
+            display: 'inline-block',
         },
         users: [],
         organization: "Not Aviable",
         used: "Not Aviable",
         pourcent: "0%",
         url: "",
+        maturity: "",
     },
     methods: {
 
     }
 });
 
-var content = new Vue({
+var local_node = new Vue({
     el:'#location',
     data: {
         title: "Not Aviable",
         styleObject: {
             height: '14px',
             width: '14px',
-            color: 'grey'
+            display: 'inline-block',
+            'background-color': 'grey'
         },
         users: [],
-        created: "",
+        created_on: "",
         modified: "",
+        maturity: "",
     },
     methods: {
 

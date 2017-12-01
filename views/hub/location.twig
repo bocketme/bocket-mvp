@@ -1,7 +1,11 @@
 <div id="location">
-    <h5>Location <span>{% verbatim %}{{ title }}{% endverbatim %} </span></h5>
-    <p>Maturity : {% verbatim %} <div v-bind:style="styleObject"></div> {{ maturity }}{% endverbatim %}</p>
-    <p>Owners : {% verbatim %} <div class="chips"> <img v-for="(user, index) in users" v-bind:src="user.url" alt="user.name"> </div> {% endverbatim %}</p>
-    <p>Created on : {% verbatim %} {{ created }) {% endverbatim %}</p>
-    <p>Last modification :{% verbatim %}{{ modified }}{% endverbatim %} </p>
+    <div class="row">
+        <div class="col s6"> </div>
+        <div class="col s6"> </div>
+    </div>
+    <h5>Location <span class="right">{% verbatim %}{{ title }}{% endverbatim %} </span></h5>
+    <p id="location-maturity">Maturity : </p>  <span class="right">{% verbatim %} <div v-bind:style="styleObject"></div> {{ maturity }}{% endverbatim %}</span>
+    <p>Owners : {% verbatim %} <img v-for="(user, index) in users" v-bind:src="user.url" alt="user.name"> {% endverbatim %}</p>
+    <p>Created on : <span class="right"> {% verbatim %} {{ created_on }} {% endverbatim %}</span></p>
+    <p>Last modification :<span class="right">{% verbatim %}{{ modified }}{% endverbatim %} </span> </p>
 </div>

@@ -12,7 +12,7 @@ module.exports = function (socket) {
                 socket.emit("NodeError");
             else {
                 // Envoyer le fichier 3D
-                if (!!(node.assembly)) {
+                if (node.assembly) {
                     socket.emit("nodeObjectError", 'Feature not supported !');
                     // socket.emit("nodeObject", fs.read(path.resolve(configServer.gitfiles , node.assembly.path() )));
 
@@ -20,7 +20,7 @@ module.exports = function (socket) {
                     if (node.assembly.annotation)
                         socket.emit('NodeAnnotation', node.assembly.annotation);
                 }
-                else if (!!(node.part)) {
+                else if (node.part) {
                     socket.emit("nodeObject", fs.read(path.resolve(configServer.gitfiles , node.part.path() )));
 
                     //Envoyer les annotations.
