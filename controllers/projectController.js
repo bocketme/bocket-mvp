@@ -1,6 +1,7 @@
 let project = require('../models/project'),
 Workspace = require("../models/Workspace"),
 User = require("../models/User");
+Node = require("../models/Node");
 
 module.exports = {
     /**
@@ -112,22 +113,40 @@ function getRenderInformation(workspaceId, userMail, title) {
                     console.log(user);
                     if (user !== null)
                     {
-                        resolve({
-                            // workspaceId: workspaceId,
-                            title: workspace.name + ' - ' + title,
-                            in_use: {name: workspace.name, id: workspace._id},
-                            data_header: 'All Parts',
-                            user: user.completeName,
-                            workspaces: user.workspaces,
-                            node: JSON.stringify(workspace.node_master),
-                            all_parts: 100,
-                            last_updates: 10,
-                            duplicates: 35
-                        });
+                        Node.findById(workspace.node_master._id)
+                            .then(node_master => {
+                                console.log("NODE_MASTER = ", node_master);
+                                let node = {title : node_master.name, _id: node_master._id, children:[]};
+                                let i = 0;
+                                while (i < node_master.children.length)
+                                {
+                                    node.children.push({title: node_master.children[i].name, _id: node_master.children[i]._id, children: []});
+                                    i += 1;
+                                }
+                                console.log("NODES = ", node);
+                                resolve({
+                                    // workspaceId: workspaceId,
+                                    title: workspace.name + ' - ' + title,
+                                    in_use: {name: workspace.name, id: workspace._id},
+                                    data_header: 'All Parts',
+                                    user: user.completeName,
+                                    workspaces: user.workspaces,
+                                    node: JSON.stringify(node),
+                                    all_parts: 100,
+                                    last_updates: 10,
+                                    duplicates: 35
+                                });
+                            })
+                            .catch(err => {
+                                console.log("[project controller] : error while finding node_master: ", err);
+                                reject(500)
+                            });
                     }
                     else
-                    console.log("[projectController.indexPOST] : ", "User not found");
-                    reject("/signin")
+                    {
+                        console.log("[projectController.indexPOST] : ", "User not found");
+                        reject("/signin")
+                    }
                 })
                 .catch(err => {
                     console.log("[projectController.indexPOST] :", err);

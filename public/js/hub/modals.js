@@ -7,9 +7,7 @@
             var form = document.querySelector("#form-create-new-node");
             if(cible !== "Select a node"){
                 var node = {name: $("#node-name").val(), description: $("#node-description").val()};
-                var splitedURL = window.location.href.split("//")[1].split("/");
-                var workspaceId = splitedURL[2];
-                socket.emit("newNode", {node: node, workspaceId: workspaceId});
+                socket.emit("newNode", {node: node, workspaceId: workspaceId, parent: idOfchoosenNode});
             }
             else {
                 Materialize.toast("You must select a node", 1000);

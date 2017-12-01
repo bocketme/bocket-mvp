@@ -38,8 +38,9 @@ var child_cascade = function(node, sub_level, breadcrumbs) {
     span.setAttribute('v-on:click.native', "selectNode('"+node.title +"','" + breadcrumbs +"')");
     span.appendChild(text_header);
 
-    console.log(node.children.length);
+    console.log("NODE = ", node);
     if (node.children && !node.children.length == 0) {
+        console.log(node.children.length);
         breadcrumbs+= "/";
         header.setAttribute('class', 'collapsible-header node has-child valign-wrapper group-'+sub_level+'-has-child ');
 
@@ -94,6 +95,7 @@ $(document).ready(() => {
     $('.collapsible-header.node').click(function(el){
         $('.collapsible-header.node').removeClass('selected-accordion');
         $(this).addClass('selected-accordion');
+        idOfchoosenNode = $(this).contents().filter("span").attr("href");
         var fill_value = $(this).contents().filter("span").html();
         var breadcrumbs_value = $(this).contents().filter("span").attr("data-breadcrumbs");
         third_column.selectNode(fill_value, breadcrumbs_value);

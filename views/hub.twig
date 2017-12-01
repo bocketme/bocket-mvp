@@ -96,8 +96,9 @@
 
 {% block js %}
     <script>
-        const workspaceId = "{{ workspaceId }}";
-        const twignode = {{ node }} ;
+        var workspaceId = "{{ in_use.id }}";
+        var idOfchoosenNode = undefined;
+        const  twignode = {{ node }} ;
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script src="/js/hub.js"></script>
