@@ -118,7 +118,7 @@ function getRenderInformation(workspaceId, userMail, title) {
                             .then(node_master => {
                                 console.log("NODE_MASTER = ", node_master);
                                 let children = node_master.children.length !== 0;
-                                let node = {title : node_master.name, _id: node_master._id, children: children};
+                                let node = {title : node_master.name, _id: node_master._id, type: node_master.type, children: children};
                                 let i = 0;
                                 while (i < node_master.children.length)
                                 {
