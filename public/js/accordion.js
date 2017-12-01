@@ -34,9 +34,9 @@ var child_cascade = function(node, sub_level, breadcrumbs) {
 
     image.setAttribute('class', 'responsive-img pad-right');
     span.setAttribute("data-breadcrumbs", breadcrumbs);
-    span.setAttribute("href", node._id)
     span.setAttribute('v-on:click.native', "selectNode('"+node.title +"','" + breadcrumbs +"')");
     span.appendChild(text_header);
+    header.setAttribute("id", node._id);
 
     console.log("NODE = ", node);
     if (node.children && !node.children.length == 0) {
@@ -95,9 +95,14 @@ $(document).ready(() => {
     $('.collapsible-header.node').click(function(el){
         $('.collapsible-header.node').removeClass('selected-accordion');
         $(this).addClass('selected-accordion');
-        idOfchoosenNode = $(this).contents().filter("span").attr("href");
+        idOfchoosenNode = $(this).attr("id");
         var fill_value = $(this).contents().filter("span").html();
         var breadcrumbs_value = $(this).contents().filter("span").attr("data-breadcrumbs");
         third_column.selectNode(fill_value, breadcrumbs_value);
     });
+    
+    socket.on("newNode", function (node) {
+        console.log("newNode: ", node);
+        $("#"+node.parent._id).parent().after("<p>" + node.child.name + "</p>")
+    })
 });

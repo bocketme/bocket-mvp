@@ -3,8 +3,12 @@ let Workspace = require("../models/Workspace");
 let Node = require("../models/Node");
 let internalErrorEmitter = require("./emitter/internalErrorEmitter");
 
+/**
+ * Add a new node to the parentNode, and then send the information to the front
+ * @param socket
+ */
 function newNodeListener(socket) {
-    socket.on("newNode", (context) => { // context = {workspaceId, nodeInformation }
+    socket.on("newNode", (context) => { // context = {workspaceId, node {name, descruption}, parent (parentId) }
         Workspace.findById(context.workspaceId)
             .then(workspace => {
                 if (workspace === null)
@@ -19,7 +23,7 @@ function newNodeListener(socket) {
                         AddNode(node, context.parent)
                             .then(n => {
                                 if (n !== null)
-                                    socket.emit("newNode", n)
+                                    socket.emit("newNode", n) // emit the parent node and et child node to the front
                             })
                             .catch((err) => {
                                 console.log("[newNodeListener] : ", err);
@@ -40,14 +44,15 @@ function newNodeListener(socket) {
 module.exports = newNodeListener;
 
 function AddNode(node, parentId) {
+    console.log("node: ", node._id, " parent: ", parentId);
     return new Promise((resolve, reject) => {
-        Node.findById(parent)
+        Node.findById(parentId)
             .then(parent => {
                 if (parent === null)
                     resolve(null);
                 parent.children.push({_id: node._id, title: node.name, children: node.children});
                 parent.save()
-                    .then(n => resolve(n))
+                    .then(n => resolve({parent: n, child: node}))
                     .catch(err => reject(err))
             })
             .catch(err => reject(err));
