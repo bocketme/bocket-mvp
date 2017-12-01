@@ -20,7 +20,6 @@ module.exports = {
     },
     indexPOST: (req, res) => { //email, password & workspaceId
         // TODO: CHECK SI L'UTILISATEUR EST CONNECTEE ET A LE DROIT D'AVOIR ACCES A CE WSP
-        console.log("yollo")
         if (!req.body.email || !req.body.password || !req.body.workspaceId) {
             console.log("Nice try");
             res.redirect("/");
@@ -116,7 +115,8 @@ function getRenderInformation(workspaceId, userMail, title) {
                         Node.findById(workspace.node_master._id)
                             .then(node_master => {
                                 console.log("NODE_MASTER = ", node_master);
-                                let node = {title : node_master.name, _id: node_master._id, children:[]};
+                                let children = node_master.children.length !== 0;
+                                let node = {title : node_master.name, _id: node_master._id, children: children};
                                 let i = 0;
                                 while (i < node_master.children.length)
                                 {
