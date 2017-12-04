@@ -17,22 +17,24 @@ var iconBuilder = (type) => {
     } else if (type == NodeTypeEnum.assembly) {
         var icon = document.createElement('i'),
             text_icon = document.createTextNode('keyboard_arrow_right');
-        icon.setAttribute('class', 'material-icons');
+        icon.setAttribute('class', 'material-icons assembly');
         icon.appendChild(text_icon);
+        icon.addEventListener('click', loadChild, false);
         return icon;
-    } else
-        return console.error(new Error(''));
-
+    }
+        console.error(new Error('Bad Argument'));
+        return;
 };
 
 var threeChild = (node, parentId) => {
-    console.log(node);
+    if (!node)
+        console.log("There is no Node");
+
     if(!node.name)
     node.name = node.title;
 
-      var parent, cible, breadcrumbs, sub_level,
-          icon = iconBuilder(node.type),
-          row = row = document.createElement('div'),
+      var parent, cible, breadcrumbs, sub_level, icon,
+          row = document.createElement('div'),
           body = document.createElement('div'),
           li = document.createElement('li'),
           image = imageBuilder(node.type),
@@ -65,6 +67,7 @@ var threeChild = (node, parentId) => {
     row.setAttribute('class', 'row colla');
 
     if (node.type == NodeTypeEnum.assembly) {
+        icon = iconBuilder(node.type);
         header.setAttribute('class', 'collapside-header node has-child valign-wrapper ');
         header.appendChild(icon);
         header.appendChild(image);
@@ -138,6 +141,11 @@ var newChild = (node, parentId) => {
 
 };
 
+function loadChild() {
+    var nodeID = $(this).parent().attr('id');
+    socket.emit("searchChild", nodeID);
+}
+
 $(document).ready(() => {
     threeChild(twignode);
     $('.collapsible').css({'margin':'0'})
@@ -152,8 +160,5 @@ $(document).ready(() => {
 
     socket.on("newNode", function (node) {
         newChild(node.child, node.parent._id);
-    })
-    socket.on(
-
-    )
+    });
 });
