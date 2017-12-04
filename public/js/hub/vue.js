@@ -1,25 +1,3 @@
-var second_collumn = new Vue ({
-    el: "#second_column_content",
-    data: {
-        content: "Select a Node to see more information",
-    },
-    methods:{
-        loadingNewContent: () => {
-            return this.content = '<div class="preloader-wrapper big active">'
-                + '<div class="spinner-layer spinner-blue-only">'
-                + '<div class="circle-clipper left">'
-                + '<div class="circle"></div>'
-                + '</div><div class="gap-patch">'
-                + '<div class="circle"></div>'
-                + '</div><div class="circle-clipper right">'
-                + '<div class="circle"></div>'
-                + '</div>'
-                + '</div>'
-                + '</div>'
-        },
-    }
-});
-
 var third_column = new Vue ({
     el: "#third_column",
     data: {

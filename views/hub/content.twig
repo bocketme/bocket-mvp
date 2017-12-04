@@ -1,9 +1,8 @@
-<ul id="content-part" class="collapsible" data-collapsible="accordion">
-        <li>
-            <div class="collapsible-header assembly valign-wrapper"><i class="material-icons">keyboard_arrow_right</i>CONTENT</div>
-            <div id="content" class="collapsible-body">
-                {% verbatim %}{{ content }}{% endverbatim %}
-            </div>
-        </li>
-    </ul>
-    
+<div id="content">
+    <h5>Content         <span class="right">{% verbatim %} <img :src="url" alt=""> {{ title }}{% endverbatim %}</span></h5>
+    <p id="content-maturity">Maturity :</p>       <span class="right">{% verbatim %} <div v-bind:style="styleObject" ></div> {{ maturity }}{% endverbatim %}</span>
+    <p>Owners :         <span class="right">{% verbatim %} <img v-for="(user, index) in users" v-bind:src="user.url" v-bind:alt="user.name"> {% endverbatim %}</span></p>
+    <p>Organization     <span class="right">{% verbatim %} {{organization}} {% endverbatim %}</span></p>
+    <p>Where Used :     <span class="right">{% verbatim %} {{used}} {% endverbatim %}</span></p>
+    <p>Quality :        <span class="right">{% verbatim %} {{pourcent}} {% endverbatim %}</span></p>
+</div>

@@ -99,6 +99,7 @@ $(document).ready(() => {
         var fill_value = $(this).contents().filter("span").html();
         var breadcrumbs_value = $(this).contents().filter("span").attr("data-breadcrumbs");
         third_column.selectNode(fill_value, breadcrumbs_value);
+        socket.emit("nodeInformation", nodeID)
     });
     
     socket.on("newNode", function (node) {

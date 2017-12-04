@@ -3,6 +3,7 @@ let checkUniqueField = require("./checkUniqueField");
 let signinListener = require("./signinListener");
 let createPartListener = require("./createPartListener");
 let newNodeListener = require("./newNodeListener");
+let NodeInformationListener = require("./nodeInformationListener");
 
 module.exports = function(io) {
     io.on('connection', function (socket) {
@@ -11,5 +12,6 @@ module.exports = function(io) {
         signinListener(socket);
         createPartListener(socket);
         newNodeListener(socket);
+        NodeInformationListener(socket);
     });
 };
