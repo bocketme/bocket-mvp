@@ -5,7 +5,6 @@ const NestedIssueSchema = require('./nestedSchema/NestedIssueSchema');
  * Warning
  */
 
-
 let ProjectSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: String,

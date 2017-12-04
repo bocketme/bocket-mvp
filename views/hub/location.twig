@@ -1,15 +1,14 @@
-<div id="location">
+<div id="location" class="hide">
     <div class="row">
         <div class="col s6"> <h5>Location</h5> </div>
-        <div class="col s6"> {% verbatim %}{{ title }}{% endverbatim %} </div>
     </div>
     <div class="row">
         <div class="col s6"> <p>Maturity :</p> </div>
-        <div class="col s6"> {% verbatim %} <div v-bind:style="styleObject"></div> {{ maturity }}{% endverbatim %} </div>
+        <div class="col s6"> {% verbatim %} <div class="maturity-cube" v-bind:style="styleObject"></div> {{ maturity }}{% endverbatim %} </div>
     </div>
     <div class="row">
         <div class="col s6"> <p>Owners : </p> </div>
-        <div class="col s6"> {% verbatim %} <img v-for="(user, index) in users" v-bind:src="user.url" alt="user.name"> {% endverbatim %} </div>
+        <div class="col s6"> {% verbatim %} <img v-for="(owner, index) in owners" v-bind:src="owner.url" alt="owner.name" class="user-image"> {% endverbatim %} </div>
     </div>
     <div class="row">
         <div class="col s6"> <p>Created on :</p>  </div>

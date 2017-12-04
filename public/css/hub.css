@@ -83,7 +83,7 @@ main {
 
 /*
 *
-* Rhe 
+* Rhe
 *
 */
 
@@ -91,7 +91,7 @@ main {
     font-family: 'Montserrat';
     font-weight: 600;
     color: white;
-    background-color: #535151; 
+    background-color: #535151;
 }
 
 #content-part {
@@ -195,11 +195,11 @@ span.badge {
 .triple-dots{
     content:url("/img/01-dots icon.svg");
     height: 22px;
-    margin-top: -2px; 
+    margin-top: -2px;
     padding-top: 2px;
     padding-right: 14px;
     float: right;
-    opacity: 0.3;       
+    opacity: 0.3;
 }
 
 .username-dropdown{
@@ -208,7 +208,7 @@ span.badge {
     font-weight: 400;
 }
 
-div.search-and-branch{
+div#search-and-branch{
     padding:  5px 5px;
 }
 
@@ -221,7 +221,7 @@ input[type='text']#search{
     background-color: #e9e8e9;
     background-image: url('/img/08-Search icon.svg');
     background-size: 11px;
-    background-position: 10px 6px; 
+    background-position: 10px 6px;
     background-repeat: no-repeat;
     padding: 12px 20px 12px 40px;
     margin-bottom: 5px;
@@ -235,18 +235,18 @@ input[type='text']#search:focus{
 
 input[type='text']#branch{
     height: 26px;
-    border: 0 !important;    
+    border: 0 !important;
     box-sizing:  border-box;
     border-bottom-width: 0px;
     font-size: 11px;
     background-color: #e9e8e9;
     background-image: url('/img/08-Branch icon.svg');
     background-size: 11px;
-    background-position: 10px 6px; 
+    background-position: 10px 6px;
     background-repeat: no-repeat;
     padding: 12px 20px 12px 40px;
-    margin-bottom: 5px;    
-    box-shadow: none !important;    
+    margin-bottom: 5px;
+    box-shadow: none !important;
 }
 
 input[type='text']#branch:focus{
@@ -258,7 +258,7 @@ input[type='text']#branch:focus{
     padding-top: 3.5px;
     padding-bottom: 3.5px;
     padding-left: 7px;
-    padding-right: 7px; 
+    padding-right: 7px;
 }
 
 .row{
@@ -282,7 +282,7 @@ input[type='text']#branch:focus{
 .files-button {
     color: rgb(161, 160, 160);
     float: right !important;
-    background-color: #727171; 
+    background-color: #727171;
     color: #fff;
 }
 .files-button:hover, .files-button:focus {
@@ -304,12 +304,12 @@ div.modal-body>p{
     border: none;
     padding: 20px 0;
     text-align: center;
-    height: 100%;        
+    height: 100%;
 }
 
 .preloader-wrapper.active{
     margin: auto !important;
-    padding: 10px !important;    
+    padding: 10px !important;
 }
 
 .image-right{
@@ -317,11 +317,11 @@ div.modal-body>p{
     margin-top: 14px;
     padding-right: 10px;
     height: 22px;
-    opacity: 0.3;   
+    opacity: 0.3;
 }
 
 .image-right:hover, .triple-dots:hover{
-    opacity: 0.6; 
+    opacity: 0.6;
     cursor: pointer;
 }
 
@@ -365,8 +365,8 @@ a.dropdown-menu{
     font-size: 12px !important;
     color: #4a4a4a !important;
     margin: 5px;
-    padding-top:0px !important; 
-    padding-bottom:0px !important; 
+    padding-top:0px !important;
+    padding-bottom:0px !important;
 }
 
 a.dropdown-menu:hover{
@@ -379,4 +379,28 @@ li.option-node{
 }
 li.option-node:hover{
     background-color: initial !important;
+}
+
+div#location{
+    margin: 20px 0;
+    padding: 10px 0;
+}
+
+div#content{
+    padding: 10px 0;
+}
+
+div#content:hover, div#location:hover{
+    background-color: rgb(194, 189, 189);
+}
+
+.user-image {
+    height: 14px;
+    width: 14px;
+}
+
+.maturity-cube{
+    display: inline-block;
+    height: 14px;
+    width: 14px;
 }

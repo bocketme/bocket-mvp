@@ -13,7 +13,7 @@ let OrganizationSchema = new mongoose.Schema({
     owner : {type: [User], required: true },
     members : [User],
     workspaces: [Workspace],
-    // adresse : String,
+    // adresse : String
     node: [Node]
 });
 

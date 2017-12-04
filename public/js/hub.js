@@ -43,6 +43,15 @@
     $('#tags-create-part.chips').on('chip.add', function(e, chip){
       // you have the added chip here
     });
+
+    //Socket
+
+    socket.on("nodeLocation", (node) => {
+      console.log(node);
+      locationVue.nodeInformation(node);
+      locationVue.maturityInformation(node.maturity);
+    })
+
   });
 })(jQuery); // end of jQuery name space
 

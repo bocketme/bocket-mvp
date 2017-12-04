@@ -1,4 +1,5 @@
 module.exports = {
     part: "part",
-    assembly: "assembly"
+    assembly: "assembly",
+    maturity: ["empty", "working", "validated"]
 };

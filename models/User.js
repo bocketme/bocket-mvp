@@ -13,6 +13,7 @@ let UserSchema = new mongoose.Schema({
     password: {type: String, required: true},
     active: Boolean,
     createDate: Date,
+    photo: {type: String, default: "bocket.png" },
     workspaces: { type : [NestedWorkspaceSchema]},
     organizations: {type: [NestedOrganizationSchema]}
 });

@@ -13,13 +13,13 @@ var third_column = new Vue ({
                 third_column.$data.crumbs = path.split("/");
         },
         selectedNode: (node) => {
-            this.selected = node;
+            third_column.selected = node;
         },
         selectedPath: (path) => {
-            this.crumbs = path.split("/");
+            third_column.crumbs = path.split("/");
         },
         newContent: (res) => {
-            this.content = res;
+            third_column.content = res;
         },
         createPart: () => {
             var data = new FormData;
@@ -27,5 +27,97 @@ var third_column = new Vue ({
         }
     }
 });
-var data_specFiles;
-var data_files3D;
+
+var locationVue = new Vue ({
+    el: "#location",
+    data: {
+        url: "",
+        styleObject: {
+            'background-color' : 'blue',
+        },
+        maturity: "",
+        created_on: "",
+        modified: "",
+        owners: [],
+    },
+    methods:{
+        nodeInformation: (node) => {
+            console.log(node);
+            locationVue.$data.created_on = moment(node.createdOn).format("MMM Do YYYY");
+            locationVue.$data.modified = moment(node.modified).format("MMM Do YYYY");
+            locationVue.$data.owners = node.owners;
+        },
+        maturityInformation: (maturity) => {
+            locationVue.$data.maturity = maturity;
+            if (maturity == NodeTypeEnum.maturity[0]) {
+                locationVue.$data.styleObject = {
+                    'background-color' : 'red',
+                };
+            } else if (maturity == NodeTypeEnum.maturity[1])
+            {
+                locationVue.$data.styleObject = {
+                    'background-color' : 'yellow',
+                };
+            } else if (maturity == NodeTypeEnum.maturity[2])
+            {
+                locationVue.$data.styleObject = {
+                    'background-color' : 'green',
+                };
+            }
+        }
+    }
+});
+
+var search = new Vue({
+    el: "#search-and-branch",
+    data: {
+        content: "Select a Node"
+    },
+    methods: {
+        partOrAssembly: (content) => {
+            this.$data.content;
+        }
+    }
+})
+
+var contentVue = new Vue ({
+    el: "#content",
+    data: {
+        title: "Select a Node",
+        url: "",
+        styleObject: {
+            'background-color' : 'grey',
+        },
+        maturity: "",
+        users: [],
+        organization: "",
+        used: "",
+        pourcent: "0%",
+    },
+    methods:{
+        partOrAssembly: (partOrAssembly) => {
+            this.$data.pourcent = partOrAssembly.pourcent;
+            this.$data.used = partOrAssembly.used;
+            this.$data.organization = partOrAssembly.organization;
+            this.$data.users = partOrAssembly.users;
+        },
+        maturityInformation: (maturity) => {
+            this.$data.maturity = maturity;
+            if (maturity == NodeTypeEnum.maturity[0]) {
+                this.$data.styleObject = {
+                    'background-color' : 'red',
+                };
+            } else if (maturity == NodeTypeEnum.maturity[1])
+            {
+                this.$data.styleObject = {
+                    'background-color' : 'yellow',
+                };
+            } else if (maturity == NodeTypeEnum.maturity[2])
+            {
+                this.$data.styleObject = {
+                    'background-color' : 'green',
+                };
+            }
+        }
+    }
+});

@@ -91,8 +91,8 @@
         {% include "hub/third_collumn_header.twig" %}
 
         <div id="third_column_content">
-            {% include "hub/tabs.twig" %}
             {% include 'hub/viewer.twig' %}
+            {% include "hub/tabs.twig" %}
         </div>
     </div>
 </div>
@@ -108,6 +108,7 @@
         var NodeTypeEnum = {{ NodeTypeEnum }};
         const  twignode = {{ node }};
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script src="/js/hub.js"></script>
     <script src="/js/hub/accordion.js"></script>

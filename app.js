@@ -16,6 +16,7 @@ const signup = require("./routes/signup");
 const project = require("./routes/project");
 const node = require("./routes/node");
 const workspace = require("./routes/workspace");
+const user = require("./routes/user");
 
 /* SESSION */
 let expressSession = require("express-session");
@@ -88,6 +89,7 @@ app.set('twig options', {
 
 app.use("/", index);
 
+app.use("/user", user);
 app.use("/signin", signin);
 app.use("/signup", signup);
 app.use("/project", project);

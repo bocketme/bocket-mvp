@@ -1,5 +1,5 @@
 /**
- * YOU MUST BUILD THE DIRECTORY 
+ * YOU MUST BUILD THE DIRECTORY
  */
 
 module.exports = {
@@ -7,7 +7,6 @@ module.exports = {
     protocol: "http",
     mongoDB: "mongodb://localhost/bocketmemvp",
     saltRounds: 10,
-    photo: require('path').resolve("../photo"),
     gitfiles: require('path').resolve("../bocket"),
     avatar: require('path').resolve("../avatar"),
     specfiles: require('path').resolve("../spec"),

@@ -82,14 +82,6 @@ var child_cascade = function(node, sub_level, breadcrumbs) {
     return li;
 };
 
-var result = body_cascade(twignode, 0, "");
-var garbage = document.createElement('div');
-garbage.appendChild(result);
-var node_three = Vue.extend({
-    template: garbage.innerHTML
-});
-new node_three().$mount('.node_constructor');
-
 $(document).ready(() => {
     $('.collapsible').css({'margin':'0'})
     $('.collapsible-header.node').click(function(el){
@@ -101,7 +93,7 @@ $(document).ready(() => {
         third_column.selectNode(fill_value, breadcrumbs_value);
         socket.emit("nodeInformation", nodeID)
     });
-    
+
     socket.on("newNode", function (node) {
         console.log("newNode: ", node);
         $("#"+node.parent._id).parent().after("<p>" + node.child.name + "</p>")
