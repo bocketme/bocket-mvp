@@ -5,21 +5,11 @@ const UserSchema = require('../../models/User'),
 
 let userImage = (req, res) => {
     UserSchema.findById(req.params.userId)
-        .then((user) => {
-            if(!user)
+        .then(userSelect => {
+            if(!userSelect)
                 res.status(404).send("Not Found");
-
-            fs.readFile(path.join(serverConfig.avatar, user.photo), (err, image) => {
-                if (err){
-                    console.log(err);
-                    res.status(500).send("Intern Error")
-                }
-                else {
-                    res.type('image/png');
-                    res.send(image);
-                }
-
-            });
+            else
+                res.sendFile(path.join(serverConfig.avatar, userSelect.photo));
         })
         .catch((err) => {
             console.log(err);

@@ -116,16 +116,16 @@ function getRenderInformation(workspaceId, userMail, title) {
                     {
                         Node.findById(workspace.node_master._id)
                             .then(node_master => {
-                                console.log("NODE_MASTER = ", node_master);
+                                // console.log("NODE_MASTER = ", node_master);
                                 let children = node_master.children.length !== 0;
-                                let node = {title : node_master.name, _id: node_master._id, type: node_master.type, children: children};
+                                let node = {title : node_master.name, _id: node_master._id, type: node_master.type, children: []};
                                 let i = 0;
                                 while (i < node_master.children.length)
                                 {
                                     node.children.push({title: node_master.children[i].title, _id: node_master.children[i]._id, children: []});
                                     i += 1;
                                 }
-                                console.log("NODES = ", node);
+                                 console.log("NODES = ", node);
                                 resolve({
                                     // workspaceId: workspaceId,
                                     title: workspace.name + ' - ' + title,

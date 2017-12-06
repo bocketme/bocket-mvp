@@ -74,12 +74,12 @@ function createNewNode(req, res){
             })
         })
         .then(() => {
-            res.send()
+            res.send();
 
         })
         .catch((err) => {
             console.log(err);
-            res.status(500)
+            res.status(500);
         })
     }
 
@@ -170,7 +170,7 @@ function createNewNode(req, res){
             let relativePath = "./" + nodeId +  "/" + file.originalname;
             nodeId = "./" + nodeId
             file.originalname = "./" + file.originalname
-            let chemin = config.specfiles
+            let chemin = config.specfiles;
             fs.access(chemin, (err) => {
                 if (err) reject(err);
                 fs.access(path.resolve(chemin, nodeId), (err) => {
