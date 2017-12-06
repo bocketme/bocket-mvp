@@ -17,6 +17,8 @@ const project = require("./routes/project");
 const node = require("./routes/node");
 const workspace = require("./routes/workspace");
 const user = require("./routes/user");
+const part = require("./routes/part");
+const assembly = require("./routes/assembly");
 
 /* SESSION */
 let expressSession = require("express-session");
@@ -95,6 +97,8 @@ app.use("/signup", signup);
 app.use("/project", project);
 app.use("/node", node);
 app.use("/workspace", workspace);
+app.use("/part", part);
+app.use("/assembly", assembly);
 app.post("/test", (req, res) => {
     console.log(req.query);
     console.log(req.params);
@@ -105,25 +109,24 @@ app.use(express.static('public'));
 
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on("listening", () => {
-    fs.access(config.avatar, (err) => {
-        if (err){
-            logError(err, "avatar", config.avatar);
-        }
-    });
-    fs.access(config.gitfiles, (err) => {
-        if (err){
-            logError(err, "bocket", config.gitfiles)
-        }
-    });
-    fs.access(config.specfiles, (err) => {
-        if (err){
-            logError(err, "spec", config.specfiles)
-        }
-    })
+    var filesToVerify = [{name: 'avatar', path: config.avatar},
+    {name: 'bocket', path: config.gitfiles},
+    {name: 'tpm', path: config.tpm},
+    {name: 'spec', path: config.specfiles}];
+    verifyAccess(filesToVerify);
 });
 
-function logError(err, name, path){
-    if(err.errno== -4058)
-    console.log("Create the directory "+ name +" in" + path);
-    else console.log(err);
+function verifyAccess(params){
+    for (var i = 0; i< params.length; i++ ) {
+        fs.access(params[i].path, logError(params[i]))
+    }
+}
+
+function logError(content){
+    return (err) => {
+        if (err){
+            if(err.errno== -4058)
+            console.log("Create the directory "+ content.name +" in" + content.path);
+        }
+    }
 }

@@ -9,7 +9,9 @@ let accepted_spec = [];
 * @returns {Promise}
 */
 function TypeMIME(mode, type_mime) {
-    return Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
+        resolve();
+        /*
         if (mode == 0) { // Mode files 3D
             accepted_3d.forEach(file3d => {
                 if (file3d == type_mime)
@@ -20,8 +22,9 @@ function TypeMIME(mode, type_mime) {
                 if (spec == type_mime)
                 resolve();
             })
-        } else reject(new Error("You have send the wrong mode"))
-        reject("Wrong Type MIME")
+        } else reject(new Error("You have send the wrong mode"));
+        reject("Wrong Type MIME");
+        */
     })
 }
 module.exports = TypeMIME;
