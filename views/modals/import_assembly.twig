@@ -19,17 +19,17 @@
                     <div class="file-field input-field col s12">
                         <div class="files-button btn upload_button">
                             <span>...</span>
-                            <input type="file" name="import_assembly-file3d" @change="chargefile">
+                            <input type="file" id="import_assembly_file3d" name="file3D" @change="chargefile">
                         </div>
                         <div class="file-path-wrapper">
                             <input class="file-path validate" type="text" placeholder="Upload your 3D Model">
                         </div>
                     </div>
-                    
+
                     <div class="file-field input-field col s12">
                         <div class="files-button btn upload_button">
                             <span>...</span>
-                            <input type="file" multiple name="import_assembly-specfiles" @change="chargespecFiles">
+                            <input type="file" multiple id="import_assembly_specfiles" name="specFiles" @change="chargespecFiles">
                         </div>
                         <div class="file-path-wrapper">
                             <input class="file-path validate" type="text" placeholder="Upload your Specs File">

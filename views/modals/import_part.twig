@@ -2,35 +2,35 @@
 <div id="import-part" class="modal">
     <div class="modal-header">
         <h4 style="font-weight: bolder !important;">Import a new Part</h4>
-        
+
     </div>
     <div class="modal-content container">
         <div class="modal-body">
             <form id="form-import-part" method="post" action="/test">
                 <div class="input-field col s12">
-                    <input id="part-name" type="text" name="name" class="validate">
+                    <input type="text" id="import-part-name" name="name" class="validate">
                     <label for="name">Part Name</label>
                 </div>
-                
+
                 <div class="input-field col s12">
-                    <input id="part-description" type="text" name="description" class="validate">
+                    <input type="text" id="import-part-description" name="description" class="validate">
                     <label for="description">Description</label>
                 </div>
-                
+
                 <div class="file-field input-field col s12">
                     <div class="files-button btn upload_button">
                         <span>...</span>
-                        <input type="file" name="import-part-files3D" @change="chargefile">
+                        <input type="file" id="import-part-file3D" name="file3D" @change="chargefile">
                     </div>
                     <div class="file-path-wrapper">
                         <input class="file-path validate" type="text" placeholder="Upload your 3D Model">
                     </div>
                 </div>
-                
+
                 <div class="file-field input-field col s12">
                     <div class="files-button btn upload_button">
                         <span>...</span>
-                        <input type="file" multiple name="create-part-specFiles" @change="chargespecFiles">
+                        <input type="file" multiple id="import-part-specFiles" name="specFiles" @change="chargespecFiles">
                     </div>
                     <div class="file-path-wrapper">
                         <input class="file-path validate" type="text" placeholder="Upload your Specs File">
@@ -38,7 +38,7 @@
                 </div>
                 <br>
                 <p>Tags</p>
-                <div id="tags-create-part" class="chips"></div>
+                <div id="tags-import-part" class="chips"></div>
                 <button id="submit-import-part" class="btn button-form-validate" type="submit">Import a Part</button>
             </form>
         </div>
