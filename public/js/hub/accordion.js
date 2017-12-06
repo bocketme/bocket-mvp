@@ -146,7 +146,7 @@ var newChild = (node, parentId) => {
 
 function loadChild() {
     var nodeID = $(this).parent().attr('id');
-    socket.emit("searchChild", nodeID);
+    socket.emit("searchNodeChild", nodeID);
 }
 
 function loadInformationAndSelectNode() {
@@ -160,15 +160,19 @@ function loadInformationAndSelectNode() {
     console.log(fill_value, breadcrumbs_value)
     third_column.selectNode(fill_value, breadcrumbs_value);
 
-    $('#location').removeClass('hide');
-    $('#location').fadeOut(0, () => {
-        $('#location').fadeIn('slow');
-    });
-    $('#content').removeClass('hide');
+    if($('#location').hasClass('hide')  || $('#content').hasClass('hide')) {
 
-    $('#content').fadeOut(0, () => {
-        $('#content').fadeIn('slow');
-    });
+        $('#location').removeClass('hide');
+        $('#location').fadeOut(0, () => {
+            $('#location').fadeIn('slow');
+        });
+
+        $('#content').removeClass('hide');
+        $('#content').fadeOut(0, () => {
+            $('#content').fadeIn('slow');
+        });
+
+    }
 }
 
 $(document).ready(() => {
@@ -177,7 +181,9 @@ $(document).ready(() => {
     $('.collapsible-header.node').click(function(el){
     });
 
-    socket.on("")
+    socket.on("", function () {
+
+    });
     socket.on("newNode", function (node) {
         newChild(node.child, node.parent._id);
     });

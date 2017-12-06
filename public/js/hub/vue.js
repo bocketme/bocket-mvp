@@ -7,8 +7,10 @@ var third_column = new Vue ({
     },
     methods: {
        selectNode: (node, path) => {
-            if (node !== third_column.$data.selected)
+            if (node !== third_column.$data.selected) {
                 third_column.$data.selected = node;
+                search.$data.content = node;
+            }
             if (path !== third_column.$data.crumbs)
                 third_column.$data.crumbs = path.split("/");
         },
