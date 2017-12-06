@@ -5,39 +5,20 @@ let uniqueValidator = require('mongoose-unique-validator');
 let createNode = require("./utils/create/createNode");
 let NestedUser = require("./nestedSchema/NestedUserSchema");
 let NodeTypeEnum = require("../enum/NodeTypeEnum");
+let NestedSpecFiles = require('./nestedSchema/NestedSpecFile');
+let TypeEnum = require('../enum/NodeTypeEnum');
+
 
 let NestedWorkspace = mongoose.Schema({
     _id: {type: mongoose.SchemaTypes.ObjectId, require: true},
     name: {type: String, require: true}
 });
 
-let NestedProject = mongoose.Schema({
-    _id: {type: mongoose.SchemaTypes.ObjectId, require: true},
-    name: {type: String, require: true}
-});
-
-let NestedPiece = mongoose.Schema({
-    _id: {type: mongoose.SchemaTypes.ObjectId, require: true},
-    name: {type: String, require: true},
-    description: {type: String, default: "No description aviable"},
-    path: { type:String, require: true },
-    specFiles: { type: [String], default: [] }
-});
-
-let NestedAssembly = mongoose.Schema({
-    _id: {type: mongoose.SchemaTypes.ObjectId, require: true},
-    name: {type: String, require: true},
-    description: {type: String, default: "No description aviable"},
-    path: { type:String, require: true },
-    specFiles: { type: [String], default: [] }
-});
-
 let NodeSchema = mongoose.Schema({
     name: {type:String, default: 'My Bocket'},
     description: String,
-    piece: {type: NestedPiece, default: null},
-    assembly: {type: NestedAssembly, default: null},
-    type: { type:String, default:'assembly'},
+    content: {type: mongoose.SchemaTypes.ObjectId, require: false},
+    type: { type:String, default:'empty'},
     specpath: {type: [String], default: []},
     tags: {type: [String], default: []},
     children: {type: [NestedNode], default: []},
@@ -57,29 +38,30 @@ NodeSchema.statics.initializeNode = (name, description, workspaces, user) => {
         name: name,
         description: description,
         Workspace: workspaces,
-        Users: user
+        Users: user,
+        type: TypeEnum.assembly
     })
 };
 
-NodeSchema.statics.createNode = (name, description, type, specpath, tags) => {
+NodeSchema.statics.createNode = (name, description, type, specpath) => {
     return new Node({
         name: name,
         description: description,
         type: type,
         specpath: specpath,
-        tags: tags
+    });
+};
+NodeSchema.statics.createNodeWithContent = (name, description, type, content, specpath, tags) => {
+    return new Node({
+        name: name,
+        description: description,
+        type: type,
+        specpath: specpath,
+        tags: tags,
+        content: content,
     });
 };
 
-NodeSchema.methods.createPiece = (node, piece) => {
-    node.piece = piece;
-    return node;
-};
-
-NodeSchema.methods.createAssembly = (node, assembly) => {
-    node.assembly = assembly;
-    return node;
-};
 let Node = mongoose.model("Node", NodeSchema, "Nodes");
 
 module.exports = Node;
