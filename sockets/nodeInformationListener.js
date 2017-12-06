@@ -13,8 +13,6 @@ module.exports = function (socket) {
             if (err || !node)
             socket.emit("NodeError");
             else {
-                console.log(node)
-
                 let userId = []
                 node.Users.forEach(user => {
                     userId.push({
