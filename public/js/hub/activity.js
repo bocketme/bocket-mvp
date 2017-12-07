@@ -32,11 +32,9 @@ function addCommentActivity(lastComment, comment) {
     var v;
 
     if ((v = comment.date.getFullYear() - today.getFullYear()) > 0) {
-        console.log("year : ", v);
         when = (v > 1) ? (v + "years ago") : ("1 year ago");
     }
     else if ((v = comment.date.getMonth - today.getMonth()) > 0) {
-        console.log("month : ", v);
         when = (v > 1) ? (v + "month ago") : ("1 month ago");
     }
 
