@@ -85,7 +85,18 @@
     width: 98%;
 }
 
-input::-webkit-input-placeholder { font-size: 11px; }
-input::-moz-placeholder { font-size: 11px; } /* firefox 19+ */
-input:-ms-input-placeholder { font-size: 11px; } /* ie */
-input:-moz-placeholder { font-size: 11px; }
+#activity .add-comment {
+    margin-left: 2%;
+    margin-bottom: 0;
+    padding-left: 2%;
+    background-color: #f5f5f5;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    width: 88% !important;
+    color: black;
+}
+
+#activity input::-webkit-input-placeholder { font-size: 11px; }
+#activity input::-moz-placeholder { font-size: 11px; } /* firefox 19+ */
+#activity input:-ms-input-placeholder { font-size: 11px; } /* ie */
+#activity input:-moz-placeholder { font-size: 11px; }

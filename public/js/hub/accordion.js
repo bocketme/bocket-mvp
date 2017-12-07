@@ -173,7 +173,7 @@ function loadInformationAndSelectNode() {
 }
 
 $(document).ready(() => {
-    threeChild(twignode);
+//    threeChild(twignode);
     $('.collapsible').css({'margin':'0'});
     $('.collapsible-header.node').click(function(el){
 
