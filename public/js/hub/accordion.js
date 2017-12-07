@@ -59,6 +59,6 @@ function loadNodeInformation (e) {
 }
 
 $(document).ready(() => {
-    $(".not-collapse").on("click", function(e) { e.stopPropagation(); });
+//    threeChild(twignode);
     $('.collapsible').css({'margin':'0'});
 });
