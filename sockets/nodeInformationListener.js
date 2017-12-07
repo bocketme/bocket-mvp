@@ -7,7 +7,6 @@ let configServer = require("../config/server");
 let NodeTypeEnum = require("../enum/NodeTypeEnum");
 
 module.exports = function (socket) {
-
     socket.on("nodeInformation", (nodeID) => {
         Node.findById(nodeID, (err, node) => {
             if (err || !node)

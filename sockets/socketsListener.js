@@ -4,6 +4,7 @@ let signinListener = require("./signinListener");
 let importInsideNode = require("./importInsideNode");
 let newNodeListener = require("./newNodeListener");
 let NodeInformationListener = require("./nodeInformationListener");
+let contentInformationListener = require('./contentInformationListener');
 
 module.exports = function(io) {
     io.on('connection', function (socket) {
@@ -13,5 +14,6 @@ module.exports = function(io) {
         importInsideNode(socket);
         newNodeListener(socket);
         NodeInformationListener(socket);
+        contentInformationListener(socket);
     });
 };

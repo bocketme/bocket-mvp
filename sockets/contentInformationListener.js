@@ -23,17 +23,13 @@ module.exports = socket => {
         })
     });
 
-    socket.on("searchNodeChild", (nodeId) => {
+    socket.on("nodeChildren", (nodeId) => {
         Node.findById(nodeId)
         .then((node) => {
-            console.log(node.children)
-            let data = [];
-            node.children.forEach(child => {
-                data.push({
-
-                });
-            });
-            socket.emit("nodeChild", node.children)
+            if(node !== null) {
+                console.log("node = ", node.children);
+                socket.emit('seeChildrenNode', nodeId, node.children);
+            }
         })
     });
 };

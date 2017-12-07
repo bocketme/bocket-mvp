@@ -3,7 +3,7 @@
  * @author bocket.me
  * @param {HTMLElement} renderingDiv
  */
-var Viewer = function (renderDiv, file3D) {
+var Viewer = function (renderingDiv, file3D) {
     if (!(this instanceof Viewer))
         return console.error(new Error('Bad instanciation'));
 

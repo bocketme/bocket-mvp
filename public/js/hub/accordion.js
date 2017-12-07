@@ -13,19 +13,13 @@ var imageBuilder = (type) => {
     return image;
 };
 
-var iconBuilder = (type) => {
-    if (type == NodeTypeEnum.part){
-        return;
-    } else if (type == NodeTypeEnum.assembly) {
+var iconBuilder = () => {
         var icon = document.createElement('i'),
         text_icon = document.createTextNode('keyboard_arrow_right');
         icon.setAttribute('class', 'material-icons assembly');
         icon.appendChild(text_icon);
         icon.addEventListener('click', loadChild, false);
         return icon;
-    }
-    console.error(new Error('Bad Argument'));
-    return;
 };
 
 var threeChild = (node, parentId) => {
@@ -35,7 +29,7 @@ var threeChild = (node, parentId) => {
     if(!node.name)
     node.name = node.title;
 
-    var parent, cible, breadcrumbs, sub_level, icon,
+    var cible, breadcrumbs, sub_level, icon,
     row = document.createElement('div'),
     body = document.createElement('div'),
     li = document.createElement('li'),
@@ -49,8 +43,7 @@ var threeChild = (node, parentId) => {
         breadcrumbs = node.name;
         sub_level = 0;
     } else {
-        parent = document.querySelector('.collapsible-body #'+parentId);
-        cible = $(parent).contents().filter('div.row.colla');
+        cible = $('.collapsible #'+String(parentId)).contents().filter('div.row.colla');
         breadcrumbs = $('#'+ parentId + ' .collapside-header').contents().filter("span").attr("data-breadcrumbs");
         breadcrumbs += '/' + node.name;
         sub_level = $('.collapsible-header #'+parentId).contents().filter("span").attr("data-sublevel");
@@ -65,18 +58,16 @@ var threeChild = (node, parentId) => {
     header.setAttribute("id", node._id);
     span.addEventListener("click", loadInformationAndSelectNode, false);
 
-    body.setAttribute('class','collapsible-body');
+    body.setAttribute('class','collapsible-body row colla');
     body.setAttribute('id', node._id);
-    row.setAttribute('class', 'row colla');
 
     if (node.type == NodeTypeEnum.assembly) {
-        icon = iconBuilder(node.type);
+        icon = iconBuilder();
         header.setAttribute('class', 'collapside-header node has-child valign-wrapper ');
         header.appendChild(icon);
         header.appendChild(image);
         header.appendChild(span);
         li.appendChild(header);
-        body.appendChild(row);
         li.appendChild(body);
     } else {
         header.setAttribute('class', 'collapsible-header node no-child valign-wrapper group-'+sub_level);
@@ -100,6 +91,7 @@ var newChild = (node, parentId) => {
     row = row = document.createElement('div'),
     body = document.createElement('div'),
     li = document.createElement('li'),
+    text_icon = document.createTextNode('keyboard_arrow_right'),
     image = document.createElement('img'),
     header = document.createElement('div'),
     text_header = document.createTextNode(node.name),
@@ -116,10 +108,9 @@ var newChild = (node, parentId) => {
     var icon = iconBuilder(node.type);
 
     icon.setAttribute('class', 'material-icons');
-
     icon.appendChild(text_icon);
     parent_header.appendChild(icon);
-    parent_header.data
+    parent_header.data;
     //
     breadcrumbs = $(parent_header).contents().filter("span").attr("data-breadcrumbs");
     sub_level = $(parent_header).contents().filter("span").attr("data-sublevel");
@@ -146,7 +137,13 @@ var newChild = (node, parentId) => {
 
 function loadChild() {
     var nodeID = $(this).parent().attr('id');
-    socket.emit("searchNodeChild", nodeID);
+    var body = $('.collapsible-body #'+nodeID)
+    console.log(body.contents())
+    if (!body.contents()){
+        console.log('load new Child')
+        socket.emit("nodeChildren", nodeID);
+
+    }
 }
 
 function loadInformationAndSelectNode() {
@@ -179,14 +176,16 @@ $(document).ready(() => {
     threeChild(twignode);
     $('.collapsible').css({'margin':'0'});
     $('.collapsible-header.node').click(function(el){
+
     });
 
-    socket.on("", function () {
-
+    socket.on("seeChildrenNode", function (nodeID, children) {
+        children.forEach(child => {
+            console.log(child);
+            threeChild(child, nodeID);
+        });
     });
     socket.on("newNode", function (node) {
         newChild(node.child, node.parent._id);
     });
-
-
 });
