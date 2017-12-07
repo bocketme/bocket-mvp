@@ -2,9 +2,9 @@ let project = require('../models/project');
 let Workspace = require("../models/Workspace");
 let User = require("../models/User");
 let Node = require("../models/Node");
-
+let fs = require('fs');
 let NodeTypeEnum = require("../enum/NodeTypeEnum");
-
+let path = require('path');
 module.exports = {
     /**
     * Affiche tous les projets d'un utilisateur
@@ -126,20 +126,23 @@ function getRenderInformation(workspaceId, userMail, title) {
                                     i += 1;
                                 }
                                  console.log("NODES = ", node);
-                                resolve({
-                                    // workspaceId: workspaceId,
-                                    title: workspace.name + ' - ' + title,
-                                    in_use: {name: workspace.name, id: workspace._id},
-                                    data_header: 'All Parts',
-                                    user: user.completeName,
-                                    nodeFile: JSON.stringify(require('../test/node.json')),
-                                    workspaces: user.workspaces,
-                                    node: JSON.stringify(node),
-                                    all_parts: 100,
-                                    last_updates: 10,
-                                    duplicates: 35,
-                                    NodeTypeEnum: JSON.stringify(NodeTypeEnum) /* const for fronst end */
-                                });
+
+                                 fs.readFile('./test/test.obj',{encoding: 'utf8'},(err, doc) => {
+                                    resolve({
+                                        // workspaceId: workspaceId,
+                                        title: workspace.name + ' - ' + title,
+                                        in_use: {name: workspace.name, id: workspace._id},
+                                        data_header: 'All Parts',
+                                        user: user.completeName,
+                                        nodeFile: doc,
+                                        workspaces: user.workspaces,
+                                        node: JSON.stringify(node),
+                                        all_parts: 100,
+                                        last_updates: 10,
+                                        duplicates: 35,
+                                        NodeTypeEnum: JSON.stringify(NodeTypeEnum) /* const for fronst end */
+                                    });
+                                 })
                             })
                             .catch(err => {
                                 console.log("[project controller] : error while finding node_master: ", err);
