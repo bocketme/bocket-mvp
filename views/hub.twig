@@ -1,15 +1,16 @@
 {% extends 'layout_nonavbar.twig' %}
 
 {% block css %}
-<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" href="/css/hub.css">
-<link rel="stylesheet" href="/css/accordion.css">
-<link rel="stylesheet" href="/css/dropdown.css">
-<link rel="stylesheet" href="/css/tabs.css">
-<link rel="stylesheet" href="/css/viewer.css">
-<link rel="stylesheet" href="/css/hub/content.css">
-<link rel="stylesheet" href="/css/hub/location.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/hub.css">
+    <link rel="stylesheet" href="/css/accordion.css">
+    <link rel="stylesheet" href="/css/dropdown.css">
+    <link rel="stylesheet" href="/css/tabs.css">
+    <link rel="stylesheet" href="/css/viewer.css">
+    <link rel="stylesheet" href="/css/hub/content.css">
+    <link rel="stylesheet" href="/css/hub/location.css">
+    <link rel="stylesheet" href="/css/hub/activity.css">
 {% endblock %}
 
 {% block title %}{{ title }}{% endblock title %}
@@ -93,6 +94,7 @@
         <div id="third_column_content">
             {% include 'hub/viewer.twig' %}
             {% include "hub/tabs.twig" %}
+            <input id="activity-uploader" style="display: none" type="file">
         </div>
     </div>
 </div>
@@ -115,5 +117,6 @@
     <script src="/js/hub/tabs.js"></script>
     <script src="/js/hub/content.js"></script>
     <script src="/js/hub/modals.js"></script>
+    <script src="/js/hub/activity.js"></script>
 {% include "require_viewer.twig" %}
 {% endblock %}

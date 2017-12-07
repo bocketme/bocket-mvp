@@ -60,8 +60,7 @@ main {
 }
 
 #third_column_content{
-    overflow-y: scroll;
-    margin-top: 9px;
+    height: 94%;
 }
 
 #second_column_content::-webkit-scrollbar-track, third_column_content::-webkit-scrollbar-track
@@ -79,6 +78,10 @@ main {
 #second_column_content::-webkit-scrollbar-thumb, third_column_content::-webkit-scrollbar-thumb
 {
 	background-color: #000000;
+}
+
+#node-content {
+    height: 50%;
 }
 
 /*
