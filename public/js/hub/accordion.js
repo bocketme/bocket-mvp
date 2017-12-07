@@ -13,10 +13,10 @@ var imageBuilder = (type) => {
     return image;
 };
 
-var iconBuilder = (type) => {
-    if (type == NodeTypeEnum.part){
+var iconBuilder = (children) => {
+    if (children){
         return;
-    } else if (type == NodeTypeEnum.assembly) {
+    } else {
         var icon = document.createElement('i'),
         text_icon = document.createTextNode('keyboard_arrow_right');
         icon.setAttribute('class', 'material-icons assembly');
@@ -119,7 +119,7 @@ var newChild = (node, parentId) => {
 
     icon.appendChild(text_icon);
     parent_header.appendChild(icon);
-    parent_header.data
+    parent_header.data;
     //
     breadcrumbs = $(parent_header).contents().filter("span").attr("data-breadcrumbs");
     sub_level = $(parent_header).contents().filter("span").attr("data-sublevel");
@@ -179,14 +179,13 @@ $(document).ready(() => {
     threeChild(twignode);
     $('.collapsible').css({'margin':'0'});
     $('.collapsible-header.node').click(function(el){
+
     });
 
-    socket.on("", function () {
+    socket.on("seeChildrenNode", function () {
 
     });
     socket.on("newNode", function (node) {
         newChild(node.child, node.parent._id);
     });
-
-
 });

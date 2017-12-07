@@ -132,6 +132,7 @@ function getRenderInformation(workspaceId, userMail, title) {
                                     in_use: {name: workspace.name, id: workspace._id},
                                     data_header: 'All Parts',
                                     user: user.completeName,
+                                    nodeFile: JSON.stringify(require('../test/node.json')),
                                     workspaces: user.workspaces,
                                     node: JSON.stringify(node),
                                     all_parts: 100,
