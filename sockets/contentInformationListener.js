@@ -23,13 +23,17 @@ module.exports = socket => {
         })
     });
 
-    socket.on("nodeChildren", (nodeId) => {
+    socket.on("searchNodeChild", (nodeId) => {
+        console.log('[SOCKET search NodeChild] : Activated')
         Node.findById(nodeId)
-        .then((node) => {
-            if(node !== null) {
-                console.log("node = ", node.children);
-                socket.emit('seeChildrenNode', nodeId, node.children);
-            }
-        })
+            .then((node) => {
+                twig.renderFile('./views/socket/three_child.twig', {node: node, TypeEnum: TypeEnum}, (err, html) => {
+                    if(err)
+                        console.log(err);
+                    console.log(html);
+                    socket.emit("nodeChild", html, nodeId);
+                });
+            });
+        console.log('[SOCKET search NodeChild] : Finished');
     });
 };

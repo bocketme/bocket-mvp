@@ -103,11 +103,9 @@
 
 {% block js %}
     <script>
-        var nodeFile = {{ nodeFile }};
         var workspaceId = "{{ in_use.id }}";
         var idOfchoosenNode = undefined;
         var NodeTypeEnum = {{ NodeTypeEnum }};
-        const  twignode = {{ node }};
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
