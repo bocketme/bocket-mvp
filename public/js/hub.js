@@ -37,8 +37,7 @@
 
     $('.chips').material_chip();
 
-    //Socket<
-
+    //Socket
     socket.on("nodeLocation", (node) => {
       console.log(node);
       locationVue.nodeInformation(node);
@@ -66,6 +65,7 @@
 
     socket.on('contentFile3d', (data) => {
       //JA A TOI DE JOUER
+
     })
 
   });

@@ -22,13 +22,13 @@ const newPart = (req, res) => {
     sub_level = escape(req.body.sub_level) + 1,
     breadcrumb =    escape(req.body.breadcrumb),
     specFiles = req.files['specFiles'],
-    file3D = req.files['file3D'][0];
+    file3D = req.files['file3D'];
 
     const documentID = String(require('mongoose').Types.ObjectId());
 
     let promiseType = {
         specFiles: [],
-        file3D: [type_mime(0, file3D.mimetype)],
+        file3D: [type_mime(0, file3D[0].mimetype)],
     };
 
     let promiseCreateFile = {
