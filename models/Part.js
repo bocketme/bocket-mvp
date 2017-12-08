@@ -1,6 +1,7 @@
 let mongoose = require("mongoose");
 let uniqueValidator = require('mongoose-unique-validator');
 const TypeEnum = require('../enum/NodeTypeEnum');
+let NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 
 let PartSchema = mongoose.Schema({
     name: {type: String, require: true},
@@ -11,7 +12,8 @@ let PartSchema = mongoose.Schema({
     maturity: {type: String, default: TypeEnum.maturity[0]},
     whereUsed: {type: [String], default: []},
     quality: {type: Number, default:0},
-    tags: {type: [], default: []}
+    tags: {type: [], default: []},
+    annotation: {type: [NestedAnnotation], default: []}
 });
 
 PartSchema.plugin(uniqueValidator);

@@ -7,7 +7,7 @@ let NestedUser = require("./nestedSchema/NestedUserSchema");
 let NodeTypeEnum = require("../enum/NodeTypeEnum");
 let NestedSpecFiles = require('./nestedSchema/NestedSpecFile');
 let TypeEnum = require('../enum/NodeTypeEnum');
-
+let NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 
 let NestedWorkspace = mongoose.Schema({
     _id: {type: mongoose.SchemaTypes.ObjectId, require: true},
@@ -15,7 +15,7 @@ let NestedWorkspace = mongoose.Schema({
 });
 
 let NodeSchema = mongoose.Schema({
-    name: {type:String, default: 'My Bocket'},
+    name: {type:String, require:true},
     description: String,
     content: {type: mongoose.SchemaTypes.ObjectId, require: false},
     type: { type:String, default:'empty'},
@@ -27,8 +27,7 @@ let NodeSchema = mongoose.Schema({
     Users: {type: [NestedUser], default: []},
     Workspace: [String],
     owners: {type: [NestedUser], default: []},
-    maturity: {type: String, default: [NodeTypeEnum.maturity[0]]}
-    //matrice de donnée ???
+    maturity: {type: String, default: [NodeTypeEnum.maturity[0]]},
 });
 
 NodeSchema.plugin(uniqueValidator);

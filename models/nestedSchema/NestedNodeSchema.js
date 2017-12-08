@@ -2,7 +2,7 @@ let mongoose = require("mongoose");
 
 let Node = new mongoose.Schema({
     _id: {type: String, require: true},
-    title: {type: String, default: "My Bocket"},
+    name: {type: String, required: true},
     type: {type: String, default: "assembly"},
 });
 

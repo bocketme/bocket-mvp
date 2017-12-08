@@ -1,35 +1,3 @@
-{#
-<ul class="collapsible" data-collapsible="accordion">
-    <li>
-        <div class="collapsible-header assembly active valign-wrapper">
-            <i class="material-icons">keyboard_arrow_right</i>
-            ASSEMBLY VIEW
-        </div>
-        <div class="collapsible-body">
-            {% if node is null %}
-                <span>There is no node in this scope</span>
-            {% else %}
-                <div class="row colla">
-                    <ul class="collapsible" data-collapsible="accordion">
-                        <li>
-                            <div id="{{ node._id }}" class="collapside-header node has-child valign-wrapper">
-                                <i class="material-icons assembly">keyboard_arrow_right</i>
-                                <img class="pad-right" src="/img/07-Assembly icon.svg">
-                                <span class="p-node" data-breadcrumbs="{{ node.name }}" data-sublevel="0">{{ node.name }}</span>
-                            </div>
-                            <div id="{{ node._id }}" class="collapsible-body">
-                                <div class="progress">
-                                    <div class="indeterminate"></div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            {% endif %}
-        </div>
-    </li>
-</ul>
-#}
 <ul class="collapsible" data-collapsible="accordion">
     <li>
         <div class="collapsible-header assembly active valign-wrapper">
@@ -40,12 +8,12 @@
             <div class="row colla">
                 <ul class="collapsible" data-collapsible="accordion">
                     <li>
-                        <div class="collapsible-header node has-child valign-wrapper">
-                            <i class="material-icons assembly">keyboard_arrow_right</i>
+                        <div id="{{ node._id }}" class="collapsible-header three-node valign-wrapper">
+                            <i class="material-icons">keyboard_arrow_right</i>
                             <img class="pad-right" src="/img/07-Assembly icon.svg">
-                            <span class="p-node" data-breadcrumbs="{{ node.name }}" data-sublevel="0">{{ node.name }}</span>
+                            <span class="p-node" data-node="part" data-breadcrumbs="{{ node.name }}" data-sublevel="0">{{ node.name }}</span>
                         </div>
-                        <div class="collapsible-body need-to-search">
+                        <div id="{{ node._id }}-body" class="collapsible-body container valign-wrapper">
                             <div class="progress">
                                 <div class="indeterminate"></div>
                             </div>
