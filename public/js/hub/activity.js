@@ -2,10 +2,16 @@ $(document).ready(function() {
     var activityCommentsId = "#activity-comments";
     var empty = "";
 
+    /**
+     * Upload a file
+     */
     $(".activity-upload").on("click", function () {
         $("#activity-uploader").click();
     });
 
+    /**
+     * Slide input comment
+     */
     $(".comment").on("click", function() {
         console.log("[.comment] onClick", $($(this).prev().children()[0]));
         $(this).prev().slideToggle(function() {
@@ -13,6 +19,10 @@ $(document).ready(function() {
         });
     });
 
+    /**
+     * Used when a key enter is pressed on input
+     * @Param e : event
+     */
     $(".add-comment").keypress(function (e) {
         if (e.which === 13) {
             addCommentActivity($(activityCommentsId + " li:first"), {author: "Vincent Mesquita", content: $(this).val(), date: new Date});
@@ -20,6 +30,8 @@ $(document).ready(function() {
         }
     });
 });
+
+var d = new Date(2017, 11, 9);
 
 /**
  * Add a comment activity
@@ -29,16 +41,26 @@ $(document).ready(function() {
 function addCommentActivity(lastComment, comment) {
     var today = new Date();
     var when = "today";
+    var diff = new Date(today.getTime() - comment.date.getTime());
     var v;
 
-    if ((v = comment.date.getFullYear() - today.getFullYear()) > 0) {
-        when = (v > 1) ? (v + "years ago") : ("1 year ago");
+    if (diff < 0)
+        when = "today";
+    else if ((v = diff.getUTCFullYear() - 1970) > 0)
+        when = (v > 1) ? (v + " years ago") : ("1 year ago");
+    else if ((v = diff.getUTCMonth()) > 0)
+        when = (v > 1) ? (v + " months ago") : ("1 month ago");
+    else if ((v = diff.getUTCDate() - 1) >= 7) {
+        v = Math.floor(v / 7);
+        when = (v > 1) ? (v + " weeks ago") : ("1 week ago");
     }
-    else if ((v = comment.date.getMonth - today.getMonth()) > 0) {
-        when = (v > 1) ? (v + "month ago") : ("1 month ago");
-    }
+    else
+        when = (v > 0) ? (v + " days ago") : ("today");
+    printActivityComment(lastComment, comment, when);
+    // TODO: Send comment to the Back-End
+}
 
-    console.log(comment);
+function printActivityComment(lastComment, comment, when) {
     lastComment.after("<div class=\"row\">\n" +
         "    <div class=\"col s12\">\n" +
         "        <div class=\"card\">\n" +
@@ -65,16 +87,4 @@ function addCommentActivity(lastComment, comment) {
         "        </div>\n" +
         "    </div>\n" +
         "</div>");
-    // TODO: Send comment to the Back-End
-}
-
-/**
- * Use when a key has just been press with an input
- * @Param e is the event
- */
-
-function keyPress(e) {
-    if (!e) e = window.event; // needed for cross browser compatibility
-    if (e.keyCode === 13) // if e.KeyCode == `Enter`
-        addCommentActivity(e.target.value);
 }
