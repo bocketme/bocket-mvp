@@ -12,18 +12,20 @@ function toggleMenuContextOn(selectorId) {
 
     gSelector = selector;
     gSelectorId = selectorId;
-    console.log("toggleMenuContextOn");
     selector.addClass(activeClass);
-    selector.addClass("active");
+    selector.addClass("active"); // add active class of materialize for dropdown behavior
     var pos = getPosition(event);
-    if (pos.x + selector.width() > $(document).width())
-        pos.x = $(document).width() - selector.width() - 10;
-    if (pos.y + selector.height() > $(document).height())
-        pos.y = $(document).height() - selector.height() - 10;
+    if (pos.x + selector.width() > $(window).width()) // move the dropdown to the left if he's too wide
+        pos.x = $(window).width() - selector.width() - 10;
+    if (pos.y + selector.height() > $(window).height()) // move the dropdown to the up if he's too wide
+        pos.y =  $(window).height() - selector.height() - 10;
     selector.css("left", pos.x + "px").css("top", pos.y + "px");
     menuState = true;
 }
 
+/**
+ * close the context menu
+ */
 function toggleMenuContextOff() {
     if (gSelector !== undefined) {
         gSelector.removeClass("active");
@@ -32,6 +34,9 @@ function toggleMenuContextOff() {
 }
 
 $(document).ready(function(e) {
+    /**
+     * close the context menu when we click outside it
+     */
     $(document).on("click", function (e) {
        if (menuState === true && $(e.target).parents(gSelectorId).length === 0) {
            toggleMenuContextOff();
