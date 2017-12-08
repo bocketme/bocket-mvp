@@ -2,10 +2,16 @@ $(document).ready(function() {
     var activityCommentsId = "#activity-comments";
     var empty = "";
 
+    /**
+     * Upload a file
+     */
     $(".activity-upload").on("click", function () {
         $("#activity-uploader").click();
     });
 
+    /**
+     * Slide input comment
+     */
     $(".comment").on("click", function() {
         console.log("[.comment] onClick", $($(this).prev().children()[0]));
         $(this).prev().slideToggle(function() {
@@ -13,6 +19,10 @@ $(document).ready(function() {
         });
     });
 
+    /**
+     * Used when a key enter is pressed on input
+     * @Param e : event
+     */
     $(".add-comment").keypress(function (e) {
         if (e.which === 13) {
             addCommentActivity($(activityCommentsId + " li:first"), {author: "Vincent Mesquita", content: $(this).val(), date: new Date});
@@ -66,15 +76,4 @@ function addCommentActivity(lastComment, comment) {
         "    </div>\n" +
         "</div>");
     // TODO: Send comment to the Back-End
-}
-
-/**
- * Use when a key has just been press with an input
- * @Param e is the event
- */
-
-function keyPress(e) {
-    if (!e) e = window.event; // needed for cross browser compatibility
-    if (e.keyCode === 13) // if e.KeyCode == `Enter`
-        addCommentActivity(e.target.value);
 }
