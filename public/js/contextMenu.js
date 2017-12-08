@@ -1,11 +1,17 @@
 var menuState = false;
 var activeClass = "specs-context-menu-active";
+var gSelector;
+var gSelectorId;
 
 /**
  * Open the menuContext
- * @param options
+ * @param selectorId : JQuery id of the dropdown context menu
  */
-function toggleMenuContextOn(selector) {
+function toggleMenuContextOn(selectorId) {
+    var selector = $(selectorId);
+
+    gSelector = selector;
+    gSelectorId = selectorId;
     console.log("toggleMenuContextOn");
     selector.addClass(activeClass);
     selector.addClass("active");
@@ -15,7 +21,23 @@ function toggleMenuContextOn(selector) {
     if (pos.y + selector.height() > $(document).height())
         pos.y = $(document).height() - selector.height() - 10;
     selector.css("left", pos.x + "px").css("top", pos.y + "px");
+    menuState = true;
 }
+
+function toggleMenuContextOff() {
+    if (gSelector !== undefined) {
+        gSelector.removeClass("active");
+        gSelector.removeClass(activeClass);
+    }
+}
+
+$(document).ready(function(e) {
+    $(document).on("click", function (e) {
+       if (menuState === true && $(e.target).parents(gSelectorId).length === 0) {
+           toggleMenuContextOff();
+       }
+    });
+});
 
 /**
  * get mouse position

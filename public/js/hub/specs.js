@@ -1,11 +1,8 @@
 $(document).ready(function() {
-    var element = document.getElementById('#specs');
-    $("#specs").on("click", function (e) {
-            toggleMenuContextOn($("#specs-context-menu"));
+    $("#specs").on("contextmenu", function (e) {
+            toggleMenuContextOn("#specs-context-menu");
+            return false;
         })
-    /*$("#specs").contextmenu(function (e) {
-        toggleMenuContextOn($("#specs-context-menu"));
-    })*/
 });
 
 /**
