@@ -1,6 +1,6 @@
 #activity {
     width: 100%;
-    height: 80%;
+    height: 90%;
     border: #00ffc8;
     overflow-y: scroll;
 }
@@ -33,7 +33,10 @@
 }
 
 #node-content-tabs {
-    height: 20%;
+    width: 100%;
+    height: 10%;
+    padding-right: 0;
+    padding-left: 0;
 }
 
 #activity .card-action .chip-content {
@@ -94,6 +97,18 @@
     box-shadow: none !important;
     width: 88% !important;
     color: black;
+}
+
+li.indicator {
+    margin-top: -1% !important;
+    z-index: 1000 !important;
+}
+#activity #activity-comments li {
+    z-index: 999 !important;
+}
+
+#activity .file-title {
+    padding-top: 1%;
 }
 
 #activity input::-webkit-input-placeholder { font-size: 11px; }

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/css/hub/content.css">
     <link rel="stylesheet" href="/css/hub/location.css">
     <link rel="stylesheet" href="/css/hub/activity.css">
+    <link rel="stylesheet" href="/css/hub/specs.css">
 {% endblock %}
 
 {% block title %}{{ title }}{% endblock title %}
@@ -89,16 +90,22 @@
     </div>
 
     <div id="third_column" class = "col s6">
-        {% include "hub/third_collumn_header.twig" %}
-
         <div id="third_column_content">
+            {% include "hub/third_collumn_header.twig" %}
             {% include 'hub/viewer.twig' %}
             {% include "hub/tabs.twig" %}
             <input id="activity-uploader" style="display: none" type="file">
         </div>
     </div>
 </div>
-</div>
+
+    <ul id='specs-context-menu' class='dropdown-content'>
+        <li><a href="#!">Update</a></li>
+        <li><a href="#!">Preview</a></li>
+        <li class="divider">Rename</li>
+        <li><a href="#!">Download</a></li>
+        <li><a href="#!">Remove</a></li>
+    </ul>
 
 {% endblock %}
 
@@ -117,5 +124,7 @@
     <script src="/js/hub/content.js"></script>
     <script src="/js/hub/modals.js"></script>
     <script src="/js/hub/activity.js"></script>
+    <script src="/js/hub/specs.js"></script>
+    <script src="/js/contextMenu.js"></script>
 {% include "require_viewer.twig" %}
 {% endblock %}
