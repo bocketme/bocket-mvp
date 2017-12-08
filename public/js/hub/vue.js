@@ -29,7 +29,43 @@ var third_column = new Vue ({
         }
     }
 });
-
+/*
+var threeNode = new Vue({
+    el: '.node_constructor',
+    methods: {
+        loadNodeChild: (nodeID) => {
+            var body = $('.collapsible-body #' + nodeID);
+            console.log(body.contents());
+            if (!body.contents()){
+                console.log('load new Child');
+                socket.emit("nodeChildren", nodeID);
+            }
+        },
+        loadNodeInformation: (nodeID) => {
+            console.log("Load Information AND SELECT NDOE");
+            var element = $('.collapsible-header #' + String(nodeID));
+            console.log(element);
+            socket.emit("nodeInformation", nodeID);
+            $('.collapsible-header.node').removeClass('selected-accordion');
+            element.addClass('selected-accordion');
+            var fill_value = element.contents().filter("a").html();
+            var breadcrumbs_value = element.contents().filter("a").attr("data-breadcrumbs");
+            console.log(breadcrumbs_value);
+            third_column.selectNode(fill_value, breadcrumbs_value);
+            if($('#location').hasClass('hide')  || $('#content').hasClass('hide')) {
+                $('#location').removeClass('hide');
+                $('#location').fadeOut(0, () => {
+                    $('#location').fadeIn('slow');
+                });
+                $('#content').removeClass('hide');
+                $('#content').fadeOut(0, () => {
+                    $('#content').fadeIn('slow');
+                });
+            }
+        }
+    }
+});
+*/
 var locationVue = new Vue ({
     el: "#location",
     data: {
@@ -80,7 +116,7 @@ var search = new Vue({
             this.$data.content;
         }
     }
-})
+});
 
 var contentVue = new Vue ({
     el: "#content",

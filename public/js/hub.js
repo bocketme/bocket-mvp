@@ -1,4 +1,3 @@
-
 (function ($) {
   $(function () {
     //initialize all modals
@@ -12,9 +11,6 @@
     });
 
     $('ul.tabs').tabs();
-
-    $('.collapsible').collapsible();
-    $('.collapsible').collapsible('open', 1);
 
     $('.dropdown-button').dropdown({
       inDuration: 300,
@@ -40,11 +36,7 @@
 
     $('.chips').material_chip();
 
-    $('#tags-create-part.chips').on('chip.add', function(e, chip){
-      // you have the added chip here
-    });
-
-    //Socket
+    //Socket<
 
     socket.on("nodeLocation", (node) => {
       console.log(node);

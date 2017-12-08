@@ -1,191 +1,64 @@
-var imageBuilder = (type) => {
-    var image = document.createElement('img');
-    image.setAttribute('class', 'responsive-img pad-right');
-    if (type == NodeTypeEnum.part){
-        image.setAttribute('src', '/img/07-Part icon.svg');
-    } else if (type == NodeTypeEnum.assembly) {
-        image.setAttribute('src','/img/07-Assembly icon.svg');
-    } else
-    return console.error(new Error('Image Builder : The type of the node is ' +
-    type + ' but it has to be a'+
-    NodeTypeEnum.part +' ou '+ NodeTypeEnum.assembly +' .'));
+socket.on('nodeChild', (html, nodeID) => {
+    console.log(html);
+    console.log(nodeID);
+    $(function () {
+        $('.collapsible-body #'+String(nodeID)).appendChild(html);
+    });
+});
 
-    return image;
-};
+$(function(){
+    $('i.material-icons.assembly').click();
+    $('span.p-node').click(loadNodeInformation)
+});
 
-var iconBuilder = () => {
-        var icon = document.createElement('i'),
-        text_icon = document.createTextNode('keyboard_arrow_right');
-        icon.setAttribute('class', 'material-icons assembly');
-        icon.appendChild(text_icon);
-        icon.addEventListener('click', loadChild, false);
-        return icon;
-};
-
-var threeChild = (node, parentId) => {
-    if (!node)
-    console.log("There is no Node");
-
-    if(!node.name)
-    node.name = node.title;
-
-    var cible, breadcrumbs, sub_level, icon,
-    row = document.createElement('div'),
-    body = document.createElement('div'),
-    li = document.createElement('li'),
-    image = imageBuilder(node.type),
-    header = document.createElement('div'),
-    text_header = document.createTextNode(node.name),
-    span = document.createElement('span');
-
-    if(!parentId) {
-        cible = document.querySelector('.node_constructor');
-        breadcrumbs = node.name;
-        sub_level = 0;
-    } else {
-        cible = $('.collapsible #'+String(parentId)).contents().filter('div.row.colla');
-        breadcrumbs = $('#'+ parentId + ' .collapside-header').contents().filter("span").attr("data-breadcrumbs");
-        breadcrumbs += '/' + node.name;
-        sub_level = $('.collapsible-header #'+parentId).contents().filter("span").attr("data-sublevel");
-        sub_level++
-    }
-
-    // Récuooérer le niveau du noeud supérieur
-
-    span.setAttribute("data-breadcrumbs", breadcrumbs);
-    span.setAttribute("data-sublevel", sub_level);
-    span.appendChild(text_header);
-    header.setAttribute("id", node._id);
-    span.addEventListener("click", loadInformationAndSelectNode, false);
-
-    body.setAttribute('class','collapsible-body row colla');
-    body.setAttribute('id', node._id);
-
-    if (node.type == NodeTypeEnum.assembly) {
-        icon = iconBuilder();
-        header.setAttribute('class', 'collapside-header node has-child valign-wrapper ');
-        header.appendChild(icon);
-        header.appendChild(image);
-        header.appendChild(span);
-        li.appendChild(header);
-        li.appendChild(body);
-    } else {
-        header.setAttribute('class', 'collapsible-header node no-child valign-wrapper group-'+sub_level);
-        header.appendChild(image);
-        header.appendChild(span);
-        li.appendChild(header);
-        body.appendChild(row);
-        li.appendChild(body);
-    }
-    cible.append(li);
-};
-
-var newChild = (node, parentId) => {
-    if (!parentId)
-    return console.error(new Error( "No ParentID defined"));
-
-    if(!node.name)
-    node.name = node.title;
-
-    var parent_header, cible, breadcrumbs, sub_level,
-    row = row = document.createElement('div'),
-    body = document.createElement('div'),
-    li = document.createElement('li'),
-    text_icon = document.createTextNode('keyboard_arrow_right'),
-    image = document.createElement('img'),
-    header = document.createElement('div'),
-    text_header = document.createTextNode(node.name),
-    span = document.createElement('span');
-
-    parent_header = document.querySelector('.collapsible-header #'+ node._id);
-    cible = document.querySelector('.collapsible-body #' + node._id);
-
-    //
-    var data_header;
-    data_header = parent_header.innerHTML;
-    parent_header.innerHTML = "";
-
-    var icon = iconBuilder(node.type);
-
-    icon.setAttribute('class', 'material-icons');
-    icon.appendChild(text_icon);
-    parent_header.appendChild(icon);
-    parent_header.data;
-    //
-    breadcrumbs = $(parent_header).contents().filter("span").attr("data-breadcrumbs");
-    sub_level = $(parent_header).contents().filter("span").attr("data-sublevel");
-    sub_level++;
-
-    breadcrumbs+= "/" + node.name;
-    span.addEventListener('click', loadInformationAndSelectNode)
-    span.setAttribute("data-breadcrumbs", breadcrumbs);
-    image.setAttribute('class', 'responsive-img pad-right');
-    span.appendChild(text_header);
-    header.setAttribute("id", node._id);
-    header.setAttribute("data-sublevel", sub_level);
-
-    header.setAttribute('class', 'collapsible-header node no-child valign-wrapper group-'+sub_level);
-    image.setAttribute('src', '/img/07-Part icon.svg');
-    header.appendChild(image);
-    header.appendChild(span);
-    li.appendChild(header);
-    body.appendChild(row);
-    li.appendChild(body);
-    cible.appendChild(li);
-
-};
-
-function loadChild() {
-    var nodeID = $(this).parent().attr('id');
-    var body = $('.collapsible-body #'+nodeID)
-    console.log(body.contents())
-    if (!body.contents()){
-        console.log('load new Child')
+function loadChild () {
+    console.log("Load Information AND SELECT NDOE");
+    var body = $(this).parent();
+    if (!body.contents().html()) {
+        var nodeID = body.attr('id');
         socket.emit("nodeChildren", nodeID);
-
+        $(function () {
+            console.log("Yollo!");
+            $(this).collapsible("open");
+        })
     }
 }
 
-function loadInformationAndSelectNode() {
-    var parent = $(this).parent();
-    var nodeID = parent.attr('id');
+function loadNodeInformation (e) {
+    console.log("Load Information AND SELECT NDOE");
+    var element = $(this).parent();
+    console.log(element);
+    var nodeID = element.attr('id');
     socket.emit("nodeInformation", nodeID);
     $('.collapsible-header.node').removeClass('selected-accordion');
-    parent.addClass('selected-accordion');
-    var fill_value = parent.contents().filter("span").html();
-    var breadcrumbs_value = parent.contents().filter("span").attr("data-breadcrumbs");
-    console.log(fill_value, breadcrumbs_value)
+    element.addClass('selected-accordion');
+    var fill_value = element.contents().filter("span").html();
+    var breadcrumbs_value = element.contents().filter("span").attr("data-breadcrumbs");
+    console.log(breadcrumbs_value);
     third_column.selectNode(fill_value, breadcrumbs_value);
-
-    if($('#location').hasClass('hide')  || $('#content').hasClass('hide')) {
-
+    if ($('#location').hasClass('hide') || $('#content').hasClass('hide')) {
         $('#location').removeClass('hide');
         $('#location').fadeOut(0, () => {
             $('#location').fadeIn('slow');
         });
-
         $('#content').removeClass('hide');
         $('#content').fadeOut(0, () => {
             $('#content').fadeIn('slow');
         });
-
     }
+    socket.emit("nodeChildren", nodeID);
+
+    /*
+    console.log("Load Information AND SELECT NDOE");
+    var body = $(this).parent();
+    if (!body.contents().html()) {
+        var nodeID = body.attr('id');
+        socket.emit("nodeChildren", nodeID);
+    }
+    */
 }
 
 $(document).ready(() => {
 //    threeChild(twignode);
     $('.collapsible').css({'margin':'0'});
-    $('.collapsible-header.node').click(function(el){
-
-    });
-
-    socket.on("seeChildrenNode", function (nodeID, children) {
-        children.forEach(child => {
-            console.log(child);
-            threeChild(child, nodeID);
-        });
-    });
-    socket.on("newNode", function (node) {
-        newChild(node.child, node.parent._id);
-    });
 });
