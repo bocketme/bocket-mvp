@@ -33,22 +33,24 @@ const newPart = (req, res) => {
 
     let promiseCreateFile = {
         specFiles: [],
-        file3D: [createFile(config.gitfiles, documentID, file3D.originalname, file3D.buffer)]
+        file3D: [createFile(config.gitfiles, documentID, file3D[0].originalname, file3D[0].buffer)]
     };
 
-    let promiseDeleteFile = [deleteFile(config.gitfiles, documentID, file3D.originalname)];
+    let promiseDeleteFile = [deleteFile(config.gitfiles, documentID, file3D[0].originalname)];
 
     let relativePath = {
         specFiles: [],
-        file3D: path.join(documentID, file3D.originalname)
+        file3D: path.join(documentID, file3D[0].originalname)
     };
 
-    specFiles.forEach(spec => {
-        relativePath.specFiles.push(path.join(nodeId, spec.originalname));
-        promiseCreateFile.specFiles.push(createFile(config.specfiles, nodeId, spec.originalname, spec.buffer));
-        promiseDeleteFile.push(deleteFile(config.specfiles, nodeId, spec.originalname));
-        promiseType.specFiles.push(type_mime(1, spec.mimetype))
-    });
+    if(specFiles){
+        specFiles.forEach(spec => {
+            relativePath.specFiles.push(path.join(nodeId, spec.originalname));
+            promiseCreateFile.specFiles.push(createFile(config.specfiles, nodeId, spec.originalname, spec.buffer));
+            promiseDeleteFile.push(deleteFile(config.specfiles, nodeId, spec.originalname));
+            promiseType.specFiles.push(type_mime(1, spec.mimetype))
+        });
+    }
 
     Node.findById(nodeId)
     .then((parentNode) => {
@@ -57,17 +59,19 @@ const newPart = (req, res) => {
         else if (parentNode.type !== TypeEnum.assembly)
         res.status(401).send("The node is a " + parentNode.type + ", it should not be an " + TypeEnum.assembly);
         else {
-            // Promise The specFiles
-            Promise.all(promiseType.specFiles)
-            .then(() => {
-                //Promise the creation of the Files
-                return Promise.all(promiseCreateFile.specFiles)
-            })
-            .then()
-            .catch(err => {
-                console.error(new Error("[Function newPart] The file 3D does'nt respect the type-mime - " + err));
-                throw err;
-            });
+            if (specFiles){
+                // Promise The specFiles
+                Promise.all(promiseType.specFiles)
+                    .then(() => {
+                        //Promise the creation of the Files
+                        return Promise.all(promiseCreateFile.specFiles)
+                    })
+                    .then()
+                    .catch(err => {
+                        console.error(new Error("[Function newPart] The file 3D does'nt respect the type-mime - " + err));
+                        throw err;
+                    });
+            }
             // Promise The file3D
             Promise.all(promiseType.file3D)
             .then(() => {

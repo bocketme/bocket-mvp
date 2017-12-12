@@ -14,7 +14,6 @@ import {fitToScreen, resize} from "./viewer_module/viewer"
 import {addTransform, removeTransform, setTransformMode, changeTransformSpace} from "./viewer_module/transform";
 
 var Viewer = function (file3D) {
-
     /******************************************************************/
     /*Verification for the Viewer*/
     if (!(this instanceof Viewer))
@@ -43,18 +42,8 @@ var Viewer = function (file3D) {
 
     /******************************************************************/
     /* initialisation de la scene_3d */
-    scene_3d.initScene(object3D(file3D));
-    scene_axis.initScene();
-
-
-    /******************************************************************/
-    /* scene_axis biding to scene_3d */
-    scene_axis.prototype.update = function () {
-        this.p_camera.position.copy(scene_3d.p_camera.position);
-        this.p_camera.position.setLength(200);
-        this.p_camera.lookAt(this.p_scene.position);
-    };
-
+    scene_3d.initScene(object3D(file3D), renderArea);
+    scene_axis.initScene(renderArea);
     function animate() {
         requestAnimationFrame(animate);
 
@@ -63,10 +52,11 @@ var Viewer = function (file3D) {
         scene_axis.render();
 
         /* update the scenes */
-        scene_axis.update();
-        scene_axis.p_controls.update();
+        scene_axis.update(scene_3d.p_camera.position);
+        // scene_axis.p_controls.update();
+
         scene_3d.transformUpdate();
-        scene_3d.p_controls.update();
+        // scene_3d.p_controls.update();
     }
 
 
@@ -79,7 +69,6 @@ var Viewer = function (file3D) {
     this.controls   = [scene_3d.p_controls,  scene_axis.p_controls];
 
     /* ************************************************************************** */
-
     animate();
 };
 
@@ -89,6 +78,7 @@ var Viewer = function (file3D) {
 Viewer.prototype.constructor = Viewer;
 
 /* ************************************************************************** */
+
 /* Screen modifications */
 
 /**
@@ -183,3 +173,8 @@ Viewer.prototype.setTransformMode = setTransformMode;
  * @description
  */
 Viewer.prototype.changeTransformSpace = changeTransformSpace;
+var viewer;
+socket.on('contentFile3d', (file3d) => {
+    var _file3d = JSON.parse(file3d);
+    viewer = new Viewer(_file3d);
+});

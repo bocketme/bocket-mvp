@@ -21,23 +21,29 @@ module.exports = socket => {
     }
 
     socket.on("getPart", (nodeId) => {
+        console.log("Get Part");
         Node.findById(nodeId)
         .then((node) => {
             Part.findById(node.content)
             .then((partSelected) => {
-                socket.emit('contentInformation', partSelected);
-                socket.emit('contentFile3d', readFile3d(node.path));
+                fs.readFile(path.join(config.gitfiles, partSelected.path), 'utf8', (err, data) => {
+                    socket.emit('contentInformation', partSelected);
+                    socket.emit('contentFile3d', data);
+                })
             })
         })
     });
 
     socket.on("getAssembly", (nodeId) => {
+        console.log("Get Part");
         Node.findById(nodeId)
         .then((node) => {
             Assembly.findById(node.content)
             .then((assemblySelected) => {
-                socket.emit('contentInformation', assemblySelected);
-                socket.emit('contentFile3d', readFile3d(path));
+                fs.readFile(path.join(config.gitfiles, assemblySelected.path), 'utf8',(err, data) => {
+                    socket.emit('contentInformation', assemblySelected);
+                    socket.emit('contentFile3d', data);
+                })
             })
         })
     });

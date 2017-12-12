@@ -1,5 +1,5 @@
 export default function object3D (file3D) {
-    return loadObjectFromJSON(file3D, 0xd6d6d6);
+    return loadObjectFromJSON(file3D, 0xB5E655);
 }
 
 var loadObjectFromJSON = function (jsonObj, colors) {

@@ -92,7 +92,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 var Viewer = function (file3D) {
-
     /******************************************************************/
     /*Verification for the Viewer*/
     if (!(this instanceof Viewer))
@@ -121,18 +120,8 @@ var Viewer = function (file3D) {
 
     /******************************************************************/
     /* initialisation de la scene_3d */
-    scene_3d.initScene(Object(__WEBPACK_IMPORTED_MODULE_2__init_object3D__["a" /* default */])(file3D));
-    scene_axis.initScene();
-
-
-    /******************************************************************/
-    /* scene_axis biding to scene_3d */
-    scene_axis.prototype.update = function () {
-        this.p_camera.position.copy(scene_3d.p_camera.position);
-        this.p_camera.position.setLength(200);
-        this.p_camera.lookAt(this.p_scene.position);
-    };
-
+    scene_3d.initScene(Object(__WEBPACK_IMPORTED_MODULE_2__init_object3D__["a" /* default */])(file3D), renderArea);
+    scene_axis.initScene(renderArea);
     function animate() {
         requestAnimationFrame(animate);
 
@@ -141,10 +130,11 @@ var Viewer = function (file3D) {
         scene_axis.render();
 
         /* update the scenes */
-        scene_axis.update();
-        scene_axis.p_controls.update();
+        scene_axis.update(scene_3d.p_camera.position);
+        // scene_axis.p_controls.update();
+
         scene_3d.transformUpdate();
-        scene_3d.p_controls.update();
+        // scene_3d.p_controls.update();
     }
 
 
@@ -157,7 +147,6 @@ var Viewer = function (file3D) {
     this.controls   = [scene_3d.p_controls,  scene_axis.p_controls];
 
     /* ************************************************************************** */
-
     animate();
 };
 
@@ -167,6 +156,7 @@ var Viewer = function (file3D) {
 Viewer.prototype.constructor = Viewer;
 
 /* ************************************************************************** */
+
 /* Screen modifications */
 
 /**
@@ -261,6 +251,11 @@ Viewer.prototype.setTransformMode = __WEBPACK_IMPORTED_MODULE_6__viewer_module_t
  * @description
  */
 Viewer.prototype.changeTransformSpace = __WEBPACK_IMPORTED_MODULE_6__viewer_module_transform__["b" /* changeTransformSpace */];
+var viewer;
+socket.on('contentFile3d', (file3d) => {
+    var _file3d = JSON.parse(file3d);
+    viewer = new Viewer(_file3d);
+});
 
 /***/ }),
 /* 1 */,
@@ -275,7 +270,7 @@ Viewer.prototype.changeTransformSpace = __WEBPACK_IMPORTED_MODULE_6__viewer_modu
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = object3D;
 function object3D (file3D) {
-    return loadObjectFromJSON(file3D, 0xd6d6d6);
+    return loadObjectFromJSON(file3D, 0xB5E655);
 }
 
 var loadObjectFromJSON = function (jsonObj, colors) {
@@ -314,13 +309,19 @@ function AxisScene(p_axisSize) {
     this.p_renderer.setSize(p_axisSize, p_axisSize);
 
     this.p_camera = new THREE.OrthographicCamera(p_axisSize / -2, p_axisSize / 2, p_axisSize / 2, p_axisSize / -2, 1, 2147483647);
-    this.lookAt(this.p_scene);
+    this.p_camera.lookAt(this.p_scene);
 
     this.render = function () {
-        this.p_renderer(this.p_camera, this.p_camera);
+        this.p_renderer.render(this.p_camera, this.p_camera);
     };
 
-    this.initScene = function () {
+    this.update = function (data) {
+        this.p_camera.position.copy(data);
+        this.p_camera.position.setLength(200);
+        this.p_camera.lookAt(this.p_scene.position);
+    };
+
+    this.initScene = function (renderArea) {
         var axisAnchor = new THREE.Points();
         axisAnchor.position.set(0, 0, 0);
 
@@ -356,11 +357,11 @@ function ViewerScene(p_width, p_height, p_aspectRatio) {
     this.p_camera.up.set(0, 0, 1);
     this.p_camera.position.set(0, -75, 50);
 
-    this.p_controls = new THREE.OrbitControls(p_camera, p_renderer.domElement);
-    this.p_controls.zoomSpeed = 1 / (Math.log10(p_camera.position.distanceTo(p_controls.target)));
+    this.p_controls = new THREE.OrbitControls(this.p_camera, this.p_renderer.domElement);
+    this.p_controls.zoomSpeed = 1 / (Math.log10(this.p_camera.position.distanceTo(this.p_controls.target)));
 
     this.render = function () {
-        this.p_renderer(this.p_camera, this.p_camera);
+        this.p_renderer.render(this.p_camera, this.p_camera);
     };
 
     this.transformUpdate = function (){
@@ -390,6 +391,7 @@ function ViewerScene(p_width, p_height, p_aspectRatio) {
         this.p_scene.add(directLight3);
         this.p_scene.add(directLight4);
 
+        console.log(this.p_renderer.domElement);
         renderArea.appendChild(this.p_renderer.domElement);
         return;
     }
