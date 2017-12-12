@@ -26,7 +26,7 @@ module.exports = socket => {
             Part.findById(node.content)
             .then((partSelected) => {
                 socket.emit('contentInformation', partSelected);
-                socket.emit('contentFile3d', readFile3d(path));
+                socket.emit('contentFile3d', readFile3d(node.path));
             })
         })
     });
