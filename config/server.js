@@ -1,7 +1,5 @@
 /**
- * Created by jean-adriendomage on 26/10/2017.
- * 
- * YOU MUST BUILD THE DIRECTORY 
+ * YOU MUST BUILD THE DIRECTORY
  */
 
 module.exports = {
@@ -9,8 +7,10 @@ module.exports = {
     protocol: "http",
     mongoDB: "mongodb://localhost/bocketmemvp",
     saltRounds: 10,
-    photo: require('path').resolve("../photo"),
+    tpm: require('path').resolve("../tpm"),
     gitfiles: require('path').resolve("../bocket"),
     avatar: require('path').resolve("../avatar"),
-    secretSession: "kdjqskdjkqsjdsjqdklqsjdkjziooajdiazjdskjdqklsjdjaziodjsqjdlj"
+    specfiles: require('path').resolve("../spec"),
+    secretSession: "kdjqskdjkqsjdsjqdklqsjdkjziooajdiazjdskjdqklsjdjaziodjsqjdlj",
+    secretKey: "Why you're always lying ? Why you're always lying ?",
 };

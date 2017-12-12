@@ -1,0 +1,21 @@
+<div id="location" class="hide">
+    <div class="row">
+        <div class="col s6"> <h5>Location</h5> </div>
+    </div>
+    <div class="row">
+        <div class="col s6"> <p>Maturity :</p> </div>
+        <div class="col s6"> {% verbatim %} <div class="maturity-cube" v-bind:style="styleObject"></div> {{ maturity }}{% endverbatim %} </div>
+    </div>
+    <div class="row">
+        <div class="col s6"> <p>Owners : </p> </div>
+        <div class="col s6"> {% verbatim %} <img v-for="(owner, index) in owners" v-bind:src="owner.url" alt="owner.name" class="user-image"> {% endverbatim %} </div>
+    </div>
+    <div class="row">
+        <div class="col s6"> <p>Created on :</p>  </div>
+        <div class="col s6"> {% verbatim %} {{ created_on }} {% endverbatim %} </div>
+    </div>
+    <div class="row">
+        <div class="col s6"> <p>Last modification :</p> </div>
+        <div class="col s6"> {% verbatim %}{{ modified }}{% endverbatim %} </div>
+    </div>
+</div>

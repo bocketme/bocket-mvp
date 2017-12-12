@@ -1,0 +1,39 @@
+<!-- Modal Structure -->
+<div id="create-new-node" class="modal">
+    <div class="modal-header">
+        <h4 style="font-weight: bolder !important;">Create a new Node</h4>
+    </div>
+        <div class="modal-content container">
+            <div class="modal-body">
+                <form id="form-create-new-node" method="post" action="/test">
+                    
+                    <div class="input-field col s12">
+                        <input id="node-name" type="text" name="name" class="validate">
+                        <label for="last_name">Node Name</label>
+                    </div>
+
+                    <div class="input-field col s12">
+                        <input id="node-description" type="text" name="description" class="validate">
+                        <label for="last_name">Description</label>
+                    </div>
+                    
+                    <div class="file-field input-field col s12">
+                        <div class="files-button btn upload_button">
+                            <span>...</span>
+                            <input type="file" multiple name="create_node_specFiles" @change="chargespecFiles">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" placeholder="Upload your Specs File">
+                        </div>
+                    
+                    </div>
+                    <br>
+                    <p>Tags</p>
+                    <div id="tags-new-node" class="chips"></div>
+                    
+                    <button id="submit-create-new-node" class="btn button-form-validate" type="submit">Create new Node</button>
+                 
+                </form>
+            </div>
+        </div>
+    </div>

@@ -1,9 +1,22 @@
-<ul id="content-part" class="collapsible" data-collapsible="accordion">
-        <li>
-            <div class="collapsible-header assembly valign-wrapper"><i class="material-icons">keyboard_arrow_right</i>CONTENT</div>
-            <div id="content" class="collapsible-body">
-                  
-            </div>
-        </li>
-    </ul>
-    
+<div id="content" class="hide">
+    <div class="row">
+        <div class="col s6"><h5>Content</h5></div>
+        <div class="col s6">{% verbatim %} <img :src="url" alt=""> {{ title }}{% endverbatim %}</div>
+    </div>
+    <div class="row">
+        <div class="col s6"><p>Maturity :</p></div>
+        <div class="col s6"> {% verbatim %} <div class="maturity-cube" v-bind:style="styleObject"></div> {{ maturity }}{% endverbatim %} </div>
+    </div>
+    <div class="row">
+        <div class="col s6"><p>Owners</p></div>
+        <div class="col s6">{% verbatim %} <img v-for="(user, index) in users" v-bind:src="user.url" alt="user.name" class="user-image"> {% endverbatim %} </div>
+    </div>
+    <div class="row">
+        <div class="col s6"><p>Where Used : </p></div>
+        <div class="col s6 valign-wrapper"><p>{% verbatim %} {{used}} {% endverbatim %}</p></div>
+    </div>
+    <div class="row">
+        <div class="col s6"><p>Quality :</p></div>
+        <div class="col s6 valign-wrapper"><p>{% verbatim %} {{pourcent}} {% endverbatim %}</p></div>
+    </div>
+</div>

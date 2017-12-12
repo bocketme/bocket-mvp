@@ -1,5 +1,7 @@
 let escape = require('escape-html');
 let ModelsMaker = require("../models/utils/create/ModelsMaker");
+let nodeMasterConfig = require("../config/nodeMaster");
+let NodeSchema = require("../models/Node");
 
 let signUpController = {
 
@@ -24,29 +26,44 @@ let signUpController = {
         user.save()
             .then(newUser => {
                 console.log("new user has been add", newUser);
-                let organization = ModelsMaker.CreateOrganization(req.body.organizationName, user);
+                let organization = ModelsMaker.CreateOrganization(req.body.organizationName, newUser);
                 organization.save()
                     .then(newOrga => {
                         console.log("\n\nnew organization has been add", newOrga);
-                        user.organizations.push({_id: newOrga._id, name: newOrga.name});
-                        let workspace = ModelsMaker.CreateWorkspace(req.body.workspaceName, newOrga, user);
+                        newUser.organizations.push({_id: newOrga._id, name: newOrga.name});
+                        let workspace = ModelsMaker.CreateWorkspace(req.body.workspaceName, newOrga, newUser);
                         workspace.save()
                             .then(newWorkspace => {
                                 console.log("\n\nnew workspace has been add", newWorkspace);
-                                user.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
-                                user.save()
-                                    .then(() => {
-                                        newOrga.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
-                                        newOrga.save()
-                                            .catch(err => {
-                                                throw err
-                                            });
+                                //let nodeMaster = ModelsMaker.CreateNode(nodeMasterConfig.name, nodeMasterConfig.description, newWorkspace._id);
+                                //nodeMaster.save()
+                                let nodeMaster = NodeSchema.initializeNode(nodeMasterConfig.name, nodeMasterConfig.description, newWorkspace._id, { _id: newUser._id, completeName: newUser.completeName, email: newUser.email });
+                                nodeMaster.save()
+                                    .then(nodeMaster => {
+                                        newWorkspace.node_master = nodeMaster;
+                                        newWorkspace.save()
+                                            .then(newWorkspace => {
+                                                newUser.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
+                                                newUser.save()
+                                                    .then(() => {
+                                                        newOrga.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
+                                                        newOrga.save()
+                                                            .catch(err => {
+                                                                throw err
+                                                            });
+                                                    })
+                                                    .catch(err => {
+                                                        console.log("error on updating user: " + err);
+                                                        newOrga.remove();
+                                                        newUser.remove();
+                                                        newWorkspace.remove();
+                                                    })
+                                            })
                                     })
                                     .catch(err => {
-                                        console.log("error on updating user: " + err);
+                                        console.log("[signupController] error on saving node master");
                                         newOrga.remove();
                                         newUser.remove();
-                                        newWorkspace.remove();
                                     })
                             })
                             .catch(err => {

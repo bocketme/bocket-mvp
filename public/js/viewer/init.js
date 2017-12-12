@@ -3,7 +3,7 @@
  * @author bocket.me
  * @param {HTMLElement} renderingDiv
  */
-var Viewer = function (renderingDiv) {
+var Viewer = function (renderingDiv, file3D) {
     if (!(this instanceof Viewer))
         return console.error(new Error('Bad instanciation'));
 
@@ -22,7 +22,7 @@ var Viewer = function (renderingDiv) {
 
     var p_scene = new THREE.Scene();
 
-    var p_renderer = new THREE.WebGLRenderer({alpha: true, antialias: true, logarithmicDepthBuffer: true});
+    var p_renderer = new THREE.WebGLRenderer({canvas: renderSurface, alpha: true, antialias: true, logarithmicDepthBuffer: true});
         p_renderer.localClippingEnabled = true;
         p_renderer.setClearColor(0xffffff);
         p_renderer.setSize(p_width, p_height);
@@ -38,7 +38,7 @@ var Viewer = function (renderingDiv) {
 
     var p_scene2 = new THREE.Scene();
 
-    var p_renderer2 = new THREE.WebGLRenderer({alpha: true, antialias: true, logarithmicDepthBuffer: true});
+    var p_renderer2 = new THREE.WebGLRenderer({canvas: axisCanvas,alpha: true, antialias: true, logarithmicDepthBuffer: true});
         p_renderer2.setSize(p_axisSize, p_axisSize);
 
     var p_camera2 = new THREE.OrthographicCamera(p_axisSize / -2, p_axisSize / 2, p_axisSize / 2, p_axisSize / -2, 1, 2147483647);
@@ -53,8 +53,6 @@ var Viewer = function (renderingDiv) {
 /* ************************************************************************** */
 
     initScenes()
-    .then(function () {
-    })
     .catch(function (error) {
         $('#renderDiv').html("<h4>No Preview Aviable<h4>")
     });
@@ -104,22 +102,12 @@ var Viewer = function (renderingDiv) {
 
     function getObject () {
         return new Promise(function (resolve, reject) {
-            var objLoader = new THREE.OBJLoader();
 
-                $.get('/node')
-                .done(function (data) {
-                    console.log(data);
-
-                    object = loadObjectFromJSON(data, 0xd6d6d6);
+                    object = loadObjectFromJSON(file3D, 0xd6d6d6);
                     //objectInit(object, data);
                     // this.fitToScreen();
 
                     resolve(object);
-                })
-                .fail(function (error) {
-                    console.log(error);
-                    reject(error);
-                });
         });
     }
 
@@ -181,7 +169,6 @@ var Viewer = function (renderingDiv) {
         return new Promise(function (resolve, reject) {
             initMainScene()
             .then(function () {
-                p_renderer.domElement.className += 'viewer-canvas';
                 renderArea.appendChild(p_renderer.domElement);
             })
             .catch(function (error) {
@@ -190,7 +177,6 @@ var Viewer = function (renderingDiv) {
 
             initAxisScene()
             .then(function () {
-                p_renderer2.domElement.className += 'axis-canvas';
                 renderArea.appendChild(p_renderer2.domElement);
             })
             .catch(function (error) {

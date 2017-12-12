@@ -16,15 +16,27 @@ const signup = require("./routes/signup");
 const project = require("./routes/project");
 const node = require("./routes/node");
 const workspace = require("./routes/workspace");
+const user = require("./routes/user");
+const part = require("./routes/part");
+const assembly = require("./routes/assembly");
 
 /* SESSION */
-let session = require("express-session");
-const MongoStore = require('connect-mongo')(session); //session store
+let expressSession = require("express-session");
+const MongoStore = require('connect-mongo')(expressSession); //session store
+let session = expressSession({
+    secret: config.secretSession,
+    store: new MongoStore({ url: config.mongoDB}),
+    resave: false,
+    saveUninitialized: false
+});
+let sharedsession = require("express-socket.io-session");
 
 let app = express();
 let server = require('http').createServer(app);
 let io = require("socket.io")(server);
 let ioListener = require("./sockets/socketsListener")(io);
+// // parse the cookies of the application
+// app.use(cookieParser);
 
 //Initialize the favicon
 app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon-bocket.png')));
@@ -49,27 +61,15 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use(morgan('dev'));
 
-app.use(session({
-    secret: config.secretSession,
-    store: new MongoStore({ url: config.mongoDB}),
-    resave: false,
-    saveUninitialized: false
-}));
-
-// Add the session in sockets (deprecated)
-/*io.use(function(socket, next) {
-    //console.log(socket);
-    session(socket.request, socket.request.res, next);
-});*/
+app.use(session);
+io.use(sharedsession(session));
 
 module.exports = app;
 
+// for parsing application/json
+app.use(bodyParser.json())
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
-
-// parse the cookies of the application
-// app.use(cookieParser);
-
 // parse application/json
 app.use(bodyParser.json());
 
@@ -90,38 +90,43 @@ app.set('twig options', {
 });
 
 app.use("/", index);
-//app.use("/signin", signin);
-//app.use("/signup", signup);
-//app.use("/project", project);
-//app.use("/node", node);
-//app.use("/workspace", workspace);
 
+app.use("/user", user);
 app.use("/signin", signin);
 app.use("/signup", signup);
 app.use("/project", project);
 app.use("/node", node);
 app.use("/workspace", workspace);
+app.use("/part", part);
+app.use("/assembly", assembly);
 app.post("/test", (req, res) => {
     console.log(req.query);
     console.log(req.params);
     res.send(req.query);
-})
+});
 
 app.use(express.static('public'));
 
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on("listening", () => {
-    fs.access(config.avatar, (err) => {
-        if (err){
-            if (err.errno == -4058)
-            console.log("Create the directory avatar in" + config.avatar);
-
-        }
-    });
-    fs.access(config.gitfiles, (err) => {
-        if (err){
-            if (err.errno== -4058)
-            console.log("Create the directory bocket in" + config.gitfiles);
-        }
-    });
+    var filesToVerify = [{name: 'avatar', path: config.avatar},
+    {name: 'bocket', path: config.gitfiles},
+    {name: 'tpm', path: config.tpm},
+    {name: 'spec', path: config.specfiles}];
+    verifyAccess(filesToVerify);
 });
+
+function verifyAccess(params){
+    for (var i = 0; i< params.length; i++ ) {
+        fs.access(params[i].path, logError(params[i]))
+    }
+}
+
+function logError(content){
+    return (err) => {
+        if (err){
+            if(err.errno== -4058)
+            console.log("Create the directory "+ content.name +" in" + content.path);
+        }
+    }
+}

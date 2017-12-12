@@ -5,7 +5,7 @@ let Workspaces = require("../models/Workspace");
 
 module.exports = function (socket) {
     socket.on("signin", (accountInformation) => { // accountInformation.email & accountInformation.password
-        //console.log(accountInformation);
+        console.log(accountInformation);
 
         accountInformation.email = escape(accountInformation.email);
         accountInformation.password = escape(accountInformation.password);

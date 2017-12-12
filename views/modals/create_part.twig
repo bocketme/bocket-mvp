@@ -7,29 +7,29 @@
             <div class="modal-body">
                 <form id="form-create-part" method="post" action="/test">
                     <div class="input-field col s12">
-                        <input id="part-name" type="text" name="part-name" class="validate">
+                        <input id="create-part-name" type="text" name="part-name" class="validate">
                         <label for="last_name">Part Name</label>
                     </div>
 
                     <div class="input-field col s12">
-                        <input id="Description" type="text" name="Description" class="validate">
+                        <input id="create-part-description" type="text" name="Description" class="validate">
                         <label for="last_name">Description</label>
                     </div>
 
                     <div class="file-field input-field col s12">
                         <div class="files-button btn upload_button">
                             <span>...</span>
-                            <input type="file">
+                            <input type="file" id="create-part-files3D" name="create-part-files3D" @change="chargefile">
                         </div>
                         <div class="file-path-wrapper">
                             <input class="file-path validate" type="text" placeholder="Upload your 3D Model">
                         </div>
                     </div>
-                    
+
                     <div class="file-field input-field col s12">
                         <div class="files-button btn upload_button">
                             <span>...</span>
-                            <input type="file" multiple>
+                            <input type="file" multiple id="create-part-specFiles" name="create-part-specFiles" @change="chargespecFiles">
                         </div>
                         <div class="file-path-wrapper">
                             <input class="file-path validate" type="text" placeholder="Upload your Specs File">

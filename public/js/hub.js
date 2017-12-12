@@ -1,13 +1,17 @@
-
 (function ($) {
   $(function () {
-    //initialize all modals           
-    $('.modal').modal();
-    
+    //initialize all modals
+    $('.modal').modal({
+      dismissible: true, // Modal can be dismissed by clicking outside of the modal
+      opacity: .7, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '2%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+    });
+    $(".collapsible").collapsible();
+    $(".collapsible").collapsible('open', 1);
     $('ul.tabs').tabs();
-
-    $('.collapsible').collapsible();
-    $('.collapsible').collapsible('open', 1);
 
     $('.dropdown-button').dropdown({
       inDuration: 300,
@@ -19,7 +23,7 @@
       alignment: 'left', // Displays dropdown with edge aligned to the left of button
       stopPropagation: false // Stops event propagation
     });
-    
+
     $(".triple-dots").dropdown({
       inDuration: 300,
       outDuration: 225,
@@ -30,36 +34,39 @@
       alignment: 'left', // Displays dropdown with edge aligned to the left of button
       stopPropagation: false // Stops event propagation
     });
-    
-    $('#create-part').modal({
-      dismissible: true, // Modal can be dismissed by clicking outside of the modal
-      opacity: .7, // Opacity of modal background
-      inDuration: 300, // Transition in duration
-      outDuration: 200, // Transition out duration
-      startingTop: '2%', // Starting top style attribute
-      endingTop: '10%', // Ending top style attribute
-    }
-  );
-  
-  $('#create-part-button').click(() =>{
-    $('#create-part').modal('open');
-  })
-  
-  $('.chips').material_chip();
-  
-  $('.chips').on('chip.add', function(e, chip){
-    // you have the added chip here
-    console.log(e);
+
+    $('.chips').material_chip();
+
+    //Socket
+    socket.on("nodeLocation", (node) => {
+      console.log(node);
+      locationVue.nodeInformation(node);
+      locationVue.maturityInformation(node.maturity);
+      if ($('#location').hasClass('hide') || $('#content').hasClass('hide')) {
+        $('#location').removeClass('hide');
+        $('#location').fadeOut(0, () => {
+          $('#location').fadeIn('slow');
+        });
+        $('#content').removeClass('hide');
+        $('#content').fadeOut(0, () => {
+          $('#content').fadeIn('slow');
+        });
+      }
+    })
+
+    socket.on('nodeChild', (html, nodeId) => {
+      console.log("Find Node Child")
+      var collapsible_body = $('#'+nodeId+'-body');
+      if(collapsible_body.hasClass("container")) {
+        collapsible_body.removeClass("container");
+        collapsible_body.html(html);
+      }
+    });
+
+    socket.on('contentFile3d', (data) => {
+      //JA A TOI DE JOUER
+
+    })
+
   });
-  
-  $('.button-form-validate').click((event) => {
-    event.preventDefault();
-    $.post('/test',function( data ) {
-      console.log( $('#form-create-part').serialize(), $('#tags-create-part').material_chip('data'));
-    }
-  );
-});
-
-});
 })(jQuery); // end of jQuery name space
-

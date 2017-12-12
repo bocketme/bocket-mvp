@@ -3,8 +3,11 @@ let escape = require('escape-html');
 let Workspace = require("../models/Workspace");
 let Organization = require("../models/Organization");
 let User = require("../models/User");
+let Node = require("../models/Node");
 
 let ModelsMaker = require("../models/utils/create/ModelsMaker");
+
+let nodeMasterConfig = require("../config/nodeMaster");
 
 let controller = {
     get: (req, res) => {},
@@ -40,31 +43,47 @@ let controller = {
                 let newWorkspace = ModelsMaker.CreateWorkspace(workspaceName, organization, user);
                 newWorkspace.save()
                     .then(w => {
-                        Organization.findOne({_id: organizationId, name: organizationName})
-                            .then(organization => {
-                                if (organization === null)
-                                {
-                                    console.log("[wokspace controller] error on finding organization (null): ", err);
-                                    res.sendStatus(500);
-                                    return ;
-                                }
-                                organization.workspaces.push({_id: w._id, name: w.name});
-                                user.workspaces.push({_id: w._id, name: w.name});
-                                organization.save()
-                                    .then(() => user.save())
-                                    .catch(err => {
-                                        console.log("[workspace controller] error on adding workspace to organization & user : ", err);
-                                        w.remove();
-                                        organization.workspaces.pop();
-                                        user.workspaces.pop();
-                                        res.sendStatus(500);
-                                    });
+                        let nodeMaster = ModelsMaker.CreateNode(nodeMasterConfig.name, nodeMasterConfig.description, w._id);
+                        nodeMaster.save()
+                            .then(n => {
+                                w.node_master = nodeMaster;
+                                w.save()
+                                    .then(w => {
+                                        Organization.findOne({_id: organizationId, name: organizationName})
+                                            .then(organization => {
+                                                if (organization === null)
+                                                {
+                                                    console.log("[wokspace controller] error on finding organization (null): ", err);
+                                                    res.sendStatus(500);
+                                                    return ;
+                                                }
+                                                organization.workspaces.push({_id: w._id, name: w.name});
+                                                user.workspaces.push({_id: w._id, name: w.name});
+                                                organization.save()
+                                                    .then(() => user.save())
+                                                    .catch(err => {
+                                                        console.log("[workspace controller] error on adding workspace to organization & user : ", err);
+                                                        w.remove();
+                                                        organization.workspaces.pop();
+                                                        user.workspaces.pop();
+                                                        res.sendStatus(500);
+                                                    });
+                                            })
+                                            .catch(err => {
+                                                console.log("[wokspace controller] error on finding organization : ", err);
+                                                res.sendStatus(500);
+                                            });
+                                        res.send(w);
+                                    })
                             })
                             .catch(err => {
-                                console.log("[wokspace controller] error on finding organization : ", err);
+                                console.log("[wokspace controller] error on saving node Master : ", err);
+                                res.sendStatus(500);
+                            })
+                            .catch(err => {
+                                console.log("[wokspace controller] error on saving node Master : ", err);
                                 res.sendStatus(500);
                             });
-                        res.send(w);
                     })
                     .catch(err => {
                         console.log("[wokspace controller] error on saving new workspace : ", err);
