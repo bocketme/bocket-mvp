@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "nodemon app.js -e js,twig,css,json",
-    "start": "nodemon app.js -e js,twig,css,json"
+    "start": "nodemon app.js -e js,twig,css,json",
+    "webpack": "webpack"
   },
   "repository": {
     "type": "git",
@@ -43,6 +44,7 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "chai-http": "^3.0.0"
+    "chai-http": "^3.0.0",
+    "webpack": "^3.10.0"
   }
 }

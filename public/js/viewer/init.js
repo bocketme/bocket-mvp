@@ -76,6 +76,9 @@ var Viewer = function (renderingDiv, file3D) {
         // object.scale.set(data.scale.x, data.Scale.y, data.scale.z);
 
         // var matrix = new THREE.Matrix4().compose(data.position, new THREE.Quaternion().setFromEuler(data.rotation), data.scale);
+
+        // Do loadObjext from JSON here whith color = 0xB5E655
+
     }
 
 

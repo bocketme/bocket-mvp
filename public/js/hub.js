@@ -37,7 +37,8 @@
 
     $('.chips').material_chip();
 
-    //Socket
+    //Socket<
+
     socket.on("nodeLocation", (node) => {
       console.log(node);
       locationVue.nodeInformation(node);
