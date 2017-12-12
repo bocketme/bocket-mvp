@@ -28,7 +28,8 @@ return new Promise((resolve, reject)=> {
             // call converter here, data represent file content
             //try {
                 // let module = new plugin(plugin_path);
-                // let obj = module.run(data);
+                // let geometryJSON = module.run(data);
+                // geometryJSON is the geomatry readable by THREE.js
             //} catch () ...
             // module.release();
         });
