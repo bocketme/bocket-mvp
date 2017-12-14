@@ -21,7 +21,7 @@ function loadNodeInformation(e) {
     var selector = '#'+nodeId+'-body';
 
     //CSS EFFECT
-    if(element.hasClass("selected-accordion")){
+    if(!element.hasClass("selected-accordion")){
         if (node_type === NodeTypeEnum.part)
             socket.emit('getPart', nodeId);
         else if (node_type === NodeTypeEnum.assembly)

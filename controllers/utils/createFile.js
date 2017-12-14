@@ -13,16 +13,18 @@ function createFile(access, nodeId, nameFile, data) {
                     fs.mkdir(node_path, (err) => {
                         if(err)
                             reject(err);
+                        else {
+                            fs.writeFile(file_path, data.toString, (err) => {
+                                if (err)
+                                    reject(err);
+                                else {
+                                    console.log(nameFile + " created in : " + file_path);
+                                    resolve();
+                                }
+                            })
+                        }
                     });
                 }
-                fs.writeFile(file_path, data.toString, (err) => {
-                    if (err)
-                        reject(err);
-                    else {
-                        console.log(nameFile + " created in : " + file_path);
-                        resolve();
-                    }
-                })
             });
         })
     });
