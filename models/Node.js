@@ -28,6 +28,7 @@ let NodeSchema = mongoose.Schema({
     Workspace: [String],
     owners: {type: [NestedUser], default: []},
     maturity: {type: String, default: [NodeTypeEnum.maturity[0]]},
+    specFiles: {type: [NestedSpecFiles], default: []}
 });
 
 NodeSchema.plugin(uniqueValidator);
