@@ -5,7 +5,7 @@ let importInsideNode = require("./importInsideNode");
 let newNodeListener = require("./newNodeListener");
 let NodeInformationListener = require("./nodeInformationListener");
 let contentInformationListener = require('./contentInformationListener');
-
+let searchNodeChildren = require('./searchNodeChildren');
 module.exports = function(io) {
     io.on('connection', function (socket) {
         betaRegistrationListener(socket);
@@ -15,5 +15,6 @@ module.exports = function(io) {
         newNodeListener(socket);
         NodeInformationListener(socket);
         contentInformationListener(socket);
+        searchNodeChildren(socket);
     });
 };

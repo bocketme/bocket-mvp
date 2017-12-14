@@ -7,6 +7,7 @@ const type_mime = require('../../utils/type-mime');
 const TypeEnum = require('../../enum/NodeTypeEnum');
 const createFile = require('../utils/createFile');
 const deleteFile = require('../utils/deleteFile');
+const twig = require('twig');
 
 /********************************************************/
 /*                                                      */
@@ -17,15 +18,17 @@ const deleteFile = require('../utils/deleteFile');
 /********************************************************/
 
 /**
- * Create a new Part for the specified node
- */
+* Create a new Part for the specified node
+*/
 const newAssembly = (req, res) => {
-    let nodeId =        escape(req.params.nodeId),
-        name =          escape(req.body.name),
-        description =   escape(req.body.description),
-        tags =          escape(req.body.tags),
-        specFiles =     req.files['specFiles'],
-        file3D =        req.files['file3D'][0];
+    let nodeId =    escape(req.params.nodeId),
+    name =          escape(req.body.name),
+    description =   escape(req.body.description),
+    tags =          escape(req.body.tags),
+    breadcrumb =    escape(req.body.breadcrumb),
+    sub_level =     escape(req.body.sub_level) + 1,
+    specFiles =     req.files['specFiles'],
+    file3D =        req.files['file3D'][0];
 
     const documentID = String(require('mongoose').Types.ObjectId());
 
@@ -54,71 +57,81 @@ const newAssembly = (req, res) => {
     });
 
     Node.findById(nodeId)
-        .then((parentNode) => {
-            if (!parentNode)
-                res.status(404).send("Not Found");
-            else if (parentNode.type !== TypeEnum.assembly)
-                res.status(401).send("The node is a " + node.type + ", it should be an " + TypeEnum.assembly);
-            else {
-                // Promise The specFiles
-                Promise.all(promiseType.specFiles)
-                    .then(() => {
-                        //Promise the creation of the Files
-                        return Promise.all(promiseCreateFile.specFiles)
-                    })
-                    .then(() => {console.log("SpecFiles created")})
-                    .catch(err => {
-                        console.log(new Error("[Function newPart] The file 3D does'nt respect the type-mime - " + err));
-                        throw err;
-                    });
-                // Promise The file3D
-                Promise.all(promiseType.file3D)
-                    .then(() => {
-                        //Promise the creation of the Files
-                        return Promise.all(promiseCreateFile.file3D);
-                    })
-                    .then(() => {console.log("File3D created")})
-                    .catch(err => {
-                        console.log(new Error("[Function newPart] The file 3D does'nt respect the type-mime - " + err));
-                        throw err;
-                    });
+    .then((parentNode) => {
+        if (!parentNode)
+        res.status(404).send("Not Found");
+        else if (parentNode.type !== TypeEnum.assembly)
+        res.status(401).send("The node is a " + parentNode.type + ", it should be an " + TypeEnum.assembly);
+        else {
+            // Promise The specFiles
+            Promise.all(promiseType.specFiles)
+            .then(() => {
+                //Promise the creation of the Files
+                return Promise.all(promiseCreateFile.specFiles)
+            })
+            .then(() => {console.log("SpecFiles created")})
+            .catch(err => {
+                console.log(new Error("[Function newPart] The file 3D does'nt respect the type-mime - " + err));
+                throw err;
+            });
+            // Promise The file3D
+            Promise.all(promiseType.file3D)
+            .then(() => {
+                //Promise the creation of the Files
+                return Promise.all(promiseCreateFile.file3D);
+            })
+            .then(() => {console.log("File3D created")})
+            .catch(err => {
+                console.log(new Error("[Function newPart] The file 3D does'nt respect the type-mime - " + err));
+                throw err;
+            });
 
-                let assembly = Assembly.initialize(name, description, relativePath.file3D, relativePath.specFiles, tags);
-                //assembly = new Assembly(assembly);
-                assembly.save()
-                    .then((newAssembly) => {
-                        let subNode = Node.createNode(name, description, TypeEnum.assembly, newAssembly._id, relativePath.specFiles, tags);
-                        subNode.save()
-                            .then((subNode) => {
-                                parentNode.children.push({
-                                    _id: subNode._id,
-                                    type: subNode.type,
-                                    name: subNode.name,
-                                });
-                                parentNode.save()
-                                    .then(() => {res.send({ _id: subNode._id});})
-                                    .catch((err) => {
-                                        console.log("[Function newPart] Could'nt save the node Parent - " + err);
-                                        throw err;
-                                    })
-                            })
-                            .catch(err => {
-                                console.log("[Function newPart] Could'nt save the Sub node - " + err);
-                                throw err;
-                            });
-                    })
-                    .catch(err => {
-                        console.log(new Error("[Function newPart] Could'nt save the part"));
-                        throw err;
+            let assembly = Assembly.initialize(name, description, relativePath.file3D, relativePath.specFiles, tags);
+            //assembly = new Assembly(assembly);
+            assembly.save()
+            .then((newAssembly) => {
+                let subNode = Node.createNode(name, description, TypeEnum.assembly, newAssembly._id, relativePath.specFiles, tags);
+                subNode.save()
+                .then((subNode) => {
+                    parentNode.children.push({
+                        _id: subNode._id,
+                        type: subNode.type,
+                        name: subNode.name,
                     });
-            }
-        })
-        .catch(() => {
-            Promise.all(promiseDeleteFile)
-                .then(() => {
-                    res.status(500).send("Intern Error");
+                    parentNode.save()
+                    .then(() => {
+                        parentNode.children.forEach(child => {
+                            child.breadcrumb = breadcrumb + '/' + child.name
+                        });
+                        twig.renderFile('./views/socket/three_child.twig', {
+                            node: parentNode, TypeEnum: TypeEnum,sub_level: sub_level}, (err, html) => {
+                            if (err)
+                            console.log(err);
+                            res.send(html)
+                        });
+                    })
+                    .catch((err) => {
+                        console.log("[Function newPart] Could'nt save the node Parent - " + err);
+                        throw err;
+                    })
                 })
-        });
+                .catch(err => {
+                    console.log("[Function newPart] Could'nt save the Sub node - " + err);
+                    throw err;
+                });
+            })
+            .catch(err => {
+                console.log(new Error("[Function newPart] Could'nt save the part"));
+                throw err;
+            });
+        }
+    })
+    .catch(() => {
+        Promise.all(promiseDeleteFile)
+        .then(() => {
+            res.status(500).send("Intern Error");
+        })
+    });
 };
 
 /********************************************************/
