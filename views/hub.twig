@@ -1,14 +1,22 @@
-{% extends 'layout_nonavbar.twig' %} {% block css %}
-<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" href="/css/hub.css">
-<link rel="stylesheet" href="/css/accordion.css">
-<link rel="stylesheet" href="/css/dropdown.css">
-<link rel="stylesheet" href="/css/tabs.css">
-<link rel="stylesheet" href="/css/viewer.css">
-<link rel="stylesheet" href="/css/hub/content.css">
-<link rel="stylesheet" href="/css/hub/location.css">
-<link rel="stylesheet" href="/css/hub/activity.css"> {% endblock %} {% block title %}{{ title }}{% endblock title %} {% block body %}
+{% extends 'layout_nonavbar.twig' %}
+
+{% block css %}
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/hub.css">
+    <link rel="stylesheet" href="/css/accordion.css">
+    <link rel="stylesheet" href="/css/dropdown.css">
+    <link rel="stylesheet" href="/css/tabs.css">
+    <link rel="stylesheet" href="/css/viewer.css">
+    <link rel="stylesheet" href="/css/hub/content.css">
+    <link rel="stylesheet" href="/css/hub/location.css">
+    <link rel="stylesheet" href="/css/hub/activity.css">
+    <link rel="stylesheet" href="/css/hub/specs.css">
+{% endblock %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block body %}
 <div id="hub" class="row">
     <div id="first_column" class="col s2">
 
@@ -114,21 +122,31 @@
         {% include "hub/third_collumn_header.twig" %}
 
         <div id="third_column_content">
-            {% include 'hub/viewer.twig' %} {% include "hub/tabs.twig" %}
+            {% include 'hub/viewer.twig' %}
+            {% include "hub/tabs.twig" %}
             <input id="activity-uploader" style="display: none" type="file">
         </div>
     </div>
 </div>
-</div>
+{% endblock %}
 
-{% endblock %} {% block js %}
-<script>
-    var workspaceId = "{{ in_use.id }}";
-    var idOfchoosenNode = undefined;
-    var NodeTypeEnum = {{NodeTypeEnum}};
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+
+{% block js %}
+    <script>
+        var workspaceId = "{{ in_use.id }}";
+        var idOfchoosenNode = undefined;
+        var NodeTypeEnum = {{ NodeTypeEnum }};
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script src="/js/hub.js"></script>
+    <script src="/js/hub/accordion.js"></script>
+    <script src="/js/hub/tabs.js"></script>
+    <script src="/js/hub/content.js"></script>
+    <script src="/js/hub/modals.js"></script>
+    <script src="/js/hub/activity.js"></script>
+    <script src="/js/hub/specs.js"></script>
+    <script src="/js/contextMenu.js"></script>
 {% include "require_viewer.twig" %}
 <script src="/js/hub.js"></script>
 <script src="/js/hub/accordion.js"></script>
