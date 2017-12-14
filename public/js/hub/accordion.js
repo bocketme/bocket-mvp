@@ -43,10 +43,13 @@ function loadNodeInformation(e) {
         socket.emit("nodeChildren", nodeId, breadcrumbs_value, sub_level);
     }
 
+    idOfchoosenNode = $(this).parent().attr("id");
+    socket.emit("getActivityComments", {nodeId: idOfchoosenNode});
 }
 
 $(document).ready(() => {
     $('.collapsible').css({
         'margin': '0'
     });
+
 });

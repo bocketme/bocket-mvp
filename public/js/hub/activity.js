@@ -31,6 +31,15 @@ $(document).ready(function() {
             $(this).val(empty);
         }
     });
+
+    socket.on("getActivityComments", function (comments) {
+        console.log("Nouveau commentaire", comments);
+        for (var i = comments.length - 1; i >= 0 ; i--) {
+            let comment = comments[i];
+            printActivityComment($(activityCommentsId + " li:first"), comment, comment.formatDate);
+        }
+    });
+
 });
 
 var d = new Date(2017, 11, 9);
@@ -41,7 +50,7 @@ var d = new Date(2017, 11, 9);
  * @Param comment = { author : string, content : string, date: Date }
  */
 function addCommentActivity(lastComment, comment) {
-    var today = new Date();
+    /*var today = new Date();
     var when = "today";
     var diff = new Date(today.getTime() - comment.date.getTime());
     var v;
@@ -57,15 +66,11 @@ function addCommentActivity(lastComment, comment) {
         when = (v > 1) ? (v + " weeks ago") : ("1 week ago");
     }
     else
-        when = (v > 0) ? (v + " days ago") : ("today");
-    printActivityComment(lastComment, comment, when);
+        when = (v > 0) ? (v + " days ago") : ("today");*/
+    //printActivityComment(lastComment, comment, when);
     // TODO: Send comment to the Back-End (WORK IN PROGRESS)
     socket.emit(newComment, {nodeId: idOfchoosenNode, comment});
 }
-
-socket.on(newComment, function (comment) {
-    console.log("Nouveau commentaire")
-});
 
 /**
  *
