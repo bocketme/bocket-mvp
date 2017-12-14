@@ -40,7 +40,6 @@
     //Socket<
 
     socket.on("nodeLocation", (node) => {
-      console.log(node);
       locationVue.nodeInformation(node);
       locationVue.maturityInformation(node.maturity);
       if ($('#location').hasClass('hide') || $('#content').hasClass('hide')) {

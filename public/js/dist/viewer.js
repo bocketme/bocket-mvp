@@ -69,13 +69,13 @@
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__init_scene_axis__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__init_scene_3d__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__init_object3D__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__viewer_module_matrix__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__viewer_module_ray__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__viewer_module_viewer__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__viewer_module_transform__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__init_scene_axis__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__init_scene_3d__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__init_object3D__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__viewer_module_matrix__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__viewer_module_ray__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__viewer_module_viewer__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__viewer_module_transform__ = __webpack_require__(7);
 /**
  * @description
  * @author bocket.me
@@ -91,13 +91,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+var renderArea = document.getElementById('renderDiv');
+var mousePos;
+
 var Viewer = function (file3D) {
+    console.time("viewer_init");
     /******************************************************************/
     /*Verification for the Viewer*/
     if (!(this instanceof Viewer))
         return console.error(new Error('Bad instanciation'));
-
-    var renderArea = document.getElementById('renderDiv');
 
     /******************************************************************/
     /* renderArea Information */
@@ -109,19 +111,33 @@ var Viewer = function (file3D) {
 
     /******************************************************************/
     /* Initialization of scenes */
+    console.time("scene_3d : Initialisation");
     var scene_3d = new __WEBPACK_IMPORTED_MODULE_1__init_scene_3d__["a" /* default */](p_width, p_height, p_aspectRatio);
+    console.timeEnd("scene_3d : Initialisation");
+    console.time("scene_axis : Initialisation");
     var scene_axis = new __WEBPACK_IMPORTED_MODULE_0__init_scene_axis__["a" /* default */](p_axisSize);
+    console.timeEnd("scene_axis : Initialisation");
 
+    console.time("Binding scenes");
     /*******************************************************************/
     /* Bind the camera of the scene_3d with the camera of the scene_axis */
     scene_axis.p_camera.up.copy(scene_3d.p_camera.up);
     scene_axis.p_camera.position.copy(scene_3d.p_camera.position);
     scene_axis.p_camera.position.setLength(200);
+    scene_axis.p_camera.lookAt(scene_axis.p_camera);
+    console.timeEnd("Binding scenes");
 
     /******************************************************************/
     /* initialisation de la scene_3d */
-    scene_3d.initScene(Object(__WEBPACK_IMPORTED_MODULE_2__init_object3D__["a" /* default */])(file3D), renderArea);
-    scene_axis.initScene(renderArea);
+    var meshGeometry = Object(__WEBPACK_IMPORTED_MODULE_2__init_object3D__["a" /* default */])(file3D);
+    var p_scene_3d_dom = scene_3d.initScene(meshGeometry);
+    var p_scene_axis_dom = scene_axis.initScene();
+
+    renderArea.appendChild(p_scene_3d_dom);
+    renderArea.appendChild(p_scene_axis_dom);
+
+    console.timeEnd("viewer_init");
+
     function animate() {
         requestAnimationFrame(animate);
 
@@ -129,13 +145,13 @@ var Viewer = function (file3D) {
         scene_3d.render();
         scene_axis.render();
 
-        /* update the scenes */
-        scene_axis.update(scene_3d.p_camera.position);
-        // scene_axis.p_controls.update();
+   }
+    /* update the scenes */
+    scene_axis.update(scene_3d.p_camera.position);
+    scene_axis.p_controls.update();
 
-        scene_3d.transformUpdate();
-        // scene_3d.p_controls.update();
-    }
+    scene_3d.transformUpdate();
+    scene_3d.p_controls.update();
 
 
     /* ************************************************************************** */
@@ -148,6 +164,8 @@ var Viewer = function (file3D) {
 
     /* ************************************************************************** */
     animate();
+    //renderArea.addEventListener('mouseup', onMouseUp);
+    //renderArea.addEventListener('mousedown', onMouseDown);
 };
 
 
@@ -251,68 +269,85 @@ Viewer.prototype.setTransformMode = __WEBPACK_IMPORTED_MODULE_6__viewer_module_t
  * @description
  */
 Viewer.prototype.changeTransformSpace = __WEBPACK_IMPORTED_MODULE_6__viewer_module_transform__["b" /* changeTransformSpace */];
+
+/* ************************************************************************** */
+
+
 var viewer;
 socket.on('contentFile3d', (file3d) => {
     var _file3d = JSON.parse(file3d);
     viewer = new Viewer(_file3d);
+    console.log(viewer);
 });
-
-/***/ }),
-/* 1 */,
-/* 2 */,
-/* 3 */,
-/* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = object3D;
-function object3D (file3D) {
-    return loadObjectFromJSON(file3D, 0xB5E655);
-}
-
-var loadObjectFromJSON = function (jsonObj, colors) {
-
-    var geometry = new THREE.BufferGeometry();
-    // create a simple square shape. We duplicate the top left and bottom right
-    // vertices because each vertex needs to appear once per triangle.
-    var vertices = new Float32Array( jsonObj.geometry.geometry );
-
-    // itemSize = 3 because there are 3 values (components) per vertex
-    geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    var material = new THREE.MeshBasicMaterial( { color: colors } );
-    var mesh = new THREE.Mesh( geometry, material );
-    return mesh;
+/* ************************************************************************** */
+/*                                                                            */
+/*                               EVENT FUNCTIONS                              */
+/*                                                                            */
+/* ************************************************************************** */
 
 
-    /* var geometry = new THREE.BufferGeometry();
-     geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-     var material = new THREE.MeshBasicMaterial( { color: colors } );
-     var mesh = new THREE.Mesh( geometry, material );
-     scene.add(mesh);*/
+var onWindowResize = function () {
+    if(viewer)
+        viewer.resize();
 };
 
+/* ************************************************************************** */
+
+
+var onMouseUp = function (event) {
+    var mouse3D = new THREE.Vector3((event.offsetX / renderArea.clientWidth) * 2 - 1, -(event.offsetY / renderArea.clientHeight) * 2 + 1, 0.5);
+    var transform;
+
+    if (mousePos.x !== event.offsetX || mousePos.y !== event.offsetY)
+        return;
+
+    //if (annot_mode)
+    //    viewer.addAnnotation(mouse3D, viewer.selectObjectAtMousePos(event.offsetX, event.offsetY));
+    //else {
+        if ((ray = viewer.rayToObject(event.offsetX, event.offsetY)))
+            viewer.addTransform(ray.object);
+        else
+            viewer.removeTransform();
+    //}
+};
+
+/* ************************************************************************** */
+
+var onMouseDown = function (event) {
+    mousePos = {
+        x: event.offsetX,
+        y: event.offsetY
+    };
+};
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                   EVENTS                                   */
+/*                                                                            */
+/* ************************************************************************** */
+
+window.addEventListener('resize', onWindowResize, false);
+
 /***/ }),
-/* 8 */
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = AxisScene;
 function AxisScene(p_axisSize) {
-    var axisCanvas = document.getElementById('axisCanvas');
-
     this.p_scene = new THREE.Scene();
 
-    this.p_renderer = new THREE.WebGLRenderer({canvas: axisCanvas,alpha: true, antialias: true, logarithmicDepthBuffer: true})
+    this.p_renderer = new THREE.WebGLRenderer({canvas: axisCanvas,alpha: true, antialias: true, logarithmicDepthBuffer: true});
     this.p_renderer.setSize(p_axisSize, p_axisSize);
 
     this.p_camera = new THREE.OrthographicCamera(p_axisSize / -2, p_axisSize / 2, p_axisSize / 2, p_axisSize / -2, 1, 2147483647);
     this.p_camera.lookAt(this.p_scene);
 
+    this.p_controls = new THREE.OrbitControls(this.p_camera, this.p_renderer.domElement);
+    this.p_controls.rotateSpeed = 0.15;
+
     this.render = function () {
-        this.p_renderer.render(this.p_camera, this.p_camera);
+        this.p_renderer.render(this.p_scene, this.p_camera);
     };
 
     this.update = function (data) {
@@ -333,14 +368,12 @@ function AxisScene(p_axisSize) {
         this.p_scene.add(axisAnchor);
         this.p_scene.add(p_axis);
 
-
-        renderArea.appendChild(this.p_renderer.domElement);
-        return;
+        return this.p_renderer.domElement;
     }
 }
 
 /***/ }),
-/* 9 */
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -358,10 +391,10 @@ function ViewerScene(p_width, p_height, p_aspectRatio) {
     this.p_camera.position.set(0, -75, 50);
 
     this.p_controls = new THREE.OrbitControls(this.p_camera, this.p_renderer.domElement);
+    console.log(this.p_controls.target);
     this.p_controls.zoomSpeed = 1 / (Math.log10(this.p_camera.position.distanceTo(this.p_controls.target)));
-
     this.render = function () {
-        this.p_renderer.render(this.p_camera, this.p_camera);
+        this.p_renderer.render(this.p_scene, this.p_camera);
     };
 
     this.transformUpdate = function (){
@@ -371,7 +404,7 @@ function ViewerScene(p_width, p_height, p_aspectRatio) {
         }
     };
     
-    this.initScene = function (object_3d, renderArea) {
+    this.initScene = function (object_3d) {
         this.p_scene.add(object_3d);
 
         var ambientLight = new THREE.AmbientLight(0xffffff, 0.25),
@@ -391,16 +424,82 @@ function ViewerScene(p_width, p_height, p_aspectRatio) {
         this.p_scene.add(directLight3);
         this.p_scene.add(directLight4);
 
-        console.log(this.p_renderer.domElement);
-        renderArea.appendChild(this.p_renderer.domElement);
-        return;
+        return this.p_renderer.domElement;
     }
 }
 
 /***/ }),
-/* 10 */,
-/* 11 */,
-/* 12 */
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = object3D;
+function object3D (file3D) {
+    return loadObjectFromJSON(file3D, 0x809fff);
+}
+
+var loadObjectFromJSON = function (jsonObj, colors) {
+
+    var geometry = new THREE.BufferGeometry();
+    // create a simple square shape. We duplicate the top left and bottom right
+    // vertices because each vertex needs to appear once per triangle.
+    var vertices = new Float32Array( jsonObj.geometry );
+
+    // itemSize = 3 because there are 3 values (components) per vertex
+    geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+    var material = new THREE.MeshBasicMaterial( { color: colors } );
+    var mesh = new THREE.Mesh( geometry, material );
+    return mesh;
+    /* var geometry = new THREE.BufferGeometry();
+     geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+     var material = new THREE.MeshBasicMaterial( { color: colors } );
+     var mesh = new THREE.Mesh( geometry, material );
+     scene.add(mesh);*/
+};
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = matrixCompose;
+/* harmony export (immutable) */ __webpack_exports__["b"] = matrixDecompose;
+function matrixCompose (pos, rot, scale) {
+    return new THREE.Matrix4().compose(pos, new THREE.Quaternion().setFromEuler(rot), scale);
+}
+
+function matrixDecompose (matrix) {
+    var pos = new THREE.Vector3(),
+        rot = new THREE.Quaternion(),
+        scale = new THREE.Vector3();
+
+    matrix.decompose(pos, rot, scale);
+
+    return {pos: pos, rot: new THREE.Euler().setFromQuaternion(rot), scale: scale};
+}
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = rayToAssembly;
+/* harmony export (immutable) */ __webpack_exports__["b"] = rayToGroup;
+/* harmony export (immutable) */ __webpack_exports__["c"] = rayToObject;
+function rayToAssembly() {
+
+}
+
+function rayToGroup() {
+
+}
+
+function rayToObject() {
+
+}
+
+/***/ }),
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -433,48 +532,7 @@ function resize () {
 }
 
 /***/ }),
-/* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = rayToAssembly;
-/* harmony export (immutable) */ __webpack_exports__["b"] = rayToGroup;
-/* harmony export (immutable) */ __webpack_exports__["c"] = rayToObject;
-function rayToAssembly() {
-
-}
-
-function rayToGroup() {
-
-}
-
-function rayToObject() {
-
-}
-
-/***/ }),
-/* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = matrixCompose;
-/* harmony export (immutable) */ __webpack_exports__["b"] = matrixDecompose;
-function matrixCompose (pos, rot, scale) {
-    return new THREE.Matrix4().compose(pos, new THREE.Quaternion().setFromEuler(rot), scale);
-}
-
-function matrixDecompose (matrix) {
-    var pos = new THREE.Vector3(),
-        rot = new THREE.Quaternion(),
-        scale = new THREE.Vector3();
-
-    matrix.decompose(pos, rot, scale);
-
-    return {pos: pos, rot: new THREE.Euler().setFromQuaternion(rot), scale: scale};
-}
-
-/***/ }),
-/* 15 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

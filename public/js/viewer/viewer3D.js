@@ -7,13 +7,12 @@
 
 var renderArea = document.getElementById('renderDiv');
 
-
-socket.on ("nodeObject", (nodeFile) => {
-    viewer     = new Viewer(renderArea, nodeFile);
-})
-
-viewer = new Viewer(renderArea);
-
+var viewer;
+socket.on('contentFile3d', (file3d) => {
+    var _file3d = JSON.parse(file3d);
+    viewer = new Viewer(renderArea, _file3d);
+    console.log(viewer);
+});
 // var socket = io.connect('http://localhost:8080');
 // var truc;
 
@@ -29,7 +28,8 @@ viewer = new Viewer(renderArea);
 
 
 var onWindowResize = function () {
-    viewer.resize();
+    if(viewer)
+        viewer.resize();
 };
 
 /* ************************************************************************** */

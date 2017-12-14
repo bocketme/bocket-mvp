@@ -80,7 +80,6 @@ var locationVue = new Vue ({
     },
     methods:{
         nodeInformation: (node) => {
-            console.log(node);
             locationVue.$data.created_on = moment(node.createdOn).format("MMM Do YYYY");
             locationVue.$data.modified = moment(node.modified).format("MMM Do YYYY");
             locationVue.$data.owners = node.owners;

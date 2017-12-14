@@ -11,10 +11,10 @@ export default function ViewerScene(p_width, p_height, p_aspectRatio) {
     this.p_camera.position.set(0, -75, 50);
 
     this.p_controls = new THREE.OrbitControls(this.p_camera, this.p_renderer.domElement);
+    console.log(this.p_controls.target);
     this.p_controls.zoomSpeed = 1 / (Math.log10(this.p_camera.position.distanceTo(this.p_controls.target)));
-
     this.render = function () {
-        this.p_renderer.render(this.p_camera, this.p_camera);
+        this.p_renderer.render(this.p_scene, this.p_camera);
     };
 
     this.transformUpdate = function (){
@@ -24,7 +24,7 @@ export default function ViewerScene(p_width, p_height, p_aspectRatio) {
         }
     };
     
-    this.initScene = function (object_3d, renderArea) {
+    this.initScene = function (object_3d) {
         this.p_scene.add(object_3d);
 
         var ambientLight = new THREE.AmbientLight(0xffffff, 0.25),
@@ -44,8 +44,6 @@ export default function ViewerScene(p_width, p_height, p_aspectRatio) {
         this.p_scene.add(directLight3);
         this.p_scene.add(directLight4);
 
-        console.log(this.p_renderer.domElement);
-        renderArea.appendChild(this.p_renderer.domElement);
-        return;
+        return this.p_renderer.domElement;
     }
 }

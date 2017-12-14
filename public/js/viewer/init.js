@@ -22,7 +22,7 @@ var Viewer = function (renderingDiv, file3D) {
 
     var p_scene = new THREE.Scene();
 
-    var p_renderer = new THREE.WebGLRenderer({canvas: renderSurface, alpha: true, antialias: true, logarithmicDepthBuffer: true});
+    var p_renderer = new THREE.WebGLRenderer({alpha: true, antialias: true, logarithmicDepthBuffer: true});
         p_renderer.localClippingEnabled = true;
         p_renderer.setClearColor(0xffffff);
         p_renderer.setSize(p_width, p_height);
@@ -38,7 +38,7 @@ var Viewer = function (renderingDiv, file3D) {
 
     var p_scene2 = new THREE.Scene();
 
-    var p_renderer2 = new THREE.WebGLRenderer({canvas: axisCanvas,alpha: true, antialias: true, logarithmicDepthBuffer: true});
+    var p_renderer2 = new THREE.WebGLRenderer({alpha: true, antialias: true, logarithmicDepthBuffer: true});
         p_renderer2.setSize(p_axisSize, p_axisSize);
 
     var p_camera2 = new THREE.OrthographicCamera(p_axisSize / -2, p_axisSize / 2, p_axisSize / 2, p_axisSize / -2, 1, 2147483647);
@@ -53,8 +53,10 @@ var Viewer = function (renderingDiv, file3D) {
 /* ************************************************************************** */
 
     initScenes()
+    .then(function () {
+    })
     .catch(function (error) {
-        $('#renderDiv').html("<h4>No Preview Aviable<h4>")
+        console.log(error);
     });
 
     this.annotation = new Annotation(renderArea, p_camera);
@@ -76,9 +78,6 @@ var Viewer = function (renderingDiv, file3D) {
         // object.scale.set(data.scale.x, data.Scale.y, data.scale.z);
 
         // var matrix = new THREE.Matrix4().compose(data.position, new THREE.Quaternion().setFromEuler(data.rotation), data.scale);
-
-        // Do loadObjext from JSON here whith color = 0xB5E655
-
     }
 
 
@@ -87,7 +86,7 @@ var Viewer = function (renderingDiv, file3D) {
         var geometry = new THREE.BufferGeometry();
 // create a simple square shape. We duplicate the top left and bottom right
 // vertices because each vertex needs to appear once per triangle.
-        var vertices = new Float32Array( jsonObj.geometry.geometry );
+        var vertices = new Float32Array( jsonObj.geometry );
 
 // itemSize = 3 because there are 3 values (components) per vertex
         geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
@@ -105,12 +104,21 @@ var Viewer = function (renderingDiv, file3D) {
 
     function getObject () {
         return new Promise(function (resolve, reject) {
+            // var objLoader = new THREE.OBJLoader();
+            var object = loadObjectFromJSON(file3D, 0xd6d6d6);
+                    resolve(object);
 
-                    object = loadObjectFromJSON(file3D, 0xd6d6d6);
+                //$.get('/node')
+                //.done(function (data) {
+
                     //objectInit(object, data);
                     // this.fitToScreen();
 
-                    resolve(object);
+                //})
+                //.fail(function (error) {
+                //    console.log(error);
+                //    reject(error);
+                //});
         });
     }
 
@@ -172,6 +180,7 @@ var Viewer = function (renderingDiv, file3D) {
         return new Promise(function (resolve, reject) {
             initMainScene()
             .then(function () {
+                p_renderer.domElement.className += 'viewer-canvas';
                 renderArea.appendChild(p_renderer.domElement);
             })
             .catch(function (error) {
@@ -180,6 +189,7 @@ var Viewer = function (renderingDiv, file3D) {
 
             initAxisScene()
             .then(function () {
+                p_renderer2.domElement.className += 'axis-canvas';
                 renderArea.appendChild(p_renderer2.domElement);
             })
             .catch(function (error) {
