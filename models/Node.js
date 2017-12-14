@@ -28,6 +28,7 @@ let NodeSchema = mongoose.Schema({
     Workspace: [String],
     owners: {type: [NestedUser], default: []},
     maturity: {type: String, default: [NodeTypeEnum.maturity[0]]},
+    activities : {type: [{author: String, content: String, date: Date}], default: []}
 });
 
 NodeSchema.plugin(uniqueValidator);

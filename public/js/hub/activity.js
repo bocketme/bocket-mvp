@@ -1,3 +1,5 @@
+var newComment = "newActivityComment";
+
 $(document).ready(function() {
     var activityCommentsId = "#activity-comments";
     var empty = "";
@@ -57,9 +59,20 @@ function addCommentActivity(lastComment, comment) {
     else
         when = (v > 0) ? (v + " days ago") : ("today");
     printActivityComment(lastComment, comment, when);
-    // TODO: Send comment to the Back-End
+    // TODO: Send comment to the Back-End (WORK IN PROGRESS)
+    socket.emit(newComment, {nodeId: idOfchoosenNode, comment});
 }
 
+socket.on(newComment, function (comment) {
+    console.log("Nouveau commentaire")
+});
+
+/**
+ *
+ * @Param lastComent = Jquery on lastComment
+ * @Param comment = { author : string, content : string, date: Date }
+ * @param when Date
+ */
 function printActivityComment(lastComment, comment, when) {
     lastComment.after("<div class=\"row\">\n" +
         "    <div class=\"col s12\">\n" +
