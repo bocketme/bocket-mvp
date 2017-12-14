@@ -61,5 +61,4 @@ typings/
 .env
 
 converter/
-
-public/js/dist/
+public/js/dist

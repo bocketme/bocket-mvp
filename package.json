@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "nodemon app.js -e js,twig,css,json",
-    "start": "nodemon app.js -e js,twig,css,json"
+    "start": "nodemon app.js -e js,twig,css,json",
+    "webpack": "webpack"
   },
   "repository": {
     "type": "git",
@@ -39,10 +40,12 @@
     "promise": "^8.0.1",
     "serve-favicon": "^2.4.5",
     "socket.io": "^2.0.4",
+    "three": "^0.88.0",
     "twig": "^1.10.5"
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "chai-http": "^3.0.0"
+    "chai-http": "^3.0.0",
+    "webpack": "^3.10.0"
   }
 }

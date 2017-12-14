@@ -13,7 +13,7 @@ module.exports = (socket) => {
                         child.name = child.title;
                         child.breadcrumb = breadcrumbs + '/' + child.name;
                     });
-                sub_level++
+                sub_level++;
                 console.log(sub_level);
                 twig.renderFile('./views/socket/three_child.twig', {
                     node: node,

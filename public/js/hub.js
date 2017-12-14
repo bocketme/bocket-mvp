@@ -37,9 +37,9 @@
 
     $('.chips').material_chip();
 
-    //Socket
+    //Socket<
+
     socket.on("nodeLocation", (node) => {
-      console.log(node);
       locationVue.nodeInformation(node);
       locationVue.maturityInformation(node.maturity);
       if ($('#location').hasClass('hide') || $('#content').hasClass('hide')) {
@@ -52,21 +52,15 @@
           $('#content').fadeIn('slow');
         });
       }
-    })
+    });
 
     socket.on('nodeChild', (html, nodeId) => {
-      console.log("Find Node Child")
+      console.log("Find Node Child");
       var collapsible_body = $('#'+nodeId+'-body');
       if(collapsible_body.hasClass("container")) {
         collapsible_body.removeClass("container");
         collapsible_body.html(html);
       }
     });
-
-    socket.on('contentFile3d', (data) => {
-      //JA A TOI DE JOUER
-
-    })
-
   });
 })(jQuery); // end of jQuery name space
