@@ -2,6 +2,16 @@ var menuState = false;
 var activeClass = "specs-context-menu-active";
 var gSelector;
 var gSelectorId;
+var pointedElem = null;
+
+$(document).ready(function() {
+    $("#specs").on("contextmenu", function (e) {
+        console.log(e);
+        pointedElem = e.target;
+        toggleMenuContextOn("#specs-context-menu");
+        return false;
+    });
+});
 
 /**
  * Open the menuContext
@@ -30,6 +40,7 @@ function toggleMenuContextOff() {
     if (gSelector !== undefined) {
         gSelector.removeClass("active");
         gSelector.removeClass(activeClass);
+        menuState = false;
     }
 }
 
