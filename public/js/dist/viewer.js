@@ -145,13 +145,18 @@ var Viewer = function (file3D) {
         scene_3d.render();
         scene_axis.render();
 
-   }
-    /* update the scenes */
-    scene_axis.update(scene_3d.p_camera.position);
-    scene_axis.p_controls.update();
+        scene_axis.p_camera.position.copy(scene_3d.p_camera.position);
 
-    scene_3d.transformUpdate();
-    scene_3d.p_controls.update();
+        console.log(scene_axis.p_camera.position);
+        console.log(scene_3d.p_camera.position);
+        scene_axis.p_camera.position.setLength(200);
+        scene_axis.p_camera.lookAt(scene_axis.p_scene.position);
+        scene_axis.p_controls.update();
+
+        scene_3d.transformUpdate();
+        scene_3d.p_controls.update();
+
+   }
 
 
     /* ************************************************************************** */
