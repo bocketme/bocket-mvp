@@ -23,8 +23,8 @@ $(document).ready(function() {
      * Used when a key enter is pressed on input
      * @Param e : event
      */
-    $(".add-comment").keypress(function (e) {
-        if (e.which === 13) {
+    $("#add-comment-input").keydown(function (e) {
+        if (e.which === 13 && $(this).val() !== empty) {
             addCommentActivity($(activityCommentsId + " li:first"), {author: "Vincent Mesquita", content: $(this).val(), date: new Date});
             $(this).val(empty);
         }
