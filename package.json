@@ -30,6 +30,7 @@
     "isemail": "^3.0.0",
     "jquery-validation": "^1.17.0",
     "jsonwebtoken": "^8.0.1",
+    "mocha": "^4.0.1",
     "mongodb": "^2.2.33",
     "mongoose": "^4.13.0",
     "mongoose-unique-validator": "^1.0.6",
