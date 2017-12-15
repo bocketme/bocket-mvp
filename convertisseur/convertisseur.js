@@ -30,7 +30,8 @@ function fileConverter(filePath) {
     try {
         let plugin = new nodePlugin(module, "");
         geometry = plugin.run(filePath);
-        delete module;
+        console.log(geometry);
+        delete (plugin);
     }
     catch (e) {
         console.log(e)

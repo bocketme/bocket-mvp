@@ -16,7 +16,7 @@ let macOs = {
         },
         {
             "name" : "assimp",
-            "path" : "./release/modules/macOs/libBocketAssimp.dylib"
+            "path" : "/Users/jean-adriendomage/devops/application-web/bocket-mvp/convertisseur/release/modules/macOs/libBocketAssimp.dylib"
         }
     ]
 };
