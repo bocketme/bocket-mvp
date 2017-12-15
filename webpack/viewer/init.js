@@ -44,15 +44,10 @@ var Viewer = function (file3D) {
     /*******************************************************************/
     /* Bind the camera of the scene_3d with the camera of the scene_axis */
 
-    function bind_scenes() {
-        return new Promise((resolve, reject) => {
-            scene_axis.p_camera.up.copy(scene_3d.p_camera.up);
-            scene_axis.p_camera.position.copy(scene_3d.p_camera.position);
-            scene_axis.p_camera.position.setLength(200);
-            scene_axis.p_camera.lookAt(scene_axis.p_camera);
-        });
-    }
-    bind_scenes();
+    scene_axis.p_camera.up.copy(scene_3d.p_camera.up);
+    scene_axis.p_camera.position.copy(scene_3d.p_camera.position);
+    scene_axis.p_camera.position.setLength(200);
+    scene_axis.p_camera.lookAt(scene_axis.p_camera);
 
     /******************************************************************/
     /* initialisation de la scene_3d */
@@ -71,20 +66,15 @@ var Viewer = function (file3D) {
         /* render the scenes */
         scene_3d.render();
         scene_axis.render();
+
         /* update the scenes */
-
-        scene_axis.p_camera.position.copy(scene_3d.p_camera.position);
-
-        console.log(scene_axis.p_camera.position);
-        console.log(scene_3d.p_camera.position);
-        scene_axis.p_camera.position.setLength(200);
-        scene_axis.p_camera.lookAt(scene_axis.p_scene.position);
+        scene_axis.update(scene_3d.p_camera.position);
         scene_axis.p_controls.update();
 
         scene_3d.transformUpdate();
         scene_3d.p_controls.update();
 
-   }
+    }
 
 
     /* ************************************************************************** */
@@ -237,10 +227,10 @@ var onMouseUp = function (event) {
     //if (annot_mode)
     //    viewer.addAnnotation(mouse3D, viewer.selectObjectAtMousePos(event.offsetX, event.offsetY));
     //else {
-        if ((ray = viewer.rayToObject(event.offsetX, event.offsetY)))
-            viewer.addTransform(ray.object);
-        else
-            viewer.removeTransform();
+    if ((ray = viewer.rayToObject(event.offsetX, event.offsetY)))
+        viewer.addTransform(ray.object);
+    else
+        viewer.removeTransform();
     //}
 };
 
