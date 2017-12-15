@@ -8,6 +8,7 @@ function loadNodeInformation(e) {
     //Initialisation
     var element = $(this).parent();
     var nodeId = element.attr('id');
+    idOfchoosenNode = nodeId;
     var fill_value = element.contents().filter("span.p-node").html();
     var breadcrumbs_value = element.contents().filter("span.p-node").attr("data-breadcrumbs");
     var sub_level = element.contents().filter("span.p-node").attr("data-sublevel");
@@ -43,7 +44,6 @@ function loadNodeInformation(e) {
         socket.emit("nodeChildren", nodeId, breadcrumbs_value, sub_level);
     }
 
-    idOfchoosenNode = $(this).parent().attr("id");
     socket.emit("getActivityComments", {nodeId: idOfchoosenNode});
 }
 

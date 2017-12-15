@@ -34,6 +34,7 @@ $(document).ready(function() {
 
     socket.on("getActivityComments", function (comments) {
         console.log("Nouveau commentaire", comments);
+        clearComments($("#activity-comments"));
         for (var i = comments.length - 1; i >= 0 ; i--) {
             let comment = comments[i];
             printActivityComment($(activityCommentsId + " li:first"), comment, comment.formatDate);
@@ -42,7 +43,17 @@ $(document).ready(function() {
 
 });
 
-var d = new Date(2017, 11, 9);
+/**
+ * Clear the comments
+ * @Param ulCollection : JqueryElement
+ */
+function clearComments(ulCollection) {
+    let liArray = ulCollection.children();
+
+    for (var i = 1 ; i < liArray.length ; i++) {
+        liArray[i].remove();
+    }
+}
 
 /**
  * Add a comment activity
@@ -79,7 +90,8 @@ function addCommentActivity(lastComment, comment) {
  * @param when Date
  */
 function printActivityComment(lastComment, comment, when) {
-    lastComment.after("<div class=\"row\">\n" +
+    lastComment.after("<li>" +
+        "<div class=\"row\">\n" +
         "    <div class=\"col s12\">\n" +
         "        <div class=\"card\">\n" +
         "            <div class=\"card-content white-text\">\n" +
@@ -104,5 +116,6 @@ function printActivityComment(lastComment, comment, when) {
         "            </div>\n" +
         "        </div>\n" +
         "    </div>\n" +
-        "</div>");
+        "</div>" +
+        "</li>");
 }

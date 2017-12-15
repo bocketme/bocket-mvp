@@ -4,6 +4,7 @@ let User = require("../models/User");
 let Node = require("../models/Node");
 let fs = require('fs');
 let NodeTypeEnum = require("../enum/NodeTypeEnum");
+let ViewTypeEnum = require("../enum/ViewTypeEnum");
 let path = require('path');
 module.exports = {
     /**
@@ -140,7 +141,8 @@ function getRenderInformation(workspaceId, userMail, title) {
                                         all_parts: 100,
                                         last_updates: 10,
                                         duplicates: 35,
-                                        NodeTypeEnum: JSON.stringify(NodeTypeEnum) /* const for fronst end */
+                                        NodeTypeEnum: JSON.stringify(NodeTypeEnum), /* const for fronst end */
+                                        ViewTypeEnum: JSON.stringify(ViewTypeEnum)
                                     });
                                  })
                             })
