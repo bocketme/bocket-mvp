@@ -1,3 +1,5 @@
+var newComment = "newActivityComment";
+
 $(document).ready(function() {
     var activityCommentsId = "#activity-comments";
     var empty = "";
@@ -25,43 +27,53 @@ $(document).ready(function() {
      */
     $("#add-comment-input").keydown(function (e) {
         if (e.which === 13 && $(this).val() !== empty) {
-            addCommentActivity($(activityCommentsId + " li:first"), {author: "Vincent Mesquita", content: $(this).val(), date: new Date});
+            addCommentActivity($(activityCommentsId + " li:first"), {author: "Vincent Mesquita", content: $(this).val(), date: new Date}, view);
             $(this).val(empty);
         }
     });
+
+    socket.on("getActivityComments", function (comments) {
+        console.log("Nouveau commentaire", comments);
+        clearComments($("#activity-comments"));
+        for (var i = comments.length - 1; i >= 0 ; i--) {
+            let comment = comments[i];
+            printActivityComment($(activityCommentsId + " li:first"), comment, comment.formatDate);
+        }
+    });
+
 });
 
-var d = new Date(2017, 11, 9);
+/**
+ * Clear the comments
+ * @Param ulCollection : JqueryElement
+ */
+function clearComments(ulCollection) {
+    let liArray = ulCollection.children();
+
+    for (var i = 1 ; i < liArray.length ; i++) {
+        liArray[i].remove();
+    }
+}
 
 /**
  * Add a comment activity
  * @Param lastComent = Jquery on lastComment
  * @Param comment = { author : string, content : string, date: Date }
  */
-function addCommentActivity(lastComment, comment) {
-    var today = new Date();
-    var when = "today";
-    var diff = new Date(today.getTime() - comment.date.getTime());
-    var v;
-
-    if (diff < 0)
-        when = "today";
-    else if ((v = diff.getUTCFullYear() - 1970) > 0)
-        when = (v > 1) ? (v + " years ago") : ("1 year ago");
-    else if ((v = diff.getUTCMonth()) > 0)
-        when = (v > 1) ? (v + " months ago") : ("1 month ago");
-    else if ((v = diff.getUTCDate() - 1) >= 7) {
-        v = Math.floor(v / 7);
-        when = (v > 1) ? (v + " weeks ago") : ("1 week ago");
-    }
-    else
-        when = (v > 0) ? (v + " days ago") : ("today");
-    printActivityComment(lastComment, comment, when);
-    // TODO: Send comment to the Back-End
+function addCommentActivity(lastComment, comment, view) {
+    // TODO: Send comment to the Back-End (WORK IN PROGRESS)
+    socket.emit(newComment, {nodeId: idOfchoosenNode, comment: comment, viewType: view});
 }
 
+/**
+ *
+ * @Param lastComent = Jquery on lastComment
+ * @Param comment = { author : string, content : string, date: Date }
+ * @param when Date
+ */
 function printActivityComment(lastComment, comment, when) {
-    lastComment.after("<div class=\"row\">\n" +
+    lastComment.after("<li>" +
+        "<div class=\"row\">\n" +
         "    <div class=\"col s12\">\n" +
         "        <div class=\"card\">\n" +
         "            <div class=\"card-content white-text\">\n" +
@@ -86,5 +98,6 @@ function printActivityComment(lastComment, comment, when) {
         "            </div>\n" +
         "        </div>\n" +
         "    </div>\n" +
-        "</div>");
+        "</div>" +
+        "</li>");
 }
