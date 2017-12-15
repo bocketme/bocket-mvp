@@ -66,7 +66,7 @@ function contentView(type, context) {
                 if (isValid(today, comment)) {
                     comment.type = type;
                     if (node.type === NodeTypeEnum.assembly) {
-                        console.log("AJOUT DANS ASSEMBLY");
+                        console.log("AJOUT DANS ASSEMBLY", node.content);
                         Assembly.findById(node.content)
                             .then(assembly => {
                                 if (assembly === null) return console.log("assembly not found");
