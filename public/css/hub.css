@@ -32,6 +32,10 @@ main {
 *   First, second and third collumn
 */
 
+#assembly-title {
+    font-weight: bold;
+}
+
 #hub {
     height: 100%;
 }
@@ -336,11 +340,17 @@ p{
     margin: 0px;
 }
 .node-selector{
-    padding-top: 4%;
+    padding-top: 1%;
+}
+
+.breadcrumb:hover {
+    cursor: pointer;
+    background-color: #f5f5f5;
 }
 
 .breadcrumb:last-child{
     color:#9b9b9b;
+    font-size: 10px;
 }
 
 .disabled-link {
@@ -385,7 +395,7 @@ li.option-node:hover{
 }
 
 div#location{
-    margin: 20px 0;
+    margin: 0;
     padding: 10px 0;
 }
 
@@ -393,8 +403,12 @@ div#content{
     padding: 10px 0;
 }
 
-div#content:hover, div#location:hover{
+/*div#content:hover, div#location:hover{
     background-color: rgb(194, 189, 189);
+}*/
+
+div.collapsible-body  ul {
+    margin: 0;
 }
 
 .user-image {
@@ -406,4 +420,24 @@ div#content:hover, div#location:hover{
     display: inline-block;
     height: 14px;
     width: 14px;
+}
+
+.viewHover {
+    background-color: #F8F8F8;
+}
+
+.viewNotHover {
+    background-color: white;
+}
+
+.viewClicked {
+    background-color: #E6E6E6;
+}
+
+.view:hover {
+    cursor: pointer;
+}
+
+.view {
+    border-top: #E6E6E6 solid 1px;
 }

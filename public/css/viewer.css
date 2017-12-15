@@ -6,6 +6,7 @@
 #renderDiv
 {
     height: 50%;
+    padding-top: 5px;
 }
 
 .axis-canvas
