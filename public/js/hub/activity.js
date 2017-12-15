@@ -27,7 +27,7 @@ $(document).ready(function() {
      */
     $("#add-comment-input").keydown(function (e) {
         if (e.which === 13 && $(this).val() !== empty) {
-            addCommentActivity($(activityCommentsId + " li:first"), {author: "Vincent Mesquita", content: $(this).val(), date: new Date});
+            addCommentActivity($(activityCommentsId + " li:first"), {author: "Vincent Mesquita", content: $(this).val(), date: new Date}, view);
             $(this).val(empty);
         }
     });
@@ -60,27 +60,9 @@ function clearComments(ulCollection) {
  * @Param lastComent = Jquery on lastComment
  * @Param comment = { author : string, content : string, date: Date }
  */
-function addCommentActivity(lastComment, comment) {
-    /*var today = new Date();
-    var when = "today";
-    var diff = new Date(today.getTime() - comment.date.getTime());
-    var v;
-
-    if (diff < 0)
-        when = "today";
-    else if ((v = diff.getUTCFullYear() - 1970) > 0)
-        when = (v > 1) ? (v + " years ago") : ("1 year ago");
-    else if ((v = diff.getUTCMonth()) > 0)
-        when = (v > 1) ? (v + " months ago") : ("1 month ago");
-    else if ((v = diff.getUTCDate() - 1) >= 7) {
-        v = Math.floor(v / 7);
-        when = (v > 1) ? (v + " weeks ago") : ("1 week ago");
-    }
-    else
-        when = (v > 0) ? (v + " days ago") : ("today");*/
-    //printActivityComment(lastComment, comment, when);
+function addCommentActivity(lastComment, comment, view) {
     // TODO: Send comment to the Back-End (WORK IN PROGRESS)
-    socket.emit(newComment, {nodeId: idOfchoosenNode, comment});
+    socket.emit(newComment, {nodeId: idOfchoosenNode, comment: comment, viewType: view});
 }
 
 /**

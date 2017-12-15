@@ -1,7 +1,7 @@
 /**
- * Send n first ativities
+ * Send n last ativities
  * @param socket
- * @param activities
+ * @param all activities of node/part/assembly
  * @param nbr
  */
 module.exports = (socket, activities, nbr) => {
@@ -17,7 +17,7 @@ module.exports = (socket, activities, nbr) => {
         ret.push(activities[i]);
         count += 1;
     }
-    console.log("getActivityComments");
+    console.log("getActivityComments", ret, nbr);
     //console.log("EMIT :", ret);
     socket.emit("getActivityComments", ret);
 };
