@@ -24,7 +24,6 @@
             stopPropagation: false // Stops event propagation
         });
 
-<<<<<<< HEAD
         $(".triple-dots").dropdown({
             inDuration: 300,
             outDuration: 225,
@@ -33,22 +32,10 @@
             gutter: 0, // Spacing from edge
             belowOrigin: true, // Displays dropdown below the button
             alignment: 'left', // Displays dropdown with edge aligned to the left of button
-            stopPropagation: false // Stops event propagation
-=======
-    $('.chips').material_chip();
-
-    //Socket<
-
-    socket.on("nodeLocation", (node) => {
-      locationVue.nodeInformation(node);
-      locationVue.maturityInformation(node.maturity);
-      if ($('#location').hasClass('hide') || $('#content').hasClass('hide')) {
-        $('#location').removeClass('hide');
-        $('#location').fadeOut(0, () => {
-          $('#location').fadeIn('slow');
->>>>>>> 4efbc25154ec2c12aac6bf7aa70c7d6b84d9773d
+            stopPropagation: false, // Stops event propagation
         });
 
+        //Socket<
         $('.chips').material_chip();
 
         //Socket
@@ -76,16 +63,22 @@
                 collapsible_body.html(html);
             }
         });
-<<<<<<< HEAD
 
         socket.on('contentFile3d', (data) => {
             //JA A TOI DE JOUER
 
         });
 
+        socket.on('nodeChild', (html, nodeId) => {
+            console.log("Find Node Child");
+            var collapsible_body = $('#'+nodeId+'-body');
+            if(collapsible_body.hasClass("container")) {
+                collapsible_body.removeClass("container");
+                collapsible_body.html(html);
+            }
+        });
 
         var views = $(".view");
-
         views.mouseout(function () {
             $(this).removeClass("viewHover");
             if (!$(this).hasClass("viewClicked")) {
@@ -109,8 +102,7 @@
             $(this).addClass("viewClicked");
         });
 
-        collapseOwners($("#location .owners"))
-
+        collapseOwners($("#location .owners"));
     });
 })(jQuery); // end of jQuery name space
 
@@ -131,18 +123,3 @@ function collapseOwners(owners) {
         move += 8;
     }
 }
-=======
-      }
-    });
-
-    socket.on('nodeChild', (html, nodeId) => {
-      console.log("Find Node Child");
-      var collapsible_body = $('#'+nodeId+'-body');
-      if(collapsible_body.hasClass("container")) {
-        collapsible_body.removeClass("container");
-        collapsible_body.html(html);
-      }
-    });
-  });
-})(jQuery); // end of jQuery name space
->>>>>>> 4efbc25154ec2c12aac6bf7aa70c7d6b84d9773d
