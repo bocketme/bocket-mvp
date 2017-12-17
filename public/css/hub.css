@@ -420,6 +420,8 @@ div.collapsible-body  ul {
     display: inline-block;
     height: 14px;
     width: 14px;
+    border-radius: 2px;
+    border: black 1px solid;
 }
 
 .viewHover {
@@ -440,4 +442,12 @@ div.collapsible-body  ul {
 
 .view {
     border-top: #E6E6E6 solid 1px;
+}
+
+.view h5 {
+    font-weight: bold !important;
+}
+
+.view .row {
+    margin-top: 2%;
 }

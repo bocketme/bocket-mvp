@@ -1,5 +1,12 @@
 #location {
 }
+
+#location .owners {
+    width: 15%;
+    height: 15%;
+    position: relative;
+}
+
 #location-maturity{
     display: inline-block;
 }
@@ -17,4 +24,14 @@ div#location>p>span.right , div#location>span.right , div#location>h5>span.right
 h5{
     margin: 0;
     font-size: 14px;
+}
+
+#location .owners:hover{
+    -webkit-transition: all .3s ease-in-out !important;
+    -moz-transition: all .3s ease-in-out !important;
+    -o-transition: all .3s ease-in-out !important;
+    -ms-transition: all .3s ease-in-out !important;
+    transition: all .3s ease-in-out !important;
+    width: 20%;
+    z-index: 10000;
 }

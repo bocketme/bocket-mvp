@@ -69,22 +69,50 @@
         });
 
 
-        $(".view").mouseout(function () {
-            $(this).addClass("viewNotHover");
+        var views = $(".view");
+
+        views.mouseout(function () {
             $(this).removeClass("viewHover");
-            $(this).removeClass("viewClicked");
+            if (!$(this).hasClass("viewClicked")) {
+                $(this).addClass("viewNotHover");
+                console.log("hasNot");
+            } else {
+                console.log("hasClass");
+            }
         });
 
-        $(".view").mouseover(function () {
+        views.mouseover(function () {
             $(this).removeClass("viewNotHover");
-            $(this).removeClass("viewClicked");
             $(this).addClass("viewHover");
         });
 
-        $(".view").on("click", function () {
+        views.on("click", function () {
+            views.removeClass("viewClicked");
+            views.addClass("viewNotHover");
             $(this).removeClass("viewHover");
             $(this).removeClass("viewNotHover");
             $(this).addClass("viewClicked");
         });
+
+        collapseOwners($("#location .owners"))
+
     });
 })(jQuery); // end of jQuery name space
+
+/**
+ * Collapse the owners in location div
+ * @param owners : JQueryElement
+ */
+function collapseOwners(owners) {
+    var i = 0;
+    var zIndex = owners.length;
+    var move = 0;
+
+    console.log("zIndex = ", zIndex);
+    while (i < owners.length) {
+        $(owners[i]).css("right", move + "%");
+        $(owners[i]).css("z-index", zIndex--);
+        i += 1;
+        move += 8;
+    }
+}

@@ -1,22 +1,22 @@
 <div id="content" class="hide view viewNotHover">
     <div class="row">
-        <div class="col s6"><h5>Content</h5></div>
-        <div class="col s6">{% verbatim %} <img :src="url" alt=""> {{ title }}{% endverbatim %}</div>
+        <div class="col s3 offset-s1"><h5>Content</h5></div>
+        <div class="col s4 offset-s4">{% verbatim %} <img :src="url" alt=""> {{ title }}{% endverbatim %}</div>
     </div>
     <div class="row">
-        <div class="col s6"><p>Maturity :</p></div>
-        <div class="col s6"> {% verbatim %} <div class="maturity-cube" v-bind:style="styleObject"></div> {{ maturity }}{% endverbatim %} </div>
+        <div class="col s5 offset-s1"><p>Maturity :</p></div>
+        <div class="col s4 offset-s2"> {% verbatim %} <div class="maturity-cube" v-bind:style="styleObject"></div> {{ maturity }}{% endverbatim %} </div>
     </div>
     <div class="row">
-        <div class="col s6"><p>Owners</p></div>
-        <div class="col s6">{% verbatim %} <img v-for="(user, index) in users" v-bind:src="user.url" alt="user.name" class="user-image"> {% endverbatim %} </div>
+        <div class="col s5 offset-s1"><p>Owners</p></div>
+        <div class="col s4 offset-s2">{% verbatim %} <img v-for="(user, index) in users" v-bind:src="user.url" alt="user.name" class="user-image"> {% endverbatim %} </div>
     </div>
     <div class="row">
-        <div class="col s6"><p>Where Used : </p></div>
-        <div class="col s6 valign-wrapper"><p>{% verbatim %} {{used}} {% endverbatim %}</p></div>
+        <div class="col s5 offset-s1"><p>Where Used : </p></div>
+        <div class="col s4 offset-s2 valign-wrapper"><p>{% verbatim %} {{used}} {% endverbatim %}</p></div>
     </div>
     <div class="row">
-        <div class="col s6"><p>Quality :</p></div>
-        <div class="col s6 valign-wrapper"><p>{% verbatim %} {{pourcent}} {% endverbatim %}</p></div>
+        <div class="col s5 offset-s1"><p>Quality :</p></div>
+        <div class="col s4 offset-s2 valign-wrapper"><p>{% verbatim %} {{pourcent}} {% endverbatim %}</p></div>
     </div>
 </div>

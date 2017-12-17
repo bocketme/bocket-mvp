@@ -1,21 +1,27 @@
 <div id="location" class="hide view viewNotHover">
     <div class="row">
-        <div class="col s6"> <h5>Location</h5> </div>
+        <div class="col s6 offset-s1"> <h5>Location</h5> </div>
     </div>
     <div class="row">
-        <div class="col s6"> <p>Maturity :</p> </div>
-        <div class="col s6"> {% verbatim %} <div class="maturity-cube" v-bind:style="styleObject"></div> {{ maturity }}{% endverbatim %} </div>
+        <div class="col s5 offset-s1"> <p>Maturity :</p> </div>
+        <div class="col s4 offset-s2"> {% verbatim %} <div class="maturity-cube" v-bind:style="styleObject"></div> {{ maturity }}{% endverbatim %} </div>
     </div>
     <div class="row">
-        <div class="col s6"> <p>Owners : </p> </div>
-        <div class="col s6"> {% verbatim %} <img v-for="(owner, index) in owners" v-bind:src="owner.url" alt="owner.name" class="user-image"> {% endverbatim %} </div>
+        <div class="col s5 offset-s1"> <p>Owners : </p> </div>
+        {# <div class="col s4 offset-s2"> {% verbatim %} <img v-for="(owner, index) in owners" v-bind:src="owner.url" alt="owner.name" class="user-image"> {% endverbatim %} </div> #}
+        <div class="col s4 offset-s2">
+            <img class="circle owners" src="/img/vincent_mesquita.jpg">
+            <img class="circle owners" src="/img/vincent_mesquita.jpg">
+            <img class="circle owners" src="/img/vincent_mesquita.jpg">
+            <img class="circle owners" src="/img/vincent_mesquita.jpg">
+        </div>
     </div>
     <div class="row">
-        <div class="col s6"> <p>Created on :</p>  </div>
-        <div class="col s6"> {% verbatim %} {{ created_on }} {% endverbatim %} </div>
+        <div class="col s5 offset-s1"> <p>Created on :</p>  </div>
+        <div class="col s4 offset-s2"> {% verbatim %} {{ created_on }} {% endverbatim %} </div>
     </div>
     <div class="row">
-        <div class="col s6"> <p>Last modification :</p> </div>
-        <div class="col s6"> {% verbatim %}{{ modified }}{% endverbatim %} </div>
+        <div class="col s5 offset-s1"> <p>Last modification :</p> </div>
+        <div class="col s4 offset-s2"> {% verbatim %}{{ modified }}{% endverbatim %} </div>
     </div>
 </div>
