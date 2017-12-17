@@ -14,7 +14,9 @@ function loadNodeInformation(e) {
     var sub_level = element.contents().filter("span.p-node").attr("data-sublevel");
     var node_type = element.contents().filter("span.p-node").attr("data-node");
 
-    console.log(element);
+    console.log("ELEMENT + ELEMENT.PREV()", element, element.children("img"));
+    $("#content-title").text($(this).text());
+    $("#content-img-title").attr("src", element.children("img").attr("src"));
 
     if (!nodeId)
     Materialize.toast('Error, The node selected has no ID', 2000);
