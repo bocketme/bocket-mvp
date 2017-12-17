@@ -138,6 +138,8 @@
         var workspaceId = "{{ in_use.id }}";
         var idOfchoosenNode = undefined;
         var NodeTypeEnum = {{ NodeTypeEnum }};
+        var ViewTypeEnum = {{ ViewTypeEnum }};
+        var view = ViewTypeEnum.location;
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
@@ -145,9 +147,10 @@
     <script src="/js/hub/accordion.js"></script>
     <script src="/js/hub/tabs.js"></script>
     <script src="/js/hub/content.js"></script>
+    <script src="/js/hub/location.js"></script>
     <script src="/js/hub/modals.js"></script>
     <script src="/js/hub/activity.js"></script>
     <script src="/js/hub/specs.js"></script>
     <script src="/js/contextMenu.js"></script>
 {% include "require_viewer.twig" %}
- {% endblock %}
+{% endblock %}

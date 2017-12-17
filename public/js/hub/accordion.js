@@ -8,6 +8,7 @@ function loadNodeInformation(e) {
     //Initialisation
     var element = $(this).parent();
     var nodeId = element.attr('id');
+    idOfchoosenNode = nodeId;
     var fill_value = element.contents().filter("span.p-node").html();
     var breadcrumbs_value = element.contents().filter("span.p-node").attr("data-breadcrumbs");
     var sub_level = element.contents().filter("span.p-node").attr("data-sublevel");
@@ -21,7 +22,7 @@ function loadNodeInformation(e) {
     var selector = '#'+nodeId+'-body';
 
     //CSS EFFECT
-    if(element.hasClass("selected-accordion")){
+    if(!element.hasClass("selected-accordion")){
         if (node_type === NodeTypeEnum.part)
             socket.emit('getPart', nodeId);
         else if (node_type === NodeTypeEnum.assembly)
@@ -43,10 +44,12 @@ function loadNodeInformation(e) {
         socket.emit("nodeChildren", nodeId, breadcrumbs_value, sub_level);
     }
 
+    socket.emit("getActivityComments", {nodeId: idOfchoosenNode});
 }
 
 $(document).ready(() => {
     $('.collapsible').css({
         'margin': '0'
     });
+
 });
