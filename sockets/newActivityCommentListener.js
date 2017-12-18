@@ -13,7 +13,7 @@ module.exports = (socket) => {
         addActivity(ActivityTypeEnum.comment, context, context.viewType)
             .then(activities => {
                 //console.log("then", activities);
-                getActivityCommentsEmitter(socket, activities)
+                getActivityCommentsEmitter(socket, activities, context.viewType)
             })
             .catch(err => console.log("[newCommentListener] :", err));
     })

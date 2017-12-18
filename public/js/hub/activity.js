@@ -1,7 +1,6 @@
 var newComment = "newActivityComment";
 
 $(document).ready(function() {
-    var activityCommentsId = "#activity-comments";
     var empty = "";
 
     /**
@@ -25,19 +24,26 @@ $(document).ready(function() {
      * Used when a key enter is pressed on input
      * @Param e : event
      */
-    $("#add-comment-input").keydown(function (e) {
+    $(".add-comment-input").keydown(function (e) {
         if (e.which === 13 && $(this).val() !== empty) {
-            addCommentActivity($(activityCommentsId + " li:first"), {author: "Vincent Mesquita", content: $(this).val(), date: new Date}, view);
+            var ul = (view === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
+            addCommentActivity($(ul + " li:first"), {author: "Vincent Mesquita", content: $(this).val(), date: new Date}, view);
             $(this).val(empty);
         }
     });
 
-    socket.on("getActivityComments", function (comments) {
-        console.log("Nouveau commentaire", comments);
-        clearComments($("#activity-comments"));
-        for (var i = comments.length - 1; i >= 0 ; i--) {
-            let comment = comments[i];
-            printActivityComment($(activityCommentsId + " li:first"), comment, comment.formatDate);
+    /**
+     * Get the last activity
+     * @param context : {{ viewType : String, activities : [String] }}
+     */
+    socket.on("getActivityComments", function (context) {
+        var activities = context.activities;
+        var ul = (context.viewType === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
+        console.log("Nouveau commentaire", context);
+        clearComments($(ul));
+        for (var i = activities.length - 1; i >= 0 ; i--) {
+            let comment = activities[i];
+            printActivityComment($(ul + " li:first"), comment, comment.formatDate);
         }
     });
 

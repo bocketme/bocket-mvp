@@ -3,10 +3,11 @@
  * @param socket
  * @param all activities of node/part/assembly
  * @param nbr
+ * @param viewType
  */
-module.exports = (socket, activities, nbr) => {
+module.exports = (socket, activities, viewType, nbr) => {
     let today = new Date();
-    let ret = [];
+    let ret = { viewType : viewType, activities: [] };
     let count = 0;
     if (nbr === undefined) nbr = 1;
 
@@ -14,7 +15,7 @@ module.exports = (socket, activities, nbr) => {
         throw new Error("[getActivityCommentEmitter]: invalid parameter(s)");
     for (let i = activities.length - 1 ; i >= 0 && count < nbr; i--) {
         activities[i].formatDate = formatDate(activities[i].date, today);
-        ret.push(activities[i]);
+        ret.activities.push(activities[i]);
         count += 1;
     }
     console.log("getActivityComments", ret, nbr);
