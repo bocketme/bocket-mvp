@@ -142,7 +142,8 @@ function getRenderInformation(workspaceId, userMail, title) {
                                         last_updates: 10,
                                         duplicates: 35,
                                         NodeTypeEnum: JSON.stringify(NodeTypeEnum), /* const for fronst end */
-                                        ViewTypeEnum: JSON.stringify(ViewTypeEnum)
+                                        ViewTypeEnum: JSON.stringify(ViewTypeEnum),
+                                        userAvatar: user.avatar
                                     });
                                  })
                             })

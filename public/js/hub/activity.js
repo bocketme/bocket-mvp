@@ -26,9 +26,9 @@ $(document).ready(function() {
         var activities = context.activities;
         var ul = (context.viewType === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
         clearComments($(ul));
-        console.log("getActivity", ul + " li:first", context);
+        //console.log("getActivity", ul + " li:first", context);
         for (var i = activities.length - 1; i >= 0 ; i--) {
-            console.log('getActivity for', $(ul + " li:first"));
+            //console.log('getActivity for', $(ul + " li:first"));
             let comment = activities[i];
             printActivityComment($(ul + " li:first"), comment, comment.formatDate);
         }
@@ -37,7 +37,7 @@ $(document).ready(function() {
     socket.on("newActivity", function (context) {
         var ul = (context.viewType === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
         //console.log("Nouveau commentaire", context, ul);
-        printActivityComment($(ul + " li:first"), context.activity, activity.formatDate);
+        printActivityComment($(ul + " li:first"), context.activity, context.activity.formatDate);
     });
 
 });
@@ -71,7 +71,6 @@ function addCommentActivity(lastComment, comment, view) {
  * @param when Date
  */
 function printActivityComment(lastComment, comment, when) {
-    console.log("printActivity", lastComment);
     lastComment.after("<li>" +
         "<div class=\"row\">\n" +
         "    <div class=\"col s12\">\n" +
@@ -79,7 +78,7 @@ function printActivityComment(lastComment, comment, when) {
         "            <div class=\"card-content white-text\">\n" +
         "                <div class=\"row\">\n" +
         "                    <div>\n" +
-        "                        <img class=\"col s2\" src=\"/img/vincent_mesquita.jpg\">\n" +
+        "                        <img class=\"col s2\" src=\""+ comment.avatar +"\">\n" +
         "                        <span class=\"card-title s10\"> <span class=\"who\">" + comment.author + "</span> <span class=\"what\">added a comment</span>, <span class=\"when\">" + when + "</span></span>\n" +
         "                    </div>\n" +
         "                    <p class=\"col s12\">"+ comment.content +"</p>" +

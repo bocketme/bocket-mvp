@@ -14,11 +14,12 @@ module.exports = (socket, activities, viewType, nbr) => {
     if (!socket || !activities || nbr <= 0)
         throw new Error("[getActivityCommentEmitter]: invalid parameter(s)");
     for (let i = activities.length - 1 ; i >= 0 && count < nbr; i--) {
-        activities[i].formatDate = formatDate(activities[i].date, today);
-        ret.activities.push(activities[i]);
+        let o = {date: activities[i].date, files: activities[i].files, _id: activities[i]._id, type: activities[i].type, content: activities[i].content, author: activities[i].author}; // Obligé de faire comme ça sinon formatDate ne veut pas s'enrengistrer...
+        o.formatDate = formatDate(activities[i].date, today);
+        ret.activities.push(o);
         count += 1;
     }
-    //console.log("getActivityComments", ret, nbr);
+    console.log("getActivityCommentssssss", ret, nbr);
     socket.emit("getActivityComments", ret);
 };
 
@@ -46,5 +47,6 @@ function formatDate(date, today) {
     }
     else
         when = (v > 0) ? (v + " days ago") : ("today");
+    console.log("WHEN: ", when);
     return when;
 }

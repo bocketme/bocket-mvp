@@ -35,6 +35,7 @@
 </div>
 <script>
     $('.collapsible').collapsible();
+    $('span.p-node').unbind("click", loadNodeInformation);
     $('span.p-node').click(loadNodeInformation);
 </script>
 <style>
