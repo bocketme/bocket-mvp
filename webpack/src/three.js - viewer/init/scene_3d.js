@@ -1,30 +1,33 @@
-export default function ViewerScene(p_width, p_height, p_aspectRatio) {
-    this.p_scene = new THREE.Scene();
+import * as THREE from 'three';
 
-    this.p_renderer = new THREE.WebGLRenderer({canvas: renderSurface, alpha: true, antialias: true, logarithmicDepthBuffer: true});
-    this.p_renderer.localClippingEnabled = true;
-    this.p_renderer.setClearColor(0xffffff);
-    this.p_renderer.setSize(p_width, p_height);
+export default class ViewerScene{
+    constructor(p_width, p_height, p_aspectRatio){
+        this.p_scene = new THREE.Scene();
 
-    this.p_camera = new THREE.PerspectiveCamera(60, p_aspectRatio, 1, 2147483647);
-    this.p_camera.up.set(0, 0, 1);
-    this.p_camera.position.set(0, -75, 50);
+        this.p_renderer = new THREE.WebGLRenderer({canvas: renderSurface, alpha: true, antialias: true, logarithmicDepthBuffer: true});
+        this.p_renderer.localClippingEnabled = true;
+        this.p_renderer.setClearColor(0xffffff);
+        this.p_renderer.setSize(p_width, p_height);
 
-    this.p_controls = new THREE.OrbitControls(this.p_camera, this.p_renderer.domElement);
-    console.log(this.p_controls.target);
-    this.p_controls.zoomSpeed = 1 / (Math.log10(this.p_camera.position.distanceTo(this.p_controls.target)));
-    this.render = function () {
+        this.p_camera = new THREE.PerspectiveCamera(60, p_aspectRatio, 1, 2147483647);
+        this.p_camera.up.set(0, 0, 1);
+        this.p_camera.position.set(0, -75, 50);
+
+        this.p_controls = new THREE.OrbitControls(this.p_camera, this.p_renderer.domElement);
+        this.p_controls.zoomSpeed = 1 / (Math.log10(this.p_camera.position.distanceTo(this.p_controls.target)));
+    }
+
+    render(){
         this.p_renderer.render(this.p_scene, this.p_camera);
-    };
-
-    this.transformUpdate = function (){
+    }
+    transformUpdate(){
         for (var i = 0; i<this.p_scene.children.length; i++){
             if (this.p_scene.children[i] instanceof THREE.TransformControls)
                 this.p_scene.children[i].update();
         }
-    };
+    }
 
-    this.initScene = function (render) {
+    initScene(renderArea){
         this.p_scene.add(object_3d);
 
         var ambientLight = new THREE.AmbientLight(0xffffff, 0.25),
@@ -44,33 +47,27 @@ export default function ViewerScene(p_width, p_height, p_aspectRatio) {
         this.p_scene.add(directLight3);
         this.p_scene.add(directLight4);
 
+        renderArea.appendChild(this.p_renderer.domElement);
+    }
 
-        return this.p_renderer.domElement;
-    };
+    addGroupToScene(documentID, object3D) {
+        let group = THREE.Group();
 
-    this.addGroupToScene = function (documentID, object3D) {
-      let group = THREE.Group();
+        group.name = documentID;
+        group.add(object3D);
 
-      group.name = documentID;
-      group.add(object3D);
+        this.p_scene.add(group);
+    }
 
-      this.p_scene.add(group);
-    };
-
-    this.addMeshToScene = function (documentID, object3D) {
+    addMeshToScene(documentID, object3D) {
         object3D.name = documentID;
         this.p_scene.add(object3D)
-    };
+    }
 
-    this.clearObject = function () {
+    deleteGroupToScene(){
 
-    };
-
-    this.deleteGroupToScene = function () {
-
-    };
-
-    this.deleteMeshToScene = function () {
+    }
+    deleteMeshToScene(){
 
     }
 }

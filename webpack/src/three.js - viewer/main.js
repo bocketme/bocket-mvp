@@ -2,8 +2,9 @@ import Viewer from './Viewer';
 import * as THREE from "three";
 
 var mousePos;
-var viewer = new Viewer();
-
+var renderArea = document.getElementById('renderDiv');
+var viewer = new Viewer(renderArea);
+console.log(viewer);
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -43,7 +44,7 @@ var onMouseUp = function (event) {
         return;
 
     //if (annot_mode)
-    //    threeJS.addAnnotation(mouse3D, threeJS.selectObjectAtMousePos(event.offsetX, event.offsetY));
+    //    three.js - viewer.addAnnotation(mouse3D, three.js - viewer.selectObjectAtMousePos(event.offsetX, event.offsetY));
     //else {
     if ((ray = viewer.rayToObject(event.offsetX, event.offsetY)))
         viewer.addTransform(ray.object);
@@ -66,7 +67,6 @@ var onMouseDown = function (event) {
 /*                                   EVENTS                                   */
 /*                                                                            */
 /* ************************************************************************** */
-var renderArea = document.getElementById('renderDiv');
 
 window.addEventListener('resize', onWindowResize, false);
 renderArea.addEventListener('mouseup', onMouseUp);
