@@ -23,8 +23,8 @@ export default function ViewerScene(p_width, p_height, p_aspectRatio) {
                 this.p_scene.children[i].update();
         }
     };
-    
-    this.initScene = function (object_3d) {
+
+    this.initScene = function (render) {
         this.p_scene.add(object_3d);
 
         var ambientLight = new THREE.AmbientLight(0xffffff, 0.25),
@@ -44,6 +44,33 @@ export default function ViewerScene(p_width, p_height, p_aspectRatio) {
         this.p_scene.add(directLight3);
         this.p_scene.add(directLight4);
 
+
         return this.p_renderer.domElement;
+    };
+
+    this.addGroupToScene = function (documentID, object3D) {
+      let group = THREE.Group();
+
+      group.name = documentID;
+      group.add(object3D);
+
+      this.p_scene.add(group);
+    };
+
+    this.addMeshToScene = function (documentID, object3D) {
+        object3D.name = documentID;
+        this.p_scene.add(object3D)
+    };
+
+    this.clearObject = function () {
+
+    };
+
+    this.deleteGroupToScene = function () {
+
+    };
+
+    this.deleteMeshToScene = function () {
+
     }
 }
