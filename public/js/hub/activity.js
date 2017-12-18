@@ -3,22 +3,8 @@ var newComment = "newActivityComment";
 $(document).ready(function() {
     var empty = "";
 
-    /**
-     * Upload a file
-     */
-    $(".activity-upload").on("click", function () {
-        $("#activity-uploader").click();
-    });
-
-    /**
-     * Slide input comment
-     */
-    $(".comment").on("click", function() {
-        console.log("[.comment] onClick", $($(this).prev().children()[0]));
-        $(this).prev().slideToggle(function() {
-            $(this).children().trigger("select");
-        });
-    });
+    $(".activity-upload").on("click", uploadFile);
+    $(".comment").on("click", slideInputComment);
 
     /**
      * Used when a key enter is pressed on input
@@ -114,4 +100,24 @@ function printActivityComment(lastComment, comment, when) {
         "    </div>\n" +
         "</div>" +
         "</li>");
+    $(".activity-upload").on("click", uploadFile);
+    $(".comment").on("click", slideInputComment);
 }
+
+
+/**
+ * Upload a file
+ */
+function uploadFile() {
+    $("#activity-uploader").click();
+}
+
+/**
+ * Slide input comment
+ */
+function slideInputComment() {
+    console.log("[.comment] onClick", $($(this).prev().children()[0]));
+    $(this).prev().slideToggle(function() {
+        $(this).children().trigger("select");
+    });
+};
