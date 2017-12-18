@@ -25,15 +25,15 @@ module.exports = (socket) => {
                 console.log("Assembly id: ", node.content);
                 Assembly.findById(node.content)
                     .then(assembly => {
-                        if (assembly.activities !== null)
-                            getActivityCommentsEmitter(socket, assembly.activities, context.viewType, nbr)
+                        let activities = (assembly !== null) ? (assembly.activities) : ([]);
+                        getActivityCommentsEmitter(socket, activities, context.viewType, nbr)
                     })
                     .catch(err => console.log("[getActivityComments] Assembly : ", err));
             } else {
                 Part.findById(node.content)
                     .then(part => {
-                        if (part.activities !== null)
-                            getActivityCommentsEmitter(socket, part.activities, context.viewType, nbr)
+                        let activities = (part !== null) ? (part.activities) : ([]);
+                        getActivityCommentsEmitter(socket, activities, context.viewType, nbr)
                     })
                     .catch(err => console.log("[getActivityComments] Part : ", err));
             }

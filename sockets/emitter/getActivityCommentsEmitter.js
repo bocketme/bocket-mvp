@@ -19,7 +19,6 @@ module.exports = (socket, activities, viewType, nbr) => {
         count += 1;
     }
     //console.log("getActivityComments", ret, nbr);
-    //console.log("EMIT :", ret);
     socket.emit("getActivityComments", ret);
 };
 
