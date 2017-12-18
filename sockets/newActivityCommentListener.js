@@ -1,4 +1,4 @@
-const getActivityCommentsEmitter = require("./emitter/getActivityCommentsEmitter");
+const newActivityEmitter = require("./emitter/newActivityEmitter");
 const addActivity = require("./utils/addActivity");
 const ActivityTypeEnum = require("../enum/ActivitiyTypeEnum");
 
@@ -11,9 +11,9 @@ module.exports = (socket) => {
         //TODO: ajouter type dans comment & filepath
         //TODO: check if the user has rights
         addActivity(ActivityTypeEnum.comment, context, context.viewType)
-            .then(activities => {
+            .then(activity => {
                 //console.log("then", activities);
-                getActivityCommentsEmitter(socket, activities, context.viewType)
+                newActivityEmitter(socket, activity, context.viewType);
             })
             .catch(err => console.log("[newCommentListener] :", err));
     })

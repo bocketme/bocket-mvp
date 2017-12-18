@@ -44,7 +44,7 @@ function locationView (type, context){
                     comment.type = type;
                     node.activities.push(comment);
                     node.save()
-                        .then(() => res(node.activities))
+                        .then(() => res(comment))
                         .catch(err => rej(err));
                 }
                 //console.log("Node:", node);
@@ -69,10 +69,10 @@ function contentView(type, context) {
                         console.log("AJOUT DANS ASSEMBLY", node.content);
                         Assembly.findById(node.content)
                             .then(assembly => {
-                                if (assembly === null) return console.log("assembly not found");
+                                if (assembly === null) return console.log("assembly not found", node);
                                 assembly.activities.push(comment);
                                 assembly.save()
-                                    .then(() => res(assembly.activities))
+                                    .then(() => res(comment))
                                     .catch(err => rej(err))
                             })
                             .catch(err => rej(err));
@@ -83,7 +83,7 @@ function contentView(type, context) {
                                 if (part === null) return console.log("part not found");
                                 part.activities.push(comment);
                                 part.save()
-                                    .then(() => res(part.activities))
+                                    .then(() => res(comment))
                                     .catch(err => rej(err))
                             })
                             .catch(err => rej(err));

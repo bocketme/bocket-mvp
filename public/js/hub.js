@@ -81,12 +81,8 @@
         var views = $(".view");
         views.mouseout(function () {
             $(this).removeClass("viewHover");
-            if (!$(this).hasClass("viewClicked")) {
+            if (!$(this).hasClass("viewClicked"))
                 $(this).addClass("viewNotHover");
-                console.log("hasNot");
-            } else {
-                console.log("hasClass");
-            }
         });
 
         views.mouseover(function () {

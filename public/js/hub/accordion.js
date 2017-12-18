@@ -5,6 +5,7 @@ $(function () {
 
 function loadNodeInformation(e) {
 
+    console.log("LOADNODEINFORMATION");
     //Initialisation
     var element = $(this).parent();
     var nodeId = element.attr('id');
@@ -14,7 +15,6 @@ function loadNodeInformation(e) {
     var sub_level = element.contents().filter("span.p-node").attr("data-sublevel");
     var node_type = element.contents().filter("span.p-node").attr("data-node");
 
-    console.log("ELEMENT + ELEMENT.PREV()", element, element.children("img"));
     $("#content-title").text($(this).text());
     $("#content-img-title").attr("src", element.children("img").attr("src"));
 
@@ -46,7 +46,8 @@ function loadNodeInformation(e) {
         socket.emit("nodeChildren", nodeId, breadcrumbs_value, sub_level);
     }
 
-    socket.emit("getActivityComments", {nodeId: idOfchoosenNode});
+    socket.emit("getActivityComments", {nodeId: idOfchoosenNode, viewType: ViewTypeEnum.location});
+    socket.emit("getActivityComments", {nodeId: idOfchoosenNode, viewType: ViewTypeEnum.content});
 }
 
 $(document).ready(() => {

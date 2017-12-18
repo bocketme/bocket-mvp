@@ -39,12 +39,19 @@ $(document).ready(function() {
     socket.on("getActivityComments", function (context) {
         var activities = context.activities;
         var ul = (context.viewType === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
-        console.log("Nouveau commentaire", context);
         clearComments($(ul));
+        console.log("getActivity", ul + " li:first", context);
         for (var i = activities.length - 1; i >= 0 ; i--) {
+            console.log('getActivity for', $(ul + " li:first"));
             let comment = activities[i];
             printActivityComment($(ul + " li:first"), comment, comment.formatDate);
         }
+    });
+
+    socket.on("newActivity", function (context) {
+        var ul = (context.viewType === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
+        //console.log("Nouveau commentaire", context, ul);
+        printActivityComment($(ul + " li:first"), context.activity, activity.formatDate);
     });
 
 });
@@ -73,11 +80,12 @@ function addCommentActivity(lastComment, comment, view) {
 
 /**
  *
- * @Param lastComent = Jquery on lastComment
+ * @Param lastComment = Jquery on lastComment
  * @Param comment = { author : string, content : string, date: Date }
  * @param when Date
  */
 function printActivityComment(lastComment, comment, when) {
+    console.log("printActivity", lastComment);
     lastComment.after("<li>" +
         "<div class=\"row\">\n" +
         "    <div class=\"col s12\">\n" +
