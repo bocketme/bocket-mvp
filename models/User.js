@@ -16,7 +16,7 @@ let UserSchema = new mongoose.Schema({
     photo: {type: String, default: "bocket.png" },
     workspaces: { type : [NestedWorkspaceSchema]},
     organizations: {type: [NestedOrganizationSchema]},
-    avatar: {type: String, default: "/img/defaultAvatar.jpg"}
+    avatar: {type: String, default: null}
 });
 
 UserSchema.pre('save', function(next) {

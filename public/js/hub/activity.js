@@ -1,6 +1,7 @@
 var newComment = "newActivityComment";
 
 $(document).ready(function() {
+    $('.profile').initial();
     var empty = "";
 
     $(".activity-upload").on("click", uploadFile);
@@ -13,7 +14,7 @@ $(document).ready(function() {
     $(".add-comment-input").keydown(function (e) {
         if (e.which === 13 && $(this).val() !== empty) {
             var ul = (view === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
-            addCommentActivity($(ul + " li:first"), {author: "Vincent Mesquita", content: $(this).val(), date: new Date}, view);
+            addCommentActivity($(ul + " li:first"), {content: $(this).val(), date: new Date}, view);
             $(this).val(empty);
         }
     });
@@ -71,14 +72,20 @@ function addCommentActivity(lastComment, comment, view) {
  * @param when Date
  */
 function printActivityComment(lastComment, comment, when) {
-    lastComment.after("<li>" +
+    let avatar;
+    if (!comment.avatar)
+        avatar = '<img data-name="' + comment.author + '" class="col s2 profile"/>';
+    else
+        avatar = '<img class=\"col s2\" src=\"'+ comment.avatar +'">';
+
+        lastComment.after("<li>" +
         "<div class=\"row\">\n" +
         "    <div class=\"col s12\">\n" +
         "        <div class=\"card\">\n" +
         "            <div class=\"card-content white-text\">\n" +
         "                <div class=\"row\">\n" +
         "                    <div>\n" +
-        "                        <img class=\"col s2\" src=\""+ comment.avatar +"\">\n" +
+                                    avatar + '\n' +
         "                        <span class=\"card-title s10\"> <span class=\"who\">" + comment.author + "</span> <span class=\"what\">added a comment</span>, <span class=\"when\">" + when + "</span></span>\n" +
         "                    </div>\n" +
         "                    <p class=\"col s12\">"+ comment.content +"</p>" +
@@ -101,6 +108,7 @@ function printActivityComment(lastComment, comment, when) {
         "</li>");
     $(".activity-upload").on("click", uploadFile);
     $(".comment").on("click", slideInputComment);
+    $('.profile').initial();
 }
 
 
