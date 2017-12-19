@@ -7,7 +7,6 @@
 import AxisScene from './init/scene_axis';
 import ViewerScene from './init/scene_3d';
 import object3D from './init/object3D';
-import * as THREE from 'three';
 
 export class Viewer{
     constructor(renderArea){

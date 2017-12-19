@@ -1,5 +1,3 @@
-import * as THREE from 'three';
-
 export default class ViewerScene{
     constructor(p_width, p_height, p_aspectRatio){
         this.p_scene = new THREE.Scene();

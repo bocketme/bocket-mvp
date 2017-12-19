@@ -1,5 +1,3 @@
-import * as THREE from 'three';
-
 export default class AxisScene{
     constructor(p_axisSize){
         this.p_scene = new THREE.Scene();

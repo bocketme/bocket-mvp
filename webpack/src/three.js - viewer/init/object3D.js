@@ -1,5 +1,3 @@
-import * as THREE from 'three';
-
 export function object3D (file3D) {
     return loadObjectFromJSON(file3D, 0x809fff);
 }
