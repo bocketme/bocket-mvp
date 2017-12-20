@@ -4,56 +4,112 @@
  * @param {HTMLElement} renderingDiv
  */
 
-import AxisScene from './init/scene_axis';
-import ViewerScene from './init/scene_3d';
 import object3D from './init/object3D';
+import * as Stats from 'stats.js'
 
-export class Viewer{
-    constructor(renderArea){
-        renderArea ? null : console.error(new Error("Render Area : Not Found"));
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
+export default class Viewer{
+    constructor(renderArea) {
+        renderArea ? null : () => {throw new Error("Render Area : Not Found")};
+
+        /******************************************************************/
+        /* Stats Initialization */
+        this.stats = new Stats();
+        this.stats.showPanel( 0 );
+        //renderArea.appendChild( this.stats.dom );
 
         /******************************************************************/
         /* renderArea Information */
 
-        var p_width         = renderArea.offsetWidth,
-            p_height        = renderArea.offsetHeight,
-            p_axisSize      = p_height * 0.15,
-            p_aspectRatio   = renderArea.clientWidth / renderArea.clientHeight;
+        var p_width = renderArea.offsetWidth,
+            p_height = renderArea.offsetHeight,
+            p_axisSize = p_height * 0.15,
+            p_aspectRatio = renderArea.clientWidth / renderArea.clientHeight;
 
         /******************************************************************/
         /* Initialization of scenes */
-        this.objects    = new ViewerScene   (p_width, p_height, p_aspectRatio);
-        this.axis       = new AxisScene     (p_axisSize);
+        this.p_scene = new THREE.Scene();
 
-        /*******************************************************************/
-        /* Bind the camera of the scene_object with the camera of the scene_axis */
+        this.p_objects = new THREE.Group();
+        this.p_objects.name = "objects";
+        this.p_scene.add(this.p_objects);
 
-        this.axis.p_camera.up.copy(scene_object.p_camera.up);
-        this.axis.p_camera.position.copy(scene_object.p_camera.position);
-        this.axis.p_camera.position.setLength(200);
-        this.axis.p_camera.lookAt(scene_axis.p_camera);
+        this.p_lights = new THREE.Group();
+        this.p_lights.name = "lights";
+        this.p_scene.add(this.p_lights);
 
-        /* initialisation de la scene_object */
-        /******************************************************************/
-        this.objects.initScene(renderArea);
-        this.axis.initScene(renderArea);
+        this.p_renderer = new THREE.WebGLRenderer({canvas: renderSurface, alpha: true, antialias: true, logarithmicDepthBuffer: true});
+        this.p_renderer.localClippingEnabled = true;
+        this.p_renderer.setClearColor(0xffffff);
+        this.p_renderer.setSize(p_width, p_height);
+        renderArea.appendChild(this.p_renderer.domElement);
+
+        this.p_camera = new THREE.PerspectiveCamera(60, p_aspectRatio, 1, 2147483647);
+        this.p_camera.up.set(0, 0, 1);
+        this.p_camera.position.set(0, -75, 50);
+
+        this.p_controls = new THREE.OrbitControls(this.p_camera, this.p_renderer.domElement);
+        this.p_controls.zoomSpeed = 1 / (Math.log10(this.p_camera.position.distanceTo(this.p_controls.target)));
+
+        this.p_objectControl = new THREE.TransformControls( this.p_camera, this.p_renderer.domElement );
+        this.p_objectControl.name ="Object control";
+        this.p_scene.add(this.p_objectControl);
+
+        this.p_box = new THREE.BoxHelper(this.p_objects, 0x4ba03e);
+        this.p_box.visible = false;
+        this.p_scene.add(this.p_box);
+
+        this.selectedObject;
+
         this.domElement = renderArea;
-        animate();
+
+        this.initialiseScene();
     }
 
-    static animate() {
-        requestAnimationFrame(animate);
+    static animate(viewer){
+        function animation(){
+            viewer.stats.begin();
+            viewer.render();
+            viewer.transformUpdate();
+            viewer.p_controls.update();
+            viewer.p_objectControl.update();
+            viewer.p_box.update();
+            viewer.stats.end();
+            requestAnimationFrame(animation);
+        }
+        animation();
+    }
 
-        /* render the scenes */
-        this.objects.render();
-        this.axis.render();
+    render(){
+        this.p_renderer.render(this.p_scene, this.p_camera);
+    }
 
-        /* update the scenes */
-        this.objects.update(scene_object.p_camera.position);
-        this.axis.p_controls.update();
+    transformUpdate(){
+        for (var i = 0; i<this.p_objects.children.length; i++){
+            if (this.p_objects.children[i] instanceof THREE.TransformControls)
+                this.p_objects.children[i].update();
+        }
+    }
 
-        this.objects.transformUpdate();
-        this.axis.p_controls.update();
+    initialiseScene(){
+        var ambientLight = new THREE.AmbientLight(0xffffff, 0.25),
+            directLight1 = new THREE.DirectionalLight(0xffffff, 0.25),
+            directLight2 = new THREE.DirectionalLight(0xffffff, 0.25),
+            directLight3 = new THREE.DirectionalLight(0xffffff, 0.25),
+            directLight4 = new THREE.DirectionalLight(0xffffff, 0.25);
+
+        directLight1.position.set(-1000,     0, 1000);
+        directLight2.position.set( 1000,     0, 1000);
+        directLight4.position.set(    0,  1000, 1000);
+        directLight3.position.set(    0, -1000, 1000);
+
+        this.p_lights.add(ambientLight);
+        this.p_lights.add(directLight1);
+        this.p_lights.add(directLight2);
+        this.p_lights.add(directLight3);
+        this.p_lights.add(directLight4);
     }
 
     /* ************************************************************************** */
@@ -68,15 +124,15 @@ export class Viewer{
      * @param {number} mouseY offsetY value of the mouse event
      */
     fitToScreen () {
-        var object = this.objects.p_scene.children[5];
+        var object = this.p_objects;
 
         var box     = new THREE.Box3().setFromObject(object),
             center  = box.getCenter();
 
         if (object instanceof THREE.Group) {
-            this.objects.p_camera.position.set(center.x, -(center.y + Math.abs(box.getSize().y / Math.sin((this.cameras[0].fov * (Math.PI / 180)) / 2))), box.max.z * (10 / Math.log(box.max.z)));
-            this.objects.p_camera.lookAt(center);
-            this.objects.p_controls.target = center;
+            this.p_camera.position.set(center.x, -(center.y + Math.abs(box.getSize().y / Math.sin((this.p_camera.fov * (Math.PI / 180)) / 2))), box.max.z * (10 / Math.log(box.max.z)));
+            this.p_camera.lookAt(center);
+            this.p_controls.target = center;
         }
     }
 
@@ -88,15 +144,9 @@ export class Viewer{
      */
     resize () {
         var element = this.domElement;
-
-        this.objects.p_camera.aspect    = (element.clientWidth       ) / (element.clientHeight       );
-        this.axis.p_camera.aspect       = (element.clientWidth * 0.15) / (element.clientHeight * 0.15);
-
-        this.objects.p_camera.updateProjectionMatrix();
-        this.axis.p_camera.updateProjectionMatrix();
-
-        this.objects.p_renderer.setSize((element.offsetWidth        ), (element.offsetHeight       ));
-        this.axis.p_renderer.setSize((element.offsetHeight * 0.15), (element.offsetHeight * 0.15));
+        this.p_camera.aspect    = (element.clientWidth       ) / (element.clientHeight       );
+        this.p_camera.updateProjectionMatrix();
+        this.p_renderer.setSize((element.offsetWidth        ), (element.offsetHeight       ));
     }
 
 
@@ -116,8 +166,8 @@ export class Viewer{
             raycaster  = new THREE.Raycaster(),
             intersects = [];
 
-        raycaster.setFromCamera(mouse3D, this.cameras[0]);
-        intersects = raycaster.intersectObject(this.scenes[0].children[5], true);
+        raycaster.setFromCamera(mouse3D, this.p_camera);
+        intersects = raycaster.intersectObject(this.p_objects, true);
 
         if (intersects.length > 0) {
             delete intersects[0].face;
@@ -140,7 +190,7 @@ export class Viewer{
             raycaster  = new THREE.Raycaster(),
             intersects = [];
 
-        raycaster.setFromCamera(mouse3D, this.cameras[0]);
+        raycaster.setFromCamera(mouse3D, this.p_camera);
         intersects = raycaster.intersectObject(this.scenes[0].children[5], true);
 
         if (intersects.length > 0) {
@@ -174,8 +224,8 @@ export class Viewer{
                 return object;
         };
 
-        raycaster.setFromCamera(mouse3D, this.cameras[0]);
-        intersects = raycaster.intersectObject(this.scenes[0].children[5], true);
+        raycaster.setFromCamera(mouse3D, this.p_camera);
+        intersects = raycaster.intersectObject(this.p_scene.children[5], true);
 
         if (intersects.length > 0) {
             delete intersects[0].face;
@@ -262,31 +312,11 @@ export class Viewer{
     /**
      * @description Removes the transformation axis from the scene
      */
-    removeTransform() {
-        for (var i = 0; i < this.scenes[0].children.length; i++) {
-            if (this.objects.p_scene.children[i] instanceof THREE.TransformControls) {
-                this.objects.p_scene.children[i].detach();
-                this.objects.p_scene.children[i].parent.remove(this.scenes[0].children[i]);
-            }
-        }
-    }
+    removeTransform() {}
 
-    setTransformMode(mode) {
-        if (mode !== 'translate' && mode !== 'rotate' && mode !== 'scale')
-            return;
+    setTransformMode(mode) {}
 
-        for (var i = 0; i < this.scenes[0].children.length; i++) {
-            if (this.objects.p_scene.children[i] instanceof THREE.TransformControls)
-                this.objects.p_scene.children[i].setMode(mode);
-        }
-    }
-
-    changeTransformSpace() {
-        for (var i = 0; i < this.scenes[0].children.length; i++) {
-            if (this.objects.p_scene.children[i] instanceof THREE.TransformControls)
-                this.objects.p_scene.children[i].setSpace(this.objects.p_scene.children[i].space === 'local' ? 'world' : 'local');
-        }
-    };
+    changeTransformSpace() {};
 
 
     /* ************************************************************************** */
@@ -294,23 +324,90 @@ export class Viewer{
     /*                                  OBJECT3D                                  */
     /*                                                                            */
     /* ************************************************************************** */
+    /**
+     * @description Add an assembly to a scene.
+     * @param {String} name
+     */
+    addAssembly(name, parentName){
+        var scene = parent == null ? this.p_scene : this.p_scene.getObjectByName(parentName);
 
-    //?????????
-
-    addAssembly(){
-
+        var group = new THREE.Group();
+        group.name = name;
+        scene.add(group);
     }
 
-    addPart(){
-
+    setAssembly(oldname, newname){
+        var assembly = this.p_scene.getObjectByName(oldname);
+        if (assembly instanceof THREE.Group)
+            assembly.name = newname;
+        else
+            console.error(new Error("Could'nt find the name of the assembly"))
     }
 
-    removeAssembly(){
+    removeAssembly(name) {
+        var assembly = this.p_scene.getObjectByName(name);
 
+        if (assembly instanceof THREE.Group)
+            this.p_scene.remove(assembly);
+        else
+            console.error(new Error('The assembly is not an instance of Group, but an instance of ', typeof(assembly)));
     }
-    removePart(){
 
+    addPart(file3D, parentName){
+        var scene = parentName == null ? this.p_scene : this.p_scene.getObjectByName(parentName);
+
+
+
+        var geometry = new THREE.BoxGeometry( 50, 50, 50);
+        var material = new THREE.MeshBasicMaterial( { color: 0x809fff } );
+        var mesh = object3D(file3D)
+        //var mesh = new THREE.Mesh( geometry, material );
+        mesh.name = file3D.name;
+
+        scene.add(mesh);
+        this.selectObject(mesh.name);
+        console.log(this.p_objectControl);
+        console.log(this.p_objects);
     }
 
+    setPart(oldname, newname){
+        var part = this.p_scene.getObjectByName(oldname);
+        if (part instanceof THREE.Group)
+            part.name = newname;
+        else
+            console.error(new Error("Could'nt find the name of the part"))
+    }
 
+    removePart(name) {
+        var part = this.p_scene.getObjectByName(name);
+
+        if (part instanceof THREE.Mesh)
+            this.p_scene.remove(part);
+        else
+            console.error(new Error('The part is not an instance of Mesh, but an instance of ', typeof(part)));
+    }
+
+    selectObject(name) {
+        var object,
+            piece = this.p_scene.getObjectByName(name);
+
+        /*****************************************/
+        /*Set up of the object Control*/
+        this.p_scene.remove(this.p_objectControl);
+        if(object = this.p_objectControl.object)
+            this.p_objectControl.detach(object);
+        this.p_objectControl.setSpace('local');
+        this.p_objectControl.attach(piece);
+        this.p_scene.add(this.p_objectControl);
+
+        /*****************************************/
+        /* Bounding box focus */
+
+        this.p_camera.updateProjectionMatrix();
+    }
+
+    setControlsMode(mode){
+        if (mode !== this.p_objectControl.getMode())
+            this.p_objectControl.setMode(mode);
+    }
 }

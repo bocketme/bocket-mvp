@@ -1,6 +1,18 @@
 <div id="renderDiv" class="viewer-div">
-        <canvas id="axisCanvas" class="viewer-div axis-canvas"></canvas>
-        <canvas id="renderSurface" class="viewer-div viewer-canvas"></canvas>
+    <canvas id="axisCanvas" class="viewer-div axis-canvas"></canvas>
+    <canvas id="renderSurface" class="viewer-div viewer-canvas"></canvas>
+    <div class="fixed-action-btn horizontal viewer-options">
+        <a class="btn-floating btn-large red">
+            <i class="large material-icons">build</i>
+        </a>
+        <ul>
+            <li><a id="button-move-object" class="btn-floating violet"><i id="move-icon"></i></a></li> <!--increase size-->
+            <li><a id="button-rotate-object" class="btn-floating red"><i class="material-icons">3d_rotation</i></a></li> <!--rotate-->
+            <li><a id="button-scale-object" class="btn-floating green"><i class="material-icons">transform</i></a></li> <!--scale-->
+            <li><a id="button-decrease-size" class="btn-floating blue"><i class="material-icons">remove_circle_outline</i></a></li> <!--decrease size-->
+            <li><a id="button-increase-size" class="btn-floating violet"><i class="material-icons">add_circle_outline</i></a></li> <!--increase size-->
+        </ul>
+    </div>
 </div>
 <!--
 <div id="renderDivButton">

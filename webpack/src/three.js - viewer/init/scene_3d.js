@@ -18,6 +18,7 @@ export default class ViewerScene{
     render(){
         this.p_renderer.render(this.p_scene, this.p_camera);
     }
+
     transformUpdate(){
         for (var i = 0; i<this.p_scene.children.length; i++){
             if (this.p_scene.children[i] instanceof THREE.TransformControls)
@@ -26,25 +27,9 @@ export default class ViewerScene{
     }
 
     initScene(renderArea){
-        this.p_scene.add(object_3d);
-
-        var ambientLight = new THREE.AmbientLight(0xffffff, 0.25),
-            directLight1 = new THREE.DirectionalLight(0xffffff, 0.25),
-            directLight2 = new THREE.DirectionalLight(0xffffff, 0.25),
-            directLight3 = new THREE.DirectionalLight(0xffffff, 0.25),
-            directLight4 = new THREE.DirectionalLight(0xffffff, 0.25);
-
-        directLight1.position.set(-1000,     0, 1000);
-        directLight2.position.set( 1000,     0, 1000);
-        directLight4.position.set(    0,  1000, 1000);
-        directLight3.position.set(    0, -1000, 1000);
-
-        this.p_scene.add(ambientLight);
-        this.p_scene.add(directLight1);
-        this.p_scene.add(directLight2);
-        this.p_scene.add(directLight3);
-        this.p_scene.add(directLight4);
-
+        var group = new THREE.Group();
+        group.name = 0;
+        this.p_scene.add(group);
         renderArea.appendChild(this.p_renderer.domElement);
     }
 
@@ -62,10 +47,23 @@ export default class ViewerScene{
         this.p_scene.add(object3D)
     }
 
-    deleteGroupToScene(){
+    deleteGroupToScene(groupName){
+        var object = this.p_scene.getObjectByName( groupName );
+        this.p_scene.deleteGroupToScene( object.id )
+    }
+
+    deleteMeshToScene(groupName){
+        var object = this.p_scene.getObjectByName( groupName );
 
     }
-    deleteMeshToScene(){
 
+    static highlightSurface(vertices, colors) {
+        var geometry = new THREE.BufferGeometry();
+        geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+        var material = new THREE.MeshBasicMaterial( { color: colors } );
+        var mesh = new THREE.Mesh( geometry, material );
+        mesh.name = "highlightSurface";
+        this.p_scenes[0].add(mesh);
     }
+
 }

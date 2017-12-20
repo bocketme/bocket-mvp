@@ -2,8 +2,8 @@
  * Created by jean-adriendomage on 14/12/2017.
  */
 
-let system = require("./system");
-let nodePlugin = require(system.moduleNode);
+//let system = require("./system");
+//let nodePlugin = require(system.moduleNode);
 
 /**
  * @name fileConverter
