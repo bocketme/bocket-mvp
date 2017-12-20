@@ -20,7 +20,7 @@ var loadObjectFromJSON = function (jsonObj, colors) {
     console.log(geometry_2);
 
     var material = new THREE.MeshBasicMaterial( { color: colors } );
-    var mesh = new THREE.Mesh( geometry_2, material );
+    var mesh = new THREE.Mesh( geometry, material );
     return mesh;
     /* var geometry = new THREE.BufferGeometry();
      geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
