@@ -107,7 +107,9 @@ function printActivityComment(lastComment, comment, when) {
         "</div>" +
         "</li>");
     $(".activity-upload").on("click", uploadFile);
-    $(".comment").on("click", slideInputComment);
+    var comment = $(".comment");
+    comment.unbind("click", slideInputComment);
+    comment.on("click", slideInputComment);
     $('.profile').initial();
 }
 
