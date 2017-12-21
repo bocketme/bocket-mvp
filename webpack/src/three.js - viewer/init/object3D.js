@@ -15,13 +15,11 @@ var loadObjectFromJSON = function (jsonObj, colors) {
     geometry.computeFaceNormals();
     geometry.computeVertexNormals();
 
-    var geometry_2 = new THREE.BoxGeometry( 50, 50, 50);
-    console.log(geometry);
-    console.log(geometry_2);
-
     var material = new THREE.MeshBasicMaterial( { color: colors } );
     var mesh = new THREE.Mesh( geometry, material );
+
     return mesh;
+
     /* var geometry = new THREE.BufferGeometry();
      geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
      var material = new THREE.MeshBasicMaterial( { color: colors } );

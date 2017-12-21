@@ -69,20 +69,38 @@ renderArea.addEventListener('mouseup', onMouseUp);
 renderArea.addEventListener('mousedown', onMouseDown);
 
 var translate = $("#button-move-object");
-console.log(translate);
-translate.click(() => setViewer("translate"));
+translate.click(() => {
+    if (viewer) {
+        if (viewer.p_objectControl.getMode() == 'translate');
+        viewer.p_objectControl.setMode("translate");
+    } else console.warn(new Error("Viewer is not initialized"));
+});
 
 var rotate = $("#button-rotate-object");
-rotate.click(() => setViewer("rotate"));
+rotate.click(() => {
+    if (viewer) {
+        if (viewer.p_objectControl.getMode() !== 'rotate')
+            viewer.p_objectControl.setMode("rotate");
+    } else console.warn(new Error("Viewer is not initialized"));
+});
 
 var scale = $("#button-scale-object");
-scale.click(() => setViewer("scale"));
+scale.click(() => {
+    if (viewer) {
+        if (viewer.p_objectControl.getMode() !== 'scale')
+            viewer.p_objectControl.setMode("scale");
+    } else console.warn(new Error("Viewer is not initialized"));
+});
 
 var increase_size = $("#button-increase-size");
-increase_size.click(() => setViewer(viewer.p_objectControl.size+=0.1));
+increase_size.click(() => {
+    viewer.p_objectControl.setSize(viewer.p_objectControl.size+=0.1)
+});
 
 var decrease_size = $("#button-decrease-size");
-decrease_size.click(() => setViewer( Math.max(viewer.p_objectControl.size-=0.1,0.1)));
+decrease_size.click(() => {
+    viewer.p_objectControl.setSize(Math.max(viewer.p_objectControl.size-=0.1,0.1))
+});
 
 /* *******************************/
 /*         EVENT FUNCTIONS       */
@@ -102,16 +120,16 @@ function onMouseUp (event) {
 
     if (mousePos.x !== event.offsetX || mousePos.y !== event.offsetY)
         return;
-/*
-    //if (annot_mode)
-    //    three.js - viewer.addAnnotation(mouse3D, three.js - viewer.selectObjectAtMousePos(event.offsetX, event.offsetY));
-    //else {
-    if ((ray = viewer.rayToObject(event.offsetX, event.offsetY)))
-        viewer.addTransform(ray.object);
-    else
-        viewer.removeTransform();
-    //}
-    */
+    /*
+        //if (annot_mode)
+        //    three.js - viewer.addAnnotation(mouse3D, three.js - viewer.selectObjectAtMousePos(event.offsetX, event.offsetY));
+        //else {
+        if ((ray = viewer.rayToObject(event.offsetX, event.offsetY)))
+            viewer.addTransform(ray.object);
+        else
+            viewer.removeTransform();
+        //}
+        */
 };
 
 /* ************************************************************************** */
