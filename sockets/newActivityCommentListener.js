@@ -21,7 +21,7 @@ module.exports = (socket) => {
                 context.comment.avatar = user.avatar;
                 addActivity(ActivityTypeEnum.comment, context, context.viewType)
                     .then(activity => {
-                        //console.log("then", activities);
+                        console.log("then", activity);
                         newActivityEmitter(socket, activity, context.viewType);
                     })
                     .catch(err => console.log("[newCommentListener] :", err));

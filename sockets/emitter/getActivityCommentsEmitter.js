@@ -19,7 +19,7 @@ module.exports = (socket, activities, viewType, nbr) => {
         ret.activities.push(o);
         count += 1;
     }
-    console.log("getActivityCommentssssss", ret, nbr);
+    //console.log("getActivityCommentssssss", ret, nbr);
     socket.emit("getActivityComments", ret);
 };
 

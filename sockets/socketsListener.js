@@ -8,6 +8,7 @@ let contentInformationListener = require('./contentInformationListener');
 let searchNodeChildren = require('./searchNodeChildren');
 let newActivityComment = require('./newActivityCommentListener');
 let getActivityComment = require("./getActivityCommentsListener");
+let addCommentListener = require("./addCommentToActivityListener");
 
 module.exports = function(io) {
     io.on('connection', function (socket) {
@@ -21,5 +22,6 @@ module.exports = function(io) {
         searchNodeChildren(socket);
         newActivityComment(socket);
         getActivityComment(socket);
+        addCommentListener(socket);
     });
 };

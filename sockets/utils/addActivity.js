@@ -44,7 +44,7 @@ function locationView (type, context){
                     comment.type = type;
                     node.activities.push(comment);
                     node.save()
-                        .then(() => res(comment))
+                        .then((n) => res(n.activities[n.activities.length - 1]))
                         .catch(err => rej(err));
                 }
                 //console.log("Node:", node);
@@ -72,7 +72,7 @@ function contentView(type, context) {
                                 if (assembly === null) return console.log("assembly not found", node);
                                 assembly.activities.push(comment);
                                 assembly.save()
-                                    .then(() => res(comment))
+                                    .then((a) => res(a.activities[a.activities.length - 1]))
                                     .catch(err => rej(err))
                             })
                             .catch(err => rej(err));
@@ -83,7 +83,7 @@ function contentView(type, context) {
                                 if (part === null) return console.log("part not found");
                                 part.activities.push(comment);
                                 part.save()
-                                    .then(() => res(comment))
+                                    .then((p) => res(p.activities[p.activities.length - 1]))
                                     .catch(err => rej(err))
                             })
                             .catch(err => rej(err));

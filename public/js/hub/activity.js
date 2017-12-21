@@ -27,7 +27,7 @@ $(document).ready(function() {
         var activities = context.activities;
         var ul = (context.viewType === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
         clearComments($(ul));
-        //console.log("getActivity", ul + " li:first", context);
+        console.log("getActivity", context);
         for (var i = activities.length - 1; i >= 0 ; i--) {
             //console.log('getActivity for', $(ul + " li:first"));
             let comment = activities[i];
@@ -37,7 +37,7 @@ $(document).ready(function() {
 
     socket.on("newActivity", function (context) {
         var ul = (context.viewType === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
-        //console.log("Nouveau commentaire", context, ul);
+        console.log("Nouveau commentaire", context);
         printActivityComment($(ul + " li:first"), context.activity, context.activity.formatDate);
     });
 
@@ -72,13 +72,14 @@ function addCommentActivity(lastComment, comment, view) {
  * @param when Date
  */
 function printActivityComment(lastComment, comment, when) {
+    addActivity();
     let avatar;
     if (!comment.avatar)
         avatar = '<img data-name="' + comment.author + '" class="col s2 profile"/>';
     else
         avatar = '<img class=\"col s2\" src=\"'+ comment.avatar +'">';
 
-        lastComment.after("<li>" +
+    lastComment.after("<li>" +
         "<div class=\"row\">\n" +
         "    <div class=\"col s12\">\n" +
         "        <div class=\"card\">\n" +
@@ -93,12 +94,12 @@ function printActivityComment(lastComment, comment, when) {
         "            </div>\n" +
         "            <div class=\"card-action row\">\n" +
         "                <div class=\"cache-toi\" style=\"display: none;\">\n" +
-        "                    <input class=\"comment-input\" placeholder=\"Add your comment...\" type=\"text\">\n" +
+        "                    <input class=\"comment-input\"  data-index='" + getNbrOfActivity() + "' onkeydown='addCommentToActivity(event, this)' placeholder=\"Add your comment...\" type=\"text\">\n" +
         "                </div>\n" +
-        "                <div class=\"chip comment\">\n" +
+        "                <div class=\"chip comment\" onclick='slideInputComment(this)' data-id='" + comment._id + "'>\n" +
         "                    <span class=\"chip-content\">Comment</span>\n" +
         "                </div>\n" +
-        "                <div class=\"chip activity-upload\">\n" +
+        "                <div class=\"chip activity-upload\" onclick='uploadFile()'>\n" +
         "                    <span class=\"chip-content\">Attach a file</span>\n" +
         "                </div>\n" +
         "            </div>\n" +
@@ -106,10 +107,6 @@ function printActivityComment(lastComment, comment, when) {
         "    </div>\n" +
         "</div>" +
         "</li>");
-    $(".activity-upload").on("click", uploadFile);
-    var comment = $(".comment");
-    comment.unbind("click", slideInputComment);
-    comment.on("click", slideInputComment);
     $('.profile').initial();
 }
 
@@ -124,9 +121,24 @@ function uploadFile() {
 /**
  * Slide input comment
  */
-function slideInputComment() {
-    console.log("[.comment] onClick", $($(this).prev().children()[0]));
-    $(this).prev().slideToggle(function() {
-        $(this).children().trigger("select");
+function slideInputComment(e) {
+    element = $(e);
+    console.log("[.comment] onClick", $(element.prev().children()[0]));
+    element.prev().slideToggle(function() {
+        element.children().trigger("select");
     });
 };
+
+/**
+ *
+ */
+function addCommentToActivity(event, elem) {
+    if (event.key !== "Enter") return ;
+    console.log("AddCommentToActivity");
+    var element = $(elem);
+    var content = element.val();
+    var ul = (view === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
+    //console.log("index = ", $(ul).index($(elem)));
+    console.log("")
+    socket.emit('addCommentToActivity', { nodeId: idOfchoosenNode,  activityIndex: element.attr('data-index'), comment: {content: content, date: new Date()}, viewType: view});
+}
