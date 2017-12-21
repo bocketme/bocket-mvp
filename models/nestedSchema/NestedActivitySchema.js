@@ -7,7 +7,8 @@ let activity = new mongoose.Schema({
     content: { type: String, required: true },
     date: { type: Date, default: new Date() },
     author: {type: String, required: true },
-    files: {type: [NestedFile], default:[]}
+    files: {type: [NestedFile], default:[]},
+    comments: {type: [this], default: []}
 });
 
 activity.plugin(uniqueValidator);
