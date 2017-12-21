@@ -62,8 +62,8 @@ const newAssembly = (req, res) => {
                 .then(() => {
                     return create3DFile(config.gitfiles, documentID, file.originalname, file.buffer)
                 })
-                .then(() => {
-                    relativePath.file3D.push(path.join(documentID, file.originalname));
+                .then((fileName) => {
+                    relativePath.file3D.push(path.join(documentID, fileName));
                     return;
                 })
                 .catch((err) => {

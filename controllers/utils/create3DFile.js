@@ -41,7 +41,7 @@ return new Promise((resolve, reject)=> {
                                 } catch (e) {
                                     console.log(e);
                                 }
-                                resolve(_nameFile +".json");
+                                resolve(String(_nameFile +".json"));
                             }
                         });
                     }

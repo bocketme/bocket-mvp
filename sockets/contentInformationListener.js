@@ -27,6 +27,7 @@ module.exports = socket => {
             Part.findById(node.content)
             .then((partSelected) => {
                 fs.readFile(path.join(config.gitfiles, partSelected.path), 'utf8', (err, data) => {
+                    console.log(path.join(config.gitfiles, partSelected.path));
                     socket.emit('contentInformation', partSelected);
                     socket.emit('contentFile3d', data);
                 })
