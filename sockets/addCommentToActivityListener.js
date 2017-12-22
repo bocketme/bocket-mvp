@@ -70,7 +70,7 @@ function addComment(model, activityIndex, comment, completeName) {
             .then(m => {
                 let o = JSON.parse(JSON.stringify(m.activities[index].comments[m.activities[index].comments.length - 1]));
                 o.index = index;
-                o.date = formatDate(o.date);
+                o.date = formatDate(o.date, new Date);
                 res(o);
             })
             .catch(err => rej(err));
