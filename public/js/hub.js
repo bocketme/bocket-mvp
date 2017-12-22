@@ -38,6 +38,7 @@
         //Socket<
         $('.chips').material_chip();
 
+<<<<<<<
         //Socket
         socket.on("nodeLocation", (node) => {
             console.log(node);
@@ -54,19 +55,23 @@
                 });
             }
         })
+=======
+        //Socket<
+>>>>>>>
 
-        socket.on('nodeChild', (html, nodeId) => {
-            console.log("Find Node Child")
-            var collapsible_body = $('#'+nodeId+'-body');
-            if(collapsible_body.hasClass("container")) {
-                collapsible_body.removeClass("container");
-                collapsible_body.html(html);
+        socket.on("nodeLocation", (node) => {
+            locationVue.nodeInformation(node);
+            locationVue.maturityInformation(node.maturity);
+            if ($('#location').hasClass('hide') || $('#content').hasClass('hide')) {
+                $('#location').removeClass('hide');
+                $('#location').fadeOut(0, () => {
+                    $('#location').fadeIn('slow');
+                });
+                $('#content').removeClass('hide');
+                $('#content').fadeOut(0, () => {
+                    $('#content').fadeIn('slow');
+                });
             }
-        });
-
-        socket.on('contentFile3d', (data) => {
-            //JA A TOI DE JOUER
-
         });
 
         socket.on('nodeChild', (html, nodeId) => {
@@ -75,30 +80,31 @@
             if(collapsible_body.hasClass("container")) {
                 collapsible_body.removeClass("container");
                 collapsible_body.html(html);
+                var element = document.querySelectorAll('.three-node');
+                $(element).click(loadNodeInformation);  
             }
         });
-
         var views = $(".view");
         views.mouseout(function () {
             $(this).removeClass("viewHover");
-            if (!$(this).hasClass("viewClicked"))
                 $(this).addClass("viewNotHover");
+            if (!$(this).hasClass("viewClicked"))
         });
 
-        views.mouseover(function () {
             $(this).removeClass("viewNotHover");
+        views.mouseover(function () {
             $(this).addClass("viewHover");
         });
 
         views.on("click", function () {
             views.removeClass("viewClicked");
             views.addClass("viewNotHover");
-            $(this).removeClass("viewHover");
             $(this).removeClass("viewNotHover");
+            $(this).removeClass("viewHover");
             $(this).addClass("viewClicked");
         });
-
         collapseOwners($("#location .owners"));
+
     });
 })(jQuery); // end of jQuery name space
 

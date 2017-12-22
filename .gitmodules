@@ -1,0 +1,6 @@
+[submodule "convertisseur/bocket-plugin"]
+    path = convertisseur/bocket-plugin
+    url = https://github.com/bocketme/bocket-plugin.git
+[submodule "convertisseur/module-assimp"]
+    path = convertisseur/module-assimp
+    url = https://github.com/bocketme/module-assimp.git

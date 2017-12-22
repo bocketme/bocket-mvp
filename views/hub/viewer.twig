@@ -1,6 +1,52 @@
 <div id="renderDiv" class="viewer-div">
-        <canvas id="axisCanvas" class="viewer-div axis-canvas"></canvas>
-        <canvas id="renderSurface" class="viewer-div viewer-canvas"></canvas>
+    <canvas id="axisCanvas" class="viewer-div axis-canvas"></canvas>
+    <canvas id="renderSurface" class="viewer-div viewer-canvas"></canvas>
+
+
+    <div class="fixed-action-btn horizontal click-to-toggle viewer-options-1">
+        <a class="btn-floating btn-large blue">
+            <i class="large material-icons">build</i>
+        </a>
+        <ul>
+            <li><a id="button-fit-to-screen" class="btn-floating grey"><i class="material-icons">center_focus_strong</i></a></li> <!--Fit To Screen-->
+            <li><a id="button-fullscreen" class="btn-floating grey"><i class="material-icons">fullscreen</i></a></li> <!--Full screen-->
+            <li><a id="button-zoom" class="btn-floating grey"><i class="material-icons">zoom_in</i></a></li> <!--scale-->
+        </ul>
+    </div>
+
+    <div class="fixed-action-btn horizontal click-to-toggle viewer-options-2">
+        <a class="btn-floating btn-large brown">
+            <i class="large material-icons">build</i>
+        </a>
+        <ul>
+            <li><a id="button-repere-piece" class="btn-floating grey"><i id="move-icon"></i></a></li> <!--repère pièce-->
+            <li><a id="button-bounding-box" class="btn-floating grey"><i class="material-icons">3d_rotation</i></a></li> <!--bounding box-->
+            <li><a id="button-wireframe" class="btn-floating grey"><i class="material-icons">tonality</i></a></li> <!--wireframe-->
+            <li><a id="button-passport-3d" class="btn-floating grey"><i class="material-icons">chrome_reader_mode</i></a></li> <!--passport 3D-->
+        </ul>
+    </div>
+
+    <div class="fixed-action-btn horizontal click-to-toggle viewer-options-3">
+        <a class="btn-floating btn-large green">
+            <i class="large material-icons">build</i>
+        </a>
+        <ul>
+            <li><a id="button-show-annotation" class="btn-floating grey"><i class="material-icons">chat</i></a></li> <!--Show Annotation-->
+            <li><a id="button-add-annotation" class="btn-floating grey"><i class="material-icons">chat_bubble</i></a></li> <!--Add Annotation-->
+        </ul>
+    </div>
+
+    <div class="fixed-action-btn horizontal click-to-toggle viewer-options-4">
+        <a class="btn-floating btn-large yellow">
+            <i class="large material-icons">build</i>
+        </a>
+        <ul>
+            <li><a id="button-move-object" class="btn-floating grey"><i id="move-icon"></i></a></li> <!--increase size-->
+            <li><a id="button-rotate-object" class="btn-floating grey"><i class="material-icons">3d_rotation</i></a></li> <!--rotate-->
+            <li><a id="button-scale-object" class="btn-floating grey"><i class="material-icons">transform</i></a></li> <!--scale-->
+        </ul>
+    </div>
+
 </div>
 <!--
 <div id="renderDivButton">

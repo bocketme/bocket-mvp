@@ -1,13 +1,15 @@
 $(function () {
     $('i.material-icons.assembly').click();
-    $('span.p-node').click(loadNodeInformation)
 });
+
+var element = document.querySelectorAll('.three-node');
+$(element).click(loadNodeInformation);
 
 function loadNodeInformation(e) {
 
     console.log("LOADNODEINFORMATION");
     //Initialisation
-    var element = $(this).parent();
+    var element = $(this);
     var nodeId = element.attr('id');
     idOfchoosenNode = nodeId;
     var fill_value = element.contents().filter("span.p-node").html();
