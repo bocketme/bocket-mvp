@@ -15,7 +15,6 @@ module.exports = function(io) {
         importInsideNode(socket);
         newNodeListener(socket);
         NodeInformationListener(socket);
-        contentInformationListener(socket);
         searchNodeChildren(socket);
         nodeViewer(socket);
     });

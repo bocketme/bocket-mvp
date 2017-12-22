@@ -36,8 +36,8 @@ module.exports = socket => {
                     } else {
                         Part.findById(node.content)
                             .then((part) => {
-                                let path = path.join(config.gitfiles, part.path);
-                                fs.readFile(path, 'utf8', (err, file) => {
+                                fs.readFile(path.join(config.gitfiles, part.path), 'utf8', (err, file) => {
+                                    console.log(path.join(config.gitfiles, part.path));
                                     console.log('--------------------------------------------------');
                                     console.log('Node - name : ', node.name, ' id :', node._id);
                                     console.log('err => ', err);
