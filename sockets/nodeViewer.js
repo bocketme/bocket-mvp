@@ -38,10 +38,17 @@ module.exports = socket => {
                             .then((part) => {
                                 let path = path.join(config.gitfiles, part.path);
                                 fs.readFile(path, 'utf8', (err, file) => {
+                                    console.log('--------------------------------------------------');
+                                    console.log('Node - name : ', node.name, ' id :', node._id);
+                                    console.log('err => ', err);
+                                    console.log('data =>', file);
+                                    console.log('--------------------------------------------------');
                                     if(err){
+                                        console.log("erreur de chargement : ", node.name);
                                         socket.emit('[viewer] -> error chargement', node._id, node.name, err);
                                         resolve();
                                     } else {
+                                        console.log("chargement terminé : ", node.name);
                                         socket.emit("addPart", file, parent._id);
                                         socket.emit('[viewer] -> end chargement', node._id, node.name);
                                         resolve();
@@ -56,7 +63,6 @@ module.exports = socket => {
                 });
         })
     }
-
 };
 
 
