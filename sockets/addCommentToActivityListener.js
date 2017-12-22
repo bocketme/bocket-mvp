@@ -52,10 +52,10 @@ module.exports = (socket) => {
  */
 function addComment(model, activityIndex, comment) {
     return new Promise((res, rej) => {
-        let index = model.activities.length - activityIndex;
+        let index = activityIndex;
         console.log("index = ", index, model.activities.length);
-        if (index < 0 || index >= model.activities.length)
-            rej(null);
+        if (!index || index < 0 || index >= model.activities.length)
+            rej("Wrong index = ", index);
         comment.type = TypeActivityEnum.comment;
         comment.author = "Vincent Mesquita";
         comment.files = [];

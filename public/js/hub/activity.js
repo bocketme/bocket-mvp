@@ -26,7 +26,6 @@ $(document).ready(function() {
     socket.on("getActivityComments", function (context) {
         var activities = context.activities;
         var ul = (context.viewType === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
-        clearComments($(ul));
         console.log("getActivity", context);
         for (var i = activities.length - 1; i >= 0 ; i--) {
             //console.log('getActivity for', $(ul + " li:first"));
@@ -94,7 +93,7 @@ function printActivityComment(lastComment, comment, when) {
         "            </div>\n" +
         "            <div class=\"card-action row\">\n" +
         "                <div class=\"cache-toi\" style=\"display: none;\">\n" +
-        "                    <input class=\"comment-input\"  data-index='" + getNbrOfActivity() + "' onkeydown='addCommentToActivity(event, this)' placeholder=\"Add your comment...\" type=\"text\">\n" +
+        "                    <input class=\"comment-input\"  data-index='" + comment.index + "' onkeydown='addCommentToActivity(event, this)' placeholder=\"Add your comment...\" type=\"text\">\n" +
         "                </div>\n" +
         "                <div class=\"chip comment\" onclick='slideInputComment(this)' data-id='" + comment._id + "'>\n" +
         "                    <span class=\"chip-content\">Comment</span>\n" +

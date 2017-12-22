@@ -14,8 +14,9 @@ module.exports = (socket, activities, viewType, nbr) => {
     if (!socket || !activities || nbr <= 0)
         throw new Error("[getActivityCommentEmitter]: invalid parameter(s)");
     for (let i = activities.length - 1 ; i >= 0 && count < nbr; i--) {
-        let o = {date: activities[i].date, files: activities[i].files, _id: activities[i]._id, type: activities[i].type, content: activities[i].content, author: activities[i].author}; // Obligé de faire comme ça sinon formatDate ne veut pas s'enrengistrer...
+        let o = JSON.parse(JSON.stringify(activities[i]));
         o.formatDate = formatDate(activities[i].date, today);
+        o.index = i;
         ret.activities.push(o);
         count += 1;
     }
