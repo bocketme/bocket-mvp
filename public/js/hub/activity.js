@@ -64,6 +64,15 @@ function addCommentActivity(lastComment, comment, view) {
     socket.emit(newComment, {nodeId: idOfchoosenNode, comment: comment, viewType: view});
 }
 
+function getAvatar(avatarSrc, author) {
+    let avatar;
+    if (!avatarSrc)
+        avatar = '<img data-name="' + author + '" class="col s2 profile"/>';
+    else
+        avatar = '<img class=\"col s2\" src=\"'+ avatarSrc +'">';
+    return avatar
+}
+
 /**
  *
  * @Param lastComment = Jquery on lastComment
@@ -72,11 +81,7 @@ function addCommentActivity(lastComment, comment, view) {
  */
 function printActivityComment(lastComment, comment, when) {
     addActivity();
-    let avatar;
-    if (!comment.avatar)
-        avatar = '<img data-name="' + comment.author + '" class="col s2 profile"/>';
-    else
-        avatar = '<img class=\"col s2\" src=\"'+ comment.avatar +'">';
+    let avatar = getAvatar(comment.avatar, comment.author);
 
     lastComment.after("<li>" +
         "<div class=\"row\">\n" +
@@ -91,7 +96,9 @@ function printActivityComment(lastComment, comment, when) {
         "                    <p class=\"col s12\">"+ comment.content +"</p>" +
         "                </div>\n" +
         "            </div>\n" +
-        "            <div class=\"card-action row\">\n" +
+        "            <div class=\"card-action row\">" +
+        "                <ul style=\"display: none;\">" +
+        "                </ul>" +
         "                <div class=\"cache-toi\" style=\"display: none;\">\n" +
         "                    <input class=\"comment-input\"  data-index='" + comment.index + "' onkeydown='addCommentToActivity(event, this)' placeholder=\"Add your comment...\" type=\"text\">\n" +
         "                </div>\n" +
@@ -126,6 +133,9 @@ function slideInputComment(e) {
     element.prev().slideToggle(function() {
         element.children().trigger("select");
     });
+    element.prev().prev().slideToggle(function() {
+        element.children().trigger("select");
+    });
 };
 
 /**
@@ -141,3 +151,33 @@ function addCommentToActivity(event, elem) {
     console.log("")
     socket.emit('addCommentToActivity', { nodeId: idOfchoosenNode,  activityIndex: element.attr('data-index'), comment: {content: content, date: new Date()}, viewType: view});
 }
+
+
+/*.prepend("<div>\n" +
+    "avatar" + '\n' +
+    "<span class=\"card-title s10\"> <span class=\"who\">" + comment.author + "</span>, <span class=\"when\">" + comment.date + "<br></span></span>\n" +
+    "</div>\n" +
+)*/
+
+socket.on("newActivityComment", function (data) {
+    var nodeId = data.nodeId;
+    var comment = data.comment;
+    if (nodeId && comment) {
+        console.log("newActivityComment = ", data, nodeId, comment)
+        var ulId = (view === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
+        console.log("ulId =", ulId);
+        let avatar = getAvatar(comment.avatar, comment.author);
+        $(`${ulId} .comment-input[data-index=${comment.index}]`).parent().prev().prepend(`
+        <li class="commentOfActivity">
+        <div class="row">
+                ${avatar}
+            <div class="col s9">
+                <span class="card-title s10"> <span class="who" style="padding-left: 0"> ${comment.author} </span>, <span class="when"> ${comment.date} <br></span>${comment.content}</span>
+            </div>
+        </div>
+        </li>`);
+        $('.profile').initial();
+    } else {
+        console.log("Error on newAcivityComment");
+    }
+});

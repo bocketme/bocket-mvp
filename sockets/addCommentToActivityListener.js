@@ -1,4 +1,5 @@
 const addCommentToActivity = "addCommentToActivity";
+const NewActivityCommentEmitter = require("./emitter/newActiityCommentEmitter");
 const User = require("../models/User");
 const Node = require("../models/Node");
 const Assembly = require("../models/Assembly");
@@ -26,14 +27,14 @@ module.exports = (socket) => {
                         console.log("ici");
                         if (data.viewType === TypeViewEnum.location)
                             addComment(node, data.activityIndex, data.comment)
-                                .then((m) => console.log("SUCCES = m", m))
+                                .then((m) => NewActivityCommentEmitter(socket, data.nodeId, m))
                                 .catch(err => console.log(`[${addCommentToActivity}1]: ${err}`));
                         else if (data.viewType === TypeViewEnum.content) {
                             let modelFindeur = (node.type === TypeNodeEnum.assembly) ? (Assembly) : (Part);
                             modelFindeur.findById(node.content)
                                 .then(model => {
                                     addComment(model, data.activityIndex, data.comment)
-                                        .then((m) => console.log("SUCCES = m"))
+                                        .then((m) => NewActivityCommentEmitter(socket, data.nodeId, m))
                                         .catch(err => console.log(`[${addCommentToActivity}2]: ${err}`));
                                 })
                                 .catch(err => console.log(`[${addCommentToActivity}3]: ${err}`));
@@ -64,7 +65,11 @@ function addComment(model, activityIndex, comment) {
         model.activities[index].comments.push(comment);
         console.log("save: ", model.activities[index]);
         model.save()
-            .then(m => res(m))
+            .then(m => {
+                let o = JSON.parse(JSON.stringify(m.activities[index].comments[m.activities[index].comments.length - 1]));
+                o.index = index;
+                res(o);
+            })
             .catch(err => rej(err));
     });
 }

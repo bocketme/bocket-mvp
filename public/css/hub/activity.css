@@ -119,3 +119,7 @@ li.indicator {
 #activity input::-moz-placeholder { font-size: 11px; } /* firefox 19+ */
 #activity input:-ms-input-placeholder { font-size: 11px; } /* ie */
 #activity input:-moz-placeholder { font-size: 11px; }
+
+.commentOfActivity {
+    margin-bottom: 2%;
+}
