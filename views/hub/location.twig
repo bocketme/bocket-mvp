@@ -4,7 +4,7 @@
     </div>
     <div class="row">
         <div class="col s5 offset-s1"> <p>Maturity :</p> </div>
-        <div class="col s4 offset-s2"> {% verbatim %} <div class="maturity-cube" v-bind:style="styleObject"></div> {{ maturity }}{% endverbatim %} </div>
+        <div class="col s4 offset-s2"> {% verbatim %} <div class="maturity-cube" v-bind:style="styleObject"></div> <p>{{ maturity }}</p>{% endverbatim %} </div>
     </div>
     <div class="row">
         <div class="col s5 offset-s1"> <p>Owners : </p> </div>
@@ -18,10 +18,10 @@
     </div>
     <div class="row">
         <div class="col s5 offset-s1"> <p>Created on :</p>  </div>
-        <div class="col s4 offset-s2"> {% verbatim %} {{ created_on }} {% endverbatim %} </div>
+        <div class="col s4 offset-s2"> <p>{% verbatim %}{{ created_on }}{% endverbatim %}</p></div>
     </div>
     <div class="row">
         <div class="col s5 offset-s1"> <p>Last modification :</p> </div>
-        <div class="col s4 offset-s2"> {% verbatim %}{{ modified }}{% endverbatim %} </div>
+        <div class="col s4 offset-s2"> <p>{% verbatim %}{{ modified }}{% endverbatim %}</p> </div>
     </div>
 </div>

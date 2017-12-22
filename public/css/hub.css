@@ -451,3 +451,11 @@ div.collapsible-body  ul {
 .view .row {
     margin-top: 2%;
 }
+
+#location p, #content p {
+    font-size: 11px;
+}
+
+#location h5, #content h5 {
+    font-size: 14px;
+}

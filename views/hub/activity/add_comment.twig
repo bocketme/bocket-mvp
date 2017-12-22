@@ -4,9 +4,9 @@
             <div class="card-content white-text">
                 <div class="row">
                     {% if userAvatar %}
-                        <img class="col s3" src="{{ userAvatar }}">
+                        <img class="avatar col s3" src="{{ userAvatar }}">
                     {% else %}
-                        <img data-name="{{ user }}" class="col s3 profile"/>;
+                        <img data-name="{{ user }}" class="avatar col s3 profile"/>;
                     {% endif %}
                     <input id="add-comment-input" class="col s10 add-comment add-comment-input" type="text" placeholder="Share an idea or a file...">
                 </div>

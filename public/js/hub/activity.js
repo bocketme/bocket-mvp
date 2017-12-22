@@ -70,9 +70,9 @@ function addCommentActivity(lastComment, comment, view) {
 function getAvatar(avatarSrc, author) {
     let avatar;
     if (!avatarSrc)
-        avatar = '<img data-name="' + author + '" class="col s2 profile"/>';
+        avatar = '<img data-name="' + author + '" class="avatar col s2 profile"/>';
     else
-        avatar = '<img class=\"col s2\" src=\"'+ avatarSrc +'">';
+        avatar = '<img class=\"avatar col s2\" src=\"'+ avatarSrc +'">';
     return avatar
 }
 

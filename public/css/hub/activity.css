@@ -128,3 +128,7 @@ li.indicator {
     height: 200px;
     overflow-y: scroll;
 }
+
+#activity .avatar {
+    width: 4%;
+}
