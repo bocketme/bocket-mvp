@@ -1,14 +1,11 @@
 /**
- * @description
+ * @description The Viewer integrated with THREE.JS
  * @author bocket.me
  * @param {HTMLElement} renderingDiv
  */
 
 import object3D from './init/object3D';
-import * as Stats from 'stats.js'
-
-window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-    window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+import * as Stats from 'stats.js';
 
 export default class Viewer{
     constructor(renderArea) {
@@ -18,7 +15,7 @@ export default class Viewer{
         /* Stats Initialization */
         this.stats = new Stats();
         this.stats.showPanel( 0 );
-        //renderArea.appendChild( this.stats.dom );
+        renderArea.appendChild( this.stats.dom );
 
         /******************************************************************/
         /* renderArea Information */
@@ -32,68 +29,75 @@ export default class Viewer{
         /* Initialization of scenes */
         this.p_scene = new THREE.Scene();
 
-        this.p_objects = new THREE.Group();
-        this.p_objects.name = "objects";
-        this.p_scene.add(this.p_objects);
+        /* The Group of the object */
+        this.s_objects = new THREE.Group();
+        this.s_objects.name = workspaceId;
+        this.p_scene.add(this.s_objects);
 
-        this.p_lights = new THREE.Group();
-        this.p_lights.name = "lights";
-        this.p_scene.add(this.p_lights);
+        /* The group of the lights */
+        this.s_lights = new THREE.Group();
+        this.s_lights.name = "lights";
+        this.p_scene.add(this.s_lights);
 
+        /* The render */
         this.p_renderer = new THREE.WebGLRenderer({canvas: renderSurface, alpha: true, antialias: true, logarithmicDepthBuffer: true});
         this.p_renderer.localClippingEnabled = true;
         this.p_renderer.setClearColor(0xffffff);
         this.p_renderer.setSize(p_width, p_height);
         renderArea.appendChild(this.p_renderer.domElement);
 
+        /* The camera */
         this.p_camera = new THREE.PerspectiveCamera(60, p_aspectRatio, 1, 2147483647);
         this.p_camera.up.set(0, 0, 1);
         this.p_camera.position.set(0, -75, 50);
 
+        /* The camera's controllers */
         this.p_controls = new THREE.OrbitControls(this.p_camera, this.p_renderer.domElement);
         this.p_controls.zoomSpeed = 1 / (Math.log10(this.p_camera.position.distanceTo(this.p_controls.target)));
+        console.log(this.p_controls);
 
-        this.p_objectControl = new THREE.TransformControls( this.p_camera, this.p_renderer.domElement );
-        this.p_objectControl.name ="Object control";
-        this.p_scene.add(this.p_objectControl);
+        /* The object's controllers */
+        this.s_objControls = new THREE.TransformControls( this.p_camera, this.p_renderer.domElement );
+        this.s_objControls.name ="Object control";
+        this.p_scene.add(this.s_objControls);
 
-        this.p_box = new THREE.BoxHelper(this.p_objects, 0x4ba03e);
-        this.p_box.visible = false;
-        this.p_scene.add(this.p_box);
-
-        this.selectedObject;
+        /* The box of the selected object */
+        this.s_box = new THREE.BoxHelper(this.s_objects, 0x4ba03e);
+        this.s_box.visible = false;
+        this.p_scene.add(this.s_box);
 
         this.domElement = renderArea;
 
-        this.initialiseScene();
+        this.lightsScene();
     }
 
+    /**
+     * @description The animation of the viewer
+     * @static
+     * @param {Viewer} viewer
+     * @memberof Viewer
+     */
     static animate(viewer){
         function animation(){
             viewer.stats.begin();
-            viewer.render();
-            viewer.transformUpdate();
+
+            viewer.p_renderer.render(viewer.p_scene, viewer.p_camera);
             viewer.p_controls.update();
-            viewer.p_objectControl.update();
-            viewer.p_box.update();
+            viewer.s_objControls.update();
+            viewer.s_box.update();
+
             viewer.stats.end();
             requestAnimationFrame(animation);
         }
         animation();
     }
 
-    render(){
-        this.p_renderer.render(this.p_scene, this.p_camera);
-    }
-
-    transformUpdate(){
-        for (var i = 0; i<this.p_objects.children.length; i++){
-            if (this.p_objects.children[i] instanceof THREE.TransformControls)
-                this.p_objects.children[i].update();
-        }
-    }
-
-    initialiseScene(){
+    /**
+     *
+     * @description Initialize the lights of the scene.
+     * @memberof Viewer
+     */
+    lightsScene(){
         var ambientLight = new THREE.AmbientLight(0xffffff, 0.25),
             directLight1 = new THREE.DirectionalLight(0xffffff, 0.25),
             directLight2 = new THREE.DirectionalLight(0xffffff, 0.25),
@@ -105,11 +109,11 @@ export default class Viewer{
         directLight4.position.set(    0,  1000, 1000);
         directLight3.position.set(    0, -1000, 1000);
 
-        this.p_lights.add(ambientLight);
-        this.p_lights.add(directLight1);
-        this.p_lights.add(directLight2);
-        this.p_lights.add(directLight3);
-        this.p_lights.add(directLight4);
+        this.s_lights.add(ambientLight);
+        this.s_lights.add(directLight1);
+        this.s_lights.add(directLight2);
+        this.s_lights.add(directLight3);
+        this.s_lights.add(directLight4);
     }
 
     /* ************************************************************************** */
@@ -122,9 +126,10 @@ export default class Viewer{
      * @description [Event Function] Returns the THREE.Group directly related to the object clicked on screen
      * @param {number} mouseX offsetX value of the mouse event
      * @param {number} mouseY offsetY value of the mouse event
+     * @memberof Viewer
      */
     fitToScreen () {
-        var object = this.p_objects;
+        var object = this.s_objects;
 
         var box     = new THREE.Box3().setFromObject(object),
             center  = box.getCenter();
@@ -136,12 +141,6 @@ export default class Viewer{
         }
     }
 
-
-    /**
-     * @description [Event Function] Returns the highest THREE.Group related to the object clicked on screen
-     * @param {number} mouseX offsetX value of the mouse event
-     * @param {number} mouseY offsetY value of the mouse event
-     */
     resize () {
         var element = this.domElement;
         this.p_camera.aspect    = (element.clientWidth       ) / (element.clientHeight       );
@@ -167,7 +166,7 @@ export default class Viewer{
             intersects = [];
 
         raycaster.setFromCamera(mouse3D, this.p_camera);
-        intersects = raycaster.intersectObject(this.p_objects, true);
+        intersects = raycaster.intersectObject(this.s_objects, true);
 
         if (intersects.length > 0) {
             delete intersects[0].face;
@@ -239,8 +238,6 @@ export default class Viewer{
             return (null);
     }
 
-
-
     /* ************************************************************************** */
     /*                                                                            */
     /*                                  MATRIX                                    */
@@ -248,23 +245,25 @@ export default class Viewer{
     /* ************************************************************************** */
 
     /**
+     * @static
      * @description Assemble a matrix4 from the position, rotation and scale components of an object and returns this matrix
      * @param  {THREE.Vector3} pos Position vector of the object
      * @param  {THREE.Euler} rot Euler angle of the object
      * @param  {THREE.Vector3} scale Scale vector of the object
      * @return {THREE.Matrix4}
      */
-    matrixCompose(pos, rot, scale) {
+    static matrixCompose(pos, rot, scale) {
         return new THREE.Matrix4().compose(pos, new THREE.Quaternion().setFromEuler(rot), scale);
-    };
+    }
 
 
     /**
+     * @static
      * @description Disassembles a matrix4 into its position, rotation and scale components and returns them in a JSON object
      * @param {THREE.Matrix4} matrix
      * @return {JSON}
      */
-    matrixDecompose(matrix) {
+    static matrixDecompose(matrix) {
         var pos = new THREE.Vector3(),
             rot = new THREE.Quaternion(),
             scale = new THREE.Vector3();
@@ -272,7 +271,7 @@ export default class Viewer{
         matrix.decompose(pos, rot, scale);
 
         return {pos: pos, rot: new THREE.Euler().setFromQuaternion(rot), scale: scale};
-    };
+    }
 
 
     /* ************************************************************************** */
@@ -305,22 +304,6 @@ export default class Viewer{
 
     /* ************************************************************************** */
     /*                                                                            */
-    /*                                  TRANSFORM                                 */
-    /*                                                                            */
-    /* ************************************************************************** */
-
-    /**
-     * @description Removes the transformation axis from the scene
-     */
-    removeTransform() {}
-
-    setTransformMode(mode) {}
-
-    changeTransformSpace() {};
-
-
-    /* ************************************************************************** */
-    /*                                                                            */
     /*                                  OBJECT3D                                  */
     /*                                                                            */
     /* ************************************************************************** */
@@ -329,7 +312,7 @@ export default class Viewer{
      * @param {String} name
      */
     addAssembly(name, parentName){
-        var scene = parent == null ? this.p_scene : this.p_scene.getObjectByName(parentName);
+        var scene = parentName == null ? this.p_scene : this.p_scene.getObjectByName(parentName);
 
         var group = new THREE.Group();
         group.name = name;
@@ -354,20 +337,18 @@ export default class Viewer{
     }
 
     addPart(file3D, parentName){
-        var scene = parentName == null ? this.p_scene : this.p_scene.getObjectByName(parentName);
-
-
+        var scene = parentName == null ? this.s_objects : this.p_scene.getObjectByName(parentName);
 
         var geometry = new THREE.BoxGeometry( 50, 50, 50);
         var material = new THREE.MeshBasicMaterial( { color: 0x809fff } );
-        var mesh = object3D(file3D)
+        var mesh = object3D(file3D);
         //var mesh = new THREE.Mesh( geometry, material );
         mesh.name = file3D.name;
 
         scene.add(mesh);
         this.selectObject(mesh.name);
-        console.log(this.p_objectControl);
-        console.log(this.p_objects);
+        console.log(this.s_objControls);
+        console.log(this.s_objects);
     }
 
     setPart(oldname, newname){
@@ -393,21 +374,18 @@ export default class Viewer{
 
         /*****************************************/
         /*Set up of the object Control*/
-        this.p_scene.remove(this.p_objectControl);
-        if(object = this.p_objectControl.object)
-            this.p_objectControl.detach(object);
-        this.p_objectControl.setSpace('local');
-        this.p_objectControl.attach(piece);
-        this.p_scene.add(this.p_objectControl);
+        this.p_scene.remove(this.s_objControls);
+        if(object = this.s_objControls.object)
+            this.s_objControls.detach(object);
+
+        this.s_objControls.setSpace('local');
+        this.s_objControls.attach(piece);
+
+        this.p_scene.add(this.s_objControls);
 
         /*****************************************/
         /* Bounding box focus */
 
         this.p_camera.updateProjectionMatrix();
-    }
-
-    setControlsMode(mode){
-        if (mode !== this.p_objectControl.getMode())
-            this.p_objectControl.setMode(mode);
     }
 }
