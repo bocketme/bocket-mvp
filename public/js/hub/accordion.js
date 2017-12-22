@@ -48,8 +48,8 @@ function loadNodeInformation(e) {
 
     clearComments($("#activity-comments-location"));
     clearComments($("#activity-comments-content"));
-    socket.emit("getActivityComments", {nodeId: idOfchoosenNode, viewType: ViewTypeEnum.location});
-    socket.emit("getActivityComments", {nodeId: idOfchoosenNode, viewType: ViewTypeEnum.content});
+    socket.emit("getActivities", {nodeId: idOfchoosenNode, viewType: ViewTypeEnum.location});
+    socket.emit("getActivities", {nodeId: idOfchoosenNode, viewType: ViewTypeEnum.content});
 }
 
 $(document).ready(() => {

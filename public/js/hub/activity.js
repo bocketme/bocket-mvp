@@ -23,7 +23,7 @@ $(document).ready(function() {
      * Get the last activity
      * @param context : {{ viewType : String, activities : [String] }}
      */
-    socket.on("getActivityComments", function (context) {
+    socket.on("getActivities", function (context) {
         var activities = context.activities;
         var ul = (context.viewType === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
         console.log("getActivity", context);
