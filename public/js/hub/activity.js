@@ -132,7 +132,7 @@ function printCommentOfActivity(comment, index) {
         <div class="row">
                 ${avatar}
             <div class="col s9">
-                <span class="card-title s10"> <span class="who" style="padding-left: 0"> ${comment.author} </span>, <span class="when"> ${comment.date} <br></span>${comment.content}</span>
+                <span class="card-title s10"> <span class="who" style="padding-left: 0"> ${comment.author} </span><br></span>${comment.content}</span>
             </div>
         </div>
         </li>`);
