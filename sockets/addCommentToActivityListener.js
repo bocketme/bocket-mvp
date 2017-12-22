@@ -26,14 +26,14 @@ module.exports = (socket) => {
                     .then(node => {
                         console.log("ici");
                         if (data.viewType === TypeViewEnum.location)
-                            addComment(node, data.activityIndex, data.comment)
+                            addComment(node, data.activityIndex, data.comment, user.completeName)
                                 .then((m) => NewActivityCommentEmitter(socket, data.nodeId, m))
                                 .catch(err => console.log(`[${addCommentToActivity}1]: ${err}`));
                         else if (data.viewType === TypeViewEnum.content) {
                             let modelFindeur = (node.type === TypeNodeEnum.assembly) ? (Assembly) : (Part);
                             modelFindeur.findById(node.content)
                                 .then(model => {
-                                    addComment(model, data.activityIndex, data.comment)
+                                    addComment(model, data.activityIndex, data.comment, user.completeName)
                                         .then((m) => NewActivityCommentEmitter(socket, data.nodeId, m))
                                         .catch(err => console.log(`[${addCommentToActivity}2]: ${err}`));
                                 })
@@ -51,14 +51,14 @@ module.exports = (socket) => {
  * @param model : Mongoose model which the function will add the comment
  * @param comment : comment: {content: String, date: Date}
  */
-function addComment(model, activityIndex, comment) {
+function addComment(model, activityIndex, comment, userName) {
     return new Promise((res, rej) => {
         let index = activityIndex;
         console.log("index = ", index, model.activities.length);
         if (!index || index < 0 || index >= model.activities.length)
             rej("Wrong index = ", index);
         comment.type = TypeActivityEnum.comment;
-        comment.author = "Vincent Mesquita";
+        comment.author = userName;
         comment.files = [];
         comment.comments = [];
         console.log("COMMENT ===", comment);

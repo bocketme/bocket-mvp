@@ -28,7 +28,6 @@ $(document).ready(function() {
         var ul = (context.viewType === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
         console.log("getActivity", context);
         for (var i = activities.length - 1; i >= 0 ; i--) {
-            //console.log('getActivity for', $(ul + " li:first"));
             let comment = activities[i];
             printActivityComment($(ul + " li:first"), comment, comment.formatDate);
             if (comment.comments.length !== 0)
