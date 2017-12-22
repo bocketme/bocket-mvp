@@ -5,6 +5,7 @@ const TypeEnum = require('../enum/NodeTypeEnum');
 const fs = require('fs');
 const path = require('path');
 const config = require('../config/server');
+
 module.exports = socket => {
     socket.on("start viewer", (workspaceId) => {
         Workspace.findById(workspaceId)

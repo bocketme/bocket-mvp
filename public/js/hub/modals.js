@@ -24,6 +24,8 @@
                         if (postRequest.readyState === postRequest.DONE) {
                             if (postRequest.status === 200) {
                                 $('#'+nodeId+'-body').html(postRequest.response)
+                                var element = document.querySelectorAll('.three-node');
+                                $(element).click(loadNodeInformation);
                             }
                         }
                     }, false);
@@ -59,7 +61,9 @@
                     postRequest.addEventListener("load", (reqEvent) => {
                         if (postRequest.readyState === postRequest.DONE) {
                             if (postRequest.status === 200) {
-                                $('#'+nodeId+'-body').html(postRequest.response)
+                                $('#'+nodeId+'-body').html(postRequest.response);
+                                var element = document.querySelectorAll('.three-node');
+                                $(element).click(loadNodeInformation);
                             }
                         }
                     }, false);
@@ -85,14 +89,14 @@
     });
 })(jQuery); // end of jQuery name space
 
+/*
 const sendTheFile = (file, nodeId) => {
     var reader = new FileReader();
-    /*
-    var slice = 100000;
-    var i = 0;
-    var fragment;
-    var place;
-    */
+    //    var slice = 100000;
+    //    var i = 0;
+    //    var fragment;
+    //    var place;
+
     reader.readAsArrayBuffer(file);
     reader.onload = (event) => {
         var arrayBuffer = reader.result;
@@ -103,18 +107,13 @@ const sendTheFile = (file, nodeId) => {
             data: arrayBuffer
         });
     }
-
-    /*
-    while(file.size > i * slice) {
-        place = i*slice;
-        fragment = file.slice(place, place + Math.min(100000, file.size - place))
-        reader.readAsArrayBuffer(fragment);
-        i++;
-    }
-    */
-
+    //    while(file.size > i * slice) {
+    //        place = i*slice;
+    //        fragment = file.slice(place, place + Math.min(100000, file.size - place))
+    //        reader.readAsArrayBuffer(fragment);
+    //        i++;
+    //    }
 }
-
 const updateProgress = (reqEvent) => {
     console.log("Progress of the transfert");
     if (reqEvent.lengthComputable) {
@@ -125,6 +124,8 @@ const updateProgress = (reqEvent) => {
         // Impossible de calculer la progression puisque la taille totale est inconnue
     }
 },
+*/
+
 transferComplete = (reqEvent) => {
 
 },
