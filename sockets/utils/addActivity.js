@@ -44,7 +44,11 @@ function locationView (type, context){
                     comment.type = type;
                     node.activities.push(comment);
                     node.save()
-                        .then(() => res(comment))
+                        .then((n) => {
+                            let a = formatActivity(n.activities[n.activities.length - 1]);
+                            a.index = n.activities.length - 1;
+                            res(a);
+                        })
                         .catch(err => rej(err));
                 }
                 //console.log("Node:", node);
@@ -72,7 +76,11 @@ function contentView(type, context) {
                                 if (assembly === null) return console.log("assembly not found", node);
                                 assembly.activities.push(comment);
                                 assembly.save()
-                                    .then(() => res(comment))
+                                    .then((n) => {
+                                        let a = formatActivity(n.activities[n.activities.length - 1]);
+                                        a.index = n.activities.length - 1;
+                                        res(a);
+                                    })
                                     .catch(err => rej(err))
                             })
                             .catch(err => rej(err));
@@ -83,7 +91,11 @@ function contentView(type, context) {
                                 if (part === null) return console.log("part not found");
                                 part.activities.push(comment);
                                 part.save()
-                                    .then(() => res(comment))
+                                    .then((n) => {
+                                        let a = formatActivity(n.activities[n.activities.length - 1]);
+                                        a.index = n.activities.length - 1;
+                                        res(a);
+                                    })
                                     .catch(err => rej(err))
                             })
                             .catch(err => rej(err));
@@ -101,4 +113,13 @@ function contentView(type, context) {
 function isValid(today, comment) {
     let commentDate = new Date(comment.date);
     return comment.author !== "" && comment.comment !== "" && comment.date !== null;
+}
+
+/**
+ * format activity models to a pure js object in order to add tmp properties
+ * @param activity
+ * @returns {activity}
+ */
+function formatActivity(activity) {
+    return JSON.parse(JSON.stringify(activity));
 }

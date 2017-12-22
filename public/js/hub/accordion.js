@@ -46,8 +46,10 @@ function loadNodeInformation(e) {
         socket.emit("nodeChildren", nodeId, breadcrumbs_value, sub_level);
     }
 
-    socket.emit("getActivityComments", {nodeId: idOfchoosenNode, viewType: ViewTypeEnum.location});
-    socket.emit("getActivityComments", {nodeId: idOfchoosenNode, viewType: ViewTypeEnum.content});
+    clearComments($("#activity-comments-location"));
+    clearComments($("#activity-comments-content"));
+    socket.emit("getActivities", {nodeId: idOfchoosenNode, viewType: ViewTypeEnum.location});
+    socket.emit("getActivities", {nodeId: idOfchoosenNode, viewType: ViewTypeEnum.content});
 }
 
 $(document).ready(() => {

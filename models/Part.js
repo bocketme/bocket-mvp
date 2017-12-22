@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const uniqueValidator = require('mongoose-unique-validator');
 const TypeEnum = require('../enum/NodeTypeEnum');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
-const NestedComment = require("./nestedSchema/NestedCommentSchema");
+const NestedComment = require("./nestedSchema/NestedActivitySchema");
 
 let PartSchema = mongoose.Schema({
     name: {type: String, require: true},
