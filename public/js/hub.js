@@ -38,28 +38,9 @@
         //Socket<
         $('.chips').material_chip();
 
-<<<<<<<
         //Socket
         socket.on("nodeLocation", (node) => {
             console.log(node);
-            locationVue.nodeInformation(node);
-            locationVue.maturityInformation(node.maturity);
-            if ($('#location').hasClass('hide') || $('#content').hasClass('hide')) {
-                $('#location').removeClass('hide');
-                $('#location').fadeOut(0, () => {
-                    $('#location').fadeIn('slow');
-                });
-                $('#content').removeClass('hide');
-                $('#content').fadeOut(0, () => {
-                    $('#content').fadeIn('slow');
-                });
-            }
-        })
-=======
-        //Socket<
->>>>>>>
-
-        socket.on("nodeLocation", (node) => {
             locationVue.nodeInformation(node);
             locationVue.maturityInformation(node.maturity);
             if ($('#location').hasClass('hide') || $('#content').hasClass('hide')) {
@@ -89,6 +70,7 @@
             $(this).removeClass("viewHover");
                 $(this).addClass("viewNotHover");
             if (!$(this).hasClass("viewClicked"))
+                $(this).addClass("viewNoteHover");
         });
 
             $(this).removeClass("viewNotHover");
