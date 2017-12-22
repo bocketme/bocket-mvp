@@ -3,11 +3,24 @@ import Viewer from './Viewer';
 var mousePos;
 var renderArea = document.getElementById('renderDiv');
 var viewer = new Viewer(renderArea);
+var _idSelected;
 Viewer.animate(viewer);
 console.log(viewer);
 /* ******************/
 /*  SOCKET VIEWER   */
 /* ******************/
+
+socket.on("[viewer] -> start chargement", (id, name) => {
+    console.log("THE NODE " + name + " is loading ! id => " + id );
+});
+
+socket.on("[viewer] -> end chargement", (id, name) => {
+    console.log("THE NODE " + name + " is charged ! id => " + id);
+});
+
+socket.on("[viewer] -> error chargement", (id, name, err) => {
+    console.warn("THE NODE " + name + " could'nt be charged ! id => " + id + "\n" + err)
+});
 
 socket.emit("start viewer", workspaceId);
 
@@ -56,8 +69,6 @@ socket.on("setPart", (nodeID, parentID) => {
         console.warn("The viewer is not initialized");
 });
 
-
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                   EVENTS                                   */
@@ -71,35 +82,45 @@ renderArea.addEventListener('mousedown', onMouseDown);
 var translate = $("#button-move-object");
 translate.click(() => {
     if (viewer) {
-        if (viewer.p_objectControl.getMode() == 'translate');
-        viewer.p_objectControl.setMode("translate");
+        if (viewer.s_objControls.getMode() == 'translate');
+        viewer.s_objControls.setMode("translate");
     } else console.warn(new Error("Viewer is not initialized"));
 });
 
 var rotate = $("#button-rotate-object");
 rotate.click(() => {
     if (viewer) {
-        if (viewer.p_objectControl.getMode() !== 'rotate')
-            viewer.p_objectControl.setMode("rotate");
+        if (viewer.s_objControls.getMode() !== 'rotate')
+            viewer.s_objControls.setMode("rotate");
     } else console.warn(new Error("Viewer is not initialized"));
 });
 
 var scale = $("#button-scale-object");
 scale.click(() => {
     if (viewer) {
-        if (viewer.p_objectControl.getMode() !== 'scale')
-            viewer.p_objectControl.setMode("scale");
+        if (viewer.s_objControls.getMode() !== 'scale')
+            viewer.s_objControls.setMode("scale");
     } else console.warn(new Error("Viewer is not initialized"));
 });
 
 var increase_size = $("#button-increase-size");
 increase_size.click(() => {
-    viewer.p_objectControl.setSize(viewer.p_objectControl.size+=0.1)
+    viewer.s_objControls.setSize(viewer.s_objControls.size+=0.1)
 });
 
 var decrease_size = $("#button-decrease-size");
 decrease_size.click(() => {
-    viewer.p_objectControl.setSize(Math.max(viewer.p_objectControl.size-=0.1,0.1))
+    viewer.s_objControls.setSize(Math.max(viewer.s_objControls.size-=0.1,0.1))
+});
+
+var node = $(".three-node");
+node.click((event) => {
+    var element = event.currentTarget;
+    var nodeId = element.id;
+    if(nodeId){
+        viewer.selectObject(nodeId);
+        viewer.fitToScreen(nodeId);
+    }
 });
 
 /* *******************************/
@@ -139,11 +160,4 @@ function onMouseDown (event) {
         x: event.offsetX,
         y: event.offsetY
     };
-}
-
-function setViewer(mode) {
-    if (viewer)
-        viewer.setControlsMode(mode);
-    else
-        console.warn("The viewer is not initialized");
 }
