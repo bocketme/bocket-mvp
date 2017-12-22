@@ -7,6 +7,7 @@ const Part = require("../models/Part");
 const TypeViewEnum = require("../enum/ViewTypeEnum");
 const TypeNodeEnum = require("../enum/NodeTypeEnum");
 const TypeActivityEnum = require('../enum/ActivitiyTypeEnum');
+const formatDate = require("./utils/formatDate");
 
 module.exports = (socket) => {
     /**
@@ -50,16 +51,17 @@ module.exports = (socket) => {
  * addComment to an location activity
  * @param model : Mongoose model which the function will add the comment
  * @param comment : comment: {content: String, date: Date}
- * @param userCompleteName : String
  */
-function addComment(model, activityIndex, comment, userCompleteName) {
+function addComment(model, activityIndex, comment, completeName) {
     return new Promise((res, rej) => {
         let index = activityIndex;
         console.log("index = ", index, model.activities.length);
+        console.log('comment = ', comment);
         if (!index || index < 0 || index >= model.activities.length)
             rej("Wrong index = ", index);
         comment.type = TypeActivityEnum.comment;
-        comment.author = userCompleteName;
+        comment.author = completeName;
+        comment.author = completeName;
         comment.files = [];
         comment.comments = [];
         console.log("COMMENT ===", comment);
@@ -69,6 +71,8 @@ function addComment(model, activityIndex, comment, userCompleteName) {
             .then(m => {
                 let o = JSON.parse(JSON.stringify(m.activities[index].comments[m.activities[index].comments.length - 1]));
                 o.index = index;
+                console.log("o = ", o);
+                o.date = formatDate(o.date, new Date);
                 res(o);
             })
             .catch(err => rej(err));
