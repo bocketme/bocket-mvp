@@ -31,6 +31,10 @@ $(document).ready(function() {
             //console.log('getActivity for', $(ul + " li:first"));
             let comment = activities[i];
             printActivityComment($(ul + " li:first"), comment, comment.formatDate);
+            if (comment.comments.length !== 0)
+                for (var y = 0 ; y < comment.comments.length ; y++ ) {
+                    printCommentOfActivity(comment.comments[y], comment.index);
+                }
         }
     });
 
@@ -97,7 +101,7 @@ function printActivityComment(lastComment, comment, when) {
         "                </div>\n" +
         "            </div>\n" +
         "            <div class=\"card-action row\">" +
-        "                <ul style=\"display: none;\">" +
+        "                <ul class=\"comments\" style=\"display: none;\">" +
         "                </ul>" +
         "                <div class=\"cache-toi\" style=\"display: none;\">\n" +
         "                    <input class=\"comment-input\"  data-index='" + comment.index + "' onkeydown='addCommentToActivity(event, this)' placeholder=\"Add your comment...\" type=\"text\">\n" +
@@ -116,6 +120,25 @@ function printActivityComment(lastComment, comment, when) {
     $('.profile').initial();
 }
 
+/**
+ * print a comment of an activity
+ * @param comment : {avatar : String, author : String, date : String, content: String }
+ * @param index : String (index of the comment)
+ */
+function printCommentOfActivity(comment, index) {
+    var ulId = (view === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
+    let avatar = getAvatar(comment.avatar, comment.author);
+    $(`${ulId} .comment-input[data-index=${index}]`).parent().prev().append(`
+        <li class="commentOfActivity">
+        <div class="row">
+                ${avatar}
+            <div class="col s9">
+                <span class="card-title s10"> <span class="who" style="padding-left: 0"> ${comment.author} </span>, <span class="when"> ${comment.date} <br></span>${comment.content}</span>
+            </div>
+        </div>
+        </li>`);
+    $('.profile').initial();
+}
 
 /**
  * Upload a file
@@ -159,24 +182,15 @@ function addCommentToActivity(event, elem) {
     "</div>\n" +
 )*/
 
+/**
+ * Add a new comment of the context activity
+ */
 socket.on("newActivityComment", function (data) {
     var nodeId = data.nodeId;
     var comment = data.comment;
     if (nodeId && comment) {
         console.log("newActivityComment = ", data, nodeId, comment)
-        var ulId = (view === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
-        console.log("ulId =", ulId);
-        let avatar = getAvatar(comment.avatar, comment.author);
-        $(`${ulId} .comment-input[data-index=${comment.index}]`).parent().prev().prepend(`
-        <li class="commentOfActivity">
-        <div class="row">
-                ${avatar}
-            <div class="col s9">
-                <span class="card-title s10"> <span class="who" style="padding-left: 0"> ${comment.author} </span>, <span class="when"> ${comment.date} <br></span>${comment.content}</span>
-            </div>
-        </div>
-        </li>`);
-        $('.profile').initial();
+        printCommentOfActivity(comment, comment.index);
     } else {
         console.log("Error on newAcivityComment");
     }

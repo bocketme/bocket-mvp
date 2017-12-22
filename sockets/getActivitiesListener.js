@@ -12,7 +12,6 @@ module.exports = (socket) => {
      * @Param context : { nodeId: string, nbr: string (nbr of needed comments, 1 by default) }
      */
   socket.on("getActivities", (context) => {
-      console.log("SOCKET GETACTIVITIES");
     let nodeId = context.nodeId;
     let nbr = (!context.nbr) ? (5) : (context.nbr);
 

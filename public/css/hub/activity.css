@@ -123,3 +123,8 @@ li.indicator {
 .commentOfActivity {
     margin-bottom: 2%;
 }
+
+#activity .comments {
+    height: 200px;
+    overflow-y: scroll;
+}
