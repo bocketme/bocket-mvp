@@ -3,6 +3,7 @@ import Viewer from './Viewer';
 var mousePos;
 var renderArea = document.getElementById('renderDiv');
 var viewer = new Viewer(renderArea);
+var _idSelected;
 Viewer.animate(viewer);
 console.log(viewer);
 /* ******************/
@@ -15,6 +16,10 @@ socket.on("[viewer] -> start chargement", (id, name) => {
 
 socket.on("[viewer] -> end chargement", (id, name) => {
     console.log("THE NODE " + name + " is charged ! id => " + id);
+});
+
+socket.on("[viewer] -> error chargement", (id, name, err) => {
+    console.warn("THE NODE " + name + " could'nt be charged ! id => " + id + "\n" + err)
 });
 
 socket.emit("start viewer", workspaceId);
@@ -106,6 +111,16 @@ increase_size.click(() => {
 var decrease_size = $("#button-decrease-size");
 decrease_size.click(() => {
     viewer.s_objControls.setSize(Math.max(viewer.s_objControls.size-=0.1,0.1))
+});
+
+var node = $(".three-node");
+node.click((event) => {
+    var element = event.currentTarget;
+    var nodeId = element.id;
+    if(nodeId){
+        viewer.selectObject(nodeId);
+        viewer.fitToScreen(nodeId);
+    }
 });
 
 /* *******************************/

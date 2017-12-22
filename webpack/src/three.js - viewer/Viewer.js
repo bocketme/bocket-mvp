@@ -128,8 +128,8 @@ export default class Viewer{
      * @param {number} mouseY offsetY value of the mouse event
      * @memberof Viewer
      */
-    fitToScreen () {
-        var object = this.s_objects;
+    fitToScreen (name) {
+        var object = this.p_scene.getObjectByName(name);
 
         var box     = new THREE.Box3().setFromObject(object),
             center  = box.getCenter();
@@ -143,9 +143,9 @@ export default class Viewer{
 
     resize () {
         var element = this.domElement;
-        this.p_camera.aspect    = (element.clientWidth       ) / (element.clientHeight       );
+        this.p_camera.aspect    =   ( element.clientWidth ) / ( element.clientHeight );
         this.p_camera.updateProjectionMatrix();
-        this.p_renderer.setSize((element.offsetWidth        ), (element.offsetHeight       ));
+        this.p_renderer.setSize(    ( element.offsetWidth ),  ( element.offsetHeight ));
     }
 
 
@@ -309,7 +309,8 @@ export default class Viewer{
     /* ************************************************************************** */
     /**
      * @description Add an assembly to a scene.
-     * @param {String} name
+     * @param {String} name - The name of the assembly
+     * @param {String} parentName - The parent name of the assembly
      */
     addAssembly(name, parentName){
         var scene = parentName == null ? this.p_scene : this.p_scene.getObjectByName(parentName);
@@ -335,7 +336,14 @@ export default class Viewer{
         else
             console.error(new Error('The assembly is not an instance of Group, but an instance of ', typeof(assembly)));
     }
-
+    /**
+     * @description Add an assembly to a scene.
+     * @param (String) file3D.name - The File name of the object
+     * @param (String) file3D.path - The path of the object
+     * @param (String) file3D.path - The path of the object
+     * @param (Array) file3D.geometry - The geometry of the object
+     * @param {String} parentName - The parent name of the assembly
+     */
     addPart(file3D, parentName){
         var scene = parentName == null ? this.s_objects : this.p_scene.getObjectByName(parentName);
 
@@ -346,9 +354,6 @@ export default class Viewer{
         mesh.name = file3D.name;
 
         scene.add(mesh);
-        this.selectObject(mesh.name);
-        console.log(this.s_objControls);
-        console.log(this.s_objects);
     }
 
     setPart(oldname, newname){
@@ -359,6 +364,10 @@ export default class Viewer{
             console.error(new Error("Could'nt find the name of the part"))
     }
 
+    /**
+     * @description Remove a part of the assembly
+     * @param name - The name of the
+     */
     removePart(name) {
         var part = this.p_scene.getObjectByName(name);
 
@@ -368,6 +377,10 @@ export default class Viewer{
             console.error(new Error('The part is not an instance of Mesh, but an instance of ', typeof(part)));
     }
 
+    /**
+     * @description Select The Object
+     * @param name - The name of the Group or the Mesh
+     */
     selectObject(name) {
         var object,
             piece = this.p_scene.getObjectByName(name);

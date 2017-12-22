@@ -21,7 +21,6 @@ module.exports = socket => {
                     socket.emit('[viewer] -> start chargement', node._id, node.name);
                     if(TypeEnum.assembly == node.type){
                         socket.emit("addAssembly", nodeId, parent);
-                        socket.emit('[viewer] -> end chargement', node._id, node.name);
                         let promises = [];
                         node.children.forEach(child => {
                             promises.push(promiseNode(child._id, {
@@ -31,16 +30,21 @@ module.exports = socket => {
                         });
                         Promise.all(promises)
                             .then(() => {
+                                socket.emit('[viewer] -> end chargement', node._id, node.name);
                                 resolve()
                             });
                     } else {
                         Part.findById(node.content)
                             .then((part) => {
-                                console.log(part);
-                                fs.readFile(path.resolve('./test/converter.json'), 'utf8', (err, file) => {
-                                    socket.emit("addPart", file, parent._id);
-                                    socket.emit('[viewer] -> end chargement', node._id, node.name);
-                                    resolve();
+                                let path = path.join(config.gitfiles, part.path);
+                                fs.readFile(path, 'utf8', (err, file) => {
+                                    if(err){
+                                        socket.emit('[viewer] -> error chargement', node._id, node.name, err);
+                                    } else {
+                                        socket.emit("addPart", file, parent._id);
+                                        socket.emit('[viewer] -> end chargement', node._id, node.name);
+                                        resolve();
+                                    }
                                 })
                             });
                     }
