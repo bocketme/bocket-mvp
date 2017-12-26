@@ -7,7 +7,7 @@ const path = require('path');
 const config = require('../config/server');
 
 module.exports = socket => {
-    socket.on("start viewer", (workspaceId) => {
+    socket.on("start viewer", (workspaceId) =>{
         Workspace.findById(workspaceId)
             .then((workspace) => {
                 return promiseNode(workspace.node_master._id, workspace._id);
@@ -37,13 +37,13 @@ module.exports = socket => {
                     } else {
                         Part.findById(node.content)
                             .then((part) => {
-                                let path = path.join(config.gitfiles, part.path);
-                                fs.readFile(path, 'utf8', (err, file) => {
+                                let chemin = path.resolve('./test/converter.json');
+                                fs.readFile(chemin, 'utf8', (err, file) => {
                                     if(err){
                                         socket.emit('[viewer] -> error chargement', node._id, node.name, err);
                                         resolve();
                                     } else {
-                                        socket.emit("addPart", file, parent._id);
+                                        socket.emit("addPart", file, node._id, parent._id);
                                         socket.emit('[viewer] -> end chargement', node._id, node.name);
                                         resolve();
                                     }

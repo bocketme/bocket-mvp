@@ -24,9 +24,9 @@ socket.on("[viewer] -> error chargement", (id, name, err) => {
 
 socket.emit("start viewer", workspaceId);
 
-socket.on("addPart", (file3d, parentID) => {
+socket.on("addPart", (file3d, nodeID, parentID) => {
     if (viewer)
-        viewer.addPart(JSON.parse(file3d), parentID);
+        viewer.addPart(JSON.parse(file3d), nodeID, parentID);
     else
         console.warn("The viewer is not initialized");
 });
@@ -113,10 +113,12 @@ decrease_size.click(() => {
     viewer.s_objControls.setSize(Math.max(viewer.s_objControls.size-=0.1,0.1))
 });
 
-var node = $(".three-node");
-node.click((event) => {
+var node = $();
+
+$('body').on("click", ".three-node", (event) => {
     var element = event.currentTarget;
     var nodeId = element.id;
+    console.log(nodeId);
     if(nodeId){
         viewer.selectObject(nodeId);
         viewer.fitToScreen(nodeId);

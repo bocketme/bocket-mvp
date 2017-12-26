@@ -44,6 +44,7 @@ export default class Viewer{
         this.p_renderer.localClippingEnabled = true;
         this.p_renderer.setClearColor(0xffffff);
         this.p_renderer.setSize(p_width, p_height);
+        this.p_renderer.shadowMap = true;
         renderArea.appendChild(this.p_renderer.domElement);
 
         /* The camera */
@@ -63,12 +64,13 @@ export default class Viewer{
 
         /* The box of the selected object */
         this.s_box = new THREE.BoxHelper(this.s_objects, 0x4ba03e);
-        this.s_box.visible = false;
         this.p_scene.add(this.s_box);
+
+        /* Add the lights to the scene */
+        this.lightsScene();
 
         this.domElement = renderArea;
 
-        this.lightsScene();
     }
 
     /**
@@ -99,21 +101,31 @@ export default class Viewer{
      */
     lightsScene(){
         var ambientLight = new THREE.AmbientLight(0xffffff, 0.25),
-            directLight1 = new THREE.DirectionalLight(0xffffff, 0.25),
-            directLight2 = new THREE.DirectionalLight(0xffffff, 0.25),
-            directLight3 = new THREE.DirectionalLight(0xffffff, 0.25),
-            directLight4 = new THREE.DirectionalLight(0xffffff, 0.25);
+            directLight1 = new THREE.DirectionalLight(0x2c4b7c, 0.25),
+            directLight2 = new THREE.DirectionalLight(0x2c4b7c, 0.25),
+            directLight3 = new THREE.DirectionalLight(0x2c4b7c, 0.25),
+            directLight4 = new THREE.DirectionalLight(0x2c4b7c, 0.25);
 
         directLight1.position.set(-1000,     0, 1000);
         directLight2.position.set( 1000,     0, 1000);
-        directLight4.position.set(    0,  1000, 1000);
         directLight3.position.set(    0, -1000, 1000);
+        directLight4.position.set(    0,  1000, 1000);
+
+        var cameraHelper1 = new THREE.DirectionalLightHelper(directLight1, 5),
+            cameraHelper2 = new THREE.DirectionalLightHelper(directLight2, 5),
+            cameraHelper3 = new THREE.DirectionalLightHelper(directLight3, 5),
+            cameraHelper4 = new THREE.DirectionalLightHelper(directLight4, 5);
 
         this.s_lights.add(ambientLight);
         this.s_lights.add(directLight1);
         this.s_lights.add(directLight2);
         this.s_lights.add(directLight3);
         this.s_lights.add(directLight4);
+
+        this.s_lights.add(cameraHelper1);
+        this.s_lights.add(cameraHelper2);
+        this.s_lights.add(cameraHelper3);
+        this.s_lights.add(cameraHelper4);
     }
 
     /* ************************************************************************** */
@@ -131,14 +143,13 @@ export default class Viewer{
     fitToScreen (name) {
         var object = this.p_scene.getObjectByName(name);
 
-        var box     = new THREE.Box3().setFromObject(object),
-            center  = box.getCenter();
+        this.s_box.geometry.computeBoundingBox();
+        var box = this.s_box.geometry.boundingBox,
+            center = box.getCenter();
+        this.p_camera.position.set(center.x, -(center.y + Math.abs(box.getSize().y / Math.sin((this.p_camera.fov * (Math.PI / 180)) / 2))), box.max.z * (10 / Math.log(box.max.z)));
+        this.p_camera.lookAt(center);
+        this.p_controls.target = center;
 
-        if (object instanceof THREE.Group) {
-            this.p_camera.position.set(center.x, -(center.y + Math.abs(box.getSize().y / Math.sin((this.p_camera.fov * (Math.PI / 180)) / 2))), box.max.z * (10 / Math.log(box.max.z)));
-            this.p_camera.lookAt(center);
-            this.p_controls.target = center;
-        }
     }
 
     resize () {
@@ -344,14 +355,16 @@ export default class Viewer{
      * @param (Array) file3D.geometry - The geometry of the object
      * @param {String} parentName - The parent name of the assembly
      */
-    addPart(file3D, parentName){
+    addPart(file3D, nodeID, parentName){
         var scene = parentName == null ? this.s_objects : this.p_scene.getObjectByName(parentName);
 
         var geometry = new THREE.BoxGeometry( 50, 50, 50);
-        var material = new THREE.MeshBasicMaterial( { color: 0x809fff } );
-        var mesh = object3D(file3D);
-        //var mesh = new THREE.Mesh( geometry, material );
-        mesh.name = file3D.name;
+        var material = new THREE.MeshLambertMaterial({ color: 0x809fff});
+        //var mesh = object3D(file3D);
+        var mesh = new THREE.Mesh( geometry, material );
+
+        mesh.name = nodeID;
+        mesh.receiveShadow = true;
 
         scene.add(mesh);
     }
@@ -397,7 +410,8 @@ export default class Viewer{
         this.p_scene.add(this.s_objControls);
 
         /*****************************************/
-        /* Bounding box focus */
+        /* Outline the object */
+        this.s_box.setFromObject(object);
 
         this.p_camera.updateProjectionMatrix();
     }

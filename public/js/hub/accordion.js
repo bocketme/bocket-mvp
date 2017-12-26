@@ -1,9 +1,7 @@
 $(function () {
     $('i.material-icons.assembly').click();
+    $('body').on('click', '.three-node', loadNodeInformation);
 });
-
-var element = document.querySelectorAll('.three-node');
-$(element).click(loadNodeInformation);
 
 function loadNodeInformation(e) {
 
@@ -14,8 +12,6 @@ function loadNodeInformation(e) {
     var breadcrumbs_value = element.contents().filter("span.p-node").attr("data-breadcrumbs");
     var sub_level = element.contents().filter("span.p-node").attr("data-sublevel");
     var node_type = element.contents().filter("span.p-node").attr("data-node");
-
-    console.log(element);
 
     if (!nodeId)
     Materialize.toast('Error, The node selected has no ID', 2000);
