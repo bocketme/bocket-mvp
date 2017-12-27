@@ -12,12 +12,11 @@
                     var formdata = new FormData(form);
                     var postRequest = new XMLHttpRequest();
                     var chips = $('#tags-import-part').material_chip('data');
-                    var sub_level = $(nodeId).contents().filter("span.p-node").attr("data-sublevel");
-                    var breadcrumb = $(nodeId).contents().filter("span.p-node").attr("data-breadcrumbs");
-
+                    var sub_level = $("#"+nodeId).contents().filter("span.p-node").attr("data-sublevel");
+                    var breadcrumb = $("#"+nodeId).contents().filter("span.p-node").attr("data-breadcrumbs");
 
                     formdata.append("sub_level", sub_level);
-                    formdata.append("breadcrmb", breadcrumb);
+                    formdata.append("breadcrumb", breadcrumb);
                     formdata.append("tags", JSON.stringify(chips));
                     postRequest.addEventListener("progress", (event) => {
 

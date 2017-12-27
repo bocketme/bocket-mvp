@@ -77,8 +77,6 @@ socket.on("setPart", (nodeID, parentID) => {
 /* ************************************************************************** */
 
 window.addEventListener('resize', onWindowResize, false);
-renderArea.addEventListener('mouseup', onMouseUp);
-renderArea.addEventListener('mousedown', onMouseDown);
 
 var translate = $("#button-move-object");
 translate.click(() => {
@@ -139,32 +137,3 @@ function onWindowResize() {
     if (viewer)
         viewer.resize();
 };
-
-/* ************************************************************************** */
-
-function onMouseUp(event) {
-    var mouse3D = new THREE.Vector3((event.offsetX / renderArea.clientWidth) * 2 - 1, -(event.offsetY / renderArea.clientHeight) * 2 + 1, 0.5);
-    var transform;
-
-    if (mousePos.x !== event.offsetX || mousePos.y !== event.offsetY)
-        return;
-    /*
-        //if (annot_mode)
-        //    three.js - viewer.addAnnotation(mouse3D, three.js - viewer.selectObjectAtMousePos(event.offsetX, event.offsetY));
-        //else {
-        if ((ray = viewer.rayToObject(event.offsetX, event.offsetY)))
-            viewer.addTransform(ray.object);
-        else
-            viewer.removeTransform();
-        //}
-        */
-};
-
-/* ************************************************************************** */
-
-function onMouseDown(event) {
-    mousePos = {
-        x: event.offsetX,
-        y: event.offsetY
-    };
-}

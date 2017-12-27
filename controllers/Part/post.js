@@ -18,12 +18,13 @@ const newPart = (req, res) => {
         name = escape(req.body.name),
         description = escape(req.body.description),
         tags = escape(req.body.tags),
-        sub_level = escape(req.body.sub_level) + 1,
-        breadcrumb =    escape(req.body.breadcrumb),
+        sub_level = Number(escape(req.body.sub_level)),
+        breadcrumb = escape(req.body.breadcrumb),
         specFiles = req.files['specFiles'],
         files_3d = req.files['file3D'],
         sendError = [];
-
+console.log(req.body);
+    sub_level++;
     const documentID = String(require('mongoose').Types.ObjectId());
 
     let promiseType = {
@@ -90,6 +91,7 @@ const newPart = (req, res) => {
                                         newParentNode.children.forEach(child => {
                                             child.breadcrumb = breadcrumb + '/' + child.name
                                         });
+                                        console.log(sub_level, breadcrumb)
                                         twig.renderFile('./views/socket/three_child.twig', {
                                             node: newParentNode, TypeEnum: TypeEnum,sub_level: sub_level, breadcrumb:breadcrumb}, (err, html) => {
                                             if (err)

@@ -3,13 +3,11 @@ $(function () {
     $('body').on('click', '.three-node', loadNodeInformation);
 });
 
-function loadNodeInformation(e) {
+function loadNodeInformation(event) {
 
-    console.log(event)
     console.log("LOADNODEINFORMATION");
     //Initialisation
     var element = $(event.currentTarget);
-    console.log("ELLELELELEELE = ", element);
     var nodeId = element.attr('id');
     idOfchoosenNode = nodeId;
 
@@ -40,8 +38,8 @@ function loadNodeInformation(e) {
 
     //Socket To Emit
     socket.emit("nodeInformation", nodeId);
-    if ($(selector).hasClass("container")) {
-        console.log("socket Emitted");
+    if (element.hasClass("search_child")) {
+        element.removeClass("search_child");
         socket.emit("nodeChildren", nodeId, breadcrumbs_value, sub_level);
     }
 

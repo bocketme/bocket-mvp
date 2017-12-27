@@ -379,14 +379,10 @@ export default class Viewer {
     addPart(file3D, nodeID, parentName) {
         var scene = parentName == null ? this.s_objects : this.p_scene.getObjectByName(parentName);
 
-        console.log(file3D, nodeID, parentName);
-
         var geometry = new THREE.BoxGeometry(50, 50, 50);
         var material = new THREE.MeshLambertMaterial({ color: 0x809fff });
         //var mesh = object3D(file3D);
         var mesh = new THREE.Mesh( geometry, material );
-
-        console.log(mesh)
         mesh.material.transparent = true;
         mesh.name = nodeID;
         mesh.receiveShadow = true;
