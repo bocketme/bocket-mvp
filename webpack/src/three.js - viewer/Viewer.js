@@ -383,13 +383,8 @@ export default class Viewer {
         var geometry = new THREE.BoxGeometry(50, 50, 50);
         var material = new THREE.MeshLambertMaterial({ color: 0x809fff });
         //var mesh = object3D(file3D);
-<<<<<<< HEAD
-        var mesh = new THREE.Mesh(geometry, material);
-
-=======
         var mesh = new THREE.Mesh( geometry, material );
         mesh.material.transparent = true;
->>>>>>> 3cafb1add996ce1872a992d8109ea81b3752aee8
         mesh.name = nodeID;
         mesh.receiveShadow = true;
         mesh.renderOrder = -1;
