@@ -19,7 +19,7 @@
                     formdata.append("sub_level", sub_level);
                     formdata.append("breadcrmb", breadcrumb);
                     formdata.append("tags", JSON.stringify(chips));
-                    postRequest.addEventListener("progress", updateProgress(event, nodeId), false);
+                    //postRequest.addEventListener("progress", updateProgress(event, nodeId), false);
                     postRequest.addEventListener("load", (reqEvent) => {
                         if (postRequest.readyState === postRequest.DONE) {
                             if (postRequest.status === 200) {
