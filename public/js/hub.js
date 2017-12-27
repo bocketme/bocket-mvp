@@ -32,14 +32,15 @@
             gutter: 0, // Spacing from edge
             belowOrigin: true, // Displays dropdown below the button
             alignment: 'left', // Displays dropdown with edge aligned to the left of button
-            stopPropagation: false // Stops event propagation
+            stopPropagation: false, // Stops event propagation
         });
 
+        //Socket<
         $('.chips').material_chip();
 
-        //Socket<
-
+        //Socket
         socket.on("nodeLocation", (node) => {
+            console.log(node);
             locationVue.nodeInformation(node);
             locationVue.maturityInformation(node.maturity);
             if ($('#location').hasClass('hide') || $('#content').hasClass('hide')) {
@@ -64,5 +65,45 @@
                 $(element).click(loadNodeInformation);  
             }
         });
+        var views = $(".view");
+        views.mouseout(function () {
+            $(this).removeClass("viewHover");
+                $(this).addClass("viewNotHover");
+            if (!$(this).hasClass("viewClicked"))
+                $(this).addClass("viewNoteHover");
+        });
+
+            $(this).removeClass("viewNotHover");
+        views.mouseover(function () {
+            $(this).addClass("viewHover");
+        });
+
+        views.on("click", function () {
+            views.removeClass("viewClicked");
+            views.addClass("viewNotHover");
+            $(this).removeClass("viewNotHover");
+            $(this).removeClass("viewHover");
+            $(this).addClass("viewClicked");
+        });
+        collapseOwners($("#location .owners"));
+
     });
 })(jQuery); // end of jQuery name space
+
+/**
+ * Collapse the owners in location div
+ * @param owners : JQueryElement
+ */
+function collapseOwners(owners) {
+    var i = 0;
+    var zIndex = owners.length;
+    var move = 0;
+
+    console.log("zIndex = ", zIndex);
+    while (i < owners.length) {
+        $(owners[i]).css("right", move + "%");
+        $(owners[i]).css("z-index", zIndex--);
+        i += 1;
+        move += 8;
+    }
+}

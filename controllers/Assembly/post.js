@@ -83,7 +83,7 @@ const newAssembly = (req, res) => {
                 let assembly = Assembly.initialize(name, description, relativePath.file3D, relativePath.specFiles, tags);
                 assembly.save()
                     .then((newAssembly) => {
-                        let subNode = Node.createNode(name, description, TypeEnum.assembly, newAssembly._id, relativePath.specFiles, tags);
+                        let subNode = Node.createNodeWithContent(name, description, TypeEnum.assembly, newAssembly._id, relativePath.specFiles, tags);
                         subNode.save()
                             .then((subNode) => {
                                 parentNode.children.push({

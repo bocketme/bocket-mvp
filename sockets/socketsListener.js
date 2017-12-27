@@ -7,6 +7,10 @@ let NodeInformationListener = require("./nodeInformationListener");
 let contentInformationListener = require('./contentInformationListener');
 let searchNodeChildren = require('./searchNodeChildren');
 let nodeViewer = require('./nodeViewer');
+let newActivityComment = require('./newActivityCommentListener');
+let getActivities = require("./getActivitiesListener");
+let addCommentListener = require("./addCommentToActivityListener");
+
 module.exports = function(io) {
     io.on('connection', function (socket) {
         betaRegistrationListener(socket);
@@ -18,5 +22,8 @@ module.exports = function(io) {
         contentInformationListener(socket);
         searchNodeChildren(socket);
         nodeViewer(socket);
+        newActivityComment(socket);
+        getActivities(socket);
+        addCommentListener(socket);
     });
 };

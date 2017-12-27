@@ -4,6 +4,7 @@ let NestedNode = require("./nestedSchema/NestedNodeSchema");
 let uniqueValidator = require('mongoose-unique-validator');
 let createNode = require("./utils/create/createNode");
 let NestedUser = require("./nestedSchema/NestedUserSchema");
+let NestedComment = require("./nestedSchema/NestedActivitySchema");
 let NodeTypeEnum = require("../enum/NodeTypeEnum");
 let NestedSpecFiles = require('./nestedSchema/NestedSpecFile');
 let TypeEnum = require('../enum/NodeTypeEnum');
@@ -18,7 +19,7 @@ let NodeSchema = mongoose.Schema({
     name: {type:String, require:true},
     description: String,
     content: {type: mongoose.SchemaTypes.ObjectId, require: false},
-    type: { type:String, default:'empty'},
+    type: { type:String, default: TypeEnum.empty},
     specpath: {type: [String], default: []},
     tags: {type: [String], default: []},
     children: {type: [NestedNode], default: []},
@@ -28,7 +29,7 @@ let NodeSchema = mongoose.Schema({
     Workspace: [String],
     owners: {type: [NestedUser], default: []},
     maturity: {type: String, default: [NodeTypeEnum.maturity[0]]},
-    specFiles: {type: [NestedSpecFiles], default: []}
+    activities : {type: [NestedComment], default: []}
 });
 
 NodeSchema.plugin(uniqueValidator);

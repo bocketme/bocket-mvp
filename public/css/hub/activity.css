@@ -27,7 +27,7 @@
     -webkit-border-radius: 50%;
     border-radius: 50%;
     vertical-align: middle;
-    width: 7%;
+    width: 5%;
     padding-left: 0;
     padding-right: 0;
 }
@@ -103,7 +103,7 @@ li.indicator {
     margin-top: -1% !important;
     z-index: 1000 !important;
 }
-#activity #activity-comments li {
+#activity .activity-comments li {
     z-index: 999 !important;
 }
 
@@ -111,7 +111,24 @@ li.indicator {
     padding-top: 1%;
 }
 
+#activity-comments-content {
+    display: none;
+}
+
 #activity input::-webkit-input-placeholder { font-size: 11px; }
 #activity input::-moz-placeholder { font-size: 11px; } /* firefox 19+ */
 #activity input:-ms-input-placeholder { font-size: 11px; } /* ie */
 #activity input:-moz-placeholder { font-size: 11px; }
+
+.commentOfActivity {
+    margin-bottom: 2%;
+}
+
+#activity .comments {
+    height: 200px;
+    overflow-y: scroll;
+}
+
+#activity .avatar {
+    width: 4%;
+}

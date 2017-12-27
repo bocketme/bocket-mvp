@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require('mongoose-unique-validator');
 const TypeEnum = require('../enum/NodeTypeEnum');
-let NestedAnnotation = require('./nestedSchema/NestedAnnotation');
+const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
+const NestedComment = require("./nestedSchema/NestedActivitySchema");
 
 let AssemblyScheama = mongoose.Schema({
     name: {type: String, require: true},
@@ -13,7 +14,8 @@ let AssemblyScheama = mongoose.Schema({
     whereUsed: {type: [String], default: []},
     quality: {type: Number, default:0},
     tags: {type: [], default: []},
-    annotation: {type: [NestedAnnotation], default: []}
+    annotation: {type: [NestedAnnotation], default: []},
+    activities : {type: [NestedComment], default: []}
 });
 
 AssemblyScheama.plugin(uniqueValidator);
