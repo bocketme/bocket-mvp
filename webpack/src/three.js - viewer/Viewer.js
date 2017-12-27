@@ -118,22 +118,7 @@ export default class Viewer {
      */
     lightsScene() {
         var ambientLight = new THREE.AmbientLight(0xffffff, 0.25),
-<<<<<<< HEAD
-            directLight1 = new THREE.DirectionalLight(0x2c4b7c, 0.25),
-            directLight2 = new THREE.DirectionalLight(0x2c4b7c, 0.25),
-            directLight3 = new THREE.DirectionalLight(0x2c4b7c, 0.25),
-            directLight4 = new THREE.DirectionalLight(0x2c4b7c, 0.25);
 
-        directLight1.position.set(-1000, 0, 1000);
-        directLight2.position.set(1000, 0, 1000);
-        directLight3.position.set(0, -1000, 1000);
-        directLight4.position.set(0, 1000, 1000);
-
-        var cameraHelper1 = new THREE.DirectionalLightHelper(directLight1, 5),
-            cameraHelper2 = new THREE.DirectionalLightHelper(directLight2, 5),
-            cameraHelper3 = new THREE.DirectionalLightHelper(directLight3, 5),
-            cameraHelper4 = new THREE.DirectionalLightHelper(directLight4, 5);
-=======
             directLight1 = new THREE.DirectionalLight(0xf5f5f5, 0.25),
             directLight2 = new THREE.DirectionalLight(0xf5f5f5, 0.25),
             directLight3 = new THREE.DirectionalLight(0xf5f5f5, 0.25),
@@ -145,7 +130,6 @@ export default class Viewer {
         directLight3.position.set(    0, -1000, 0);
         directLight4.position.set(    0, -1000, 1000);
         directLight5.position.set(    0,  1000, 1000);
->>>>>>> 3cafb1add996ce1872a992d8109ea81b3752aee8
 
         this.s_lights.add(ambientLight);
         this.s_lights.add(directLight1);
