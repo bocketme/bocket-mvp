@@ -122,7 +122,6 @@ $('body').on("click", ".three-node", (event) => {
     console.log(nodeId);
     if (nodeId) {
         viewer.selectObject(nodeId);
-        viewer.fitToScreen(nodeId);
     }
 });
 

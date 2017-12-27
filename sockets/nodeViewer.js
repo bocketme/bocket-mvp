@@ -21,7 +21,7 @@ module.exports = socket => {
                 .then(node => {
                     socket.emit('[viewer] -> start chargement', node._id, node.name);
                     if(TypeEnum.assembly == node.type){
-                        socket.emit("addAssembly", nodeId, parent);
+                        socket.emit("addAssembly", nodeId, parent._id);
                         let promises = [];
                         node.children.forEach(child => {
                             promises.push(promiseNode(child._id, {

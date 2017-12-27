@@ -76,6 +76,7 @@ export default class Viewer {
         this.s_objControls.name = "Object control";
         this.p_scene.add(this.s_objControls);
 
+        this.s_objectSelected;
 
         /* The box of the selected object */
         this.s_box = new THREE.BoxHelper(this.s_objects, 0x262626);
@@ -165,9 +166,7 @@ export default class Viewer {
      * @param {number} mouseY offsetY value of the mouse event
      * @memberof Viewer
      */
-    fitToScreen(name) {
-        var object = this.p_scene.getObjectByName(name);
-
+    fitToScreen() {
         this.s_box.geometry.computeBoundingBox();
         var box = this.s_box.geometry.boundingBox,
             center = box.getCenter();
@@ -380,10 +379,14 @@ export default class Viewer {
     addPart(file3D, nodeID, parentName) {
         var scene = parentName == null ? this.s_objects : this.p_scene.getObjectByName(parentName);
 
+        console.log(file3D, nodeID, parentName);
+
         var geometry = new THREE.BoxGeometry(50, 50, 50);
         var material = new THREE.MeshLambertMaterial({ color: 0x809fff });
         //var mesh = object3D(file3D);
         var mesh = new THREE.Mesh( geometry, material );
+
+        console.log(mesh)
         mesh.material.transparent = true;
         mesh.name = nodeID;
         mesh.receiveShadow = true;
@@ -431,6 +434,8 @@ export default class Viewer {
            }
         });
 
+        this.s_box.setFromObject(piece);
+
         /*****************************************/
         /*Get selected object*/
         if (piece)
@@ -444,7 +449,6 @@ export default class Viewer {
 
         this.s_objControls.setSpace('local');
         this.s_objControls.attach(piece);
-        console.log(this.s_objControls);
 
         this.p_scene.add(this.s_objControls);
 
@@ -476,29 +480,31 @@ export default class Viewer {
         }
         /*****************************************/
         /* Outline the object */
-        this.s_box.setFromObject(object);
+        this.fitToScreen();
 
         this.p_camera.updateProjectionMatrix();
     }
 
     toggleWireframe(){
-        if (this.s_objectSelected){
-            if (this.s_objectSelected instanceof THREE.Mesh){
+        if (this.s_objectSelected) {
+            if (this.s_objectSelected instanceof THREE.Mesh) {
                 if (this.s_objectSelected.material.wireframe)
-                    this.s_objectSelected.material.wireframe = true;
-                else
                     this.s_objectSelected.material.wireframe = false;
+                else
+                    this.s_objectSelected.material.wireframe = true;
             }
-            else if (this.s_objectSelected instanceof THREE.Group){
+            else if (this.s_objectSelected instanceof THREE.Group) {
                 this.s_objectSelected.traverse((object) => {
-                    if (object instanceof  THREE.Mesh) {
+                    if (object instanceof THREE.Mesh) {
                         if (object.material.wireframe)
-                            object.material.wireframe = true;
-                        else
                             object.material.wireframe = false;
+                        else
+                            object.material.wireframe = true;
                     }
                 });
             }
+        } else {
+            Materialize.toast('You must select a node', 2000);
         }
     }
 }
