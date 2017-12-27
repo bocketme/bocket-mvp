@@ -19,7 +19,9 @@
                     formdata.append("sub_level", sub_level);
                     formdata.append("breadcrmb", breadcrumb);
                     formdata.append("tags", JSON.stringify(chips));
-                    //postRequest.addEventListener("progress", updateProgress(event, nodeId), false);
+                    postRequest.addEventListener("progress", (event) => {
+
+                    }, false);
                     postRequest.addEventListener("load", (reqEvent) => {
                         if (postRequest.readyState === postRequest.DONE) {
                             if (postRequest.status === 200) {
@@ -67,8 +69,12 @@
                             }
                         }
                     }, false);
-                    postRequest.addEventListener("error", transferFailed, false);
-                    postRequest.addEventListener("abort", transferCanceled, false);
+                    postRequest.addEventListener("error", (event) => {
+                        console.log("Failure of the transfert");
+                    }, false);
+                    postRequest.addEventListener("abort", (event) => {
+                        console.log("Cancel of the transfert");
+                    }, false);
 
                     postRequest.open('POST', '/assembly/' + nodeId, true);
                     postRequest.send(formdata);
@@ -77,8 +83,8 @@
                 Materialize.toast("You must add a 3d File", 1000);
             } else
             Materialize.toast("You must select a node", 1000);
-        })
-
+        });
+        
         $('.modal-node-selector').click((event) => {
             if (third_column.$data.selected == "Select a node") {
                 Materialize.toast("You must select a node", 2000);
@@ -125,13 +131,7 @@ const updateProgress = (reqEvent) => {
     }
 },
 */
-
-transferComplete = (reqEvent) => {
-
-},
 transferFailed = () => {
-    console.log("Failure of the transfert");
 },
 transferCanceled = () => {
-    console.log("Cancel of the transfert");
 }
