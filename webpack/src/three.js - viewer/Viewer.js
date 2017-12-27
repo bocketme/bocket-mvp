@@ -444,6 +444,14 @@ export default class Viewer {
 
         if (piece)
             this.s_objectSelected = piece;
+
+        this.p_scene.traverse(object3d => {
+           if (object3d instanceof THREE.Mesh) {
+               if (object3d.material.wireframe)
+               object3d.material.wireframe = false;
+           }
+        });
+
         /*****************************************/
         /*Get selected object*/
         if (piece)
@@ -494,22 +502,24 @@ export default class Viewer {
         this.p_camera.updateProjectionMatrix();
     }
 
-    toggleWireframe() {
-        if (this.s_objectSelected) {
-            if (this.s_objectSelected instanceof THREE.Mesh) {
-                if (this.s_objectSelected.material.wireframe == true)
-                    this.s_objectSelected.material.wireframe = false;
-                else if (this.s_objectSelected.material.wireframe == false)
+    toggleWireframe(){
+        if (this.s_objectSelected){
+            if (this.s_objectSelected instanceof THREE.Mesh){
+                if (this.s_objectSelected.material.wireframe)
                     this.s_objectSelected.material.wireframe = true;
-            } else if (this.s_objectSelected instanceof THREE.Group)
+                else
+                    this.s_objectSelected.material.wireframe = false;
+            }
+            else if (this.s_objectSelected instanceof THREE.Group){
                 this.s_objectSelected.traverse((object) => {
-                    if (object instanceof THREE.Mesh) {
-                        if (object.material.wireframe == true)
-                            object.material.wireframe = false;
-                        else if (object.material.wireframe == false)
+                    if (object instanceof  THREE.Mesh) {
+                        if (object.material.wireframe)
                             object.material.wireframe = true;
+                        else
+                            object.material.wireframe = false;
                     }
-                })
+                });
+            }
         }
     }
 }

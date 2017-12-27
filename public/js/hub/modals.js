@@ -84,7 +84,7 @@
             } else
             Materialize.toast("You must select a node", 1000);
         });
-        
+
         $('.modal-node-selector').click((event) => {
             if (third_column.$data.selected == "Select a node") {
                 Materialize.toast("You must select a node", 2000);
