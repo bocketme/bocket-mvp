@@ -6,12 +6,13 @@ var viewer = new Viewer(renderArea);
 var _idSelected;
 Viewer.animate(viewer);
 console.log(viewer);
+
 /* ******************/
 /*  SOCKET VIEWER   */
 /* ******************/
 
 socket.on("[viewer] -> start chargement", (id, name) => {
-    console.log("THE NODE " + name + " is loading ! id => " + id );
+    console.log("THE NODE " + name + " is loading ! id => " + id);
 });
 
 socket.on("[viewer] -> end chargement", (id, name) => {
@@ -105,12 +106,12 @@ scale.click(() => {
 
 var increase_size = $("#button-increase-size");
 increase_size.click(() => {
-    viewer.s_objControls.setSize(viewer.s_objControls.size+=0.1)
+    viewer.s_objControls.setSize(viewer.s_objControls.size += 0.1)
 });
 
 var decrease_size = $("#button-decrease-size");
 decrease_size.click(() => {
-    viewer.s_objControls.setSize(Math.max(viewer.s_objControls.size-=0.1,0.1))
+    viewer.s_objControls.setSize(Math.max(viewer.s_objControls.size -= 0.1, 0.1))
 });
 
 var node = $();
@@ -119,25 +120,30 @@ $('body').on("click", ".three-node", (event) => {
     var element = event.currentTarget;
     var nodeId = element.id;
     console.log(nodeId);
-    if(nodeId){
+    if (nodeId) {
         viewer.selectObject(nodeId);
         viewer.fitToScreen(nodeId);
     }
 });
+
+var wireframe = $("#button-wireframe");
+wireframe.click(() => {
+    viewer.toggleWireframe();
+})
 
 /* *******************************/
 /*         EVENT FUNCTIONS       */
 /* *******************************/
 
 
-function onWindowResize () {
-    if(viewer)
+function onWindowResize() {
+    if (viewer)
         viewer.resize();
 };
 
 /* ************************************************************************** */
 
-function onMouseUp (event) {
+function onMouseUp(event) {
     var mouse3D = new THREE.Vector3((event.offsetX / renderArea.clientWidth) * 2 - 1, -(event.offsetY / renderArea.clientHeight) * 2 + 1, 0.5);
     var transform;
 
@@ -157,7 +163,7 @@ function onMouseUp (event) {
 
 /* ************************************************************************** */
 
-function onMouseDown (event) {
+function onMouseDown(event) {
     mousePos = {
         x: event.offsetX,
         y: event.offsetY
