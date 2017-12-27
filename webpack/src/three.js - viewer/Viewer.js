@@ -6,6 +6,7 @@
 
 import object3D from './init/object3D';
 import * as Stats from 'stats.js';
+import Floor from './init/floor';
 
 export default class Viewer {
     constructor(renderArea) {
@@ -42,15 +43,28 @@ export default class Viewer {
         /* The render */
         this.p_renderer = new THREE.WebGLRenderer({ canvas: renderSurface, alpha: true, antialias: true, logarithmicDepthBuffer: true });
         this.p_renderer.localClippingEnabled = true;
-        this.p_renderer.setClearColor(0xffffff);
+        //this.p_renderer.setClearColor(0xffffff);
+        this.p_renderer.setClearColor(0x65676b);
         this.p_renderer.setSize(p_width, p_height);
         this.p_renderer.shadowMap = true;
         renderArea.appendChild(this.p_renderer.domElement);
+
+        /* The axis case */
+        this.p_axis;
 
         /* The camera */
         this.p_camera = new THREE.PerspectiveCamera(60, p_aspectRatio, 1, 2147483647);
         this.p_camera.up.set(0, 0, 1);
         this.p_camera.position.set(0, -75, 50);
+
+        /* The floor of the scene */
+//        this.p_floor =  new Floor();
+
+        /* The name of the object to save */
+        this.save = [];
+
+        /* The Fog of the scene */
+        this.p_scene.fog = new THREE.Fog(0x525252);
 
         /* The camera's controllers */
         this.p_controls = new THREE.OrbitControls(this.p_camera, this.p_renderer.domElement);
@@ -62,8 +76,10 @@ export default class Viewer {
         this.s_objControls.name = "Object control";
         this.p_scene.add(this.s_objControls);
 
+
         /* The box of the selected object */
-        this.s_box = new THREE.BoxHelper(this.s_objects, 0x4ba03e);
+        this.s_box = new THREE.BoxHelper(this.s_objects, 0x262626);
+        this.s_box.material.linewidth = 6;
         this.p_scene.add(this.s_box);
 
         /* Add the lights to the scene */
@@ -89,6 +105,7 @@ export default class Viewer {
             viewer.s_box.update();
 
             viewer.stats.end();
+
             requestAnimationFrame(animation);
         }
         animation();
@@ -101,6 +118,7 @@ export default class Viewer {
      */
     lightsScene() {
         var ambientLight = new THREE.AmbientLight(0xffffff, 0.25),
+<<<<<<< HEAD
             directLight1 = new THREE.DirectionalLight(0x2c4b7c, 0.25),
             directLight2 = new THREE.DirectionalLight(0x2c4b7c, 0.25),
             directLight3 = new THREE.DirectionalLight(0x2c4b7c, 0.25),
@@ -115,17 +133,40 @@ export default class Viewer {
             cameraHelper2 = new THREE.DirectionalLightHelper(directLight2, 5),
             cameraHelper3 = new THREE.DirectionalLightHelper(directLight3, 5),
             cameraHelper4 = new THREE.DirectionalLightHelper(directLight4, 5);
+=======
+            directLight1 = new THREE.DirectionalLight(0xf5f5f5, 0.25),
+            directLight2 = new THREE.DirectionalLight(0xf5f5f5, 0.25),
+            directLight3 = new THREE.DirectionalLight(0xf5f5f5, 0.25),
+            directLight4 = new THREE.DirectionalLight(0xf5f5f5, 0.25),
+            directLight5 = new THREE.DirectionalLight(0xf5f5f5, 0.25);
+
+        directLight1.position.set(-1000,     0, 0);
+        directLight2.position.set( 1000,     0, 0);
+        directLight3.position.set(    0, -1000, 0);
+        directLight4.position.set(    0, -1000, 1000);
+        directLight5.position.set(    0,  1000, 1000);
+>>>>>>> 3cafb1add996ce1872a992d8109ea81b3752aee8
 
         this.s_lights.add(ambientLight);
         this.s_lights.add(directLight1);
         this.s_lights.add(directLight2);
         this.s_lights.add(directLight3);
         this.s_lights.add(directLight4);
+        this.s_lights.add(directLight5);
+
+
+        var cameraHelper1 = new THREE.DirectionalLightHelper(directLight1, 5),
+            cameraHelper2 = new THREE.DirectionalLightHelper(directLight2, 5),
+            cameraHelper3 = new THREE.DirectionalLightHelper(directLight3, 5),
+            cameraHelper4 = new THREE.DirectionalLightHelper(directLight4, 5),
+            cameraHelper5 = new THREE.DirectionalLightHelper(directLight5, 5);
+
 
         this.s_lights.add(cameraHelper1);
         this.s_lights.add(cameraHelper2);
         this.s_lights.add(cameraHelper3);
         this.s_lights.add(cameraHelper4);
+        this.s_lights.add(cameraHelper5);
     }
 
     /* ************************************************************************** */
@@ -358,10 +399,16 @@ export default class Viewer {
         var geometry = new THREE.BoxGeometry(50, 50, 50);
         var material = new THREE.MeshLambertMaterial({ color: 0x809fff });
         //var mesh = object3D(file3D);
+<<<<<<< HEAD
         var mesh = new THREE.Mesh(geometry, material);
 
+=======
+        var mesh = new THREE.Mesh( geometry, material );
+        mesh.material.transparent = true;
+>>>>>>> 3cafb1add996ce1872a992d8109ea81b3752aee8
         mesh.name = nodeID;
         mesh.receiveShadow = true;
+        mesh.renderOrder = -1;
 
         scene.add(mesh);
     }
@@ -395,6 +442,8 @@ export default class Viewer {
         var object,
             piece = this.p_scene.getObjectByName(name);
 
+        if (piece)
+            this.s_objectSelected = piece;
         /*****************************************/
         /*Get selected object*/
         if (piece)
@@ -408,9 +457,36 @@ export default class Viewer {
 
         this.s_objControls.setSpace('local');
         this.s_objControls.attach(piece);
+        console.log(this.s_objControls);
 
         this.p_scene.add(this.s_objControls);
 
+        if (piece instanceof THREE.Mesh){
+            this.s_objects.traverse((object3d) => {
+                if(object3d instanceof THREE.Mesh){
+                    if(object3d.name !== piece.name) {
+                        object3d.material.opacity = 0.3;
+                    } else {
+                        object3d.material.opacity = 1;
+                    }
+                }
+            })
+        } else if (piece instanceof THREE.Group){
+            this.s_objects.traverse((object3d) => {
+                if(object3d instanceof THREE.Mesh) {
+                    if (object3d.name !== piece.name){
+                        object3d.material.opacity = 0.3;
+                    }
+                }
+            });
+            piece.traverse(object3d => {
+                if(object3d instanceof THREE.Mesh) {
+                    if (object3d.name !== piece.name){
+                        object3d.material.opacity = 1;
+                    }
+                }
+            })
+        }
         /*****************************************/
         /* Outline the object */
         this.s_box.setFromObject(object);
