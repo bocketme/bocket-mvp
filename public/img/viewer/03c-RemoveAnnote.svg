@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>03c-RemoveAnnote</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="05-CONSULTER-DONNEES-3D" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Select-a-node-+-option-menu-Copy-12" transform="translate(-1362.000000, -463.000000)">
+            <g id="Annotate" transform="translate(1280.000000, 463.000000)">
+                <g id="03c-RemoveAnnote" transform="translate(82.000000, 0.000000)">
+                    <circle id="Oval-3" fill="#4A90E2" cx="14" cy="14" r="14"></circle>
+                    <path d="M10.4282966,18.8570353 C10.4282966,19.4882375 10.9434607,20 11.5788584,20 L16.4209978,20 C17.0563955,20 17.5715596,19.4882375 17.5715596,18.8570353 L17.5715596,11.6717875 L10.4282966,11.6717875 L10.4282966,18.8570353 Z M15.735982,9.70011202 L15.3571596,9 L12.6426966,9 L12.2638742,9.70011202 L10,9.70011202 L10,11.2517203 L18,11.2517203 L18,9.70011202 L15.735982,9.70011202 Z" id="Shape" fill="#FFFFFF" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

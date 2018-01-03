@@ -3,40 +3,40 @@
     <canvas id="renderSurface" class="viewer-div viewer-canvas"></canvas>
 
 
-    <div class="fixed-action-btn horizontal click-to-toggle viewer-options-1">
+    <div class="fixed-action-btn horizontal viewer-options-1">
         <a class="btn-floating btn-large blue">
-            <i class="large material-icons">build</i>
+            <img class="button-viewer" src="/img/viewer/01-BasicParameters.svg" alt="">
         </a>
         <ul>
-            <li><a id="button-fit-to-screen" class="btn-floating grey"><i class="material-icons">center_focus_strong</i></a></li> <!--Fit To Screen-->
-            <li><a id="button-fullscreen" class="btn-floating grey"><i class="material-icons">fullscreen</i></a></li> <!--Full screen-->
-            <li><a id="button-zoom" class="btn-floating grey"><i class="material-icons">zoom_in</i></a></li> <!--scale-->
+            <li><a id="button-fit-to-screen" class="btn-floating grey"> <img class="button-viewer" src="/img/viewer/01a-FitToScreen.svg" alt=""></a></li> <!--Fit To Screen-->
+            <li><a id="button-fullscreen" class="btn-floating grey">    <img class="button-viewer" src="/img/viewer/01b-FullScreen.svg" alt=""></a></li> <!--Full screen-->
         </ul>
     </div>
 
-    <div class="fixed-action-btn horizontal click-to-toggle viewer-options-2">
+    <div class="fixed-action-btn horizontal viewer-options-2">
         <a class="btn-floating btn-large brown">
-            <i class="large material-icons">build</i>
+            <img class="button-viewer" src="/img/viewer/02-3DInformation.svg" alt="">
         </a>
         <ul>
-            <li><a id="button-repere-piece" class="btn-floating grey"><i id="move-icon"></i></a></li> <!--repère pièce-->
-            <li><a id="button-bounding-box" class="btn-floating grey"><i class="material-icons">3d_rotation</i></a></li> <!--bounding box-->
-            <li><a id="button-wireframe" class="btn-floating grey"><i class="material-icons">tonality</i></a></li> <!--wireframe-->
-            <li><a id="button-passport-3d" class="btn-floating grey"><i class="material-icons">chrome_reader_mode</i></a></li> <!--passport 3D-->
+            <li><a id="button-repere-piece" class="btn-floating grey">  <img class="button-viewer" src="/img/viewer/02a-ShowMark.svg" alt=""></a></li> <!--repère pièce-->
+            <li><a id="button-bounding-box" class="btn-floating grey">  <img class="button-viewer" src="/img/viewer/02b-ShowBoundingBox.svg" alt=""></a></li> <!--bounding box-->
+            <li><a id="button-wireframe" class="btn-floating grey">     <img class="button-viewer" src="/img/viewer/02c-Wireframe.svg" alt=""> </a></li> <!--wireframe-->
+            <li><a id="button-passport-3d" class="btn-floating grey">   <img class="button-viewer" src="/img/viewer/02d-3DPassport.svg" alt=""></a></li> <!--passport 3D-->
         </ul>
     </div>
 
-    <div class="fixed-action-btn horizontal click-to-toggle viewer-options-3">
+    <div class="fixed-action-btn horizontal viewer-options-3">
         <a class="btn-floating btn-large green">
-            <i class="large material-icons">build</i>
+            <img class="button-viewer" src="/img/viewer/03-Annotations.svg" alt="">
         </a>
         <ul>
-            <li><a id="button-show-annotation" class="btn-floating grey"><i class="material-icons">chat</i></a></li> <!--Show Annotation-->
-            <li><a id="button-add-annotation" class="btn-floating grey"><i class="material-icons">chat_bubble</i></a></li> <!--Add Annotation-->
+            <li><a id="button-show-annotation" class="btn-floating grey">   <img class="button-viewer" src="/img/viewer/03a-ShowAnnotes.svg" alt=""></a></li> <!--Show Annotation-->
+            <li><a id="button-add-annotation" class="btn-floating grey">    <img class="button-viewer" src="/img/viewer/03b-AddAnnote.svg" alt=""></a></li> <!--Add Annotation-->
+            <li><a id="button-add-annotation" class="btn-floating grey">    <img class="button-viewer" src="/img/viewer/03c-RemoveAnnote.svg" alt=""></a></li>
         </ul>
     </div>
 
-    <div class="fixed-action-btn horizontal click-to-toggle viewer-options-4">
+    <div class="fixed-action-btn horizontal viewer-options-4">
         <a class="btn-floating btn-large yellow">
             <i class="large material-icons">build</i>
         </a>
@@ -47,6 +47,7 @@
         </ul>
     </div>
 
+    <a id="button-save" class="waves-effect waves-light btn"><i class="material-icons left">save</i>Save</a>
 </div>
 <!--
 <div id="renderDivButton">

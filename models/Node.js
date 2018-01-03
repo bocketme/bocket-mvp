@@ -9,6 +9,7 @@ let NodeTypeEnum = require("../enum/NodeTypeEnum");
 let NestedSpecFiles = require('./nestedSchema/NestedSpecFile');
 let TypeEnum = require('../enum/NodeTypeEnum');
 let NestedAnnotation = require('./nestedSchema/NestedAnnotation');
+const THREE = require('three');
 
 let NestedWorkspace = mongoose.Schema({
     _id: {type: mongoose.SchemaTypes.ObjectId, require: true},
@@ -26,6 +27,7 @@ let NodeSchema = mongoose.Schema({
     created: {type: Date, default:  Date.now()},
     modified: {type: Date, default: Date.now()},
     Users: {type: [NestedUser], default: []},
+    matrix: {type:[] ,default: new THREE.Matrix4()},
     Workspace: [String],
     owners: {type: [NestedUser], default: []},
     maturity: {type: String, default: [NodeTypeEnum.maturity[0]]},

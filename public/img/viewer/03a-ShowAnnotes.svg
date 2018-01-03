@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>03a-ShowAnnotes</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="05-CONSULTER-DONNEES-3D" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Select-a-node-+-option-menu-Copy-12" transform="translate(-1280.000000, -463.000000)">
+            <g id="Annotate" transform="translate(1280.000000, 463.000000)">
+                <g id="03a-ShowAnnotes">
+                    <circle id="Oval-3" fill="#4A90E2" cx="14" cy="14" r="14"></circle>
+                    <path d="M20.4251879,14.231 C18.9911029,16.2099412 16.6481659,17.5 14,17.5 C11.3518341,17.5 9.0088971,16.2099412 7.57481208,14.231 C7.47506264,14.0932647 7.47506264,13.9069412 7.57481208,13.7692059 C9.0088971,11.7900588 11.3518341,10.5 14,10.5 C16.6481659,10.5 18.9911029,11.7900588 20.4251879,13.769 C20.5249374,13.9069412 20.5249374,14.0930588 20.4251879,14.231 Z M16.5,14 C16.5,12.6193182 15.3806818,11.5 14,11.5 C12.6193182,11.5 11.5,12.6193182 11.5,14 C11.5,15.3806818 12.6193182,16.5 14,16.5 C15.3806818,16.5 16.5,15.3806818 16.5,14 Z M15,13.9638857 C15,14.4962077 14.5522667,14.9277715 14,14.9277715 C13.4477333,14.9277715 13,14.4962077 13,13.9638857 C13,13.4315638 13.4477333,13 14,13 C14.5522667,13 15,13.4315638 15,13.9638857 Z" id="Shape" fill="#FFFFFF" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -10,7 +10,7 @@ console.log(viewer);
 /* ******************/
 /*  SOCKET VIEWER   */
 /* ******************/
-
+/*
 socket.on("[viewer] -> start chargement", (id, name) => {
     console.log("THE NODE " + name + " is loading ! id => " + id);
 });
@@ -22,12 +22,13 @@ socket.on("[viewer] -> end chargement", (id, name) => {
 socket.on("[viewer] -> error chargement", (id, name, err) => {
     console.warn("THE NODE " + name + " could'nt be charged ! id => " + id + "\n" + err)
 });
-
+*/
 socket.emit("start viewer", workspaceId);
 
-socket.on("addPart", (file3d, nodeID, parentID) => {
+socket.on("addPart", (file3d, nodeID, matrix, parentID) => {
+    console.log(nodeID, matrix);
     if (viewer)
-        viewer.addPart(JSON.parse(file3d), nodeID, parentID);
+        viewer.addPart(JSON.parse(file3d), nodeID, matrix, parentID);
     else
         console.warn("The viewer is not initialized");
 });
@@ -48,9 +49,17 @@ socket.on("setAssembly", (nodeID, parentID) => {
 });
 
 
-socket.on("addAssembly", (nodeID, parentID) => {
+socket.on("addAssembly", (nodeID, matrix, parentID) => {
+    console.log(nodeID, matrix);
     if (viewer)
-        viewer.addAssembly(nodeID, parentID);
+        viewer.addAssembly(nodeID, matrix, parentID);
+    else
+        console.warn("The viewer is not initialized");
+});
+
+socket.on("setMatrix", (nodeId, matrix) => {
+    if (viewer)
+        viewer.setMatrix(nodeId, matrix);
     else
         console.warn("The viewer is not initialized");
 });
@@ -80,7 +89,7 @@ window.addEventListener('resize', onWindowResize, false);
 
 var translate = $("#button-move-object");
 translate.click(() => {
-    if (viewer) {
+    if (viewer instanceof Viewer) {
         if (viewer.s_objControls.getMode() == 'translate');
         viewer.s_objControls.setMode("translate");
     } else console.warn(new Error("Viewer is not initialized"));
@@ -88,31 +97,50 @@ translate.click(() => {
 
 var rotate = $("#button-rotate-object");
 rotate.click(() => {
-    if (viewer) {
+    if (viewer instanceof Viewer) {
         if (viewer.s_objControls.getMode() !== 'rotate')
             viewer.s_objControls.setMode("rotate");
     } else console.warn(new Error("Viewer is not initialized"));
 });
 
-var scale = $("#button-scale-object");
-scale.click(() => {
-    if (viewer) {
-        if (viewer.s_objControls.getMode() !== 'scale')
-            viewer.s_objControls.setMode("scale");
+//var fitToScreen = $();
+
+var fullScreen = $("#button-fullscreen");
+fullScreen.click(() => {
+    if (viewer instanceof Viewer){
+
     } else console.warn(new Error("Viewer is not initialized"));
 });
 
-var increase_size = $("#button-increase-size");
-increase_size.click(() => {
-    viewer.s_objControls.setSize(viewer.s_objControls.size += 0.1)
+var reperePiece = $('#button-repere-piece');
+reperePiece.click(() => {
+    if (viewer instanceof Viewer){
+        if (viewer.s_objControls.visible)
+        viewer.s_objControls.visible = false;
+        else viewer.s_objControls.visible = true
+    } else console.warn(new Error("Viewer is not initialized"));
 });
 
-var decrease_size = $("#button-decrease-size");
-decrease_size.click(() => {
-    viewer.s_objControls.setSize(Math.max(viewer.s_objControls.size -= 0.1, 0.1))
+
+var wireframe = $("#button-wireframe");
+wireframe.click(() => {
+    if (viewer)
+    viewer.toggleWireframe();
+    else console.warn(new Error("Viewer is not initialized"));
 });
 
-var node = $();
+var passport3D = $('#button-passport-3d');
+passport3D.click(() => {
+    if(viewer instanceof Viewer)
+        console.log("...");
+    else console.warn(new Error("Viewer is not initialized"));
+});
+
+var save = $('#button-save');
+save.click(() => {
+    viewer.save(socket);
+});
+
 
 $('body').on("click", ".three-node", (event) => {
     var element = event.currentTarget;
@@ -122,11 +150,6 @@ $('body').on("click", ".three-node", (event) => {
         viewer.selectObject(nodeId);
     }
 });
-
-var wireframe = $("#button-wireframe");
-wireframe.click(() => {
-    viewer.toggleWireframe();
-})
 
 /* *******************************/
 /*         EVENT FUNCTIONS       */

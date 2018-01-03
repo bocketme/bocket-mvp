@@ -7,6 +7,7 @@
 import object3D from './init/object3D';
 import * as Stats from 'stats.js';
 import Floor from './init/floor';
+import AxisScene from "./init/scene_axis";
 
 export default class Viewer {
     constructor(renderArea) {
@@ -50,7 +51,7 @@ export default class Viewer {
         renderArea.appendChild(this.p_renderer.domElement);
 
         /* The axis case */
-        this.p_axis;
+        this.p_axis = new AxisScene(p_axisSize);
 
         /* The camera */
         this.p_camera = new THREE.PerspectiveCamera(60, p_aspectRatio, 1, 2147483647);
@@ -58,10 +59,7 @@ export default class Viewer {
         this.p_camera.position.set(0, -75, 50);
 
         /* The floor of the scene */
-//        this.p_floor =  new Floor();
-
-        /* The name of the object to save */
-        this.save = [];
+        // this.p_floor =  new Floor();
 
         /* The Fog of the scene */
         this.p_scene.fog = new THREE.Fog(0x525252);
@@ -74,6 +72,7 @@ export default class Viewer {
         /* The object's controllers */
         this.s_objControls = new THREE.TransformControls(this.p_camera, this.p_renderer.domElement);
         this.s_objControls.name = "Object control";
+        this.s_objControls.visible = false;
         this.p_scene.add(this.s_objControls);
 
         this.s_objectSelected;
@@ -100,10 +99,12 @@ export default class Viewer {
         function animation() {
             viewer.stats.begin();
 
-            viewer.p_renderer.render(viewer.p_scene, viewer.p_camera);
+            viewer.s_objects.updateMatrix();
             viewer.p_controls.update();
             viewer.s_objControls.update();
             viewer.s_box.update();
+            viewer.p_axis.update(viewer.p_camera.position);
+            viewer.p_renderer.render(viewer.p_scene, viewer.p_camera);
 
             viewer.stats.end();
 
@@ -139,7 +140,7 @@ export default class Viewer {
         this.s_lights.add(directLight4);
         this.s_lights.add(directLight5);
 
-
+        /*
         var cameraHelper1 = new THREE.DirectionalLightHelper(directLight1, 5),
             cameraHelper2 = new THREE.DirectionalLightHelper(directLight2, 5),
             cameraHelper3 = new THREE.DirectionalLightHelper(directLight3, 5),
@@ -152,6 +153,7 @@ export default class Viewer {
         this.s_lights.add(cameraHelper3);
         this.s_lights.add(cameraHelper4);
         this.s_lights.add(cameraHelper5);
+        */
     }
 
     /* ************************************************************************** */
@@ -344,11 +346,18 @@ export default class Viewer {
      * @param {String} name - The name of the assembly
      * @param {String} parentName - The parent name of the assembly
      */
-    addAssembly(name, parentName) {
-        var scene = parentName == null ? this.p_scene : this.p_scene.getObjectByName(parentName);
+    addAssembly(name, matrix, parentName) {
+        var scene = parentName == null ? this.s_objects : this.p_scene.getObjectByName(parentName);
 
         var group = new THREE.Group();
+        console.log(group);
+        group.applyMatrix(matrix[0]);
+        group.updateMatrix();
         group.name = name;
+        group.userData = {
+            update: false,
+            data: 'assembly',
+        };
         scene.add(group);
     }
 
@@ -361,33 +370,50 @@ export default class Viewer {
     }
 
     removeAssembly(name) {
-            var assembly = this.p_scene.getObjectByName(name);
+        var assembly = this.p_scene.getObjectByName(name);
 
-            if (assembly instanceof THREE.Group)
-                this.p_scene.remove(assembly);
-            else
-                console.error(new Error('The assembly is not an instance of Group, but an instance of ', typeof(assembly)));
-        }
-        /**
-         * @description Add an assembly to a scene.
-         * @param (String) file3D.name - The File name of the object
-         * @param (String) file3D.path - The path of the object
-         * @param (String) file3D.path - The path of the object
-         * @param (Array) file3D.geometry - The geometry of the object
-         * @param {String} parentName - The parent name of the assembly
-         */
-    addPart(file3D, nodeID, parentName) {
+        if (assembly instanceof THREE.Group)
+            this.p_scene.remove(assembly);
+        else
+            console.error(new Error('The assembly is not an instance of Group, but an instance of ', typeof(assembly)));
+    }
+
+    setMatrix(name, matrix) {
+        if (matrix.isMatrix4){
+            var piece = this.p_scene.getObjectByName(name);
+            piece.matrix.set(matrix);
+        } else console.warn('Error Matrix');
+    }
+    /**
+     * @description Add an assembly to a scene.
+     * @param (String) file3D.name - The File name of the object
+     * @param (String) file3D.path - The path of the object
+     * @param (String) file3D.path - The path of the object
+     * @param (Array) file3D.geometry - The geometry of the object
+     * @param {String} parentName - The parent name of the assembly
+     */
+    addPart(file3D, nodeID, matrix, parentName) {
         var scene = parentName == null ? this.s_objects : this.p_scene.getObjectByName(parentName);
 
+        /**A remplacer **/
         var geometry = new THREE.BoxGeometry(50, 50, 50);
         var material = new THREE.MeshLambertMaterial({ color: 0x809fff });
-        //var mesh = object3D(file3D);
         var mesh = new THREE.Mesh( geometry, material );
+        /**A remplacer **/
+        //var mesh = object3D(file3D);
+
+        console.log(mesh.matrix);
+        mesh.applyMatrix(matrix[0]);
+        mesh.updateMatrix();
+        mesh.matrixAutoUpdate = true;
+        mesh.userData = {
+            update: false,
+            data: 'mesh',
+        };
         mesh.material.transparent = true;
         mesh.name = nodeID;
         mesh.receiveShadow = true;
         mesh.renderOrder = -1;
-
         scene.add(mesh);
     }
 
@@ -420,14 +446,16 @@ export default class Viewer {
         var object,
             piece = this.p_scene.getObjectByName(name);
 
+        console.log(piece);
+
         if (piece)
             this.s_objectSelected = piece;
 
         this.p_scene.traverse(object3d => {
-           if (object3d instanceof THREE.Mesh) {
-               if (object3d.material.wireframe)
-               object3d.material.wireframe = false;
-           }
+            if (object3d instanceof THREE.Mesh) {
+                if (object3d.material.wireframe)
+                    object3d.material.wireframe = false;
+            }
         });
 
         this.s_box.setFromObject(piece);
@@ -439,14 +467,12 @@ export default class Viewer {
 
         /*****************************************/
         /*Set up of the object Control*/
-        this.p_scene.remove(this.s_objControls);
-        if (object = this.s_objControls.object)
-            this.s_objControls.detach(object);
-
-        this.s_objControls.setSpace('local');
-        this.s_objControls.attach(piece);
-
-        this.p_scene.add(this.s_objControls);
+        if (piece !== this.s_objControls.object){
+            var visible = this.s_objControls.visible;
+            this.s_objControls.detach(this.s_objControls.object);
+            this.s_objControls.attach(piece);
+            this.s_objControls.visible = visible;
+        }
 
         if (piece instanceof THREE.Mesh){
             this.s_objects.traverse((object3d) => {
@@ -502,5 +528,17 @@ export default class Viewer {
         } else {
             Materialize.toast('You must select a node', 2000);
         }
+    }
+
+    /***
+     * @description Send a socket to save the position of all the modified part. (v1)
+     * @param socket
+     */
+    save(socket){
+        console.log(this.s_objects);
+        this.s_objects.traverse(object3D => {
+            console.log("object - ", object3D);
+            socket.emit("[OBJECT 3D] - save", workspaceId, object3D.name, object3D.matrix);
+        });
     }
 }
