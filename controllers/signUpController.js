@@ -2,6 +2,7 @@ let escape = require('escape-html');
 let ModelsMaker = require("../models/utils/create/ModelsMaker");
 let nodeMasterConfig = require("../config/nodeMaster");
 let NodeSchema = require("../models/Node");
+let signInUserSession = require("../utils/signInUserSession");
 
 let signUpController = {
 
@@ -48,6 +49,10 @@ let signUpController = {
                                                     .then(() => {
                                                         newOrga.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
                                                         newOrga.save()
+                                                            .then(() => {
+                                                                req.session = signInUserSession(req.session, {email: user.email});
+                                                                res.redirect("project/" + workspace._id);
+                                                            })
                                                             .catch(err => {
                                                                 throw err
                                                             });
@@ -80,7 +85,7 @@ let signUpController = {
             .catch(err => {
             console.log("error on creating user: " + err);
         });
-        res.send(req.body);
+        //res.send(req.body);
     },
 };
 

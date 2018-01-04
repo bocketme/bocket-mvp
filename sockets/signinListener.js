@@ -1,14 +1,15 @@
-let escape = require('escape-html');
+//let escape = require('escape-html');
 let internalErrorEmitter = require("./emitter/internalErrorEmitter");
 let User = require("../models/User");
 let Workspaces = require("../models/Workspace");
+let signInUserSession = require("../utils/signInUserSession");
 
 module.exports = function (socket) {
     socket.on("signin", (accountInformation) => { // accountInformation.email & accountInformation.password
         console.log(accountInformation);
 
-        accountInformation.email = escape(accountInformation.email);
-        accountInformation.password = escape(accountInformation.password);
+        /*accountInformation.email = escape(accountInformation.email);
+        accountInformation.password = escape(accountInformation.password);*/
 
         User.findOne({email: "" + accountInformation.email})
             .then(user => {

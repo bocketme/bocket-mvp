@@ -26,8 +26,8 @@ const MongoStore = require('connect-mongo')(expressSession); //session store
 let session = expressSession({
     secret: config.secretSession,
     store: new MongoStore({ url: config.mongoDB}),
-    resave: false,
-    saveUninitialized: false
+    resave: true,
+    saveUninitialized: true
 });
 let sharedsession = require("express-socket.io-session");
 
@@ -62,7 +62,9 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(morgan('dev'));
 
 app.use(session);
-io.use(sharedsession(session));
+io.use(sharedsession(session, {
+    autoSave: true
+}));
 
 module.exports = app;
 
