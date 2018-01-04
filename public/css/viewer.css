@@ -15,36 +15,68 @@
     right:      20px;
     top:        20px;
 }
+
 #move-icon
 {
     content: url("/img/move-icon.png");
     height: 40px;
     width: 40px;
 }
+
 .viewer-options-1
 {
     position: absolute;
     right: 20px;
     bottom: 200px;
-}.viewer-options-2
+}
+
+.viewer-options-2
  {
      position: absolute;
      right: 20px;
      bottom: 140px;
  }
+
 .viewer-options-3
 {
     position: absolute;
     right: 20px;
     bottom: 80px;
 }
+
 .viewer-options-4
 {
     position: absolute;
     right: 20px;
     bottom: 20px;
 }
+
 .button-viewer
 {
     width: 100%;
+}
+
+#button-save
+{
+    background-color: #296bb3 !important;
+    border-radius: 25px;
+    position: absolute;
+    padding-left: 50px;
+    display: inline-block;
+    transform: translate(-120%);
+}
+#button-cancel
+{
+    background-color: #296bb3 !important;
+    color: white;
+    border-radius: 25px;
+    position: absolute;
+    display: inline-block;
+}
+#buttons-saveandcancel
+{
+    color: white;
+    position: absolute;
+    bottom: 50px;
+    left: 50%
 }

@@ -59,7 +59,8 @@ export default class Viewer {
         this.p_camera.position.set(0, -75, 50);
 
         /* The floor of the scene */
-        // this.p_floor =  new Floor();
+        //this.p_floor =  new Floor();
+        //this.p_scene.add(this.p_floor.mesh);
 
         /* The Fog of the scene */
         this.p_scene.fog = new THREE.Fog(0x525252);
@@ -99,6 +100,7 @@ export default class Viewer {
         function animation() {
             viewer.stats.begin();
 
+            //viewer.p_floor.update(viewer.p_camera.position);
             viewer.s_objects.updateMatrix();
             viewer.p_controls.update();
             viewer.s_objControls.update();
@@ -312,35 +314,6 @@ export default class Viewer {
         return { pos: pos, rot: new THREE.Euler().setFromQuaternion(rot), scale: scale };
     }
 
-
-    /* ************************************************************************** */
-    /*                                                                            */
-    /*                                  TRANSFORM                                 */
-    /*                                                                            */
-    /* ************************************************************************** */
-
-    /**
-     * @description Adds the transformation axis to the object parameter
-     * @param {THREE.Group} object object you want the transformation axis to be attached to
-     */
-    addTransform(object) {
-        var transform;
-
-        if (!object) {
-            this.removeTransform();
-            return;
-        }
-
-        for (var i = 0; i < this.objects.p_scene.children.length; i++) {
-            if (this.objects.p_scene.children[i] instanceof THREE.TransformControls)
-                this.removeTransform();
-        }
-
-        transform = new THREE.TransformControls(this.objects.p_camera, this.objects.p_renderer.domElement);
-        transform.attach(object);
-        this.objects.p_scene.add(transform);
-    }
-
     /* ************************************************************************** */
     /*                                                                            */
     /*                                  OBJECT3D                                  */
@@ -366,14 +339,25 @@ export default class Viewer {
         scene.add(group);
     }
 
-    setAssembly(oldname, newname) {
-        var assembly = this.p_scene.getObjectByName(oldname);
-        if (assembly instanceof THREE.Group)
-            assembly.name = newname;
+    /**
+     * @description Change the name of an assembly or a part.
+     * @param oldname
+     * @param newname
+     */
+    setPiece(oldname, newname) {
+        var piece = this.p_scene.getObjectByName(oldname);
+        if (piece instanceof THREE.Group)
+            piece.name = newname;
+        else if (piece instanceof THREE.Mesh)
+            piece.name = newname;
         else
             console.error(new Error("Could'nt find the name of the assembly"))
     }
 
+    /**
+     * @description Remove the Assembly of the
+     * @param name
+     */
     removeAssembly(name) {
         var assembly = this.p_scene.getObjectByName(name);
 
@@ -383,18 +367,14 @@ export default class Viewer {
             console.error(new Error('The assembly is not an instance of Group, but an instance of ', typeof(assembly)));
     }
 
-    setMatrix(name, matrix) {
-        if (matrix.isMatrix4){
-            var piece = this.p_scene.getObjectByName(name);
-            piece.matrix.set(matrix);
-        } else console.warn('Error Matrix');
-    }
     /**
      * @description Add an assembly to a scene.
+     * @param {Object} file3D - The Object
      * @param (String) file3D.name - The File name of the object
      * @param (String) file3D.path - The path of the object
      * @param (String) file3D.path - The path of the object
      * @param (Array) file3D.geometry - The geometry of the object
+     * @param {THREE.Matrix4} matrix - The Matrix
      * @param {String} parentName - The parent name of the assembly
      */
     addPart(file3D, nodeID, matrix, parentName) {
@@ -407,7 +387,6 @@ export default class Viewer {
         /**A remplacer **/
         //var mesh = object3D(file3D);
 
-        console.log(mesh.matrix);
         mesh.applyMatrix(matrix[0]);
         mesh.updateMatrix();
         mesh.matrixAutoUpdate = true;
@@ -420,14 +399,6 @@ export default class Viewer {
         mesh.receiveShadow = true;
         mesh.renderOrder = -1;
         scene.add(mesh);
-    }
-
-    setPart(oldname, newname) {
-        var part = this.p_scene.getObjectByName(oldname);
-        if (part instanceof THREE.Group)
-            part.name = newname;
-        else
-            console.error(new Error("Could'nt find the name of the part"))
     }
 
     /**
@@ -512,6 +483,9 @@ export default class Viewer {
         this.p_camera.updateProjectionMatrix();
     }
 
+    /**
+     * @description Toggle the wireframe of the selected object.
+     */
     toggleWireframe(){
         if (this.s_objectSelected) {
             if (this.s_objectSelected instanceof THREE.Mesh) {
@@ -540,7 +514,6 @@ export default class Viewer {
      * @param socket
      */
     save(socket){
-        console.log(this.s_objects);
         this.s_objects.traverse(object3D => {
             console.log("object - ", object3D);
             socket.emit("[OBJECT 3D] - save", workspaceId, object3D.name, object3D.matrix);

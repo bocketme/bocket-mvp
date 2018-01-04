@@ -10,11 +10,12 @@ console.log(viewer);
 /* ******************/
 /*  SOCKET VIEWER   */
 /* ******************/
-/*
+
 socket.on("[viewer] -> start chargement", (id, name) => {
     console.log("THE NODE " + name + " is loading ! id => " + id);
 });
 
+/*
 socket.on("[viewer] -> end chargement", (id, name) => {
     console.log("THE NODE " + name + " is charged ! id => " + id);
 });
@@ -26,7 +27,6 @@ socket.on("[viewer] -> error chargement", (id, name, err) => {
 socket.emit("start viewer", workspaceId);
 
 socket.on("addPart", (file3d, nodeID, matrix, parentID) => {
-    console.log(nodeID, matrix);
     if (viewer)
         viewer.addPart(JSON.parse(file3d), nodeID, matrix, parentID);
     else
@@ -50,7 +50,6 @@ socket.on("setAssembly", (nodeID, parentID) => {
 
 
 socket.on("addAssembly", (nodeID, matrix, parentID) => {
-    console.log(nodeID, matrix);
     if (viewer)
         viewer.addAssembly(nodeID, matrix, parentID);
     else
