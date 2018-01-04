@@ -3,8 +3,12 @@
         <div class="card">
             <div class="card-content white-text">
                 <div class="row">
-                        <img class="col s3" src="/img/vincent_mesquita.jpg">
-                        <input id="add-comment-input" class="col s10 add-comment" type="text" placeholder="Share an idea or a file...">
+                    {% if userAvatar %}
+                        <img class="avatar col s3" src="{{ userAvatar }}">
+                    {% else %}
+                        <img data-name="{{ user }}" class="avatar col s3 profile"/>;
+                    {% endif %}
+                    <input id="add-comment-input" class="col s10 add-comment add-comment-input" type="text" placeholder="Share an idea or a file...">
                 </div>
             </div>
             <div class="card-action row">

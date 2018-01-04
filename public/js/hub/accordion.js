@@ -1,27 +1,27 @@
 $(function () {
     $('i.material-icons.assembly').click();
-    $('span.p-node').click(loadNodeInformation)
+    $('body').on('click', '.three-node', loadNodeInformation);
 });
 
-function loadNodeInformation(e) {
+function loadNodeInformation(event) {
 
+    console.log("LOADNODEINFORMATION");
     //Initialisation
-    var element = $(this).parent();
+    var element = $(event.currentTarget);
     var nodeId = element.attr('id');
+    idOfchoosenNode = nodeId;
+
+    console.log(nodeId);
     var fill_value = element.contents().filter("span.p-node").html();
     var breadcrumbs_value = element.contents().filter("span.p-node").attr("data-breadcrumbs");
     var sub_level = element.contents().filter("span.p-node").attr("data-sublevel");
     var node_type = element.contents().filter("span.p-node").attr("data-node");
 
-    console.log(element);
-
     if (!nodeId)
-    Materialize.toast('Error, The node selected has no ID', 2000);
-
-    var selector = '#'+nodeId+'-body';
+        Materialize.toast('Error, The node selected has no ID', 2000);
 
     //CSS EFFECT
-    if(!element.hasClass("selected-accordion")){
+    if (!element.hasClass("selected-accordion")) {
         if (node_type === NodeTypeEnum.part)
             socket.emit('getPart', nodeId);
         else if (node_type === NodeTypeEnum.assembly)
@@ -38,15 +38,26 @@ function loadNodeInformation(e) {
 
     //Socket To Emit
     socket.emit("nodeInformation", nodeId);
-    if ($(selector).hasClass("container")){
-        console.log("socket Emitted");
+    if (element.hasClass("search_child")) {
+        element.removeClass("search_child");
         socket.emit("nodeChildren", nodeId, breadcrumbs_value, sub_level);
     }
 
+    clearComments($("#activity-comments-location"));
+    clearComments($("#activity-comments-content"));
+    socket.emit("getActivities", {
+        nodeId: idOfchoosenNode,
+        viewType: ViewTypeEnum.location
+    });
+    socket.emit("getActivities", {
+        nodeId: idOfchoosenNode,
+        viewType: ViewTypeEnum.content
+    });
 }
 
 $(document).ready(() => {
     $('.collapsible').css({
         'margin': '0'
     });
+
 });

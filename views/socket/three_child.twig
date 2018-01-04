@@ -4,7 +4,7 @@
             {% for child in node.children %}
                 {% if child.type == TypeEnum.assembly %}
                     <li>
-                        <div id="{{ child._id }}" class="collapsible-header three-node valign-wrapper">
+                        <div id="{{ child._id }}" class="collapsible-header search_child three-node valign-wrapper">
                             <span style="padding-left:{{ sub_level * 20 }}px"></span>
                             <i class="material-icons">keyboard_arrow_right</i>
                             <img class="pad-right" src="/img/07-Assembly icon.svg">
@@ -33,10 +33,6 @@
         {% endif %}
     </ul>
 </div>
-<script>
-    $('.collapsible').collapsible();
-    $('span.p-node').click(loadNodeInformation);
-</script>
 <style>
 
 </style>

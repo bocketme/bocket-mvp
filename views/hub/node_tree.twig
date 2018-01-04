@@ -1,25 +1,13 @@
 <ul class="collapsible" data-collapsible="accordion">
     <li>
-        <div class="collapsible-header assembly active valign-wrapper">
+        <div id="{{ node._id }}" class="collapsible-header three-node search_child valign-wrapper">
             <i class="material-icons">keyboard_arrow_right</i>
-            ASSEMBLY VIEW
+            <img class="pad-right" src="/img/07-Assembly icon.svg">
+            <span class="p-node" data-node="part" data-breadcrumbs="{{ node.name }}" data-sublevel="0">{{ node.name }}</span>
         </div>
-        <div class="collapsible-body">
-            <div class="row colla">
-                <ul class="collapsible" data-collapsible="accordion">
-                    <li>
-                        <div id="{{ node._id }}" class="collapsible-header three-node valign-wrapper">
-                            <i class="material-icons">keyboard_arrow_right</i>
-                            <img class="pad-right" src="/img/07-Assembly icon.svg">
-                            <span class="p-node" data-node="part" data-breadcrumbs="{{ node.name }}" data-sublevel="0">{{ node.name }}</span>
-                        </div>
-                        <div id="{{ node._id }}-body" class="collapsible-body container valign-wrapper">
-                            <div class="progress">
-                                <div class="indeterminate"></div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+        <div id="{{ node._id }}-body" class="collapsible-body container valign-wrapper">
+            <div class="progress">
+                <div class="indeterminate"></div>
             </div>
         </div>
     </li>

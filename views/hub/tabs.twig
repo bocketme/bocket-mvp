@@ -7,18 +7,14 @@
         </ul>
     </div>
     <div id="activity" class="col s12">
-        <ul id="activity-comments">
+        <ul id="activity-comments-location" class="activity-comments">
             <li>
                 {% include "./activity/add_comment.twig" %}
             </li>
+        </ul>
+        <ul id="activity-comments-content">
             <li>
-                {% include "./activity/activity.twig" %}
-            </li>
-            <li>
-                {% include "./activity/activity.twig" %}
-            </li>
-            <li>
-                {% include "./activity/activity.twig" %}
+                {% include "./activity/add_comment.twig" %}
             </li>
         </ul>
     </div>

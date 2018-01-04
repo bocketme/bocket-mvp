@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>02b-ShowBoundingBox</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="05-CONSULTER-DONNEES-3D" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Select-a-node-+-option-menu-Copy-12" transform="translate(-1280.000000, -417.000000)">
+            <g id="3D" transform="translate(1239.000000, 417.000000)">
+                <g id="02b-ShowBoundingBox" transform="translate(41.000000, 0.000000)">
+                    <circle id="Oval-3" fill="#4A90E2" cx="14" cy="14" r="14"></circle>
+                    <g id="Group" transform="translate(7.000000, 6.000000)" fill-rule="nonzero" fill="#FFFFFF">
+                        <path d="M7,0.522790698 L12.9153684,3.97209302 L7,7.4215814 L1.08444737,3.97227907 L7,0.522790698 L7,0.522790698 Z M7,0.0930232558 L0.347605263,3.97227907 L7,7.85116279 L13.6522105,3.97209302 L7,0.0930232558 L7,0.0930232558 Z" id="Shape"></path>
+                        <path d="M0.545815789,4.9144186 L6.46136842,8.36372093 L6.46136842,15.2625116 L0.545815789,11.8132093 L0.545815789,4.9144186 L0.545815789,4.9144186 Z M0.177394737,4.26995349 L0.177394737,12.027907 L6.82978947,15.9069767 L6.82978947,8.14902326 L0.177394737,4.26995349 L0.177394737,4.26995349 Z" id="Shape"></path>
+                        <path d="M13.4541842,4.9144186 L13.4541842,11.8132093 L7.53863158,15.2625116 L7.53863158,8.36372093 L13.4541842,4.9144186 L13.4541842,4.9144186 Z M13.8226053,4.26995349 L7.17021053,8.14902326 L7.17021053,15.9069767 L13.8226053,12.027907 L13.8226053,4.26995349 L13.8226053,4.26995349 Z" id="Shape"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

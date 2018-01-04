@@ -12,18 +12,21 @@
                     var formdata = new FormData(form);
                     var postRequest = new XMLHttpRequest();
                     var chips = $('#tags-import-part').material_chip('data');
-                    var sub_level = $(nodeId).contents().filter("span.p-node").attr("data-sublevel");
-                    var breadcrumb = $(nodeId).contents().filter("span.p-node").attr("data-breadcrumbs");
-
+                    var sub_level = $("#"+nodeId).contents().filter("span.p-node").attr("data-sublevel");
+                    var breadcrumb = $("#"+nodeId).contents().filter("span.p-node").attr("data-breadcrumbs");
 
                     formdata.append("sub_level", sub_level);
-                    formdata.append("breadcrmb", breadcrumb);
+                    formdata.append("breadcrumb", breadcrumb);
                     formdata.append("tags", JSON.stringify(chips));
-                    postRequest.addEventListener("progress", updateProgress(event, nodeId), false);
+                    postRequest.addEventListener("progress", (event) => {
+
+                    }, false);
                     postRequest.addEventListener("load", (reqEvent) => {
                         if (postRequest.readyState === postRequest.DONE) {
                             if (postRequest.status === 200) {
                                 $('#'+nodeId+'-body').html(postRequest.response)
+                                var element = document.querySelectorAll('.three-node');
+                                $(element).click(loadNodeInformation);
                             }
                         }
                     }, false);
@@ -59,12 +62,18 @@
                     postRequest.addEventListener("load", (reqEvent) => {
                         if (postRequest.readyState === postRequest.DONE) {
                             if (postRequest.status === 200) {
-                                $('#'+nodeId+'-body').html(postRequest.response)
+                                $('#'+nodeId+'-body').html(postRequest.response);
+                                var element = document.querySelectorAll('.three-node');
+                                $(element).click(loadNodeInformation);
                             }
                         }
                     }, false);
-                    postRequest.addEventListener("error", transferFailed, false);
-                    postRequest.addEventListener("abort", transferCanceled, false);
+                    postRequest.addEventListener("error", (event) => {
+                        console.log("Failure of the transfert");
+                    }, false);
+                    postRequest.addEventListener("abort", (event) => {
+                        console.log("Cancel of the transfert");
+                    }, false);
 
                     postRequest.open('POST', '/assembly/' + nodeId, true);
                     postRequest.send(formdata);
@@ -73,7 +82,7 @@
                 Materialize.toast("You must add a 3d File", 1000);
             } else
             Materialize.toast("You must select a node", 1000);
-        })
+        });
 
         $('.modal-node-selector').click((event) => {
             if (third_column.$data.selected == "Select a node") {
@@ -85,14 +94,14 @@
     });
 })(jQuery); // end of jQuery name space
 
+/*
 const sendTheFile = (file, nodeId) => {
     var reader = new FileReader();
-    /*
-    var slice = 100000;
-    var i = 0;
-    var fragment;
-    var place;
-    */
+    //    var slice = 100000;
+    //    var i = 0;
+    //    var fragment;
+    //    var place;
+
     reader.readAsArrayBuffer(file);
     reader.onload = (event) => {
         var arrayBuffer = reader.result;
@@ -103,18 +112,13 @@ const sendTheFile = (file, nodeId) => {
             data: arrayBuffer
         });
     }
-
-    /*
-    while(file.size > i * slice) {
-        place = i*slice;
-        fragment = file.slice(place, place + Math.min(100000, file.size - place))
-        reader.readAsArrayBuffer(fragment);
-        i++;
-    }
-    */
-
+    //    while(file.size > i * slice) {
+    //        place = i*slice;
+    //        fragment = file.slice(place, place + Math.min(100000, file.size - place))
+    //        reader.readAsArrayBuffer(fragment);
+    //        i++;
+    //    }
 }
-
 const updateProgress = (reqEvent) => {
     console.log("Progress of the transfert");
     if (reqEvent.lengthComputable) {
@@ -125,12 +129,8 @@ const updateProgress = (reqEvent) => {
         // Impossible de calculer la progression puisque la taille totale est inconnue
     }
 },
-transferComplete = (reqEvent) => {
-
-},
+*/
 transferFailed = () => {
-    console.log("Failure of the transfert");
 },
 transferCanceled = () => {
-    console.log("Cancel of the transfert");
 }

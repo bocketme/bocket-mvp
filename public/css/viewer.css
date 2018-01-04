@@ -6,6 +6,7 @@
 #renderDiv
 {
     height: 50%;
+    padding-top: 5px;
 }
 
 .axis-canvas
@@ -42,4 +43,8 @@
     position: absolute;
     right: 20px;
     bottom: 20px;
+}
+.button-viewer
+{
+    width: 100%;
 }

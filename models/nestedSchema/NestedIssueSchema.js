@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-let NestedCommentaireSchema = require('./NestedCommentaireSchema');
+let NestedCommentaireSchema = require('./NestedActivitySchema');
 
 let Issue = new mongoose.Schema({
     title: { type: String, required: true },
