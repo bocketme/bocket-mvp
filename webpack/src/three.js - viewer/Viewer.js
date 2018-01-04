@@ -172,10 +172,13 @@ export default class Viewer {
         this.s_box.geometry.computeBoundingBox();
         var box = this.s_box.geometry.boundingBox,
             center = box.getCenter();
-        this.p_camera.position.set(center.x, -(center.y + Math.abs(box.getSize().y / Math.sin((this.p_camera.fov * (Math.PI / 180)) / 2))), box.max.z * (10 / Math.log(box.max.z)));
+        this.p_camera.position.set(
+            center.x,
+            -(center.y + Math.abs(box.getSize().y / Math.sin((this.p_camera.fov * (Math.PI / 180)) / 2))),
+            box.max.z * (10 / Math.log(box.max.z))
+        );
         this.p_camera.lookAt(center);
         this.p_controls.target = center;
-
     }
 
     resize() {
@@ -185,7 +188,9 @@ export default class Viewer {
         this.p_renderer.setSize((element.offsetWidth), (element.offsetHeight));
     }
 
+    fullscreen(){
 
+    }
     /* ************************************************************************** */
     /*                                                                            */
     /*                                  RAYS                                      */
