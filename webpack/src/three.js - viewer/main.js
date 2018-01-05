@@ -89,8 +89,10 @@ window.addEventListener('resize', onWindowResize, false);
 var translate = $("#button-move-object");
 translate.click(() => {
     if (viewer instanceof Viewer) {
-        if (viewer.s_objControls.getMode() == 'translate');
-        viewer.s_objControls.setMode("translate");
+        if (viewer.s_objControls.getMode() !== 'translate')
+            viewer.s_objControls.setMode("translate");
+        else
+            viewer.toggleObjectControls();
     } else console.warn(new Error("Viewer is not initialized"));
 });
 
@@ -99,6 +101,8 @@ rotate.click(() => {
     if (viewer instanceof Viewer) {
         if (viewer.s_objControls.getMode() !== 'rotate')
             viewer.s_objControls.setMode("rotate");
+        else
+            viewer.toggleObjectControls();
     } else console.warn(new Error("Viewer is not initialized"));
 });
 
@@ -110,16 +114,6 @@ fullScreen.click(() => {
 
     } else console.warn(new Error("Viewer is not initialized"));
 });
-
-var reperePiece = $('#button-repere-piece');
-reperePiece.click(() => {
-    if (viewer instanceof Viewer){
-        if (viewer.s_objControls.visible)
-        viewer.s_objControls.visible = false;
-        else viewer.s_objControls.visible = true
-    } else console.warn(new Error("Viewer is not initialized"));
-});
-
 
 var wireframe = $("#button-wireframe");
 wireframe.click(() => {
@@ -146,7 +140,7 @@ $('body').on("click", ".three-node", (event) => {
     var nodeId = element.id;
     console.log(nodeId);
     if (nodeId) {
-        viewer.selectObject(nodeId);
+        viewer.select(nodeId);
     }
 });
 

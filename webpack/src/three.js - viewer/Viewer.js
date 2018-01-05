@@ -416,13 +416,11 @@ export default class Viewer {
      * @description Select The Object
      * @param name - The name of the Group or the Mesh
      */
-    selectObject(name) {
-        var object,
-            piece = this.p_scene.getObjectByName(name);
+    select(name) {
+        var piece = this.p_scene.getObjectByName(name);
 
-        if (piece)
-            this.s_objectSelected = piece;
-
+        /*****************************************/
+        /*Reset the wireframe*/
         this.p_scene.traverse(object3d => {
             if (object3d instanceof THREE.Mesh) {
                 if (object3d.material.wireframe)
@@ -430,21 +428,21 @@ export default class Viewer {
             }
         });
 
-        this.s_box.setFromObject(piece);
+        /*****************************************/
+        /*Set up of the object Control*/
+        if (this.s_objControls.visible){
+            if (piece !== this.s_objControls){
+                this.s_objControls.detach(this.s_objControls);
+                this.s_objControls.attach(piece);
+            }
+        }
 
         /*****************************************/
         /*Get selected object*/
         if (piece)
             this.s_objectSelected = piece;
 
-        /*****************************************/
-        /*Set up of the object Control*/
-        if (piece !== this.s_objControls.object){
-            var visible = this.s_objControls.visible;
-            this.s_objControls.detach(this.s_objControls.object);
-            this.s_objControls.attach(piece);
-            this.s_objControls.visible = visible;
-        }
+        this.s_box.setFromObject(this.s_objectSelected);
 
         if (piece instanceof THREE.Mesh){
             this.s_objects.traverse((object3d) => {
@@ -505,6 +503,15 @@ export default class Viewer {
         }
     }
 
+    toggleObjectControls(){
+        if(this.s_objControls.visible){
+            this.s_objControls.detach(this.s_objectSelected);
+            this.s_objControls.visible = false;
+        }else{
+            this.s_objControls.attach(this.s_objectSelected);
+            this.s_objControls.visible = true;
+        }
+    }
     /***
      * @description Send a socket to save the position of all the modified part. (v1)
      * @param socket
