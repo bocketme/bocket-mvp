@@ -61,17 +61,18 @@
     background-color: #296bb3 !important;
     border-radius: 25px;
     position: absolute;
-    padding-left: 50px;
-    display: inline-block;
     transform: translate(-120%);
+    font-size: 10px;
+    padding:  0px 15px;
 }
 #button-cancel
 {
     background-color: #296bb3 !important;
     color: white;
     border-radius: 25px;
+    font-size: 10px;
     position: absolute;
-    display: inline-block;
+    padding: 0px 15px;
 }
 #buttons-saveandcancel
 {

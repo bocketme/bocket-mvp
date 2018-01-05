@@ -1,17 +1,26 @@
 $(function () {
     $('i.material-icons.assembly').click();
     $('body').on('click', '.three-node', loadNodeInformation);
+    $('body').on('click', '.search_child', nodeChildrenChargement);
 });
+
+function nodeChildrenChargement(event){
+    var element = $(event.currentTarget);
+    var nodeId = element.attr('id');
+    var breadcrumbs_value = element.contents().filter("span.p-node").attr("data-breadcrumbs");
+    var sub_level = element.contents().filter("span.p-node").attr("data-sublevel");
+    console.log(element.hasClass("search_child"));
+    element.removeClass("search_child");
+    socket.emit("nodeChildren", nodeId, breadcrumbs_value, sub_level);
+}
 
 function loadNodeInformation(event) {
 
-    console.log("LOADNODEINFORMATION");
     //Initialisation
     var element = $(event.currentTarget);
     var nodeId = element.attr('id');
     idOfchoosenNode = nodeId;
 
-    console.log(nodeId);
     var fill_value = element.contents().filter("span.p-node").html();
     var breadcrumbs_value = element.contents().filter("span.p-node").attr("data-breadcrumbs");
     var sub_level = element.contents().filter("span.p-node").attr("data-sublevel");
@@ -36,12 +45,7 @@ function loadNodeInformation(event) {
     // Value to change - VUE.JS
     third_column.selectNode(fill_value, breadcrumbs_value);
 
-    //Socket To Emit
     socket.emit("nodeInformation", nodeId);
-    if (element.hasClass("search_child")) {
-        element.removeClass("search_child");
-        socket.emit("nodeChildren", nodeId, breadcrumbs_value, sub_level);
-    }
 
     clearComments($("#activity-comments-location"));
     clearComments($("#activity-comments-content"));
@@ -54,10 +58,3 @@ function loadNodeInformation(event) {
         viewType: ViewTypeEnum.content
     });
 }
-
-$(document).ready(() => {
-    $('.collapsible').css({
-        'margin': '0'
-    });
-
-});

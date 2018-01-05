@@ -68,7 +68,6 @@ export default class Viewer {
         /* The camera's controllers */
         this.p_controls = new THREE.OrbitControls(this.p_camera, this.p_renderer.domElement);
         this.p_controls.zoomSpeed = 1 / (Math.log10(this.p_camera.position.distanceTo(this.p_controls.target)));
-        console.log(this.p_controls);
 
         /* The object's controllers */
         this.s_objControls = new THREE.TransformControls(this.p_camera, this.p_renderer.domElement);
@@ -328,7 +327,6 @@ export default class Viewer {
         var scene = parentName == null ? this.s_objects : this.p_scene.getObjectByName(parentName);
 
         var group = new THREE.Group();
-        console.log(group);
         group.applyMatrix(matrix[0]);
         group.updateMatrix();
         group.name = name;
@@ -422,8 +420,6 @@ export default class Viewer {
         var object,
             piece = this.p_scene.getObjectByName(name);
 
-        console.log(piece);
-
         if (piece)
             this.s_objectSelected = piece;
 
@@ -515,7 +511,6 @@ export default class Viewer {
      */
     save(socket){
         this.s_objects.traverse(object3D => {
-            console.log("object - ", object3D);
             socket.emit("[OBJECT 3D] - save", workspaceId, object3D.name, object3D.matrix);
         });
     }

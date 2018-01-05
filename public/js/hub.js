@@ -60,8 +60,7 @@
             if(collapsible_body.hasClass("container")) {
                 collapsible_body.removeClass("container");
                 collapsible_body.html(html);
-                var element = document.querySelectorAll('.three-node');
-                $(element).click(loadNodeInformation);  
+                $(".collapsible").collapsible();
             }
         });
         var views = $(".view");
