@@ -8,6 +8,10 @@ body{
     width: 100%;
 }
 
+#header{
+    width: 8.5%;
+}
+
 html{
     height: 100%;
     width: 100%;
