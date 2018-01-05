@@ -32,12 +32,13 @@
 
         <ul id="workspaces-dropdown" class="dropdown-content">
             {% for workspace in workspaces %}
-            <li>
-                <a href="/project/{{workspace._id}}">{{ workspace.name }}</a>
+            <li class="option-node">
+                <a class="dropdown-menu" href="/project/{{workspace._id}}">{{ workspace.name }}</a>
             </li>
             {% endfor %}
-            <li>
-                <a href="/signOut">Sign Out</a>
+            <li class="divider"></li>
+            <li class="option-node">
+                <a class="dropdown-menu" href="/signOut">Sign Out</a>
             </li>
         </ul>
 
