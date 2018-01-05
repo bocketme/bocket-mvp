@@ -32,12 +32,13 @@
 
         <ul id="workspaces-dropdown" class="dropdown-content">
             {% for workspace in workspaces %}
-            <li>
-                <a href="/project/{{workspace._id}}">{{ workspace.name }}</a>
+            <li class="option-node workspace-change">
+                <a class="dropdown-menu" href="/project/{{workspace._id}}">{{ workspace.name }}</a>
             </li>
             {% endfor %}
-            <li>
-                <a href="/signOut">Sign Out</a>
+            <li class="divider"></li>
+            <li class="option-node">
+                <a class="dropdown-menu" href="/signOut">Sign Out</a>
             </li>
         </ul>
 
@@ -140,6 +141,10 @@
         var NodeTypeEnum = {{ NodeTypeEnum }};
         var ViewTypeEnum = {{ ViewTypeEnum }};
         var view = ViewTypeEnum.location;
+        socket.emit("joinWorkspace", workspaceId);
+        $(".workspace-change").on("click", function () {
+            socket.emit("leaveWorkspace", workspaceId);
+        })
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>

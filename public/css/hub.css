@@ -385,6 +385,7 @@ a.dropdown-menu{
 a.dropdown-menu:hover{
     background-color: #4885ed;
     color: white !important;
+    cursor: pointer;
 }
 
 li.option-node{
