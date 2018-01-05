@@ -5,7 +5,7 @@ module.exports = {
     entry: {
         threejs:"./webpack/src/three.js - viewer/main.js",
         webgl: "./webpack/src/webgl - viewer/main.js",
-        babylonjs:"./webpack/src/babylon.js - viewer/main.js",
+        babylon:"./webpack/src/babylon.js - viewer/main.js",
     },
     watch: true,
     devtool: "eval-source-map",
