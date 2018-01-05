@@ -3,11 +3,11 @@ $(function () {
 });
 
 var element = document.querySelectorAll('.three-node');
-$(element).click(loadNodeInformation);
+$(element).on("click", loadNodeInformation);
 
 function loadNodeInformation(event) {
 
-    console.log(event)
+    console.log(event);
     console.log("LOADNODEINFORMATION");
     //Initialisation
     var element = $(event.currentTarget);
