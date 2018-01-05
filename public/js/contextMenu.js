@@ -11,6 +11,13 @@ $(document).ready(function() {
         toggleMenuContextOn("#specs-context-menu");
         return false;
     });
+
+    $("#node-tree").find(".collapsible-body").on("contextmenu", function (e) {
+        e.preventDefault();
+        pointedElem = e.target;
+        $(pointedElem).click();
+        toggleMenuContextOn("#node-tree-context-menu");
+    })
 });
 
 /**
