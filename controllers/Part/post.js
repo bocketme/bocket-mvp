@@ -79,6 +79,7 @@ console.log(req.body);
                 part.save()
                     .then((newPart) => {
                         let subNode = Node.createNodeWithContent(name, description, TypeEnum.part, newPart._id, relativePath.specFiles, tags);
+                        subNode.Workspace = parentNode.Workspace;
                         subNode.save()
                             .then((subNode) => {
                                 parentNode.children.push({

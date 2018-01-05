@@ -76,6 +76,13 @@
             $(this).addClass("viewHover");
         });
 
+        $('.part-editor').click((event) => {
+            if(idOfchoosenNode){
+                let part = "/part/"+idOfchoosenNode+"/modeler";
+                window.open(part, '_blank');
+            }else Materialize.toast("You must select a part", 1000);
+        });
+
         views.on("click", function () {
             views.removeClass("viewClicked");
             views.addClass("viewNotHover");
