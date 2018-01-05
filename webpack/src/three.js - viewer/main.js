@@ -1,4 +1,5 @@
 import Viewer from './Viewer';
+import data from './init/dataTHREAD';
 
 var mousePos;
 var renderArea = document.getElementById('renderDiv');
@@ -7,6 +8,10 @@ var _idSelected;
 Viewer.animate(viewer);
 console.log(viewer);
 
+var _data = new data();
+console.log(_data);
+_data.assembly = [1, 2, 3, 4];
+console.log(_data.assembly.same([1, 2, 3, 4]));
 /* ******************/
 /*  SOCKET VIEWER   */
 /* ******************/
