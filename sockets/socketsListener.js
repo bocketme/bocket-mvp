@@ -27,7 +27,7 @@ module.exports = function(io) {
         newActivityComment(socket);
         getActivities(socket);
         addCommentListener(socket);
-        joinWorkspaceListener(socket);
-        leaveWorkspaceListener(socket);
+        joinWorkspaceListener(io, socket);
+        leaveWorkspaceListener(io, socket);
     });
 };

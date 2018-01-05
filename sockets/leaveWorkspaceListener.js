@@ -3,12 +3,12 @@
  * @param socket : SocketIo
  * @param workspaceId : String
  */
-function leaveWorkspaceListener(socket, workspaceId) {
+function leaveWorkspaceListener(io, socket, workspaceId) {
     socket.leave(workspaceId);
 }
 
-module.exports = (socket) => {
-    socket.on("joinWorkspace", (workspaceId) => {
-        leaveWorkspaceListener(socket, workspaceId);
+module.exports = (io, socket) => {
+    socket.on("leaveWorkspace", (workspaceId) => {
+        leaveWorkspaceListener(io, socket, workspaceId);
     });
 };

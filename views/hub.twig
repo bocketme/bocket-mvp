@@ -141,6 +141,11 @@
         var NodeTypeEnum = {{ NodeTypeEnum }};
         var ViewTypeEnum = {{ ViewTypeEnum }};
         var view = ViewTypeEnum.location;
+
+        socket.on("test", function (data) {
+            console.log("data ====== ", data);
+        });
+        socket.emit("joinWorkspace", workspaceId);
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
