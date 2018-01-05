@@ -35,6 +35,7 @@
                     postRequest.open('POST', '/part/' + nodeId, true);
                     postRequest.send(formdata);
                     $("#import-part").modal("close");
+                    $("#form-import-part").find("input").val("");
                 } else
                 Materialize.toast("You must add a 3d File", 1000);
             } else
@@ -72,8 +73,9 @@
 
                     postRequest.open('POST', '/assembly/' + nodeId, true);
                     postRequest.send(formdata);
-                    $("#import-part").modal("close");
-                } else
+                    $("#import-assembly").modal("close");
+                    $("#form-import-assembly").find("input").val("");
+               } else
                 Materialize.toast("You must add a 3d File", 1000);
             } else
             Materialize.toast("You must select a node", 1000);
