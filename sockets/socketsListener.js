@@ -10,6 +10,8 @@ let nodeViewer = require('./nodeViewer');
 let newActivityComment = require('./newActivityCommentListener');
 let getActivities = require("./getActivitiesListener");
 let addCommentListener = require("./addCommentToActivityListener");
+let joinWorkspaceListener = require("./joinWorkspaceListener");
+let leaveWorkspaceListener = require("./leaveWorkspaceListener");
 
 module.exports = function(io) {
     io.on('connection', function (socket) {
@@ -25,5 +27,7 @@ module.exports = function(io) {
         newActivityComment(socket);
         getActivities(socket);
         addCommentListener(socket);
+        joinWorkspaceListener(socket);
+        leaveWorkspaceListener(socket);
     });
 };
