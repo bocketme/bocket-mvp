@@ -8,6 +8,8 @@ import object3D from './init/object3D';
 import * as Stats from 'stats.js';
 import Floor from './init/floor';
 import AxisScene from "./init/scene_axis";
+import { Clock, PerspectiveCamera, Scene, WebGLRenderer } from "three";
+import { EffectComposer, GlitchPass, RenderPass } from "postprocessing";
 
 export default class Viewer {
     constructor(renderArea) {
@@ -163,13 +165,13 @@ export default class Viewer {
     initialiseOutline(){
         /* The Outline */
 
-        this.o_composer = new THREE.EffectComposer(this.p_renderer);
+        this.o_composer = new EffectComposer(this.p_renderer);
 
-        this.o_renderPass = new THREE.RenderPass(this.p_scene, this.p_camera);
+        this.o_renderPass = new RenderPass(this.p_scene, this.p_camera);
         this.o_composer.addPass(this.o_renderPass);
 
         this.outlinePass = new THREE.OutlinePass(new THREE.Vector2(this.domElement.offsetWidth, this.domElement.offsetHeight), this.p_scene, this.p_camera);
-        this.o_composer.addPass(this.outlinePass);
+        //this.o_composer.addPass(this.outlinePass);
 
         this.o_selectedObject = [];
 
@@ -188,6 +190,7 @@ export default class Viewer {
         loader.load( '/img/viewer/tri_pattern.jpg', onLoad );
         */
 
+        /*
         outlinePass.edgeStrength = 0.3;
         outlinePass.edgeThicknes = 1.0;
         outlinePass.visibleEdgeColor.set('#ffffff');
@@ -197,6 +200,7 @@ export default class Viewer {
         this.p_effectFXAA.uniforms['resolution'].value.set( 1 / this.domElement.offsetWidth, 1 / this.domElement.offsetHeight);
         this.p_effectFXAA.renderToScreen = true;
         this.o_composer.addPass(this.p_effectFXAA);
+        */
     }
 
     /* ************************************************************************** */
