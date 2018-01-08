@@ -80,13 +80,17 @@ export default class Viewer {
         /* The box of the selected object */
         this.s_box = new THREE.BoxHelper(this.s_objects, 0x262626);
         this.s_box.material.linewidth = 6;
+        this.s_box.visible = false;
         this.p_scene.add(this.s_box);
 
-        /* Add the lights to the scene */
-        this.lightsScene();
+        this.p_raycaster = new THREE.Raycaster();
 
         this.domElement = renderArea;
 
+
+        /* Add the lights to the scene */
+        this.lightsScene();
+        this.initialiseOutline();
     }
 
     /**
@@ -105,8 +109,7 @@ export default class Viewer {
             viewer.s_objControls.update();
             viewer.s_box.update();
             viewer.p_axis.update(viewer.p_camera.position);
-            viewer.p_renderer.render(viewer.p_scene, viewer.p_camera);
-
+            viewer.o_composer.render();
             viewer.stats.end();
 
             requestAnimationFrame(animation);
@@ -157,6 +160,45 @@ export default class Viewer {
         */
     }
 
+    initialiseOutline(){
+        /* The Outline */
+
+        this.o_composer = new THREE.EffectComposer(this.p_renderer);
+
+        this.o_renderPass = new THREE.RenderPass(this.p_scene, this.p_camera);
+        this.o_composer.addPass(this.o_renderPass);
+
+        this.outlinePass = new THREE.OutlinePass(new THREE.Vector2(this.domElement.offsetWidth, this.domElement.offsetHeight), this.p_scene, this.p_camera);
+        this.o_composer.addPass(this.outlinePass);
+
+        this.o_selectedObject = [];
+
+        var outlinePass = this.outlinePass;
+
+        /*
+        var onLoad = function ( texture ) {
+
+            outlinePass.patternTexture = texture;
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+        };
+
+        var loader = new THREE.TextureLoader();
+
+        loader.load( '/img/viewer/tri_pattern.jpg', onLoad );
+        */
+
+        outlinePass.edgeStrength = 0.3;
+        outlinePass.edgeThicknes = 1.0;
+        outlinePass.visibleEdgeColor.set('#ffffff');
+        outlinePass.hiddenEdgeColor.set('#190a05');
+
+        this.p_effectFXAA = new THREE.ShaderPass( THREE.FXAAShader );
+        this.p_effectFXAA.uniforms['resolution'].value.set( 1 / this.domElement.offsetWidth, 1 / this.domElement.offsetHeight);
+        this.p_effectFXAA.renderToScreen = true;
+        this.o_composer.addPass(this.p_effectFXAA);
+    }
+
     /* ************************************************************************** */
     /*                                                                            */
     /*                          SCREEN MODIFICATIONS                              */
@@ -184,9 +226,11 @@ export default class Viewer {
 
     resize() {
         var element = this.domElement;
+
         this.p_camera.aspect = (element.clientWidth) / (element.clientHeight);
         this.p_camera.updateProjectionMatrix();
         this.p_renderer.setSize((element.offsetWidth), (element.offsetHeight));
+
     }
 
     fullscreen(){
@@ -276,6 +320,21 @@ export default class Viewer {
             return intersects[0];
         } else
             return (null);
+    }
+
+    checkIntersection(mouseX, mouseY){
+        var canvas  = this.domElement;
+        var mouse3D = new THREE.Vector3((mouseX / canvas.clientWidth) * 2 - 1, -(mouseY / canvas.clientHeight) * 2 + 1, 0.5);
+
+        this.p_raycaster.setFromCamera(mouse3D, this.p_camera);
+        this.o_selectedObject = [];
+
+        var intersects = this.p_raycaster.intersectObject(this.s_objects, true);
+        if (intersects.length > 0){
+            console.log("Voici l'object selectioné : " , intersects[0].object);
+            this.o_selectedObject.push(intersects[0].object);
+        }
+        this.outlinePass.selectedObjects = this.o_selectedObject;
     }
 
     /* ************************************************************************** */

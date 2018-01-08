@@ -1,17 +1,16 @@
 import Viewer from './Viewer';
 import data from './init/dataTHREAD';
 
-var mousePos;
+var mousePos = {
+    x: null,
+    y: null,
+};
 var renderArea = document.getElementById('renderDiv');
 var viewer = new Viewer(renderArea);
 var _idSelected;
 Viewer.animate(viewer);
 console.log(viewer);
 
-var _data = new data();
-console.log(_data);
-_data.assembly = [1, 2, 3, 4];
-console.log(_data.assembly.same([1, 2, 3, 4]));
 /* ******************/
 /*  SOCKET VIEWER   */
 /* ******************/
@@ -123,7 +122,7 @@ fullScreen.click(() => {
 var wireframe = $("#button-wireframe");
 wireframe.click(() => {
     if (viewer)
-    viewer.toggleWireframe();
+        viewer.toggleWireframe();
     else console.warn(new Error("Viewer is not initialized"));
 });
 
@@ -149,12 +148,38 @@ $('body').on("click", ".three-node", (event) => {
     }
 });
 
+renderArea.addEventListener('mousemove', (event) => {
+    event.preventDefault();
+    var mouseX = event.offsetX,
+        mouseY = event.offsetY;
+
+    if(viewer)
+        viewer.checkIntersection(mouseX, mouseY);
+});
+
+renderArea.addEventListener('touchmove', (event) => {
+    event.preventDefault();
+    var mouseX = event.offsetX,
+        mouseY = event.offsetY;
+
+    if (viewer)
+        viewer.checkIntersection(mouseX, mouseY);
+});
+
 /* *******************************/
 /*         EVENT FUNCTIONS       */
 /* *******************************/
 
 
+function onDocumentMouseMove(event) {
+    event.preventDefault();
+
+    mousePos.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    mousePos.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+}
+
 function onWindowResize() {
     if (viewer)
         viewer.resize();
-};
+}
