@@ -51,23 +51,6 @@ console.log(req.body);
         });
     }
 
-    if(files_3d){
-        files_3d.forEach(file => {
-            type_mime(0, file.mimetype)
-                .then(() => {
-                    return create3DFile(config.gitfiles, documentID, file.originalname, file.buffer)
-                })
-                .then(() => {
-                    relativePath.file3D.push(path.join(documentID, file.originalname));
-                    return;
-                })
-                .catch((err) => {
-                    console.log(err);
-                    sendError.push("Could'nt create the file : " + file.originalname);
-                });
-        });
-    }
-
     Node.findById(nodeId)
         .then((parentNode) => {
             if (!parentNode)
@@ -78,6 +61,23 @@ console.log(req.body);
                 let part = Part.initialize(name, description, relativePath.file3D, tags);
                 part.save()
                     .then((newPart) => {
+                        if(files_3d){
+                            files_3d.forEach(file => {
+                                type_mime(0, file.mimetype)
+                                    .then(() => {
+                                        return create3DFile(config.gitfiles, documentID, file.originalname, file.buffer)
+                                    })
+                                    .then((nameFile) => {
+                                        relativePath.file3D.push(path.join(documentID, nameFile));
+                                        console.log(relativePath.file3D);
+                                        return;
+                                    })
+                                    .catch((err) => {
+                                        console.log(err);
+                                        sendError.push("Could'nt create the file : " + file.originalname);
+                                    });
+                            });
+                        }
                         let subNode = Node.createNodeWithContent(name, description, TypeEnum.part, newPart._id, relativePath.specFiles, tags);
                         subNode.Workspace = parentNode.Workspace;
                         subNode.save()
