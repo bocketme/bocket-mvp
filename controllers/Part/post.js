@@ -23,7 +23,7 @@ const newPart = (req, res) => {
         specFiles = req.files['specFiles'],
         files_3d = req.files['file3D'],
         sendError = [];
-console.log(req.body);
+    console.log(req.body);
     sub_level++;
     const documentID = String(require('mongoose').Types.ObjectId());
 
@@ -34,22 +34,8 @@ console.log(req.body);
 
     let relativePath = {
         specFiles: [],
-        file3D: []
     };
 
-    if(specFiles){
-        specFiles.forEach(spec => {
-            type_mime(1, spec.mimetype)
-                .then(() => {
-                    relativePath.specFiles.push(path.join(nodeId, spec.originalname));
-                    return createFile(config.specfiles, nodeId, spec.originalname, spec.buffer);
-                })
-                .catch(err => {
-                    console.log(err);
-                    sendError.push("Could'nt create the file : " + spec.originalname)
-                });
-        });
-    }
 
     Node.findById(nodeId)
         .then((parentNode) => {
@@ -59,27 +45,53 @@ console.log(req.body);
                 res.status(401).send("The node is a " + parentNode.type + ", it should not be an " + TypeEnum.assembly);
             else {
                 let part = Part.initialize(name, description, relativePath.file3D, tags);
+
+                if(specFiles){
+                    specFiles.forEach(spec => {
+                        type_mime(1, spec.mimetype)
+                            .then(() => {
+                                relativePath.specFiles.push(path.join(nodeId, spec.originalname));
+                                return createFile(config.specfiles, nodeId, spec.originalname, spec.buffer);
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                sendError.push("Could'nt create the file : " + spec.originalname)
+                            });
+                    });
+                }
+
+                if(files_3d){
+                    files_3d.forEach(file => {
+                        type_mime(0, file.mimetype)
+                            .then(() => {
+                                return create3DFile(config.gitfiles, documentID, file.originalname, file.buffer)
+                            })
+                            .then((fileName) => {
+                                console.log("CEST CA : " + path.join(documentID, fileName));
+                                console.log(part);
+                                part.path = path.join(documentID, fileName);
+                                return part.save();
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                                sendError.push("Could'nt create the file : " + file.originalname);
+                            });
+
+                        part.path = relativePath.file3D;
+                        part.save()
+                            .then(() => {
+                                console.log("the new part has been formated ",  part)
+                            })
+                            .catch((err) => {
+                                console.log(err)
+                            })
+                    });
+                }
+
+                console.log(part);
                 part.save()
                     .then((newPart) => {
-                        if(files_3d){
-                            files_3d.forEach(file => {
-                                type_mime(0, file.mimetype)
-                                    .then(() => {
-                                        return create3DFile(config.gitfiles, documentID, file.originalname, file.buffer)
-                                    })
-                                    .then((nameFile) => {
-                                        relativePath.file3D.push(path.join(documentID, nameFile));
-                                        console.log(relativePath.file3D);
-                                        return;
-                                    })
-                                    .catch((err) => {
-                                        console.log(err);
-                                        sendError.push("Could'nt create the file : " + file.originalname);
-                                    });
-                            });
-                        }
                         let subNode = Node.createNodeWithContent(name, description, TypeEnum.part, newPart._id, relativePath.specFiles, tags);
-                        subNode.Workspace = parentNode.Workspace;
                         subNode.save()
                             .then((subNode) => {
                                 parentNode.children.push({
