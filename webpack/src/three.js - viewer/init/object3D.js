@@ -1,6 +1,54 @@
 export default function object3D (file3D) {
-    return loadObjectFromJSON(file3D, 0x809fff);
+    //return loadObjectFromJSON(file3D, 0x809fff);
+    return loadObjectFromJSONAssimp(file3D, 0x809fff)
 }
+
+var loadObjectFromOBJ = function (name, obj, mtl) {
+    var objLoader = new THREE.OBJLoader();
+
+    var object;
+
+    if (data.mtl)
+        objLoader.setMaterials(new THREE.MTLLoader().parse(mtl));
+    if (data.obj){
+        geometry = objLoader.parse(obj);
+        geometry.name = name;
+        new Promise((resolve) => {
+            geometry.traverse(function (child) {
+                if (child.hasOwnProperty('geometry'))
+                    child.geometry.computeBoundingBox();
+            });
+            resolve();
+        }).then();
+        return geometry;
+    }
+};
+
+var loadObjectFromJSONAssimp = function (jsonObj, colors) {
+    var object = new THREE.Group();
+    object.name = jsonObj.rootnode.name;
+    var material = new THREE.MeshBasicMaterial( { color: colors } );
+    var promises = [];
+    jsonObj.rootnode.children.forEach(child => {
+        var p_mesh = jsonObj.meshes[child.meshes[0]];
+        if (p_mesh){
+            promises.push(new Promise((resolve) => {
+                var geometry = new THREE.BufferGeometry();
+                geometry.addAttribute( 'position', new THREE.Float32BufferAttribute(p_mesh.vertices));
+                geometry.addAttribute( 'normal', new THREE.Float32BufferAttribute(p_mesh.normals, 3));
+                console.log(geometry);
+                var mesh = new THREE.Mesh( geometry, material );
+                resolve(mesh);
+            }));
+        }
+    });
+
+    Promise.all(promises)
+        .then((meshes) => {
+            meshes.forEach(mesh => object.add(mesh));
+        });
+    return object;
+};
 
 var loadObjectFromJSON = function (jsonObj, colors) {
 
