@@ -1,5 +1,4 @@
 import Viewer from './Viewer';
-import data from './init/dataTHREAD';
 
 var mousePos = {
     x: null,

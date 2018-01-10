@@ -2,7 +2,7 @@ export default class AxisScene{
     constructor(p_axisSize){
         this.p_scene = new THREE.Scene();
 
-        this.p_renderer = new THREE.WebGLRenderer({canvas: axisCanvas,alpha: true, antialias: true, logarithmicDepthBuffer: true});
+        this.p_renderer = new THREE.WebGLRenderer({canvas: axisCanvas, alpha: true, antialias: true, logarithmicDepthBuffer: true});
         this.p_renderer.setSize(p_axisSize, p_axisSize);
 
         this.p_camera = new THREE.OrthographicCamera(p_axisSize / -2, p_axisSize / 2, p_axisSize / 2, p_axisSize / -2, 1, 2147483647);

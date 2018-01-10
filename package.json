@@ -51,6 +51,7 @@
     "chai-http": "^3.0.0",
     "jquery": "^3.2.1",
     "jquery-validation": "^1.17.0",
-    "webpack": "^3.10.0"
+    "webpack": "^3.10.0",
+    "worker-loader": "^1.1.0"
   }
 }

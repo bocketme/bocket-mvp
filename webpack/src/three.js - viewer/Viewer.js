@@ -1,17 +1,17 @@
-/**
- * @description The Viewer integrated with THREE.JS
- * @author bocket.me
- * @param {HTMLElement} renderingDiv
- */
-
 import AxisScene from "./init/scene_axis";
 import Outline from "./init/Outline"
 import object3D from './loader/object3D';
 import * as Stats from 'stats.js';
 
+/**
+ * @description The Viewer integrated with THREE.JS
+ * @author bocket.me
+ * @param {HTMLElement} renderingDiv
+ */
 export default class Viewer {
     constructor(renderArea) {
-        renderArea == null ? null : () => { throw new Error("Render Area : Not Found") };
+        if (renderArea ==  null)
+            throw new Error("Render Area : Not Found");
 
         /******************************************************************/
         /* Stats Initialization */
@@ -73,8 +73,6 @@ export default class Viewer {
         this.s_objControls.name = "Object control";
         this.s_objControls.visible = false;
         this.p_scene.add(this.s_objControls);
-
-        this.s_objectSelected;
 
         /* The box of the selected object */
         this.s_box = new THREE.BoxHelper(this.s_objects, 0x262626);
@@ -216,7 +214,6 @@ export default class Viewer {
 
     fullscreen(){
         //TODO
-        this
     }
 
     /* ************************************************************************** */

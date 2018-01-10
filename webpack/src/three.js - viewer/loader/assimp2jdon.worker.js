@@ -1,6 +1,4 @@
-import Worker from './assimp2jdon.worker';
-
-export default function Assimp2json(nodeID, json) {
+self.addEventListener('add', (event) => {
     function parseList(json, handler) {
         var meshes = new Array(json.length);
 
@@ -189,4 +187,5 @@ export default function Assimp2json(nodeID, json) {
     var materials = parseList(json.materials, parseMaterial);
     var materials = parseList(json.materials, parseMaterial);
     return parseObject(json, json.rootnode, meshes, materials);
-}
+    self.postMessage({ data: parseObject(json, json.rootnode, meshes, materials)});
+});

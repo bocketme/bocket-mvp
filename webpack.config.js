@@ -1,5 +1,5 @@
 const path = require('path');
-const webpack = require('webpack')
+const webpack = require('webpack');
 
 module.exports = {
     entry: {
@@ -18,5 +18,13 @@ module.exports = {
         new webpack.LoaderOptionsPlugin({
           debug: true
         })
-      ]
+      ],
+    module: {
+        rules: [
+            {
+                test: /\.worker\.js$/,
+                use: { loader: 'worker-loader' }
+            }
+        ]
+    }
 };
