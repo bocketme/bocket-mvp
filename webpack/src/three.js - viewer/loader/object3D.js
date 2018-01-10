@@ -1,6 +1,8 @@
-export default function object3D (file3D) {
+import loadObjectFromJSONAssimp from './Assimp2json';
+
+export default function object3D (nodeID, file3D) {
     //return loadObjectFromJSON(file3D, 0x809fff);
-    return loadObjectFromJSONAssimp(file3D, 0x809fff)
+    return loadObjectFromJSONAssimp(nodeID, file3D);
 }
 
 var loadObjectFromOBJ = function (name, obj, mtl) {
@@ -22,29 +24,6 @@ var loadObjectFromOBJ = function (name, obj, mtl) {
         }).then();
         return geometry;
     }
-};
-
-var loadObjectFromJSONAssimp = function (jsonObj, colors) {
-    console.log(jsonObj);
-    var object = new THREE.Group();
-    object.name = jsonObj.rootnode.name;
-    var material = new THREE.MeshBasicMaterial( { color: colors } );
-    var promises = [];
-    jsonObj.rootnode.children.forEach(child => {
-        var p_mesh = jsonObj.meshes[child.meshes[0]];
-        if (p_mesh){
-            promises.push(new Promise((resolve) => {
-                var loader = new THREE.AssimpJSONLoader();
-                console.log(loader);
-            }));
-        }
-    });
-
-    Promise.all(promises)
-        .then((meshes) => {
-            //meshes.forEach(mesh => object.add(mesh));
-        });
-    return object;
 };
 
 var loadObjectFromJSON = function (jsonObj, colors) {
