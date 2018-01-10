@@ -48,16 +48,16 @@ module.exports = socket => {
                     } else {
                         Part.findById(node.content)
                             .then((part) => {
-                                let chemin = path.join(config.gitfiles, part.path);
+                                let chemin = path.resolve('./test/converter.json');
                                 fs.readFile(chemin, 'utf8', (err, file) => {
                                     if(err){
                                         socket.emit('[viewer] -> error chargement', node._id, node.name, err);
+                                        resolve();
                                     } else {
+                                        socket.emit("addPart", file, node._id, node.matrix, parent._id);
                                         socket.emit('[viewer] -> end chargement', node._id, node.name);
                                         resolve();
                                     }
-                                    socket.emit("addPart", file, node._id, node.matrix, parent._id);
-                                    resolve();
                                 })
                             });
                     }
