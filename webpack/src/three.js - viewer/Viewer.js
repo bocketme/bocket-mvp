@@ -4,13 +4,11 @@
  * @param {HTMLElement} renderingDiv
  */
 
+import AxisScene from "./init/scene_axis";
+import Floor from './init/floor';
+import  Outline from "./init/Outline"
 import object3D from './init/object3D';
 import * as Stats from 'stats.js';
-import Floor from './init/floor';
-import AxisScene from "./init/scene_axis";
-import { Clock, PerspectiveCamera, Scene, WebGLRenderer } from "three";
-import { EffectComposer, GlitchPass, RenderPass } from "postprocessing";
-import  Outline from "./init/Outline"
 
 export default class Viewer {
     constructor(renderArea) {
@@ -47,8 +45,7 @@ export default class Viewer {
         /* The render */
         this.p_renderer = new THREE.WebGLRenderer({ canvas: renderSurface, alpha: true, antialias: true, logarithmicDepthBuffer: true });
         this.p_renderer.localClippingEnabled = true;
-        //this.p_renderer.setClearColor(0xffffff);
-        this.p_renderer.setClearColor(0x65676b);
+        this.p_renderer.setClearColor(0xffffff);
         this.p_renderer.setSize(p_width, p_height);
         this.p_renderer.shadowMap = true;
         renderArea.appendChild(this.p_renderer.domElement);
@@ -91,7 +88,7 @@ export default class Viewer {
         this.domElement = renderArea;
 
 
-        this.outline = new Outline();
+        this.outline = new Outline("rgb(0, 255, 194)");
 
         /* Add the lights to the scene */
         this.lightsScene();
@@ -114,6 +111,7 @@ export default class Viewer {
             viewer.s_box.update();
             viewer.p_axis.update(viewer.p_camera.position);
             viewer.p_renderer.render(viewer.p_scene, viewer.p_camera);
+            viewer.outline.updatePosition(viewer.p_scene);
             viewer.stats.end();
 
             requestAnimationFrame(animation);
@@ -163,6 +161,7 @@ export default class Viewer {
         this.s_lights.add(cameraHelper5);
         */
     }
+
     /* ************************************************************************** */
     /*                                                                            */
     /*                          SCREEN MODIFICATIONS                              */
@@ -176,16 +175,21 @@ export default class Viewer {
      * @memberof Viewer
      */
     fitToScreen() {
+
         this.s_box.geometry.computeBoundingBox();
+
         var box = this.s_box.geometry.boundingBox,
             center = box.getCenter();
-        this.p_camera.position.set(
+
+            this.p_camera.position.set(
             center.x,
             -(center.y + Math.abs(box.getSize().y / Math.sin((this.p_camera.fov * (Math.PI / 180)) / 2))),
             box.max.z * (10 / Math.log(box.max.z))
         );
+
         this.p_camera.lookAt(center);
         this.p_controls.target = center;
+
     }
 
     resize() {
@@ -198,8 +202,10 @@ export default class Viewer {
     }
 
     fullscreen(){
-
+        //TODO
+        this
     }
+
     /* ************************************************************************** */
     /*                                                                            */
     /*                                  RAYS                                      */
@@ -293,13 +299,10 @@ export default class Viewer {
         this.p_raycaster.setFromCamera(mouse3D, this.p_camera);
 
         var intersects = this.p_raycaster.intersectObject(this.s_objects, true);
-
         if (intersects.length > 0){
             if (this.outline.name == intersects[0].object.name) return;
             this.outline.reset(this.p_scene);
-            this.outline.addObject(intersects[0].object);
-            this.outline.addToScene(this.p_scene);
-            console.log("outline the object")
+            this.outline.addObject(this.p_scene, intersects[0].object);
         } else{
             if (this.outline.mesh)
                 this.outline.reset(this.p_scene)
@@ -406,12 +409,16 @@ export default class Viewer {
     addPart(file3D, nodeID, matrix, parentName) {
         var scene = parentName == null ? this.s_objects : this.p_scene.getObjectByName(parentName);
 
-        /**A remplacer **/
-        var geometry = new THREE.BoxGeometry(50, 50, 50);
-        var material = new THREE.MeshLambertMaterial({ color: 0x809fff });
-        var mesh = new THREE.Mesh( geometry, material );
-        /**A remplacer **/
-        //var mesh = object3D(file3D);
+
+        if(!file3D){
+            /**A remplacer **/
+            var geometry = new THREE.BoxGeometry(50, 50, 50);
+            var material = new THREE.MeshLambertMaterial({ color: 0x809fff });
+            var mesh = new THREE.Mesh( geometry, material );
+            mesh.name = nodeID;
+            /**A remplacer **/
+        } else
+            var mesh = object3D(file3D);
 
         mesh.applyMatrix(matrix[0]);
         mesh.updateMatrix();
@@ -420,10 +427,13 @@ export default class Viewer {
             update: false,
             data: 'mesh',
         };
-        mesh.material.transparent = true;
-        mesh.name = nodeID;
-        mesh.receiveShadow = true;
-        mesh.renderOrder = -1;
+        mesh.traverse(sub_mesh => {
+            if (sub_mesh instanceof THREE.Mesh){
+                sub_mesh.material.transparent = true;
+                sub_mesh.receiveShadow = true;
+                sub_mesh.renderOrder = -1;
+            }
+        });
         scene.add(mesh);
     }
 
@@ -540,12 +550,14 @@ export default class Viewer {
             this.s_objControls.visible = true;
         }
     }
+
     /***
      * @description Send a socket to save the position of all the modified part. (v1)
      * @param socket
      */
     save(socket){
         this.s_objects.traverse(object3D => {
+            this.s_objControls.saveState();
             socket.emit("[OBJECT 3D] - save", workspaceId, object3D.name, object3D.matrix);
         });
     }

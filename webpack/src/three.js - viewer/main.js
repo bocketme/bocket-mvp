@@ -19,18 +19,18 @@ socket.on("[viewer] -> start chargement", (id, name) => {
     console.log("THE NODE " + name + " is loading ! id => " + id);
 });
 
-/*
 socket.on("[viewer] -> end chargement", (id, name) => {
     console.log("THE NODE " + name + " is charged ! id => " + id);
 });
 
-socket.on("[viewer] -> error chargement", (id, name, err) => {
-    console.warn("THE NODE " + name + " could'nt be charged ! id => " + id + "\n" + err)
+socket.on("[viewer] -> error chargement", (id, name) => {
+    console.warn("THE NODE " + name + " could'nt be charged ! id => " + id);
 });
-*/
+
 socket.emit("start viewer", workspaceId);
 
 socket.on("addPart", (file3d, nodeID, matrix, parentID) => {
+    console.log("addPart : ", JSON.parse(file3d));
     if (viewer)
         viewer.addPart(JSON.parse(file3d), nodeID, matrix, parentID);
     else
@@ -115,7 +115,7 @@ rotate.click(() => {
 var fullScreen = $("#button-fullscreen");
 fullScreen.click(() => {
     if (viewer instanceof Viewer){
-
+        //FullSceen
     } else console.warn(new Error("Viewer is not initialized"));
 });
 
@@ -138,6 +138,11 @@ save.click(() => {
     viewer.save(socket);
 });
 
+var cancel = $('#button-cancel');
+cancel.click(() => {
+    console.log(viewer.s_objControls)
+    viewer.s_objControls.reset();
+});
 
 $('body').on("click", ".three-node", (event) => {
     var element = event.currentTarget;
