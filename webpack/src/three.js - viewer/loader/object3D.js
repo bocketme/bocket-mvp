@@ -25,6 +25,7 @@ var loadObjectFromOBJ = function (name, obj, mtl) {
 };
 
 var loadObjectFromJSONAssimp = function (jsonObj, colors) {
+    console.log(jsonObj);
     var object = new THREE.Group();
     object.name = jsonObj.rootnode.name;
     var material = new THREE.MeshBasicMaterial( { color: colors } );
@@ -33,19 +34,15 @@ var loadObjectFromJSONAssimp = function (jsonObj, colors) {
         var p_mesh = jsonObj.meshes[child.meshes[0]];
         if (p_mesh){
             promises.push(new Promise((resolve) => {
-                var geometry = new THREE.BufferGeometry();
-                geometry.addAttribute( 'position', new THREE.Float32BufferAttribute(p_mesh.vertices));
-                geometry.addAttribute( 'normal', new THREE.Float32BufferAttribute(p_mesh.normals, 3));
-                console.log(geometry);
-                var mesh = new THREE.Mesh( geometry, material );
-                resolve(mesh);
+                var loader = new THREE.AssimpJSONLoader();
+                console.log(loader);
             }));
         }
     });
 
     Promise.all(promises)
         .then((meshes) => {
-            meshes.forEach(mesh => object.add(mesh));
+            //meshes.forEach(mesh => object.add(mesh));
         });
     return object;
 };

@@ -27,11 +27,14 @@ export default class Outline {
 
     addObject(scene, object){
         this.name = object.name;
-        this.mesh = object.clone();
+        object.copy(this.object, true);
         console.log(this.mesh);
-        this.mesh.position.copy(object.getWorldPosition());
-        this.mesh.quaternion.copy(object.getWorldQuaternion());
-        this.mesh.scale.multiplyScalar(1.05);
+        this.object.traverse(obj => {
+
+        });
+        this.object.position.copy(object.getWorldPosition());
+        this.object.quaternion.copy(object.getWorldQuaternion());
+        this.object.scale.multiplyScalar(1.05);
 
         if (object.material.opacity !== 1) {
             object.material.opacity = 1;

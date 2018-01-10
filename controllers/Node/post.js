@@ -134,7 +134,7 @@ function createNewNode(req, res){
                     if(workspace.users && workspace.users.length !== 0){
                         workspace.users.forEach(worker => {
                             if (worker.email == userMail){
-                                resolve
+                                resolve();
                             }
                         });
                     }

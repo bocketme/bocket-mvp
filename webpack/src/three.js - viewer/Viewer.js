@@ -5,14 +5,13 @@
  */
 
 import AxisScene from "./init/scene_axis";
-import Floor from './init/floor';
-import  Outline from "./init/Outline"
-import object3D from './init/object3D';
+import Outline from "./init/Outline"
+import object3D from './loader/object3D';
 import * as Stats from 'stats.js';
 
 export default class Viewer {
     constructor(renderArea) {
-        renderArea ? null : () => { throw new Error("Render Area : Not Found") };
+        renderArea == null ? null : () => { throw new Error("Render Area : Not Found") };
 
         /******************************************************************/
         /* Stats Initialization */
@@ -104,6 +103,20 @@ export default class Viewer {
         function animation() {
             viewer.stats.begin();
 
+            /*
+            if(viewer.s_objControls.object){
+                if (!viewer.s_objControls.object.boundingBox)
+                    viewer.s_objControls.object.geometry.computeBoundingBox();
+
+                var object_center = viewer.s_objControls.object.geometry.boundingBox.max.clone().add(viewer.s_objControls.object.geometry.boundingBox.min).multiplyScalar(1/2);
+                var direction = object_center.clone().negate();
+                var distance = direction.length();
+
+                direction.normalize();
+                viewer.s_objControls.object.translateOnAxis(direction, -distance);
+            }
+            */
+
             //viewer.p_floor.update(viewer.p_camera.position);
             viewer.s_objects.updateMatrix();
             viewer.p_controls.update();
@@ -181,7 +194,7 @@ export default class Viewer {
         var box = this.s_box.geometry.boundingBox,
             center = box.getCenter();
 
-            this.p_camera.position.set(
+        this.p_camera.position.set(
             center.x,
             -(center.y + Math.abs(box.getSize().y / Math.sin((this.p_camera.fov * (Math.PI / 180)) / 2))),
             box.max.z * (10 / Math.log(box.max.z))
@@ -300,9 +313,13 @@ export default class Viewer {
 
         var intersects = this.p_raycaster.intersectObject(this.s_objects, true);
         if (intersects.length > 0){
-            if (this.outline.name == intersects[0].object.name) return;
+            var intersect = intersects[0].object;
+
+            var part = this.s_objects.getObjectByName(intersect.userData.partName);
+
+            if (this.outline.name == part.name) return;
             this.outline.reset(this.p_scene);
-            this.outline.addObject(this.p_scene, intersects[0].object);
+            this.outline.addObject(this.p_scene, part);
         } else{
             if (this.outline.mesh)
                 this.outline.reset(this.p_scene)
@@ -415,17 +432,18 @@ export default class Viewer {
             var geometry = new THREE.BoxGeometry(50, 50, 50);
             var material = new THREE.MeshLambertMaterial({ color: 0x809fff });
             var mesh = new THREE.Mesh( geometry, material );
-            mesh.name = nodeID;
             /**A remplacer **/
         } else
-            var mesh = object3D(file3D);
+            var mesh = object3D(nodeID, file3D);
 
+        mesh.name = nodeID;
         mesh.applyMatrix(matrix[0]);
         mesh.updateMatrix();
         mesh.matrixAutoUpdate = true;
         mesh.userData = {
             update: false,
             data: 'mesh',
+            selectable: true
         };
         mesh.traverse(sub_mesh => {
             if (sub_mesh instanceof THREE.Mesh){
@@ -434,6 +452,7 @@ export default class Viewer {
                 sub_mesh.renderOrder = -1;
             }
         });
+        console.log(mesh);
         scene.add(mesh);
     }
 
@@ -468,6 +487,7 @@ export default class Viewer {
 
         /*****************************************/
         /*Set up of the object Control*/
+        this.s_objControls.visible = true;
         if (this.s_objControls.visible){
             if (piece !== this.s_objControls){
                 this.s_objControls.detach(this.s_objControls);
@@ -557,7 +577,6 @@ export default class Viewer {
      */
     save(socket){
         this.s_objects.traverse(object3D => {
-            this.s_objControls.saveState();
             socket.emit("[OBJECT 3D] - save", workspaceId, object3D.name, object3D.matrix);
         });
     }

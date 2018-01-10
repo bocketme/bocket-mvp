@@ -69,8 +69,8 @@ console.log(req.body);
                                     })
                                     .then((nameFile) => {
                                         relativePath.file3D.push(path.join(documentID, nameFile));
-                                        console.log(relativePath.file3D);
-                                        return;
+                                        part.path = relativePath.file3D;
+                                        return part.save();
                                     })
                                     .catch((err) => {
                                         console.log(err);
