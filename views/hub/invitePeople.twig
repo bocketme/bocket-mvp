@@ -10,27 +10,28 @@
                 <div class="col s6">Co-Worker email</div>
                 <div class="col s6">Co-Worker complete name</div>
                 <div class="input-field col s6">
-                    <input placeholder="Email" id="invite-people-first-email" type="text" class="validate">
+                    <input placeholder="Email" id="invite-people-first-email" type="email" class="validate">
                 </div>
                 <div class="input-field col s6">
                     <input placeholder="Complete name" id="invite-people-first-complete-name" type="text" class="validate">
                 </div>
 
                 <div class="input-field col s6">
-                    <input placeholder="Email" type="text" class="validate">
+                    <input placeholder="Email" type="email" class="validate">
                 </div>
                 <div class="input-field col s6">
                     <input placeholder="Complete name" type="text" class="validate">
                 </div>
 
                 <div class="input-field col s6">
-                    <input placeholder="Email" type="text" class="validate">
+                    <input placeholder="Email" type="email" class="validate">
                 </div>
                 <div class="input-field col s6">
                     <input placeholder="Complete name" type="text" class="validate">
                 </div>
             </div>
-            <button class="col offset-s10 btn waves-effect waves-light pink accent-2" type="submit" name="action">Invite
+            <p id="invite-people-error" class="col s10 error" style="visibility: hidden;">Atleast one email has to be valid</p>
+            <button id="invite-people-submit" class="col s2 btn waves-effect waves-light pink accent-2" type="submit" name="action">Invite
                 <i class="material-icons right">send</i>
             </button>
         </form>
