@@ -67,6 +67,7 @@ export default class Viewer {
         /* The camera's controllers */
         this.p_controls = new THREE.OrbitControls(this.p_camera, this.p_renderer.domElement);
         this.p_controls.zoomSpeed = 1 / (Math.log10(this.p_camera.position.distanceTo(this.p_controls.target)));
+        this.p_scene.add(this.p_controls);
 
         /* The object's controllers */
         this.s_objControls = new THREE.TransformControls(this.p_camera, this.p_renderer.domElement);
@@ -77,7 +78,7 @@ export default class Viewer {
         /* The box of the selected object */
         this.s_box = new THREE.BoxHelper(this.s_objects, 0x262626);
         this.s_box.material.linewidth = 6;
-        this.s_box.visible = false;
+        //this.s_box.visible = false;
         this.p_scene.add(this.s_box);
 
         this.p_raycaster = new THREE.Raycaster();
@@ -192,15 +193,17 @@ export default class Viewer {
         var box = this.s_box.geometry.boundingBox,
             center = box.getCenter();
 
+        console.log(center, box);
+
         this.p_camera.position.set(
             center.x,
             -(center.y + Math.abs(box.getSize().y / Math.sin((this.p_camera.fov * (Math.PI / 180)) / 2))),
             box.max.z * (10 / Math.log(box.max.z))
         );
-
         this.p_camera.lookAt(center);
         this.p_controls.target = center;
-
+        console.log(this.p_camera);
+        console.log(this.p_controls);
     }
 
     resize() {
@@ -449,7 +452,6 @@ export default class Viewer {
                 sub_mesh.renderOrder = -1;
             }
         });
-        console.log(mesh);
         scene.add(mesh);
     }
 
@@ -471,60 +473,59 @@ export default class Viewer {
      * @param name - The name of the Group or the Mesh
      */
     select(name) {
-        var piece = this.p_scene.getObjectByName(name);
+            var piece = this.p_scene.getObjectByName(name);
 
-        /*****************************************/
-        /*Reset the wireframe*/
-        this.p_scene.traverse(object3d => {
-            if (object3d instanceof THREE.Mesh) {
-                if (object3d.material.wireframe)
-                    object3d.material.wireframe = false;
-            }
-        });
-
-        /*****************************************/
-        /*Set up of the object Control*/
-        this.s_objControls.visible = true;
-        if (this.s_objControls.visible){
-            if (piece !== this.s_objControls){
-                this.s_objControls.detach(this.s_objControls);
-                this.s_objControls.attach(piece);
-            }
-        }
-
-        /*****************************************/
-        /*Get selected object*/
-        if (piece)
-            this.s_objectSelected = piece;
-
-        this.s_box.setFromObject(this.s_objectSelected);
-
-        if (piece instanceof THREE.Mesh){
-            this.s_objects.traverse((object3d) => {
-                if(object3d instanceof THREE.Mesh){
-                    if(object3d.name !== piece.name) {
-                        object3d.material.opacity = 0.3;
-                    } else {
-                        object3d.material.opacity = 1;
-                    }
-                }
-            })
-        } else if (piece instanceof THREE.Group){
-            this.s_objects.traverse((object3d) => {
-                if(object3d instanceof THREE.Mesh) {
-                    if (object3d.name !== piece.name){
-                        object3d.material.opacity = 0.3;
-                    }
+            /*****************************************/
+            /*Reset the wireframe*/
+            this.p_scene.traverse(object3d => {
+                if (object3d instanceof THREE.Mesh) {
+                    if (object3d.material.wireframe)
+                        object3d.material.wireframe = false;
                 }
             });
-            piece.traverse(object3d => {
-                if(object3d instanceof THREE.Mesh) {
-                    if (object3d.name !== piece.name){
-                        object3d.material.opacity = 1;
-                    }
+
+            /*****************************************/
+            /*Set up of the object Control*/
+            if (this.s_objControls.visible){
+                if (piece !== this.s_objControls){
+                    this.s_objControls.detach(this.s_objControls);
+                    this.s_objControls.attach(piece);
                 }
-            })
-        }
+            }
+
+            /*****************************************/
+            /*Get selected object*/
+            if (piece)
+                this.s_objectSelected = piece;
+
+            this.s_box.setFromObject(this.s_objectSelected);
+
+            if (piece instanceof THREE.Mesh){
+                this.s_objects.traverse((object3d) => {
+                    if(object3d instanceof THREE.Mesh){
+                        if(object3d.name !== piece.name) {
+                            object3d.material.opacity = 0.3;
+                        } else {
+                            object3d.material.opacity = 1;
+                        }
+                    }
+                })
+            } else if (piece instanceof THREE.Group){
+                this.s_objects.traverse((object3d) => {
+                    if(object3d instanceof THREE.Mesh) {
+                        if (object3d.name !== piece.name){
+                            object3d.material.opacity = 0.3;
+                        }
+                    }
+                });
+                piece.traverse(object3d => {
+                    if(object3d instanceof THREE.Mesh) {
+                        if (object3d.name !== piece.name){
+                            object3d.material.opacity = 1;
+                        }
+                    }
+                })
+            }
         /*****************************************/
         /* Outline the object */
         this.fitToScreen();

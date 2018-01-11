@@ -1,4 +1,5 @@
 import loadObjectFromJSONAssimp from './Assimp2json';
+import loader from './assimp2json.worker'
 
 export default function object3D (nodeID, file3D) {
     //return loadObjectFromJSON(file3D, 0x809fff);

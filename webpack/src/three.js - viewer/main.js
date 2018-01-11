@@ -156,9 +156,10 @@ renderArea.addEventListener('mousemove', (event) => {
     event.preventDefault();
     var mouseX = event.offsetX,
         mouseY = event.offsetY;
-
-    if(viewer)
-        viewer.checkIntersection(mouseX, mouseY);
+    /*
+        if(viewer)
+            viewer.checkIntersection(mouseX, mouseY);
+    */
 });
 
 renderArea.addEventListener('touchmove', (event) => {

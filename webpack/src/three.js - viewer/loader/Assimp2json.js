@@ -1,13 +1,11 @@
-import Worker from './assimp2jdon.worker';
+//import Worker from './assimp2json.worker';
 
 export default function Assimp2json(nodeID, json) {
     function parseList(json, handler) {
-        var meshes = new Array(json.length);
+        let meshes = new Array(json.length);
 
-        for( var i = 0; i < json.length; ++ i){
-
-            meshes[i] = handler.call( this , json[ i ] );
-
+        for(let i = 0; i < json.length; ++ i){
+            meshes[ i ] = handler.call( this , json[ i ] );
         }
 
         return meshes;
@@ -37,28 +35,20 @@ export default function Assimp2json(nodeID, json) {
         geometry.setIndex( indices );
         geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
 
-        if ( normals.length > 0 ) {
-
+        if ( normals.length > 0 )
             geometry.addAttribute( 'normal', new THREE.Float32BufferAttribute( normals, 3 ) );
 
-        }
-
-        if ( uvs.length > 0 ) {
-
+        if ( uvs.length > 0 )
             geometry.addAttribute( 'uv', new THREE.Float32BufferAttribute( uvs, 2 ) );
 
-        }
-
-        if ( colors.length > 0 ) {
-
+        if ( colors.length > 0 )
             geometry.addAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
-
-        }
 
         geometry.computeBoundingSphere();
 
         return geometry;
     }
+
     function parseMaterial( json ) {
 
         var material = new THREE.MeshPhongMaterial();
@@ -87,7 +77,6 @@ export default function Assimp2json(nodeID, json) {
                         var keyname;
 
                         switch ( semantic ) {
-
                             case 1:
                                 keyname = 'map';
                                 break;
@@ -100,22 +89,16 @@ export default function Assimp2json(nodeID, json) {
                             case 6:
                                 keyname = 'normalMap';
                                 break;
-
                         }
 
                         var texture = textureLoader.load( value );
 
                         // TODO: read texture settings from assimp.
                         // Wrapping is the default, though.
-
                         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-
                         material[ keyname ] = texture;
-
                     }
-
                     break;
-
                 }
 
                 case '?mat.name':
@@ -160,33 +143,35 @@ export default function Assimp2json(nodeID, json) {
 
     function parseObject( json, node, meshes, materials ) {
 
-        var obj = new THREE.Object3D(),	i, idx;
+        let obj;
 
-        obj.name = node.name || '';
-        obj.matrix = new THREE.Matrix4().fromArray( node.transformation ).transpose();
-        obj.matrix.decompose( obj.position, obj.quaternion, obj.scale );
+        //console.log(node.name, node);
 
-        for ( i = 0; node.meshes && i < node.meshes.length; i ++ ) {
+        if (node.meshes){
+            let idx =  node.meshes[ 0 ];
+            obj = new THREE.Mesh(meshes[ idx ], materials[ json.meshes[ idx ].materialindex ]);
+            obj.userData.partName = nodeID;
 
-            idx = node.meshes[ i ];
-            var mesh = new THREE.Mesh( meshes[ idx ], materials[ json.meshes[ idx ].materialindex ] );
-            mesh.userData.partName = nodeID;
-            obj.add( mesh );
+        } else if (node.children){
+            obj =  new THREE.Group();
 
-        }
+            for (let i = 0; node.children && i < node.children.length; i ++ ) {
+                obj.add( parseObject( json, node.children[ i ], meshes, materials ) );
+            }
 
-        for ( i = 0; node.children && i < node.children.length; i ++ ) {
+        } else console.warn('[ERROR FILE] The node has nor children or mesh');
 
-            obj.add( parseObject( json, node.children[ i ], meshes, materials ) );
+        if (obj instanceof THREE.Mesh || obj instanceof THREE.Group){
+            obj.name = node.name || '';
+            obj.matrix = new THREE.Matrix4().fromArray( node.transformation ).transpose();
+            obj.matrix.decompose( obj.position, obj.quaternion, obj.scale );
+        } else console.warn('Err');
 
-        }
-
+        //console.log(obj);
         return obj;
-
     }
 
     var meshes = parseList(json.meshes, parseMesh);
-    var materials = parseList(json.materials, parseMaterial);
     var materials = parseList(json.materials, parseMaterial);
     return parseObject(json, json.rootnode, meshes, materials);
 }
