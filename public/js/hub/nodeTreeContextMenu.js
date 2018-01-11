@@ -11,6 +11,6 @@ function duplicateNode() {
     var elem = $(pointedElem);
     if (!elem.is('div'))
         elem = elem.parent('div');
-    console.log("DUPLICATE NODE", {id: elem.attr("id")})
-    //socket.emit("duplicateNode", );
+    console.log("DUPLICATE NODE", {id: elem.attr("id")});
+    socket.emit("duplicateNode", {nodeId: elem.attr("id")});
 }

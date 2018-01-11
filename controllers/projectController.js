@@ -42,6 +42,8 @@ module.exports = {
                     }
                     else {
                         req.session.userMail = result.email;
+                        req.session.userId = result._id;
+                        req.session.completeName = result.completeName;
                         res.redirect(req.originalUrl + "/" + req.body.workspaceId);
                     }
                 });

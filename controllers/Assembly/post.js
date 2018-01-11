@@ -84,6 +84,8 @@ const newAssembly = (req, res) => {
                 assembly.save()
                     .then((newAssembly) => {
                         let subNode = Node.createNodeWithContent(name, description, TypeEnum.assembly, newAssembly._id, relativePath.specFiles, tags);
+                        subNode.Users = [{_id: req.session.userId, completeName: req.session.completeName, email: req.session.userMail}];
+                        subNode.owners = [{_id: req.session.userId, completeName: req.session.completeName, email: req.session.userMail}];
                         subNode.save()
                             .then((subNode) => {
                                 parentNode.children.push({

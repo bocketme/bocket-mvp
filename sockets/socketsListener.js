@@ -12,6 +12,7 @@ let getActivities = require("./getActivitiesListener");
 let addCommentListener = require("./addCommentToActivityListener");
 let joinWorkspaceListener = require("./joinWorkspaceListener");
 let leaveWorkspaceListener = require("./leaveWorkspaceListener");
+let duplicateNodeListener = require("./duplicateNodeListener");
 
 module.exports = function(io) {
     io.on('connection', function (socket) {
@@ -29,5 +30,6 @@ module.exports = function(io) {
         addCommentListener(socket);
         joinWorkspaceListener(io, socket);
         leaveWorkspaceListener(io, socket);
+        duplicateNodeListener(socket);
     });
 };
