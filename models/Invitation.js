@@ -42,7 +42,7 @@ InvitationSchema.post('save', function (invitation) {
         completeName: invitation.completeName,
         workspace: invitation.workspace,
         author : invitation.author,
-        url: serverConfig.url + "/project/" + invitation.workspace.id + "/invitation/" + invitation.uid
+        url: serverConfig.url + "/" + invitation.uid
     };
     //http://localhost:8080/project/5a4f4a87488d0c0770f8bef0
     Twig.renderFile('./views/email.twig', renderVar, function (err, html) {
