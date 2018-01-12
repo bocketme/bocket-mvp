@@ -190,48 +190,13 @@ export default class Viewer {
      */
     fitToScreen() {
         this.s_box.geometry.computeBoundingBox();
-
-        let box = this.s_box.geometry.boundingBox;
         let center = this.s_box.geometry.boundingSphere.center;
-        let line = new THREE.Vector3(box.max.x - box.min.x, box.max.y - box.min.y, box.max.z - box.min.z);
 
-        /*
-        this.pointLight(
-            box.max.x,
-            box.max.y,
-            box.max.z,
-            0xc11347
-        );
-
-        this.pointLight(
-            box.min.x,
-            box.min.y,
-            box.min.z,
-            0x3a5582
-        );
-        */
-
-        console.log(this.s_box);
-        let newcameraPosition = new THREE.Vector3().addVectors(center, line);
-        //newcameraPosition.applyAxisAngle(center.normalize(), Math.PI);
-        let rotation = 45;
         this.p_camera.position.set(
             center.x,
             -(center.y),
             center.z
         );
-
-        /*
-        let box = this.s_box.geometry.boundingBox,
-            center = box.getCenter(),
-            z = box.max.z * (10 / Math.log(box.max.z));
-
-            this.p_camera.position.set(
-            box.max.x,
-            -(center.y),
-            Number.isNaN(z) ? box.max.z : z
-            );
-        */
         this.p_camera.lookAt(center);
         this.p_controls.target = center;
     }
@@ -245,9 +210,7 @@ export default class Viewer {
 
     }
 
-    fullscreen(){
-        //TODO
-    }
+    
 
     /* ************************************************************************** */
     /*                                                                            */

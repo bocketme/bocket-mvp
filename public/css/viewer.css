@@ -27,24 +27,17 @@
 {
     position: absolute;
     right: 20px;
-    bottom: 200px;
+    bottom: 140px;
 }
 
 .viewer-options-2
  {
-     position: absolute;
-     right: 20px;
-     bottom: 140px;
- }
-
-.viewer-options-3
-{
     position: absolute;
     right: 20px;
     bottom: 80px;
-}
+ }
 
-.viewer-options-4
+.viewer-options-3
 {
     position: absolute;
     right: 20px;
