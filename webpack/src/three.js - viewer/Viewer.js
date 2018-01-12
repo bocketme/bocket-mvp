@@ -67,7 +67,6 @@ export default class Viewer {
         /* The camera's controllers */
         this.p_controls = new THREE.OrbitControls(this.p_camera, this.p_renderer.domElement);
         this.p_controls.zoomSpeed = 1 / (Math.log10(this.p_camera.position.distanceTo(this.p_controls.target)));
-        this.p_scene.add(this.p_controls);
 
         /* The object's controllers */
         this.s_objControls = new THREE.TransformControls(this.p_camera, this.p_renderer.domElement);
@@ -87,6 +86,9 @@ export default class Viewer {
 
 
         this.outline = new Outline("rgb(0, 255, 194)");
+
+
+
 
         /* Add the lights to the scene */
         this.lightsScene();
@@ -187,23 +189,51 @@ export default class Viewer {
      * @memberof Viewer
      */
     fitToScreen() {
-
         this.s_box.geometry.computeBoundingBox();
 
-        var box = this.s_box.geometry.boundingBox,
-            center = box.getCenter();
+        let box = this.s_box.geometry.boundingBox;
+        let center = this.s_box.geometry.boundingSphere.center;
+        let line = new THREE.Vector3(box.max.x - box.min.x, box.max.y - box.min.y, box.max.z - box.min.z);
 
-        console.log(center, box);
+        /*
+        this.pointLight(
+            box.max.x,
+            box.max.y,
+            box.max.z,
+            0xc11347
+        );
 
+        this.pointLight(
+            box.min.x,
+            box.min.y,
+            box.min.z,
+            0x3a5582
+        );
+        */
+
+        console.log(this.s_box);
+        let newcameraPosition = new THREE.Vector3().addVectors(center, line);
+        //newcameraPosition.applyAxisAngle(center.normalize(), Math.PI);
+        let rotation = 45;
         this.p_camera.position.set(
             center.x,
-            -(center.y + Math.abs(box.getSize().y / Math.sin((this.p_camera.fov * (Math.PI / 180)) / 2))),
-            box.max.z * (10 / Math.log(box.max.z))
+            -(center.y),
+            center.z
         );
+
+        /*
+        let box = this.s_box.geometry.boundingBox,
+            center = box.getCenter(),
+            z = box.max.z * (10 / Math.log(box.max.z));
+
+            this.p_camera.position.set(
+            box.max.x,
+            -(center.y),
+            Number.isNaN(z) ? box.max.z : z
+            );
+        */
         this.p_camera.lookAt(center);
         this.p_controls.target = center;
-        console.log(this.p_camera);
-        console.log(this.p_controls);
     }
 
     resize() {
@@ -247,7 +277,6 @@ export default class Viewer {
         } else
             return (null);
     }
-
     /**
      * @description [Event Function] Returns the THREE.Group directly related to the object clicked on screen
      * @param {number} mouseX offsetX value of the mouse event
@@ -314,7 +343,6 @@ export default class Viewer {
         var intersects = this.p_raycaster.intersectObject(this.s_objects, true);
         if (intersects.length > 0){
             var intersect = intersects[0].object;
-
             var part = this.s_objects.getObjectByName(intersect.userData.partName);
 
             if (this.outline.name == part.name) return;
@@ -381,6 +409,7 @@ export default class Viewer {
         group.userData = {
             update: false,
             data: 'assembly',
+            save:true,
         };
         scene.add(group);
     }
@@ -443,7 +472,8 @@ export default class Viewer {
         mesh.userData = {
             update: false,
             data: 'mesh',
-            selectable: true
+            selectable: true,
+            save:true,
         };
         mesh.traverse(sub_mesh => {
             if (sub_mesh instanceof THREE.Mesh){
@@ -473,59 +503,59 @@ export default class Viewer {
      * @param name - The name of the Group or the Mesh
      */
     select(name) {
-            var piece = this.p_scene.getObjectByName(name);
+        var piece = this.p_scene.getObjectByName(name);
 
-            /*****************************************/
-            /*Reset the wireframe*/
-            this.p_scene.traverse(object3d => {
-                if (object3d instanceof THREE.Mesh) {
-                    if (object3d.material.wireframe)
-                        object3d.material.wireframe = false;
+        /*****************************************/
+        /*Reset the wireframe*/
+        this.p_scene.traverse(object3d => {
+            if (object3d instanceof THREE.Mesh) {
+                if (object3d.material.wireframe)
+                    object3d.material.wireframe = false;
+            }
+        });
+
+        /*****************************************/
+        /*Set up of the object Control*/
+        if (this.s_objControls.visible){
+            if (piece !== this.s_objControls){
+                this.s_objControls.detach(this.s_objControls);
+                this.s_objControls.attach(piece);
+            }
+        }
+
+        /*****************************************/
+        /*Get selected object*/
+        if (piece)
+            this.s_objectSelected = piece;
+
+        this.s_box.setFromObject(this.s_objectSelected);
+
+        if (piece instanceof THREE.Mesh){
+            this.s_objects.traverse((object3d) => {
+                if(object3d instanceof THREE.Mesh){
+                    if(object3d.name !== piece.name) {
+                        object3d.material.opacity = 0.3;
+                    } else {
+                        object3d.material.opacity = 1;
+                    }
+                }
+            })
+        } else if (piece instanceof THREE.Group){
+            this.s_objects.traverse((object3d) => {
+                if(object3d instanceof THREE.Mesh) {
+                    if (object3d.name !== piece.name){
+                        object3d.material.opacity = 0.3;
+                    }
                 }
             });
-
-            /*****************************************/
-            /*Set up of the object Control*/
-            if (this.s_objControls.visible){
-                if (piece !== this.s_objControls){
-                    this.s_objControls.detach(this.s_objControls);
-                    this.s_objControls.attach(piece);
+            piece.traverse(object3d => {
+                if(object3d instanceof THREE.Mesh) {
+                    if (object3d.name !== piece.name){
+                        object3d.material.opacity = 1;
+                    }
                 }
-            }
-
-            /*****************************************/
-            /*Get selected object*/
-            if (piece)
-                this.s_objectSelected = piece;
-
-            this.s_box.setFromObject(this.s_objectSelected);
-
-            if (piece instanceof THREE.Mesh){
-                this.s_objects.traverse((object3d) => {
-                    if(object3d instanceof THREE.Mesh){
-                        if(object3d.name !== piece.name) {
-                            object3d.material.opacity = 0.3;
-                        } else {
-                            object3d.material.opacity = 1;
-                        }
-                    }
-                })
-            } else if (piece instanceof THREE.Group){
-                this.s_objects.traverse((object3d) => {
-                    if(object3d instanceof THREE.Mesh) {
-                        if (object3d.name !== piece.name){
-                            object3d.material.opacity = 0.3;
-                        }
-                    }
-                });
-                piece.traverse(object3d => {
-                    if(object3d instanceof THREE.Mesh) {
-                        if (object3d.name !== piece.name){
-                            object3d.material.opacity = 1;
-                        }
-                    }
-                })
-            }
+            })
+        }
         /*****************************************/
         /* Outline the object */
         this.fitToScreen();
@@ -575,7 +605,8 @@ export default class Viewer {
      */
     save(socket){
         this.s_objects.traverse(object3D => {
-            socket.emit("[OBJECT 3D] - save", workspaceId, object3D.name, object3D.matrix);
+            if (object3D instanceof THREE.Group && object3D.userData.data)
+                socket.emit("[OBJECT 3D] - save", workspaceId, object3D.name, object3D.matrix);
         });
     }
 }

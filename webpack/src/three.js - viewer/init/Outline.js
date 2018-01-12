@@ -3,47 +3,54 @@ export default class Outline {
         this.material = new THREE.MeshBasicMaterial( { color: color, side: THREE.BackSide } );
         this.name = null;
         this.resetopacity = false;
+        this.mesh = new THREE.Group();
     }
 
     reset(scene){
         if (this.resetopacity){
             //Reset the opacity
             var object = scene.getObjectByName(this.name);
-            object.material.opacity = 0.3;
+            object.traverse(obj => {
+                if (obj instanceof THREE.Mesh)
+                    object.material.opacity = 0.3;
+            });
             this.resetopacity = false;
         }
         this.name = null;
         scene.remove(this.mesh);
         delete this.mesh;
+        this.mesh = new THREE.Group();
     }
 
     updatePosition(scene){
-        if (this.mesh){
+        if (this.mesh.name){
             var object = scene.getObjectByName(this.name);
             this.mesh.position.copy(object.getWorldPosition());
             this.mesh.quaternion.copy(object.getWorldQuaternion());
+            //this.mesh.multiplyScalar()
         }
     }
 
     addObject(scene, object){
         this.name = object.name;
-        object.copy(this.object, true);
-        console.log(this.mesh);
-        this.object.traverse(obj => {
-
+        this.mesh.copy(object, true);
+        this.mesh.traverse(obj => {
+            if(THREE.Mesh){
+                obj.material = this.material;
+            }
         });
-        this.object.position.copy(object.getWorldPosition());
-        this.object.quaternion.copy(object.getWorldQuaternion());
-        this.object.scale.multiplyScalar(1.05);
+        this.mesh.position.copy(object.getWorldPosition());
+        this.mesh.quaternion.copy(object.getWorldQuaternion());
+        this.mesh.scale.multiplyScalar(1.05);
 
-        if (object.material.opacity !== 1) {
-            object.material.opacity = 1;
-        this.resetopacity = true;
-        }
-
-        this.mesh.material.opacity = object.material.opacity;
-        console.log(this.mesh.material.opacity , object.material.opacity);
-        this.mesh.material = this.material;
+        object.traverse(obj => {
+            if (object instanceof THREE.Mesh){
+                if (obj.material.opacity !== 1) {
+                    obj.material.opacity = 1;
+                    this.resetopacity = true;
+                }
+            }
+        });
         scene.add(this.mesh);
     }
 }
