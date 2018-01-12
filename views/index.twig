@@ -71,4 +71,14 @@
     <script type="application/javascript" src="/js/logbox.js"></script>
     <script type="application/javascript" src="/js/signup.js"></script>
     <script type="application/javascript" src="/js/signin.js"></script>
+    {% if invitation %}
+        <script type="application/javascript">
+            $(document).ready(function () {
+                $("#signIn").click();
+                $("#workspaceName").val("{{ workspaceName }}").prop('disabled', true).parent().css("display", "none");
+                $("#completeName").val("{{ completeName }}");
+                $("h1#new-workspace").text("Give us some information");
+            });
+        </script>
+    {% endif %}
 {% endblock %}

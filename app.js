@@ -85,6 +85,7 @@ app.use(bodyParser.json());
 
 //TODO: Make an middleware which escape HTML characters for req.body & req.params
 //TODO: Make an middleware which check if user have permissions
+//TODO: Only char & number in workspace, no special char
 
 app.engine('twig', require('twig').__express);
 app.set("view engine", "twig");

@@ -39,7 +39,7 @@ InvitationSchema.post('save', function (invitation) {
 
     console.log("ici");
     let renderVar = {
-        completeName: invitation.completeName,
+        completeName: invitation.people.completeName,
         workspace: invitation.workspace,
         author : invitation.author,
         url: serverConfig.url + "/" + invitation.uid

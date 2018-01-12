@@ -32,8 +32,6 @@ function checkData(data) {
     let ret = [];
     for (let i = 0 ; i < data.length ; i++) {
         console.log("data[i] = ", data[i]);
-        if (!validateCompleteName(data[i].completeName))
-            data[i].completeName = "";
         if (validateEmail(data[i].email))
             ret.push(data[i]);
     }
