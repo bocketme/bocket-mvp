@@ -5,6 +5,7 @@
 module.exports = {
     port: "8080",
     protocol: "http",
+    url: "localhost:" + this.port,
     mongoDB: "mongodb://localhost/bocketmemvp",
     saltRounds: 10,
     tpm: require('path').resolve("../tpm"),

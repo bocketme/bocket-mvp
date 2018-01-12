@@ -2,22 +2,30 @@ let invitePeople = "invitePeople";
 const validateEmail = require("../utils/validate/validateEmail");
 const validateCompleteName = require("../utils/validate/validateCompleteName");
 const Invitation = require("../models/Invitation");
+const Workspace = require("../models/Workspace");
 
 /**
  * InvitePeopleListener
  * @param workspaceId : {string}
  * @param data : { [{}] }
  */
-function invitePeopleListener(workspaceId, data) {
+function invitePeopleListener(workspaceId, author, data) {
     if (!data.length) return ;
-    let people = checkData(data);
-    if (people.length && people.length > 0) {
-        console.log("workspaceid:", workspaceId)
-        let invitation = new Invitation({workspaceId : workspaceId, people: people});
-        invitation.save(invitation)
-            .then(i => console.log("Invitation saved", i))
-            .catch(err => console.log("error :", err));
-    }
+
+    Workspace.findById(workspaceId)
+        .then(workspace => {
+            let people = checkData(data);
+            if (people.length && people.length > 0) {
+                for (let i = 0 ; i < people.length ; i++) {
+                    console.log("people = ", people);
+                    let invitation = new Invitation({workspace : {id: workspaceId, name: workspace.name}, people: people[i], author: author});
+                    invitation.save(invitation)
+                        .then(i => console.log("Invitation saved", i))
+                        .catch(err => console.log("error :", err));
+                }
+            }
+        })
+        .catch(err => console.log(invitePeople, "error:", err));
 }
 
 function checkData(data) {
@@ -35,6 +43,6 @@ function checkData(data) {
 module.exports = (socket) => {
     socket.on(invitePeople, (data) => {
         console.log("data", data);
-        invitePeopleListener(socket.handshake.session.currentWorkspace, data)
+        invitePeopleListener(socket.handshake.session.currentWorkspace, socket.handshake.session.completeName, data)
     });
 };
