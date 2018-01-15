@@ -9,10 +9,13 @@ export default class Outline {
     reset(scene){
         if (this.resetopacity){
             //Reset the opacity
-            var object = scene.getObjectByName(this.name);
+            var object = scene.getObjectByName(this.name),
+                i = 0;
             object.traverse(obj => {
-                if (obj instanceof THREE.Mesh)
-                    object.material.opacity = 0.3;
+                if (obj instanceof THREE.Mesh){
+                    obj.material.opacity = 0.3;
+                    i++;
+                }
             });
             this.resetopacity = false;
         }
@@ -27,7 +30,6 @@ export default class Outline {
             var object = scene.getObjectByName(this.name);
             this.mesh.position.copy(object.getWorldPosition());
             this.mesh.quaternion.copy(object.getWorldQuaternion());
-            //this.mesh.multiplyScalar()
         }
     }
 

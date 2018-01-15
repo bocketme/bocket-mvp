@@ -202,15 +202,12 @@ export default class Viewer {
     }
 
     resize() {
-        var element = this.domElement;
-
-        this.p_camera.aspect = (element.clientWidth) / (element.clientHeight);
+        this.p_camera.aspect = (this.domElement.clientWidth) / (this.domElement.clientHeight);
+        this.p_renderer.setSize((this.domElement.offsetWidth), (this.domElement.offsetHeight));
         this.p_camera.updateProjectionMatrix();
-        this.p_renderer.setSize((element.offsetWidth), (element.offsetHeight));
-
     }
 
-    
+
 
     /* ************************************************************************** */
     /*                                                                            */
@@ -309,6 +306,7 @@ export default class Viewer {
             var part = this.s_objects.getObjectByName(intersect.userData.partName);
 
             if (this.outline.name == part.name) return;
+            this.outline.reset(this.p_scene);
             this.outline.reset(this.p_scene);
             this.outline.addObject(this.p_scene, part);
         } else{
@@ -418,7 +416,6 @@ export default class Viewer {
     addPart(file3D, nodeID, matrix, parentName) {
         var scene = parentName == null ? this.s_objects : this.p_scene.getObjectByName(parentName);
 
-
         if(!file3D){
             /**A remplacer **/
             var geometry = new THREE.BoxGeometry(50, 50, 50);
@@ -445,6 +442,7 @@ export default class Viewer {
                 sub_mesh.renderOrder = -1;
             }
         });
+
         scene.add(mesh);
     }
 

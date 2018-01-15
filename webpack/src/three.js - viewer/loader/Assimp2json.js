@@ -1,4 +1,5 @@
 //import Worker from './assimp2json.worker';
+import Outline from '../init/OutlineGeometry'
 
 export default function Assimp2json(nodeID, json) {
     function parseList(json, handler) {
@@ -34,7 +35,6 @@ export default function Assimp2json(nodeID, json) {
 
         geometry.setIndex( indices );
         geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
-
         if ( normals.length > 0 )
             geometry.addAttribute( 'normal', new THREE.Float32BufferAttribute( normals, 3 ) );
 
@@ -51,8 +51,14 @@ export default function Assimp2json(nodeID, json) {
 
     function parseMaterial( json ) {
 
-        var material = new THREE.MeshPhongMaterial();
+        var material = new THREE.LineDashedMaterial( {
+            color: 0xffffff,
+            linewidth: 20,
+            linecap: 'round', //ignored by WebGLRenderer
+            linejoin:  'round' //ignored by WebGLRenderer
+        } );
 
+        /*
         for ( var i in json.properties ) {
 
             var property = json.properties[ i ];
@@ -136,6 +142,7 @@ export default function Assimp2json(nodeID, json) {
             }
 
         }
+            */
 
         return material;
 
@@ -149,8 +156,10 @@ export default function Assimp2json(nodeID, json) {
 
         if (node.meshes){
             let idx =  node.meshes[ 0 ];
-            obj = new THREE.Mesh(meshes[ idx ], materials[ json.meshes[ idx ].materialindex ]);
-            obj.userData.partName = nodeID;
+            let mesh = new THREE.Mesh(meshes[ idx ], materials[ json.meshes[ idx ].materialindex ]);
+            mesh.userData.partName = nodeID;
+            var edges = new Outline( mesh.geometry );
+            obj = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0x000000 } ) );
 
         } else if (node.children){
             obj =  new THREE.Group();
