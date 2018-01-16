@@ -4,9 +4,8 @@
   "description": "Bocket web application.",
   "main": "app.js",
   "scripts": {
-    "test": "nodemon app.js -e js,twig,css,json",
-    "start": "nodemon app.js -e js,twig,css,json",
-    "webpack": "webpack"
+    "test": "webpack && nodemon app.js -e js,twig,css,json",
+    "start": "nodemon app.js -e js,twig,css,json"
   },
   "repository": {
     "type": "git",
