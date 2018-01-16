@@ -1,0 +1,73 @@
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+eval("/**\r\n * Worker who add a Part\r\n * @param event\r\n */\r\nonAddPart = function (event) {\r\n    let json = event.data;\r\n    var meshes = parseList(json.meshes, parseMesh);\r\n    var materials = parseList(json.materials, parseMaterial);\r\n    postMessage(parseObject(json, json.rootnode, meshes, materials));\r\n};\r\n\r\nfunction parseList(json, handler) {\r\n    let meshes;\r\n\r\n    for(let i = 0; i < json.length; ++ i){\r\n        meshes.push(handler.call( this , json[ i ] ));\r\n    }\r\n    return meshes;\r\n}\r\n\r\nfunction parseMesh( json ){\r\n    var geometry = new THREE.BufferGeometry();\r\n\r\n    var i, l, face;\r\n\r\n    var indices = [];\r\n\r\n    var vertices = json.vertices || [];\r\n    var normals = json.normals || [];\r\n    var uvs = json.texturecoords || [];\r\n    var colors = json.colors || [];\r\n\r\n    uvs = uvs[ 0 ] || []; // only support for a single set of uvs\r\n\r\n    for ( i = 0, l = json.faces.length; i < l; i ++ ) {\r\n\r\n        face = json.faces[ i ];\r\n        indices.push( face[ 0 ], face[ 1 ], face[ 2 ] );\r\n\r\n    }\r\n\r\n    geometry.setIndex( indices );\r\n    geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );\r\n\r\n    if ( normals.length > 0 )\r\n        geometry.addAttribute( 'normal', new THREE.Float32BufferAttribute( normals, 3 ) );\r\n\r\n    if ( uvs.length > 0 )\r\n        geometry.addAttribute( 'uv', new THREE.Float32BufferAttribute( uvs, 2 ) );\r\n\r\n    if ( colors.length > 0 )\r\n        geometry.addAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );\r\n\r\n    geometry.computeBoundingSphere();\r\n\r\n    return geometry;\r\n}\r\n\r\n\r\nfunction parseMaterial( json ) {\r\n\r\n    var material = new THREE.MeshPhongMaterial();\r\n\r\n    for ( var i in json.properties ) {\r\n\r\n        var property = json.properties[ i ];\r\n        var key = property.key;\r\n        var value = property.value;\r\n\r\n        switch ( key ) {\r\n\r\n            case '$tex.file': {\r\n                var semantic = property.semantic;\r\n\r\n                // prop.semantic gives the type of the texture\r\n                // 1: diffuse\r\n                // 2: specular mao\r\n                // 5: height map (bumps)\r\n                // 6: normal map\r\n                // more values (i.e. emissive, environment) are known by assimp and may be relevant\r\n\r\n                if ( semantic === 1 || semantic === 2 || semantic === 5 || semantic === 6 ) {\r\n                    var keyname;\r\n                    switch ( semantic ) {\r\n                        case 1:\r\n                            keyname = 'map';\r\n                            break;\r\n                        case 2:\r\n                            keyname = 'specularMap';\r\n                            break;\r\n                        case 5:\r\n                            keyname = 'bumpMap';\r\n                            break;\r\n                        case 6:\r\n                            keyname = 'normalMap';\r\n                            break;\r\n                    }\r\n\r\n                    var texture = textureLoader.load( value );\r\n\r\n                    // TODO: read texture settings from assimp.\r\n                    // Wrapping is the default, though.\r\n                    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;\r\n                    material[ keyname ] = texture;\r\n                }\r\n                break;\r\n            }\r\n\r\n            case '?mat.name':\r\n                material.name = value;\r\n                break;\r\n\r\n            case '$clr.diffuse':\r\n                material.color.fromArray( value );\r\n                break;\r\n\r\n            case '$clr.specular':\r\n                material.specular.fromArray( value );\r\n                break;\r\n\r\n            case '$clr.emissive':\r\n                material.emissive.fromArray( value );\r\n                break;\r\n\r\n            case '$mat.shininess':\r\n                material.shininess = value;\r\n                break;\r\n\r\n            case '$mat.shadingm':\r\n                // aiShadingMode_Flat\r\n                material.flatShading = ( value === 1 ) ? true : false;\r\n                break;\r\n\r\n            case '$mat.opacity':\r\n                if ( value < 1 ) {\r\n                    material.opacity = value;\r\n                    material.transparent = true;\r\n                }\r\n                break;\r\n        }\r\n    }\r\n    return material;\r\n}\r\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi92aWV3ZXIvc3JjL3RocmVlLmpzIC0gdmlld2VyL2xvYWRlci9hc3NpbXAyanNvbi53b3JrZXIuanM/NzZlZCJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7QUFFQTtBQUNBOztBQUVBLGtCQUFrQixpQkFBaUI7QUFDbkM7QUFDQTtBQUNBO0FBQ0E7O0FBRUE7QUFDQTs7QUFFQTs7QUFFQTs7QUFFQTtBQUNBO0FBQ0E7QUFDQTs7QUFFQSx5QkFBeUI7O0FBRXpCLHVDQUF1QyxPQUFPOztBQUU5QztBQUNBOztBQUVBOztBQUVBO0FBQ0E7O0FBRUE7QUFDQTs7QUFFQTtBQUNBOztBQUVBO0FBQ0E7O0FBRUE7O0FBRUE7QUFDQTs7O0FBR0E7O0FBRUE7O0FBRUE7O0FBRUE7QUFDQTtBQUNBOztBQUVBOztBQUVBO0FBQ0E7O0FBRUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOztBQUVBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOztBQUVBOztBQUVBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOztBQUVBO0FBQ0E7QUFDQTs7QUFFQTtBQUNBO0FBQ0E7O0FBRUE7QUFDQTtBQUNBOztBQUVBO0FBQ0E7QUFDQTs7QUFFQTtBQUNBO0FBQ0E7O0FBRUE7QUFDQTtBQUNBO0FBQ0E7O0FBRUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EiLCJmaWxlIjoiMC5qcyIsInNvdXJjZXNDb250ZW50IjpbIi8qKlxyXG4gKiBXb3JrZXIgd2hvIGFkZCBhIFBhcnRcclxuICogQHBhcmFtIGV2ZW50XHJcbiAqL1xyXG5vbkFkZFBhcnQgPSBmdW5jdGlvbiAoZXZlbnQpIHtcclxuICAgIGxldCBqc29uID0gZXZlbnQuZGF0YTtcclxuICAgIHZhciBtZXNoZXMgPSBwYXJzZUxpc3QoanNvbi5tZXNoZXMsIHBhcnNlTWVzaCk7XHJcbiAgICB2YXIgbWF0ZXJpYWxzID0gcGFyc2VMaXN0KGpzb24ubWF0ZXJpYWxzLCBwYXJzZU1hdGVyaWFsKTtcclxuICAgIHBvc3RNZXNzYWdlKHBhcnNlT2JqZWN0KGpzb24sIGpzb24ucm9vdG5vZGUsIG1lc2hlcywgbWF0ZXJpYWxzKSk7XHJcbn07XHJcblxyXG5mdW5jdGlvbiBwYXJzZUxpc3QoanNvbiwgaGFuZGxlcikge1xyXG4gICAgbGV0IG1lc2hlcztcclxuXHJcbiAgICBmb3IobGV0IGkgPSAwOyBpIDwganNvbi5sZW5ndGg7ICsrIGkpe1xyXG4gICAgICAgIG1lc2hlcy5wdXNoKGhhbmRsZXIuY2FsbCggdGhpcyAsIGpzb25bIGkgXSApKTtcclxuICAgIH1cclxuICAgIHJldHVybiBtZXNoZXM7XHJcbn1cclxuXHJcbmZ1bmN0aW9uIHBhcnNlTWVzaCgganNvbiApe1xyXG4gICAgdmFyIGdlb21ldHJ5ID0gbmV3IFRIUkVFLkJ1ZmZlckdlb21ldHJ5KCk7XHJcblxyXG4gICAgdmFyIGksIGwsIGZhY2U7XHJcblxyXG4gICAgdmFyIGluZGljZXMgPSBbXTtcclxuXHJcbiAgICB2YXIgdmVydGljZXMgPSBqc29uLnZlcnRpY2VzIHx8IFtdO1xyXG4gICAgdmFyIG5vcm1hbHMgPSBqc29uLm5vcm1hbHMgfHwgW107XHJcbiAgICB2YXIgdXZzID0ganNvbi50ZXh0dXJlY29vcmRzIHx8IFtdO1xyXG4gICAgdmFyIGNvbG9ycyA9IGpzb24uY29sb3JzIHx8IFtdO1xyXG5cclxuICAgIHV2cyA9IHV2c1sgMCBdIHx8IFtdOyAvLyBvbmx5IHN1cHBvcnQgZm9yIGEgc2luZ2xlIHNldCBvZiB1dnNcclxuXHJcbiAgICBmb3IgKCBpID0gMCwgbCA9IGpzb24uZmFjZXMubGVuZ3RoOyBpIDwgbDsgaSArKyApIHtcclxuXHJcbiAgICAgICAgZmFjZSA9IGpzb24uZmFjZXNbIGkgXTtcclxuICAgICAgICBpbmRpY2VzLnB1c2goIGZhY2VbIDAgXSwgZmFjZVsgMSBdLCBmYWNlWyAyIF0gKTtcclxuXHJcbiAgICB9XHJcblxyXG4gICAgZ2VvbWV0cnkuc2V0SW5kZXgoIGluZGljZXMgKTtcclxuICAgIGdlb21ldHJ5LmFkZEF0dHJpYnV0ZSggJ3Bvc2l0aW9uJywgbmV3IFRIUkVFLkZsb2F0MzJCdWZmZXJBdHRyaWJ1dGUoIHZlcnRpY2VzLCAzICkgKTtcclxuXHJcbiAgICBpZiAoIG5vcm1hbHMubGVuZ3RoID4gMCApXHJcbiAgICAgICAgZ2VvbWV0cnkuYWRkQXR0cmlidXRlKCAnbm9ybWFsJywgbmV3IFRIUkVFLkZsb2F0MzJCdWZmZXJBdHRyaWJ1dGUoIG5vcm1hbHMsIDMgKSApO1xyXG5cclxuICAgIGlmICggdXZzLmxlbmd0aCA+IDAgKVxyXG4gICAgICAgIGdlb21ldHJ5LmFkZEF0dHJpYnV0ZSggJ3V2JywgbmV3IFRIUkVFLkZsb2F0MzJCdWZmZXJBdHRyaWJ1dGUoIHV2cywgMiApICk7XHJcblxyXG4gICAgaWYgKCBjb2xvcnMubGVuZ3RoID4gMCApXHJcbiAgICAgICAgZ2VvbWV0cnkuYWRkQXR0cmlidXRlKCAnY29sb3InLCBuZXcgVEhSRUUuRmxvYXQzMkJ1ZmZlckF0dHJpYnV0ZSggY29sb3JzLCAzICkgKTtcclxuXHJcbiAgICBnZW9tZXRyeS5jb21wdXRlQm91bmRpbmdTcGhlcmUoKTtcclxuXHJcbiAgICByZXR1cm4gZ2VvbWV0cnk7XHJcbn1cclxuXHJcblxyXG5mdW5jdGlvbiBwYXJzZU1hdGVyaWFsKCBqc29uICkge1xyXG5cclxuICAgIHZhciBtYXRlcmlhbCA9IG5ldyBUSFJFRS5NZXNoUGhvbmdNYXRlcmlhbCgpO1xyXG5cclxuICAgIGZvciAoIHZhciBpIGluIGpzb24ucHJvcGVydGllcyApIHtcclxuXHJcbiAgICAgICAgdmFyIHByb3BlcnR5ID0ganNvbi5wcm9wZXJ0aWVzWyBpIF07XHJcbiAgICAgICAgdmFyIGtleSA9IHByb3BlcnR5LmtleTtcclxuICAgICAgICB2YXIgdmFsdWUgPSBwcm9wZXJ0eS52YWx1ZTtcclxuXHJcbiAgICAgICAgc3dpdGNoICgga2V5ICkge1xyXG5cclxuICAgICAgICAgICAgY2FzZSAnJHRleC5maWxlJzoge1xyXG4gICAgICAgICAgICAgICAgdmFyIHNlbWFudGljID0gcHJvcGVydHkuc2VtYW50aWM7XHJcblxyXG4gICAgICAgICAgICAgICAgLy8gcHJvcC5zZW1hbnRpYyBnaXZlcyB0aGUgdHlwZSBvZiB0aGUgdGV4dHVyZVxyXG4gICAgICAgICAgICAgICAgLy8gMTogZGlmZnVzZVxyXG4gICAgICAgICAgICAgICAgLy8gMjogc3BlY3VsYXIgbWFvXHJcbiAgICAgICAgICAgICAgICAvLyA1OiBoZWlnaHQgbWFwIChidW1wcylcclxuICAgICAgICAgICAgICAgIC8vIDY6IG5vcm1hbCBtYXBcclxuICAgICAgICAgICAgICAgIC8vIG1vcmUgdmFsdWVzIChpLmUuIGVtaXNzaXZlLCBlbnZpcm9ubWVudCkgYXJlIGtub3duIGJ5IGFzc2ltcCBhbmQgbWF5IGJlIHJlbGV2YW50XHJcblxyXG4gICAgICAgICAgICAgICAgaWYgKCBzZW1hbnRpYyA9PT0gMSB8fCBzZW1hbnRpYyA9PT0gMiB8fCBzZW1hbnRpYyA9PT0gNSB8fCBzZW1hbnRpYyA9PT0gNiApIHtcclxuICAgICAgICAgICAgICAgICAgICB2YXIga2V5bmFtZTtcclxuICAgICAgICAgICAgICAgICAgICBzd2l0Y2ggKCBzZW1hbnRpYyApIHtcclxuICAgICAgICAgICAgICAgICAgICAgICAgY2FzZSAxOlxyXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAga2V5bmFtZSA9ICdtYXAnO1xyXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7XHJcbiAgICAgICAgICAgICAgICAgICAgICAgIGNhc2UgMjpcclxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGtleW5hbWUgPSAnc3BlY3VsYXJNYXAnO1xyXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7XHJcbiAgICAgICAgICAgICAgICAgICAgICAgIGNhc2UgNTpcclxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGtleW5hbWUgPSAnYnVtcE1hcCc7XHJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBicmVhaztcclxuICAgICAgICAgICAgICAgICAgICAgICAgY2FzZSA2OlxyXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAga2V5bmFtZSA9ICdub3JtYWxNYXAnO1xyXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7XHJcbiAgICAgICAgICAgICAgICAgICAgfVxyXG5cclxuICAgICAgICAgICAgICAgICAgICB2YXIgdGV4dHVyZSA9IHRleHR1cmVMb2FkZXIubG9hZCggdmFsdWUgKTtcclxuXHJcbiAgICAgICAgICAgICAgICAgICAgLy8gVE9ETzogcmVhZCB0ZXh0dXJlIHNldHRpbmdzIGZyb20gYXNzaW1wLlxyXG4gICAgICAgICAgICAgICAgICAgIC8vIFdyYXBwaW5nIGlzIHRoZSBkZWZhdWx0LCB0aG91Z2guXHJcbiAgICAgICAgICAgICAgICAgICAgdGV4dHVyZS53cmFwUyA9IHRleHR1cmUud3JhcFQgPSBUSFJFRS5SZXBlYXRXcmFwcGluZztcclxuICAgICAgICAgICAgICAgICAgICBtYXRlcmlhbFsga2V5bmFtZSBdID0gdGV4dHVyZTtcclxuICAgICAgICAgICAgICAgIH1cclxuICAgICAgICAgICAgICAgIGJyZWFrO1xyXG4gICAgICAgICAgICB9XHJcblxyXG4gICAgICAgICAgICBjYXNlICc/bWF0Lm5hbWUnOlxyXG4gICAgICAgICAgICAgICAgbWF0ZXJpYWwubmFtZSA9IHZhbHVlO1xyXG4gICAgICAgICAgICAgICAgYnJlYWs7XHJcblxyXG4gICAgICAgICAgICBjYXNlICckY2xyLmRpZmZ1c2UnOlxyXG4gICAgICAgICAgICAgICAgbWF0ZXJpYWwuY29sb3IuZnJvbUFycmF5KCB2YWx1ZSApO1xyXG4gICAgICAgICAgICAgICAgYnJlYWs7XHJcblxyXG4gICAgICAgICAgICBjYXNlICckY2xyLnNwZWN1bGFyJzpcclxuICAgICAgICAgICAgICAgIG1hdGVyaWFsLnNwZWN1bGFyLmZyb21BcnJheSggdmFsdWUgKTtcclxuICAgICAgICAgICAgICAgIGJyZWFrO1xyXG5cclxuICAgICAgICAgICAgY2FzZSAnJGNsci5lbWlzc2l2ZSc6XHJcbiAgICAgICAgICAgICAgICBtYXRlcmlhbC5lbWlzc2l2ZS5mcm9tQXJyYXkoIHZhbHVlICk7XHJcbiAgICAgICAgICAgICAgICBicmVhaztcclxuXHJcbiAgICAgICAgICAgIGNhc2UgJyRtYXQuc2hpbmluZXNzJzpcclxuICAgICAgICAgICAgICAgIG1hdGVyaWFsLnNoaW5pbmVzcyA9IHZhbHVlO1xyXG4gICAgICAgICAgICAgICAgYnJlYWs7XHJcblxyXG4gICAgICAgICAgICBjYXNlICckbWF0LnNoYWRpbmdtJzpcclxuICAgICAgICAgICAgICAgIC8vIGFpU2hhZGluZ01vZGVfRmxhdFxyXG4gICAgICAgICAgICAgICAgbWF0ZXJpYWwuZmxhdFNoYWRpbmcgPSAoIHZhbHVlID09PSAxICkgPyB0cnVlIDogZmFsc2U7XHJcbiAgICAgICAgICAgICAgICBicmVhaztcclxuXHJcbiAgICAgICAgICAgIGNhc2UgJyRtYXQub3BhY2l0eSc6XHJcbiAgICAgICAgICAgICAgICBpZiAoIHZhbHVlIDwgMSApIHtcclxuICAgICAgICAgICAgICAgICAgICBtYXRlcmlhbC5vcGFjaXR5ID0gdmFsdWU7XHJcbiAgICAgICAgICAgICAgICAgICAgbWF0ZXJpYWwudHJhbnNwYXJlbnQgPSB0cnVlO1xyXG4gICAgICAgICAgICAgICAgfVxyXG4gICAgICAgICAgICAgICAgYnJlYWs7XHJcbiAgICAgICAgfVxyXG4gICAgfVxyXG4gICAgcmV0dXJuIG1hdGVyaWFsO1xyXG59XHJcblxuXG5cbi8vLy8vLy8vLy8vLy8vLy8vL1xuLy8gV0VCUEFDSyBGT09URVJcbi8vIC4vdmlld2VyL3NyYy90aHJlZS5qcyAtIHZpZXdlci9sb2FkZXIvYXNzaW1wMmpzb24ud29ya2VyLmpzXG4vLyBtb2R1bGUgaWQgPSAwXG4vLyBtb2R1bGUgY2h1bmtzID0gMCJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///0\n");
+
+/***/ })
+/******/ ]);
