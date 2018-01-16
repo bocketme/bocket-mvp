@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -15,16 +16,22 @@ module.exports = {
         path: path.resolve("./public/js/dist"),
     },
     plugins: [
+        new CleanWebpackPlugin(
+            ['dist'], {root: path.resolve("./public/js")}
+        ),
         new webpack.LoaderOptionsPlugin({
-          debug: true
+            debug: true
         })
-      ],
+    ],
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.worker\.js$/,
-                use: { loader: 'worker-loader' }
-            }
-        ]
+                use: {
+                    loader: 'worker-loader',
+                    options: {
+                    publicPath: '/js/dist/'
+                    }
+                }
+            }]
     }
 };

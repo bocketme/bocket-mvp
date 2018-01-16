@@ -2,7 +2,7 @@ import AxisScene from "./init/scene_axis";
 import Outline from "./init/Outline"
 import object3D from './loader/object3D';
 import * as Stats from 'stats.js';
-
+import Edges from './worker/OutlineGeometry.worker'
 /**
  * @description The Viewer integrated with THREE.JS
  * @author bocket.me
@@ -85,10 +85,17 @@ export default class Viewer {
         this.domElement = renderArea;
 
 
+        this.edges = new Edges();
+        this.edges.onmessage = (err, mesh, outline, log) => {
+            if (log)
+                console.log(log);
+            if (err)
+                console.warn(err);
+            else
+                mesh.add(outline);
+        };
+
         this.outline = new Outline("rgb(0, 255, 194)");
-
-
-
 
         /* Add the lights to the scene */
         this.lightsScene();
@@ -440,6 +447,7 @@ export default class Viewer {
                 sub_mesh.material.transparent = true;
                 sub_mesh.receiveShadow = true;
                 sub_mesh.renderOrder = -1;
+                //this.edges.postMessage({mesh});
             }
         });
 

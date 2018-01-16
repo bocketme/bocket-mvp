@@ -1,5 +1,5 @@
 //import Worker from './assimp2json.worker';
-import Outline from '../init/OutlineGeometry'
+import Outline from  '../init/OutlineGeometry';
 
 export default function Assimp2json(nodeID, json) {
     function parseList(json, handler) {
@@ -35,6 +35,7 @@ export default function Assimp2json(nodeID, json) {
 
         geometry.setIndex( indices );
         geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
+
         if ( normals.length > 0 )
             geometry.addAttribute( 'normal', new THREE.Float32BufferAttribute( normals, 3 ) );
 
@@ -51,14 +52,8 @@ export default function Assimp2json(nodeID, json) {
 
     function parseMaterial( json ) {
 
-        var material = new THREE.LineDashedMaterial( {
-            color: 0xffffff,
-            linewidth: 20,
-            linecap: 'round', //ignored by WebGLRenderer
-            linejoin:  'round' //ignored by WebGLRenderer
-        } );
+        var material = new THREE.MeshPhongMaterial();
 
-        /*
         for ( var i in json.properties ) {
 
             var property = json.properties[ i ];
@@ -142,7 +137,6 @@ export default function Assimp2json(nodeID, json) {
             }
 
         }
-            */
 
         return material;
 
@@ -150,17 +144,22 @@ export default function Assimp2json(nodeID, json) {
 
     function parseObject( json, node, meshes, materials ) {
 
-        let obj;
+        let obj = new THREE.Group();
 
         //console.log(node.name, node);
 
         if (node.meshes){
+
             let idx =  node.meshes[ 0 ];
             let mesh = new THREE.Mesh(meshes[ idx ], materials[ json.meshes[ idx ].materialindex ]);
             mesh.userData.partName = nodeID;
-            var edges = new Outline( mesh.geometry );
-            obj = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0x000000 } ) );
+            obj.add(mesh);
 
+            /*
+            let edges = new Outline(mesh.geometry);
+            let line =  new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0xffffff } ) );
+            obj.add(line);
+            */
         } else if (node.children){
             obj =  new THREE.Group();
 
@@ -169,14 +168,10 @@ export default function Assimp2json(nodeID, json) {
             }
 
         } else console.warn('[ERROR FILE] The node has nor children or mesh');
+        obj.name = node.name || '';
+        obj.matrix = new THREE.Matrix4().fromArray( node.transformation ).transpose();
+        obj.matrix.decompose( obj.position, obj.quaternion, obj.scale );
 
-        if (obj instanceof THREE.Mesh || obj instanceof THREE.Group){
-            obj.name = node.name || '';
-            obj.matrix = new THREE.Matrix4().fromArray( node.transformation ).transpose();
-            obj.matrix.decompose( obj.position, obj.quaternion, obj.scale );
-        } else console.warn('Err');
-
-        //console.log(obj);
         return obj;
     }
 

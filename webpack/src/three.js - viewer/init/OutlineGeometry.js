@@ -1,7 +1,6 @@
-var OutlinesGeometry = function( geometry, thresholdAngle ) {
+export default function OutlineGeometry ( geometry, thresholdAngle ) {
 
-   THREE.BufferGeometry.call(this);
-   console.log()
+    let outline = THREE.BufferGeometry();
 
     var thresholdDot = Math.cos( Math.PI / 180 * thresholdAngle );
 
@@ -122,10 +121,8 @@ var OutlinesGeometry = function( geometry, thresholdAngle ) {
 
     }
 
-    this.addAttribute( 'position', new THREE.Float32BufferAttribute( coords, 3 ) );
+    outline.addAttribute( 'position', new THREE.Float32BufferAttribute( coords, 3 ) );
+    console.log(outline);
+    return outline
+};
 
-}
-
-OutlinesGeometry.prototype = Object.create( THREE.BufferGeometry.prototype );
-OutlinesGeometry.prototype.constructor = OutlinesGeometry;
-export default OutlinesGeometry;
