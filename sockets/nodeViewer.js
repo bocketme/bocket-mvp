@@ -48,7 +48,7 @@ module.exports = socket => {
                     } else {
                         Part.findById(node.content)
                             .then((part) => {
-                                let chemin = path.join(config.gitfiles, part.path);
+                                let chemin = path.join(config.files3D, part.path);
                                 fs.readFile(chemin, 'utf8', (err, file) => {
                                     if(err){
                                         socket.emit('[viewer] -> error chargement', node._id, node.name, err);

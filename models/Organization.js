@@ -1,8 +1,11 @@
-let serverConfiguration = require("../config/server");
-let mongoose = require("mongoose");
-let uniqueValidator = require('mongoose-unique-validator');
-let User = require("./nestedSchema/NestedUserSchema");
-let Workspace = require("./nestedSchema/NesttedWorkspaceSchema");
+const serverConfiguration = require("../config/server");
+const mongoose = require("mongoose");
+const uniqueValidator = require('mongoose-unique-validator');
+const User = require("./nestedSchema/NestedUserSchema");
+const Workspace = require("./nestedSchema/NesttedWorkspaceSchema");
+const config = require('../config/server');
+const fs = require('fs');
+const path = require('path');
 
 let Node = new mongoose.Schema({
     name: {type: String, required: true}
@@ -16,7 +19,19 @@ let OrganizationSchema = new mongoose.Schema({
     // adresse : String
     node: [Node]
 });
-
+OrganizationSchema.post('save', (doc, next) => {
+    let organizationPath = path.join(config.files3D, '/' + doc.name);
+    fs.access(organizationPath, (err) => {
+        if (err){
+            fs.mkdir(path.join(organizationPath), (err) => {
+                if (err)
+                    return next(err);
+                return next();
+            })
+        } else
+            return next();
+    });
+});
 OrganizationSchema.plugin(uniqueValidator);
 
 let Organization = mongoose.model("Organization", OrganizationSchema, "Organizations");

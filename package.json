@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "webpack && nodemon app.js -e js,twig,css,json",
-    "start": "nodemon app.js -e js,twig,css,json"
+    "start":"nodemon app.js -e js,twig,css,json"
   },
   "repository": {
     "type": "git",
