@@ -27,15 +27,25 @@
                                 $('#'+nodeId+'-body').html(postRequest.response)
                                 var element = document.querySelectorAll('.three-node');
                                 $(element).click(loadNodeInformation);
+                            }  else if (postRequest.status === 404) {
+                                Materialize.toast("Not Found", 1000);
+                            } else if (postRequest.status === 401) {
+                                Materialize.toast("The selected node is not an assembly", 1000);
                             }
                         }
                     }, false);
-                    postRequest.addEventListener("error", transferFailed(event, nodeId), false);
-                    postRequest.addEventListener("abort", transferCanceled(event, nodeId), false);
+
+                    postRequest.addEventListener("error", function(event) {
+                        Materialize.toast("The Part was not created", 1000);
+                    }, false);
+                    postRequest.addEventListener("abort", function(event) {
+                        Materialize.toast("Network Error - The Part could not be created", 1000);
+                    }, false);
 
                     postRequest.open('POST', '/part/' + nodeId, true);
                     postRequest.send(formdata);
                     $("#import-part").modal("close");
+                    form.reset();
                     $("#form-import-part").find("input").val("");
                 } else
                 Materialize.toast("You must add a 3d File", 1000);
@@ -49,35 +59,41 @@
             var cible = third_column.$data.selected;
             if (cible !== "Select a node") {
                 if (document.getElementById('import_assembly_file3d').files[0]) {
-                    var nodeId = $('.selected-accordion').attr('id');
-                    var form = document.getElementById("form-import-assembly");
-                    var formdata = new FormData(form);
-                    var postRequest = new XMLHttpRequest();
-                    var chips = $('#tags-import-part').material_chip('data');
-                    var sub_level = $(nodeId).contents().filter("span").attr("data-sublevel");
-                    var breadcrumb = $(nodeId).contents().filter("span").attr("data-breadcrumbs");
+                    var nodeId = $('.selected-accordion').attr('id'),
+                        form = document.getElementById("form-import-assembly"),
+                        formdata = new FormData(form),
+                        postRequest = new XMLHttpRequest(),
+                        chips = $('#tags-import-part').material_chip('data'),
+                        sub_level = $(nodeId).contents().filter("span").attr("data-sublevel"),
+                        breadcrumb = $(nodeId).contents().filter("span").attr("data-breadcrumbs");
 
                     formdata.append("sub_level", sub_level);
                     formdata.append("breadcrmb", breadcrumb);
                     formdata.append("tags", JSON.stringify(chips));
+
                     postRequest.addEventListener("load", (reqEvent) => {
                         if (postRequest.readyState === postRequest.DONE) {
                             if (postRequest.status === 200) {
                                 $('#'+nodeId+'-body').html(postRequest.response);
                                 var element = document.querySelectorAll('.three-node');
                                 $(element).click(loadNodeInformation);
+                            } else if (postRequest.status === 404) {
+                                Materialize.toast("Not Found", 1000);
+                            } else if (postRequest.status === 401) {
+                                Materialize.toast("The selected node is not an assembly", 1000);
                             }
                         }
                     }, false);
-                    postRequest.addEventListener("error", (event) => {
-                        console.log("Failure of the transfert");
+                    postRequest.addEventListener("error", function(event) {
+                        Materialize.toast("The Part was not created", 1000);
                     }, false);
-                    postRequest.addEventListener("abort", (event) => {
-                        console.log("Cancel of the transfert");
+                    postRequest.addEventListener("abort", function(event) {
+                        Materialize.toast("Network Error - The Part could not be created", 1000);
                     }, false);
 
                     postRequest.open('POST', '/assembly/' + nodeId, true);
                     postRequest.send(formdata);
+                    form.reset();
                     $("#import-assembly").modal("close");
                     $("#form-import-assembly").find("input").val("");
                } else
@@ -95,44 +111,3 @@
 
     });
 })(jQuery); // end of jQuery name space
-
-/*
-const sendTheFile = (file, nodeId) => {
-    var reader = new FileReader();
-    //    var slice = 100000;
-    //    var i = 0;
-    //    var fragment;
-    //    var place;
-
-    reader.readAsArrayBuffer(file);
-    reader.onload = (event) => {
-        var arrayBuffer = reader.result;
-        socket.emit('writeStream', nodeId, {
-            name: file.name,
-            type: file.type,
-            size: file.size,
-            data: arrayBuffer
-        });
-    }
-    //    while(file.size > i * slice) {
-    //        place = i*slice;
-    //        fragment = file.slice(place, place + Math.min(100000, file.size - place))
-    //        reader.readAsArrayBuffer(fragment);
-    //        i++;
-    //    }
-}
-const updateProgress = (reqEvent) => {
-    console.log("Progress of the transfert");
-    if (reqEvent.lengthComputable) {
-        var percentComplete = reqEvent.loaded / reqEvent.total;
-        console.log(percentComplete + '%');
-        // ...
-    } else {
-        // Impossible de calculer la progression puisque la taille totale est inconnue
-    }
-},
-*/
-transferFailed = () => {
-},
-transferCanceled = () => {
-}
