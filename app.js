@@ -13,6 +13,7 @@ const fs = require('fs');
 const index = require("./routes/index");
 const signin = require("./routes/signin");
 const signup = require("./routes/signup");
+const signOut = require("./routes/signOut");
 const project = require("./routes/project");
 const node = require("./routes/node");
 const workspace = require("./routes/workspace");
@@ -26,8 +27,8 @@ const MongoStore = require('connect-mongo')(expressSession); //session store
 let session = expressSession({
     secret: config.secretSession,
     store: new MongoStore({ url: config.mongoDB}),
-    resave: false,
-    saveUninitialized: false
+    resave: true,
+    saveUninitialized: true
 });
 let sharedsession = require("express-socket.io-session");
 
@@ -62,7 +63,9 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(morgan('dev'));
 
 app.use(session);
-io.use(sharedsession(session));
+io.use(sharedsession(session, {
+    autoSave: true
+}));
 
 module.exports = app;
 
@@ -94,6 +97,7 @@ app.use("/", index);
 app.use("/user", user);
 app.use("/signin", signin);
 app.use("/signup", signup);
+app.use("/signOut", signOut);
 app.use("/project", project);
 app.use("/node", node);
 app.use("/workspace", workspace);

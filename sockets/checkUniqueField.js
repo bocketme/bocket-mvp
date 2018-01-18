@@ -23,7 +23,7 @@ module.exports = function (socket) {
                 if (result !== null)
                     socket.emit("uniqueFieldAlreadyUsed");
                 else
-                    socket.emit("uniqueFieldNotUsed");
+                    socket.emit("uniqueFieldNotUsed", );
             })
             .catch(err => {
                 console.log("checkUniqueField :", err);

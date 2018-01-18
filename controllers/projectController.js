@@ -29,7 +29,6 @@ module.exports = {
             return ;
         }
         if (!req.session.userMail) {
-            console.log("User n'a pas de session");
             User.findOne({email: req.body.email})
             .then(result => {
                 result.comparePassword(req.body.password, (err, isMatch) => {
@@ -38,8 +37,8 @@ module.exports = {
                         res.sendStatus(500);
                     }
                     else if (!isMatch) {
-                        console.log("result not matches !");
-                        res.redirect("/sigin");
+                        console.log("User n'est pas connecté !");
+                        res.redirect("/signIn");
                     }
                     else {
                         req.session.userMail = result.email;

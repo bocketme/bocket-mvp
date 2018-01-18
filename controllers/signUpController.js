@@ -4,6 +4,7 @@ const nodeMasterConfig = require("../config/nodeMaster");
 const NodeSchema = require("../models/Node");
 const AssemblySchema = require("../models/Assembly");
 const NodeTypeEnum = require("../enum/NodeTypeEnum");
+let signInUserSession = require("../utils/signInUserSession");
 
 let signUpController = {
 
@@ -61,7 +62,6 @@ let signUpController = {
                                             }],
                                             owners: [{
                                                 _id: newUser._id,
-                                                completeName: newUser.completeName,
                                                 email: newUser.email
                                             }],
                                             Workspaces: [newWorkspace._id]
@@ -87,6 +87,7 @@ let signUpController = {
                                                                         throw err
                                                                     });
                                                             })
+                                                completeName: newUser.completeName,
                                                             .catch(err => {
                                                                 console.log("error on updating user: " + err);
                                                                 newAssembly.remove();
