@@ -12,13 +12,14 @@ const Workspace = require("../models/Workspace");
 function invitePeopleListener(workspaceId, author, data) {
     if (!data.length) return ;
 
+    console.log("WorkspaceId :", workspaceId);
     Workspace.findById(workspaceId)
         .then(workspace => {
             let people = checkData(data);
             if (people.length && people.length > 0) {
                 for (let i = 0 ; i < people.length ; i++) {
                     console.log("people = ", people);
-                    let invitation = new Invitation({workspace : {id: workspaceId, name: workspace.name}, people: people[i], author: author});
+                    let invitation = new Invitation({workspace : {id: workspaceId, name: workspace.name}, organization: {id : workspace.organization._id, name: workspace.organization.name}, people: people[i], author: author});
                     invitation.save(invitation)
                         .then(i => console.log("Invitation saved", i))
                         .catch(err => console.log("error :", err));

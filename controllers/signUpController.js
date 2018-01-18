@@ -49,6 +49,7 @@ let signUpController = {
                                     Workspace.findById(inv.workspace.id)
                                         .then(w => {
                                             newUser.workspaces.push({_id: w._id, name: w.name});
+                                            newUser.organizations.push(inv.organization);
                                             w.users.push({_id: user._id, completeName: newUser.completeName, email: newUser.email});
                                             newUser.save()
                                                 .then(() => {
@@ -57,8 +58,11 @@ let signUpController = {
                                                             inv.remove();
                                                             req.session = signInUserSession(req.session, {email: user.email});
                                                             res.redirect("project/" + w._id);
+                                                            req.session.completeName = newUser.completeName;
+                                                            req.session.currentWorkspace = w._id;
+
                                                         })
-                                                        .catch(err => {
+                                                        .catch(() => {
                                                             newOrga.remove();
                                                             newUser.remove();
                                                         });
@@ -98,6 +102,8 @@ let signUpController = {
                                                             newOrga.save()
                                                                 .then(() => {
                                                                     req.session = signInUserSession(req.session, {email: user.email});
+                                                                    req.session.completeName = newUser.completeName;
+                                                                    req.session.currentWorkspace = newWorkspace._id;
                                                                     res.redirect("project/" + workspace._id);
                                                                 })
                                                                 .catch(err => {

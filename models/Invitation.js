@@ -17,10 +17,16 @@ let nestedWorkspaceSchema = mongoose.Schema({
     id : {type: String, required : true}
 });
 
+let nestedOrganization = mongoose.Schema({
+    name : {type :String, required: true},
+    id : {type :String, required: true},
+});
+
 let InvitationSchema = mongoose.Schema({
     uid: { type: String, default: "" },
     author : {type : String, required: true},
     workspace : {type: nestedWorkspaceSchema, required: true},
+    organization : {type: nestedWorkspaceSchema, required: true},
     people : { type : nestedPeopleSchema }
 });
 
@@ -54,6 +60,8 @@ InvitationSchema.post('save', function (invitation) {
             //html: `uid = <a href="google.com">${invitation.uid}</a>`
         };
 
+        console.log("mailOptions = ", mailOptions);
+
         mailTransporter.sendMail(mailOptions, function(error, info) {
             if (error) {
                 console.log(error);
@@ -67,6 +75,7 @@ InvitationSchema.post('save', function (invitation) {
 nestedPeopleSchema.plugin(uniqueValidator);
 nestedWorkspaceSchema.plugin(uniqueValidator);
 InvitationSchema.plugin(uniqueValidator);
+nestedOrganization.plugin(uniqueValidator);
 
 let Invitation = mongoose.model("Invitation", InvitationSchema, "Invitations");
 

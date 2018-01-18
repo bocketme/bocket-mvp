@@ -18,7 +18,6 @@ $(document).ready(function() {
                     hideBox($(boxId), function () {
                         $("#hiddenEmail").val(email.val());
                         $("#hiddenPassword").val($("#password").val());
-                        $("#hiddenInvitationUid").val(invitationUid);
                         showBox($(workspaceBoxId));
                     });
                 },

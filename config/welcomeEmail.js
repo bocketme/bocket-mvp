@@ -1,5 +1,5 @@
 module.exports = {
     email: "welcome@bocket.me",
-    password: "bocketme",
+    password: "bocket01",
     service: "gmail"
 };
