@@ -77,7 +77,10 @@
     <script type="application/javascript" src="/js/logbox.js"></script>
     <script type="application/javascript" src="/js/signup.js"></script>
     <script type="application/javascript" src="/js/signin.js"></script>
-    {% if invitation %}
+    {% if not invitation %}
+        <script type="application/javascript" src="/js/signInEvents.js"></script>
+    {% else %}
+        <script type="application/javascript" src="/js/signinInvitationEvents.js"></script>
         <script type="application/javascript">
             $(document).ready(function () {
                 $("#signIn").click();
@@ -85,6 +88,15 @@
                 $("#completeName").val("{{ completeName }}");
                 $("h1#new-workspace").text("Give us some information");
                 $("#hiddenInvitation").val(invitationUid);
+
+                socket.on(signInSucceed, function (signinInfo) {
+                    console.log("ICIIIIIIIIIII");
+                    $("#emailWorkspace").val($("#emailSignIn").val());
+                    $("#passwordlWorkspace").val($("#passwordSignIn").val());
+                    $("#invitationUidWorkspacePicker").val(invitationUid);
+                    $("#signIn-btn-picker").click();
+                });
+
             });
         </script>
     {% endif %}
