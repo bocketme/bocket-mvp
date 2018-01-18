@@ -2,12 +2,13 @@ let escape = require('escape-html');
 let ModelsMaker = require("../models/utils/create/ModelsMaker");
 let nodeMasterConfig = require("../config/nodeMaster");
 let NodeSchema = require("../models/Node");
+let Team = require("../models/Team");
 
 let signUpController = {
-
+    
     // TODO: FAILLE XSS
-
-    index : function(req, res) {
+    
+    index: function (req, res) {
         let tasks = [
             checkEmail,
             checkPassword,
@@ -15,69 +16,87 @@ let signUpController = {
             checkOrganizationName,
             checkWorkspaceName,
         ];
-        for (let i = 0 ; i < tasks.length ; i++) {
+        for (let i = 0; i < tasks.length; i++) {
             if (tasks[i](req.body) === false) {
                 console.log("Error occured on signing up user on task[" + i + "]");
                 return res.redirect("/");
             }
         }
-
+        
         let user = ModelsMaker.CreateUser(req, [], []);
         user.save()
-            .then(newUser => {
-                console.log("new user has been add", newUser);
-                let organization = ModelsMaker.CreateOrganization(req.body.organizationName, newUser);
-                organization.save()
-                    .then(newOrga => {
-                        console.log("\n\nnew organization has been add", newOrga);
-                        newUser.organizations.push({_id: newOrga._id, name: newOrga.name});
-                        let workspace = ModelsMaker.CreateWorkspace(req.body.workspaceName, newOrga, newUser);
-                        workspace.save()
+        .then(newUser => {
+            console.log("new user has been add", newUser);
+            let organization = ModelsMaker.CreateOrganization(req.body.organizationName, newUser);
+            organization.save()
+            .then(newOrga => {
+                console.log("\n\nnew organization has been add", newOrga);
+                newUser.organizations.push({ _id: newOrga._id, name: newOrga.name });
+                //ajout du team guillaume 17/01/18
+                
+                let team = Team.newDocument({
+                    owners: [{
+                        _id: newUser._id,
+                        completeName: newUser.completeName,
+                        email: newUser.email,
+                    }]
+                })
+                team.save()
+                .then(newTeam => {
+                    console.log("\n\nnew team has been add", newTeam);
+                    //fin ajout team
+                    let workspace = ModelsMaker.CreateWorkspace(req.body.workspaceName, newOrga, newUser, newTeam);
+                    workspace.save()
+                    .then(newWorkspace => {
+                        console.log("\n\nnew workspace has been add", newWorkspace);
+                        //let nodeMaster = ModelsMaker.CreateNode(nodeMasterConfig.name, nodeMasterConfig.description, newWorkspace._id);
+                        //nodeMaster.save()
+                        let nodeMaster = NodeSchema.initializeNode(nodeMasterConfig.name, nodeMasterConfig.description, newWorkspace._id, { _id: newUser._id, completeName: newUser.completeName, email: newUser.email }, newTeam);
+                        nodeMaster.save()
+                        .then(nodeMaster => {
+                            newWorkspace.node_master = nodeMaster;
+                            newWorkspace.save()
                             .then(newWorkspace => {
-                                console.log("\n\nnew workspace has been add", newWorkspace);
-                                //let nodeMaster = ModelsMaker.CreateNode(nodeMasterConfig.name, nodeMasterConfig.description, newWorkspace._id);
-                                //nodeMaster.save()
-                                let nodeMaster = NodeSchema.initializeNode(nodeMasterConfig.name, nodeMasterConfig.description, newWorkspace._id, { _id: newUser._id, completeName: newUser.completeName, email: newUser.email });
-                                nodeMaster.save()
-                                    .then(nodeMaster => {
-                                        newWorkspace.node_master = nodeMaster;
-                                        newWorkspace.save()
-                                            .then(newWorkspace => {
-                                                newUser.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
-                                                newUser.save()
-                                                    .then(() => {
-                                                        newOrga.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
-                                                        newOrga.save()
-                                                            .catch(err => {
-                                                                throw err
-                                                            });
-                                                    })
-                                                    .catch(err => {
-                                                        console.log("error on updating user: " + err);
-                                                        newOrga.remove();
-                                                        newUser.remove();
-                                                        newWorkspace.remove();
-                                                    })
-                                            })
-                                    })
+                                newUser.workspaces.push({ _id: newWorkspace._id, name: newWorkspace.name });
+                                newUser.save()
+                                .then(() => {
+                                    newOrga.workspaces.push({ _id: newWorkspace._id, name: newWorkspace.name });
+                                    newOrga.save()
                                     .catch(err => {
-                                        console.log("[signupController] error on saving node master");
-                                        newOrga.remove();
-                                        newUser.remove();
-                                    })
+                                        throw err
+                                    });
+                                })
+                                .catch(err => {
+                                    console.log("error on updating user: " + err);
+                                    newOrga.remove();
+                                    newUser.remove();
+                                    newWorkspace.remove();
+                                })
                             })
-                            .catch(err => {
-                                console.log("error on creating workspace: " + err);
-                                newOrga.remove();
-                                newUser.remove();
-                            })
+                        })
+                        .catch(err => {
+                            console.log("[signupController] error on saving node master");
+                            newOrga.remove();
+                            newUser.remove();
+                        })
                     })
                     .catch(err => {
-                        console.log("error on creating organization: " + err);
+                        console.log("error on creating workspace: " + err);
+                        newOrga.remove();
                         newUser.remove();
-                    });
+                    })
+                    
+                })
+                .catch(err => {
+                    console.error(err);
+                })
             })
             .catch(err => {
+                console.log("error on creating organization: " + err);
+                newUser.remove();
+            });
+        })
+        .catch(err => {
             console.log("error on creating user: " + err);
         });
         res.send(req.body);
@@ -89,7 +108,7 @@ let passwordInfo = {
 };
 
 let emailInfo = {
-  minlength: 4
+    minlength: 4
 };
 
 let organizationNameInfo = {
@@ -132,8 +151,7 @@ function checkEmail(body) {
     return basicCheck(body.email, emailInfo);
 }
 
-function basicCheck(parameter, parameterInfo)
-{
+function basicCheck(parameter, parameterInfo) {
     return parameter !== undefined && parameter !== "" && parameter.length >= parameterInfo.minlength;
 }
 

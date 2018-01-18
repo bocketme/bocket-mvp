@@ -9,6 +9,7 @@ let NodeTypeEnum = require("../enum/NodeTypeEnum");
 let NestedSpecFiles = require('./nestedSchema/NestedSpecFile');
 let TypeEnum = require('../enum/NodeTypeEnum');
 let NestedAnnotation = require('./nestedSchema/NestedAnnotation');
+let NestedTeam = require('./nestedSchema/NestedTeamSchema');
 const THREE = require('three');
 
 let NestedWorkspace = mongoose.Schema({
@@ -26,7 +27,7 @@ let NodeSchema = mongoose.Schema({
     children: {type: [NestedNode], default: []},
     created: {type: Date, default:  Date.now()},
     modified: {type: Date, default: Date.now()},
-    Users: {type: [NestedUser], default: []},
+    team: {type: NestedTeam, required: true},
     matrix: {type:[] ,default: new THREE.Matrix4()},
     Workspace: [String],
     owners: {type: [NestedUser], default: []},
@@ -36,13 +37,14 @@ let NodeSchema = mongoose.Schema({
 
 NodeSchema.plugin(uniqueValidator);
 
-NodeSchema.statics.initializeNode = (name, description, workspaces, user) => {
+NodeSchema.statics.initializeNode = (name, description, workspaces, user, team) => {
     return new Node({
         name: name,
         description: description,
         Workspace: workspaces,
         Users: user,
-        type: TypeEnum.assembly
+        type: TypeEnum.assembly,
+        team: team
     })
 };
 
