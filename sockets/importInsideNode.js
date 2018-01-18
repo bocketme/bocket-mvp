@@ -1,3 +1,4 @@
+//TODO Destroy this file or reuse it elsewhere
 let escape = require('escape-html');
 let internalErrorEmitter = require("./emitter/internalErrorEmitter");
 let serverConfig = require('../config/server');
@@ -19,6 +20,7 @@ let construct = {
     slice: 0,
 };
 
+//TODO
 module.exports = (socket) => {
     socket.on("createFile", (nodeId, access) => {
         //Verify the user rights
@@ -31,7 +33,7 @@ module.exports = (socket) => {
     });
 
     socket.on("writeStream", (nodeId, access, data) => {
-        let writeStream = fs.createWriteStream(path.join(serverConfig.gitfiles, nodeId, access));
+        let writeStream = fs.createWriteStream(path.join(serverConfig.files3D, nodeId, access));
         writeStream.write(data, (err) => {
             socket.emit("ErrorToast");
         });
@@ -49,7 +51,11 @@ module.exports = (socket) => {
                     console.log("Socket [importPart] : The node is a assembly, it should be a part.");
                     socket.emit('ErrorToast', "The node " + part.name + "could'nt be send, please try again later")
                 } else {
-                    let part = Part.initialize(partObj.name, partObj.description, partObj.file3d, partObj.specFiles);
+                    let part = Part.create({
+                        name: partObj.name,
+                        description: partObj.description,
+                        inOrganization: node.Workspaces[0],
+                    });
                     part.save()
                         .then((newPart) => {
                             node.type = typeEnum.part;
@@ -83,7 +89,11 @@ module.exports = (socket) => {
                     console.log("Socket [importPart] : The node is a assembly, it should be a part.");
                     socket.emit('ErrorToast', "The node " + part.name + "could'nt be send, please try again later")
                 } else {
-                    let assembly = Part.initialize(assemblyObj.name, assemblyObj.description, assemblyObj.file3d, assemblyObj.specFiles);
+                    let assembly = Part.create({
+                        name: assemblyObj.name,
+                        description: assemblyObj.description,
+                        in
+                    });
                     assembly.save()
                         .then((newPart) => {
                             node.type = typeEnum.assembly;

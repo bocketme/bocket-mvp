@@ -13,11 +13,19 @@ let UserSchema = new mongoose.Schema({
     password: {type: String, required: true},
     active: Boolean,
     createDate: Date,
-    photo: {type: String, default: "bocket.png" },
     workspaces: { type : [NestedWorkspaceSchema]},
     organizations: {type: [NestedOrganizationSchema]},
-    avatar: {type: String, default: null}
+    avatar: {type: String, default: "bocket.png"}
 });
+
+/**
+ * 
+ * 
+ * @param {Object} UserInformation 
+ */
+UserSchema.statics.newDocument = (UserInformation) => {
+    return new User(UserInformation);
+}
 
 UserSchema.pre('save', function(next) {
     let user = this;

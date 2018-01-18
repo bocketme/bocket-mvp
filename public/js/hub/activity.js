@@ -26,7 +26,6 @@ $(document).ready(function() {
     socket.on("getActivities", function (context) {
         var activities = context.activities;
         var ul = (context.viewType === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
-        console.log("getActivity", context);
         for (var i = activities.length - 1; i >= 0 ; i--) {
             let comment = activities[i];
             printActivityComment($(ul + " li:first"), comment, comment.formatDate);

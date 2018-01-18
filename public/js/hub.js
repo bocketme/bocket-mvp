@@ -40,7 +40,6 @@
 
         //Socket
         socket.on("nodeLocation", (node) => {
-            console.log(node);
             locationVue.nodeInformation(node);
             locationVue.maturityInformation(node.maturity);
             if ($('#location').hasClass('hide') || $('#content').hasClass('hide')) {
@@ -61,8 +60,7 @@
             if(collapsible_body.hasClass("container")) {
                 collapsible_body.removeClass("container");
                 collapsible_body.html(html);
-                var element = document.querySelectorAll('.three-node');
-                $(element).click(loadNodeInformation);  
+                $(".collapsible").collapsible();
             }
         });
         var views = $(".view");
@@ -76,6 +74,13 @@
             $(this).removeClass("viewNotHover");
         views.mouseover(function () {
             $(this).addClass("viewHover");
+        });
+
+        $('.part-editor').click((event) => {
+            if(idOfchoosenNode){
+                let part = "/part/"+idOfchoosenNode+"/modeler";
+                window.open(part, '_blank');
+            }else Materialize.toast("You must select a part", 1000);
         });
 
         views.on("click", function () {

@@ -61,7 +61,6 @@ typings/
 .env
 
 converter/
-public/js/dist
-convertisseur/release/
-
 convertisseur/
+viewer/
+data/

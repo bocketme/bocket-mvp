@@ -1,12 +1,14 @@
 const path = require('path');
-const webpack = require('webpack')
+const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     entry: {
-        threejs:"./webpack/src/three.js - viewer/main.js",
-        webgl: "./webpack/src/webgl - viewer/main.js",
+        threejs:"./viewer/src/three.js - viewer/main.js",
+        webgl: "./viewer/src/webgl - viewer/main.js",
+        babylon:"./viewer/src/babylon.js - viewer/main.js",
     },
-    watch: true,
+    watch: false,
     devtool: "eval-source-map",
     target: "web",
     output: {
@@ -14,8 +16,22 @@ module.exports = {
         path: path.resolve("./public/js/dist"),
     },
     plugins: [
+        new CleanWebpackPlugin(
+            ['dist'], {root: path.resolve("./public/js/")}
+        ),
         new webpack.LoaderOptionsPlugin({
-          debug: true
+            debug: true
         })
-      ]
+    ],
+    module: {
+        rules: [{
+            test: /\.worker\.js$/,
+            use: {
+                loader: 'worker-loader',
+                options: {
+                    publicPath: '/js/dist/'
+                }
+            }
+        }]
+    }
 };
