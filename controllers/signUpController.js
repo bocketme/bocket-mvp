@@ -4,6 +4,9 @@ const nodeMasterConfig = require("../config/nodeMaster");
 const NodeSchema = require("../models/Node");
 const AssemblySchema = require("../models/Assembly");
 const NodeTypeEnum = require("../enum/NodeTypeEnum");
+const OrganizationSchema = require("../models/Organization");
+const UserSchema = require("../models/User");
+const WorkspaceSchema = require("../models/Workspace");
 let signInUserSession = require("../utils/signInUserSession");
 let Team = require("../models/Team");
 
@@ -26,137 +29,135 @@ let signUpController = {
             }
         }
         
-        let user = ModelsMaker.CreateUser(req, [], []);
-        user.save()
-        .then(newUser => {
-            let organization = ModelsMaker.CreateOrganization(req.body.organizationName, newUser);
-            .then(newOrga => {
-            organization.save()
-            console.log("new user has been add", newUser);
-                console.log("\n\nnew organization has been add", newOrga);
-                newUser.organizations.push({ _id: newOrga._id, name: newOrga.name });
-                //ajout du team guillaume 17/01/18
-                let team = Team.newDocument({
-                
-                        _id: newUser._id,
-                    owners: [{
-                        completeName: newUser.completeName,
-                    }]
-                        email: newUser.email,
-                })
-                team.save()
-                    console.log("\n\nnew team has been add", newTeam);
-                .then(newTeam => {
-                    let workspace = ModelsMaker.CreateWorkspace(req.body.workspaceName, newOrga, newUser, newTeam);
-                    //fin ajout team
-                    .then(newWorkspace => {
-                    workspace.save()
-                        .then(nodeMaster => {
-                        nodeMaster.save()
-                            newWorkspace.save()
-                            newWorkspace.node_master = nodeMaster;
-                        //let nodeMaster = ModelsMaker.CreateNode(nodeMasterConfig.name, nodeMasterConfig.description, newWorkspace._id);
-                        //nodeMaster.save()
-                        let nodeMaster = NodeSchema.initializeNode(nodeMasterConfig.name, nodeMasterConfig.description, newWorkspace._id, { _id: newUser._id, completeName: newUser.completeName, email: newUser.email }, newTeam);
-                        console.log("\n\nnew workspace has been add", newWorkspace);
-                            .then(newWorkspace => {
-                                newUser.workspaces.push({ _id: newWorkspace._id, name: newWorkspace.name });
-                                newUser.save()
-                                .then(() => {
-                                    newOrga.workspaces.push({ _id: newWorkspace._id, name: newWorkspace.name });
-                                    newOrga.save()
-                                console.log("\n\nnew workspace has been add \n", newWorkspace);
-                                let assembly = AssemblySchema.newDocument({
-                                    name: nodeMasterConfig.name,
-                                    description: nodeMasterConfig.description,
-                                    ownerOrganization: {
-                                        _id: newOrga._id,
-                                        name: newOrga.name
-                                    },
-                                });
-                                console.log("assembly - " , assembly);
-                                assembly.save()
-                                    .then(newAssembly => {
-                                        console.log("\n\nnew assembly has been add \n", newAssembly);
-                                        let nodeMaster = NodeSchema.newDocument({
-                                            name: nodeMasterConfig.name,
-                                            description: nodeMasterConfig.description,
-                                            type: NodeTypeEnum.assembly,
-                                            content: newAssembly._id,
-                                            Users: [{
-                                                _id: newUser._id,
-                                                completeName: newUser.completeName,
-                                                email: newUser.email
-                                            }],
-                                            owners: [{
-                                                _id: newUser._id,
-                                                email: newUser.email
-                                            }],
-                                            Workspaces: [newWorkspace._id]
-                                        });
-                                        nodeMaster.save()
-                                            .then(nodeMaster => {
-                                                newWorkspace.node_master = nodeMaster;
-                                                newWorkspace.save()
-                                                    .then(newWorkspace => {
-                                                        newUser.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
-                                                        newUser.save()
-                                                            .then(() => {
-                                                                newOrga.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
-                                                                newOrga.save()
-                                                                    .then(() => {
-                                                                        newAssembly.whereUsed.push(nodeMaster._id);
-                                                                        newAssembly.save()
-                                                                            .catch(err => {
-                                                                                throw err
-                                                                            })
-                                                                    })
-                                                                    .catch(err => {
-                                                                        throw err
-                                                                    });
-                                                            })
-                                                completeName: newUser.completeName,
-                                                            .catch(err => {
-                                                                console.log("error on updating user: " + err);
-                                                                newAssembly.remove();
-                                                                newOrga.remove();
-                                                                newUser.remove();
-                                                                newWorkspace.remove();
-                                                            })
-                                                    })
-                                            })
-                                            .catch(err => {
-                                                console.log("[signupController] error on saving node master - " + err);
-                                                newAssembly.remove();
-                                                newOrga.remove();
-                                                newUser.remove();
-                                            })
-                                    })
-                                    .catch(err => {
-                                        console.error(new Error("[signupController] error on saving the assembly - " + err));
-                                        newOrga.remove();
-                                        newUser.remove();
-                                    });
-                            })
-                            .catch(err => {
-                                console.error("error on creating workspace: " + err);
-                                newOrga.remove();
-                                newUser.remove();
-                            })
-                    })
-                    .catch(err => {
-                        console.error("error on creating organization: " + err);
-                        newUser.remove();
-                    })
-                    
-                })
-                .catch(err => {
-                    console.error(err);
-                })
+        let Documents = {}
+        
+        Documents.user = UserSchema.newDocument({
+            completeName: req.body.completeName,
+            password : req.body.password,
+            email : req.body.email,
+            workspaces: [],
+            organizations: []
+        });
+        Documents.user.save()
+        .then((newUser) => {
+            Documents.user = newUser
+            console.log(Documents.user);
+            Documents.organization = OrganizationSchema.newDocument({
+                owner: {
+                    _id: Documents.user._id, 
+                    completeName: Documents.user.completeName, 
+                    email: Documents.user.email
+                },
+                members: [{
+                    _id: Documents.user._id, 
+                    completeName: Documents.user.completeName, 
+                    email: Documents.user.email
+                }],
+                name: req.body.organizationName
             })
-            .catch(err => {
-                console.error("error on creating user: " + err);
+            return Documents.organization.save();
+        })
+        .then(newOrga => {
+            Documents.organization = newOrga;
+            console.log("new Organization is created", newOrga);
+            let team = Team.newDocument({
+                owners: [{
+                    completeName: Documents.user.completeName,
+                }],
+                email: Documents.user.email,
+            })
+            return team.save();
+        })
+        .then(newTeam => {
+            Documents.team = newTeam
+            console.log("\n\nnew team has been add", newTeam);
+            Documents.workspace = WorkspaceSchema({
+                name : name,
+                owner: {
+                    _id:            Documents.user._id, 
+                    completeName:   Documents.user.completeName, 
+                    email:          Documents.user.email
+                },
+                organization: {
+                    _id:    Documents.organization._id, 
+                    name:   Documents.organization.name, 
+                },
+                team: {
+                    _id:        Documents.team._id, 
+                    owners:     Documents.team.owners, 
+                    members:    Documents.team.members, 
+                    consults:   Documents.team.consults
+                }
             });
+            return Documents.workspace.save()
+        })
+        .then(newWorkspace => {
+            Documents.workspace = newWorkspace;
+            console.log("\n\nnew workspace has been add \n", Documents.workspace);
+            Documents.user.push({ _id: Documents.workspace._id, name: Documents.workspace.name });
+            return Documents.user.save();
+        })
+        .then(() => {
+            Documents.assembly = AssemblySchema.newDocument({
+                name: nodeMasterConfig.name,
+                description: nodeMasterConfig.description,
+                ownerOrganization: {
+                    _id:    Documents.organization._id,
+                    name:   Documents.organization.name
+                },
+            });
+            return Documents.assembly.save();
+        })
+        .then(newAssembly => {
+            Documents.assembly = newAssembly;
+            console.log("\n\nnew assembly has been add \n", Documents.assembly);
+            Documents.node = NodeSchema.newDocument({
+                name:           nodeMasterConfig.name,
+                description:    nodeMasterConfig.description,
+                type:           NodeTypeEnum.assembly,
+                content:        Documents.assembly._id,
+                Users: [{
+                    _id:            Documents.user._id,
+                    completeName:   Documents.user.completeName,
+                    email:          Documents.user.email
+                }],
+                owners: [{
+                    _id:    Documents.user._id,
+                    email:  Documents.user.email
+                }],
+                Workspaces: [Documents.workspace._id]
+            });
+            return Documents.node.save();
+        })
+        .then(nodeMaster => {
+            Documents.node = nodeMaster;
+            console.log("\n\nnew node has been add \n", Documents.node);
+            Documents.workspace.node_master = nodeMaster;
+            return Documents.workspace.save()
+        })
+        .then(() => {
+            Documents.user.workspaces.push({
+                _id: Documents.workspace._id, 
+                name: Documents.workspace.name});
+            return Documents.user.save();
+        })
+        .then(() => {
+            Documents.organization.workspaces.push({
+                _id: Documents.workspace._id, 
+                name: Documents.workspace.name});
+            return Documents.organization.save();
+        })
+        .then(() => {
+            Documents.assembly.whereUsed.push(nodeMaster._id);
+            return Documents.assembly.save();
+        })
+        .catch(err => {
+            console.error("[Sign up Controller] -  erreur \n" + err);
+            Object.values(Documents).forEach(Documents => {
+                if (Documents)
+                    Documents.remove();
+            });
+        });
         res.send(req.body);
     },
 };

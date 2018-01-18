@@ -50,9 +50,7 @@ let mongoose = require('mongoose');
 mongoose.Promise = Promise;
 //Set up default mongoose connection
 let mongoDB = config.mongoDB;
-mongoose.connect(mongoDB, {
-    useMongoClient: true
-});
+mongoose.connect(mongoDB);
 
 //Get the default connection
 let db = mongoose.connection;

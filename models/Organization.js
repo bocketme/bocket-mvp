@@ -19,8 +19,18 @@ let OrganizationSchema = new mongoose.Schema({
     // adresse : String
     node: [Node]
 });
-OrganizationSchema.post('save', (doc, next) => {
-    let organizationPath = path.join(config.files3D, '/' + doc.name);
+
+
+/**
+ * Create a new Organization in the database
+ * @param {Object} OrganizationInformation - The information of the organization
+ */
+OrganizationSchema.statics.newDocument = (OrganizationInformation) => {
+    return new Organization(OrganizationInformation);
+}
+
+OrganizationSchema.pre('save', function (next) {
+    let organizationPath = path.join(config.files3D, '/' + this.name);
     fs.access(organizationPath, (err) => {
         if (err){
             fs.mkdir(path.join(organizationPath), (err) => {

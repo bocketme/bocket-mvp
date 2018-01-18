@@ -21,6 +21,14 @@ let WorkspaceSchema = new mongoose.Schema({
     team: {type: Team, required: true},
     organization: {type: Organization, required: true} // /!\ WITHOUT END VARIABLE /!\
 });
+/**
+ * 
+ * 
+ * @param {any} WorkspaceInformation 
+ */
+WorkspaceSchema.statics.newDocument = (WorkspaceInformation) => {
+    return new Workspace(WorkspaceInformation);
+}
 
 let Workspace = mongoose.model("Workspace", WorkspaceSchema, "Workspaces");
 
