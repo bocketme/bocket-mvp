@@ -11,6 +11,7 @@ const NodeTypeEnum = require("../enum/NodeTypeEnum");
 const NestedSpecFiles = require('./nestedSchema/NestedSpecFile');
 const TypeEnum = require('../enum/NodeTypeEnum');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
+let NestedTeam = require('./nestedSchema/NestedTeamSchema');
 const THREE = require('three');
 
 let NestedWorkspace = mongoose.Schema({
@@ -39,20 +40,7 @@ let NodeSchema = mongoose.Schema({
 //The
     tags: {type: [String], default: []},
     children: {type: [NestedNode], default: []},
-
-    /*
-    Need Update
-    //The Teamwork
-    read: {type: [mongoose.SchemaTypes.ObjectId], default: []}
-    write: {type: [mongoose.SchemaTypes.ObjectId], default: []}
-    owner: {type: [mongoose.SchemaTypes.ObjectId], default: []}
-    */
-
-    //TODO: Changement Possible => Issue
-    specpath: {type: [String], default: []},
-
-    //TODO: Change User => Issue
-    Users: {type: [NestedUser], default: []},
+    team: {type: NestedTeam, required: true},
     owners: {type: [NestedUser], default: []},
 });
 
@@ -76,6 +64,16 @@ NodeSchema.plugin(uniqueValidator);
 NodeSchema.statics.newDocument = (nodeInformation) => {
     if (!nodeInformation.name)
         console.error(new Error("The Name of the Node is missing"));
+NodeSchema.statics.initializeNode = (name, description, workspaces, user, team) => {
+    return new Node({
+        name: name,
+        description: description,
+        Workspace: workspaces,
+        Users: user,
+        type: TypeEnum.assembly,
+        team: team
+    })
+};
 
     if (!nodeInformation.type)
         console.error(new Error("The Type of the Node is missing"));
