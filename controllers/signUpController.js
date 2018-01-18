@@ -1,8 +1,11 @@
 let escape = require('escape-html');
 let ModelsMaker = require("../models/utils/create/ModelsMaker");
 let nodeMasterConfig = require("../config/nodeMaster");
-let NodeSchema = require("../models/Node");
 let signInUserSession = require("../utils/signInUserSession");
+
+let NodeSchema = require("../models/Node");
+let Invitation = require("../models/Invitation");
+let Workspace = require("../models/Workspace");
 
 let signUpController = {
 
@@ -23,6 +26,8 @@ let signUpController = {
             }
         }
 
+        console.log(req.body);
+
         let user = ModelsMaker.CreateUser(req, [], []);
         user.save()
             .then(newUser => {
@@ -33,49 +38,91 @@ let signUpController = {
                         console.log("\n\nnew organization has been add", newOrga);
                         newUser.organizations.push({_id: newOrga._id, name: newOrga.name});
                         let workspace = ModelsMaker.CreateWorkspace(req.body.workspaceName, newOrga, newUser);
-                        workspace.save()
-                            .then(newWorkspace => {
-                                console.log("\n\nnew workspace has been add", newWorkspace);
-                                //let nodeMaster = ModelsMaker.CreateNode(nodeMasterConfig.name, nodeMasterConfig.description, newWorkspace._id);
-                                //nodeMaster.save()
-                                let nodeMaster = NodeSchema.initializeNode(nodeMasterConfig.name, nodeMasterConfig.description, newWorkspace._id, { _id: newUser._id, completeName: newUser.completeName, email: newUser.email });
-                                nodeMaster.save()
-                                    .then(nodeMaster => {
-                                        newWorkspace.node_master = nodeMaster;
-                                        newWorkspace.save()
-                                            .then(newWorkspace => {
-                                                newUser.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
-                                                newUser.save()
-                                                    .then(() => {
-                                                        newOrga.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
-                                                        newOrga.save()
-                                                            .then(() => {
-                                                                req.session = signInUserSession(req.session, {email: user.email});
-                                                                res.redirect("project/" + workspace._id);
-                                                            })
-                                                            .catch(err => {
-                                                                throw err
-                                                            });
-                                                    })
-                                                    .catch(err => {
-                                                        console.log("error on updating user: " + err);
-                                                        newOrga.remove();
-                                                        newUser.remove();
-                                                        newWorkspace.remove();
-                                                    })
-                                            })
-                                    })
-                                    .catch(err => {
-                                        console.log("[signupController] error on saving node master");
-                                        newOrga.remove();
-                                        newUser.remove();
-                                    })
-                            })
-                            .catch(err => {
-                                console.log("error on creating workspace: " + err);
-                                newOrga.remove();
-                                newUser.remove();
-                            })
+                        if (req.body.invitationUid) {
+                            console.log("INVITATION");
+                            Invitation.findOne({uid: req.body.invitationUid})
+                                .then(inv => {
+                                    if (inv === null) {
+                                        console.log("Invitation invalid");
+                                        return ;
+                                    }
+                                    Workspace.findById(inv.workspace.id)
+                                        .then(w => {
+                                            newUser.workspaces.push({_id: w._id, name: w.name});
+                                            w.users.push({_id: user._id, completeName: newUser.completeName, email: newUser.email});
+                                            newUser.save()
+                                                .then(() => {
+                                                    w.save()
+                                                        .then( () => {
+                                                            inv.remove();
+                                                            req.session = signInUserSession(req.session, {email: user.email});
+                                                            res.redirect("project/" + w._id);
+                                                        })
+                                                        .catch(err => {
+                                                            newOrga.remove();
+                                                            newUser.remove();
+                                                        });
+                                                })
+                                                .catch(() => {
+                                                    newOrga.remove();
+                                                    newUser.remove();
+                                                });
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                            newOrga.remove();
+                                            newUser.remove();
+                                        });
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                    newOrga.remove();
+                                    newUser.remove();
+                                })
+                        } else
+                            workspace.save()
+                                .then(newWorkspace => {
+                                    console.log("\n\nnew workspace has been add", newWorkspace);
+                                    //let nodeMaster = ModelsMaker.CreateNode(nodeMasterConfig.name, nodeMasterConfig.description, newWorkspace._id);
+                                    //nodeMaster.save()
+                                    let nodeMaster = NodeSchema.initializeNode(nodeMasterConfig.name, nodeMasterConfig.description, newWorkspace._id, { _id: newUser._id, completeName: newUser.completeName, email: newUser.email });
+                                    nodeMaster.save()
+                                        .then(nodeMaster => {
+                                            newWorkspace.node_master = nodeMaster;
+                                            newWorkspace.save()
+                                                .then(newWorkspace => {
+                                                    newUser.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
+                                                    newUser.save()
+                                                        .then(() => {
+                                                            newOrga.workspaces.push({_id: newWorkspace._id, name: newWorkspace.name});
+                                                            newOrga.save()
+                                                                .then(() => {
+                                                                    req.session = signInUserSession(req.session, {email: user.email});
+                                                                    res.redirect("project/" + workspace._id);
+                                                                })
+                                                                .catch(err => {
+                                                                    throw err
+                                                                });
+                                                        })
+                                                        .catch(err => {
+                                                            console.log("error on updating user: " + err);
+                                                            newOrga.remove();
+                                                            newUser.remove();
+                                                            newWorkspace.remove();
+                                                        })
+                                                })
+                                        })
+                                        .catch(err => {
+                                            console.log("[signupController] error on saving node master");
+                                            newOrga.remove();
+                                            newUser.remove();
+                                        })
+                                })
+                                .catch(err => {
+                                    console.log("error on creating workspace: " + err);
+                                    newOrga.remove();
+                                    newUser.remove();
+                                })
                     })
                     .catch(err => {
                         console.log("error on creating organization: " + err);

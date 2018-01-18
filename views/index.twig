@@ -66,6 +66,12 @@
 {% endblock %}
 
 {% block js %}
+
+    {% if invitation %}
+    <script type="application/javascript">
+        var invitationUid = "{{ invitationUid }}";
+    </script>
+    {% endif %}
     <script type="application/javascript" src="/js/betaRegistration.js"></script>
     <script type="application/javascript" src="/js/checkEmail.js"></script>
     <script type="application/javascript" src="/js/logbox.js"></script>
@@ -75,9 +81,10 @@
         <script type="application/javascript">
             $(document).ready(function () {
                 $("#signIn").click();
-                $("#workspaceName").val("{{ workspaceName }}").prop('disabled', true).parent().css("display", "none");
+                $("#workspaceName").val("{{ workspaceName }}").attr("type", "hidden");//prop('disabled', true).parent().css("display", "none");
                 $("#completeName").val("{{ completeName }}");
                 $("h1#new-workspace").text("Give us some information");
+                $("#hiddenInvitation").val(invitationUid);
             });
         </script>
     {% endif %}

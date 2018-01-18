@@ -13,6 +13,7 @@ let indexController = {
                 if (!i || i === null) res.redirect("/");
                 return res.render("index", {
                     invitation : true,
+                    invitationUid : req.params.invitationUid,
                     workspaceName : i.workspace.name,
                     completeName : i.people.completeName,
                 });
