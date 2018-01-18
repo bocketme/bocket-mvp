@@ -88,4 +88,8 @@ $(document).ready(function() {
         });
     });
 
+    socket.on(signInFailed, function () {
+        $("#signIn-btn").after("<div class='error'>Invalid email or password</div>")
+    });
+
 });

@@ -1,8 +1,4 @@
 $(document).ready(function() {
-    socket.on(signInFailed, function () {
-        $("#signIn-btn").after("<div class='error'>Invalid email or password</div>")
-    });
-
     socket.on(signInSucceed, function (signinInfo) {
         var workspaces = signinInfo.workspaces;
         user = signinInfo.user;
