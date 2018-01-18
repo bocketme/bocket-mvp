@@ -9,7 +9,7 @@ const createFile = require('../utils/createFile');
 const create3DFile = require('../utils/create3DFile');
 const twig = require('twig');
 const Assembly = require('../../models/Assembly');
-
+const createArchive = require('../utils/createArchive');
 /**
  * Create a new Part for the specified node
  */
@@ -51,7 +51,6 @@ const newPart = (req, res) => {
                                     Workspaces: parentNode.Workspaces,
                                     tags: tags
                                 });
-                                createFiles(specFiles, files_3d, path.join(config.files3D, newPart.path));
                                 subNode.save()
                                     .then((subNode) => {
                                         parentNode.children.push({
@@ -72,6 +71,12 @@ const newPart = (req, res) => {
                                                 }, (err, html) => {
                                                     if (err)
                                                         console.log(err);
+                                                    new Promise((resolve, reject) => {
+                                                        createFiles(specFiles, files_3d, path.join(config.files3D, newPart.path), newPart.name);
+                                                        resolve();
+                                                    })
+                                                        .then(() => {
+                                                        });
                                                     res.send(html)
                                                 });
                                             })
@@ -104,33 +109,38 @@ const newPart = (req, res) => {
         });
 };
 
-function createFiles(specFiles, files_3d, chemin) {
+function createFiles(specFiles, files_3d, chemin, name) {
     let sendError = [];
 
     if (specFiles) {
-        specFiles.forEach(spec => {
-            type_mime(1, spec.mimetype)
-                .then(() => {
-                    return createFile(chemin, spec.originalname, spec.buffer);
-                })
-                .catch(err => {
-                    console.log(err);
-                    sendError.push("Could'nt create the file : " + spec.originalname)
-                });
-        });
+            specFiles.forEach(spec => {
+                type_mime(1, spec.mimetype)
+                    .then(() => {
+                        return createFile(chemin, spec.originalname, spec.buffer);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        sendError.push("Could'nt create the file : " + spec.originalname)
+                    });
+            });
     }
 
     if (files_3d) {
-        files_3d.forEach(file => {
+        for(let i  = 0; i<files_3d.length; i++){
+            let file = files_3d[i];
             type_mime(0, file.mimetype)
                 .then(() => {
                     return create3DFile(chemin, file.originalname, file.buffer);
                 })
+                .then(() => {
+                    if (i == files_3d.length - 1)
+                        return createArchive(chemin, name);
+                })
                 .catch((err) => {
-                    console.log(err);
+                    console.error(err);
                     sendError.push("Could'nt create the file : " + file.originalname);
                 });
-        });
+        };
     }
 
     return (sendError)

@@ -10,18 +10,9 @@ const NestedComment = require("./nestedSchema/NestedActivitySchema");
 const Organization = require('./Organization');
 const PartFileSystem = require('../config/PartFileSystem');
 
-function createPartFilSystem(chemin, cb) {
-    let promises = [];
-    Object.values(PartFileSystem).forEach(lastPath => {
-        promises.push(new Promise((resolve, reject) => {
-            fs.mkdir(path.join(chemin, lastPath), (err) => {
-                if(err)
-                    reject(err);
-                resolve;
-            })
-        }));
-    });
-    return cb(promises);
+function createPartFilSystem(chemin) {
+
+    return;
 }
 
 let NestedOrganization = mongoose.Schema({
@@ -44,22 +35,42 @@ let PartSchema = mongoose.Schema({
     //owners: {type: [nestedOwners], default: []}
 });
 
-PartSchema.pre('validate', (part, next) => {
-    if(!part.path) {
-        part.path = '/' + part.ownerOrganization.name + '/' + part.name + ' - ' + part._id;
-        let partPath = path.join(configServer.files3D, part.path);
+function createDirectories (partPath, lastPath) {
+    return new Promise((resolve, reject) => {
+        fs.mkdir(path.join(partPath, lastPath), (err) => {
+            console.log("MOIOIOIOI ", lastPath);
+            if(err)
+                reject(err);
+            resolve();
+        })
+    })
+};
+
+PartSchema.pre('validate', function (next) {
+    console.log('Part - init  : \n', this);
+    if(!this.path) {
+        this.path = '/' + this.ownerOrganization.name + '/' + this.name + ' - ' + this._id;
+        let partPath = path.join(configServer.files3D, this.path);
         fs.access(partPath, err => {
             if (!err)
                 return next();
             fs.mkdir(partPath, (err)=> {
                 if (err)
                     return next(err);
-                createPartFilSystem(partPath, (promises) => {
-                    Promise.all(promises)
-                        .then(() => {
-                            return next();
-                        });
+                let i = 0,
+                    directories = Object.values(PartFileSystem);
+                let promises = [];
+                directories.forEach(lastPath => {
+                    console.log(partPath, lastPath);
+                    promises.push(createDirectories(partPath, lastPath));
                 });
+                Promise.all(promises)
+                    .then(() => {
+                        return next();
+                    })
+                    .catch(err => {
+                        return next(err);
+                    })
             })
         })
     }

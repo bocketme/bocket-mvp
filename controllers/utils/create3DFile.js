@@ -28,7 +28,8 @@ function create3DFile(chemin, nameFile, data){
                 } catch (e) {
                     console.log(e);
                 }
-                //TODO: Destroy it
+
+                //TODO: Change the data with geometry.json
                 fs.writeFile(path.join(chemin, partFileSystem.data, _nameFile + ".json"), data, (err) => {
                     if (err)
                         return reject(err);
