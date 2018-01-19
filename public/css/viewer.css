@@ -27,26 +27,36 @@
 {
     position: absolute;
     right: 20px;
-    bottom: 140px;
+    bottom: 200px;
+    height: ;
 }
 
 .viewer-options-2
  {
     position: absolute;
     right: 20px;
-    bottom: 80px;
+    bottom: 140px;
  }
 
 .viewer-options-3
 {
     position: absolute;
     right: 20px;
-    bottom: 20px;
+    bottom: 80px;
 }
 
 .button-viewer
 {
     width: 100%;
+}
+
+..btn-floating.btn-large{
+    height: 38px !important;
+    width: 38px !important;
+}
+
+.btn-large.button-viewer{
+
 }
 
 #button-save
