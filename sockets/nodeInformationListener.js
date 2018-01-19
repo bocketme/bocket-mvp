@@ -35,8 +35,6 @@ module.exports = function (socket) {
                     Assembly.findById(node.content)
                     .then((assembly) => {
                         fs.readdir(path.join(configServer.files3D, assembly.path, PartFileSystem.spec), (err, files)=> {
-                            if(err)
-                             throw err;
                             socket.emit("fileSpec", files);
                         });
                     })
@@ -47,8 +45,6 @@ module.exports = function (socket) {
                     Assembly.findById(node.content)
                     .then(() => {
                         fs.readdir(path.join(configServer.files3D, assembly.path, PartFileSystem.spec), (err, files)=> {
-                            if(err)
-                             throw err;
                             socket.emit("fileSpec", files);
                         });
                     })

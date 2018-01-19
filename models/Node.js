@@ -22,6 +22,7 @@ let NestedWorkspace = mongoose.Schema({
 let NodeSchema = mongoose.Schema({
     //The core Information of the node
     name: {type:String, require:true},
+
     //TODO: Verificate the information
     description: String,
 
@@ -31,13 +32,13 @@ let NodeSchema = mongoose.Schema({
     matrix: {type:[] ,default: new THREE.Matrix4()},
     Workspaces: { type:[NestedWorkspace], require: true},
 
-//The system Information of the Node
+    //The system Information of the Node
     created: {type: Date, default:  Date.now()},
     modified: {type: Date, default: Date.now()},
     maturity: {type: String, default: NodeTypeEnum.maturity[0]},
     activities : {type: [NestedComment], default: []},
 
-//The
+    //The
     tags: {type: [String], default: []},
     children: {type: [NestedNode], default: []},
     team: {type: NestedTeam, required: true},

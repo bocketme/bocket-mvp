@@ -25,7 +25,7 @@ const newPart = (req, res) => {
         files_3d = req.files['file3D'];
 
     sub_level++;
-
+    console.log(nodeId)
     NodeSchema.findById(nodeId)
         .then((parentNode) => {
             if (!parentNode)
@@ -49,7 +49,8 @@ const newPart = (req, res) => {
                                     type: NodeTypeEnum.part,
                                     content: newPart._id,
                                     Workspaces: parentNode.Workspaces,
-                                    tags: tags
+                                    tags: tags,
+                                    team: parentNode.team,
                                 });
                                 subNode.save()
                                     .then((subNode) => {
