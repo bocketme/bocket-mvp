@@ -28,7 +28,6 @@ function resetContent() {
 }
 
 $(document).ready(function () {
-
    $("div#content").on("click", function () {
        view = ViewTypeEnum.content;
        activityLocation.css("display", "none");

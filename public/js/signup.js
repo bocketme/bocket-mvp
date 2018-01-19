@@ -58,7 +58,7 @@ $(document).ready(function() {
     });
 
     $.validator.methods.email = function( value, element ) {
-        return this.optional(element) || /[a-z]+@[a-z]+\.[a-z]+/.test(value);
+        return this.optional(element) || /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value);
     };
 
     $.validator.methods.completeName = function (value, element) {

@@ -2,13 +2,16 @@ const escape = require('escape-html');
 const ModelsMaker = require("../models/utils/create/ModelsMaker");
 const nodeMasterConfig = require("../config/nodeMaster");
 const NodeSchema = require("../models/Node");
+const Invitation = require("../models/Invitation");
+const Workspace = require("../models/Workspace");
 const AssemblySchema = require("../models/Assembly");
 const NodeTypeEnum = require("../enum/NodeTypeEnum");
 const OrganizationSchema = require("../models/Organization");
 const UserSchema = require("../models/User");
 const WorkspaceSchema = require("../models/Workspace");
-let signInUserSession = require("../utils/signInUserSession");
-let Team = require("../models/Team");
+const acceptInvitation = require("../utils/Invitations/acceptInvitation");
+const signInUserSession = require("../utils/signInUserSession");
+const Team = require("../models/Team");
 
 let signUpController = {
 
@@ -28,7 +31,6 @@ let signUpController = {
                 return res.redirect("/");
             }
         }
-
         let Documents = {}
 
         let user = UserSchema.newDocument({
@@ -92,7 +94,25 @@ let signUpController = {
                     consults:   Documents.team.consults
                 }
             });
-            return workspace.save()
+          
+          
+          if (req.body.invitationUid) {
+                            console.log("INVITATION");
+                            acceptInvitation(req.body.invitationUid, newUser)
+                                .then(invitationInfo => {
+                                    req.session = signInUserSession(req.session, {email: user.email});
+                                    req.session.completeName = newUser.completeName;
+                                    req.session.currentWorkspace = invitationInfo.workspaceId;
+                                    res.redirect("project/" + invitationInfo.workspaceId);
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                    newOrga.remove();
+                                    newUser.remove();
+                                })
+            Promise.reject("Invitation");
+                        } else
+                return workspace.save()
         })
         .then(newWorkspace => {
             console.log("\n\nnew workspace has been add \n", Documents.workspace);
@@ -163,6 +183,7 @@ let signUpController = {
             return Documents.assembly.save();
         })
         .catch(err => {
+          if (err === "Invitation") return ;
             console.error(new Error("[Sign up Controller] -  erreur \n" + err));
             Object.values(Documents).forEach(Documents => {
                 if (Documents)

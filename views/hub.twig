@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/hub/location.css">
     <link rel="stylesheet" href="/css/hub/activity.css">
     <link rel="stylesheet" href="/css/hub/specs.css">
+    <link rel="stylesheet" href="/css/hub/invitePeople.css">
 {% endblock %}
 
 {% block title %}{{ title }}{% endblock title %}
@@ -37,6 +38,9 @@
             </li>
             {% endfor %}
             <li class="divider"></li>
+            <li class="option-node" id="invite-people-btn">
+                <a class="dropdown-menu">Invite people</a>
+            </li>
             <li class="option-node">
                 <a class="dropdown-menu" href="/signOut">Sign Out</a>
             </li>
@@ -62,6 +66,8 @@
 
     </div>
 
+    {% include "./hub/invitePeople.twig" %}
+
     <div id="second_column" class="col s3">
         <div class="data-header">
             <i class="material-icons favorite" style="color: #9b9b9b; font-size:10px;">star</i>{{ data_header }}
@@ -81,6 +87,9 @@
             <!-- display panel create new part US2 -->
             <li class="option-node">
                 <a class="dropdown-menu modal-trigger modal-node-selector" href="#import-assembly"> New Assembly... </a>
+            </li>
+            <li class="option-node">
+                <a class="dropdown-menu modal-trigger modal-node-selector" href="#upload-file3d"> Duplicate Part/Assembly </a>
             </li>
             <!-- display panel create new assemby US2 -->
             <li class="divider"></li>
@@ -134,6 +143,7 @@
             <input id="activity-uploader" style="display: none" type="file">
         </div>
     </div>
+
 </div>
 {% endblock %}
 
@@ -160,7 +170,9 @@
     <script src="/js/hub/modals.js"></script>
     <script src="/js/hub/activity.js"></script>
     <script src="/js/hub/specs.js"></script>
+    <script src="/js/hub/invitePeople.js"></script>
     <script src="/js/contextMenu.js"></script>
+    <script src="/js/hub/nodeTreeContextMenu.js"></script>
     <script src="/js/initial.js"></script>
 {% include "require_viewer.twig" %}
 {% endblock %}

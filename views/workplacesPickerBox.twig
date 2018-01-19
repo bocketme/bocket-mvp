@@ -19,7 +19,10 @@
                 <input type="hidden" id="emailWorkspace" name="email">
                 <input type="hidden" id="passwordlWorkspace" name="password">
                 <input type="hidden" id="chosenWorkspace" name="workspaceId">
-                <button id="signIn-btn" class="btn waves-effect waves-light submit-btn" type="submit">Continue
+                {% if invitation %}
+                    <input type="hidden" id="invitationUidWorkspacePicker" name="invitationUid">
+                {% endif %}
+                <button id="signIn-btn-picker" class="btn waves-effect waves-light submit-btn" type="submit">Continue
                 </button>
                 <div class="text-center center">
                     <a id="createWorkspace" href="#">Create an workspace</a>

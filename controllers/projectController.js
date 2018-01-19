@@ -42,6 +42,8 @@ module.exports = {
                     }
                     else {
                         req.session.userMail = result.email;
+                        req.session.completeName = result.completeName;
+                        req.session.currentWorkspace = req.body.workspaceId;
                         res.redirect(req.originalUrl + "/" + req.body.workspaceId);
                     }
                 });
@@ -52,6 +54,7 @@ module.exports = {
         }
         else {
             console.log("User a une session");
+            req.session.currentWorkspace = req.body.workspaceId;
             res.redirect(req.originalUrl + "/" + req.body.workspaceId);
         }
     },

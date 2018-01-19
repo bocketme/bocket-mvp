@@ -6,6 +6,7 @@ let path = require('path');
 module.exports = {
     port: "8080",
     protocol: "http",
+    url: "localhost:" + this.port,
     mongoDB: "mongodb://localhost/bocketmemvp",
     saltRounds: 10,
     files3D: path.resolve("./data/files3D"),

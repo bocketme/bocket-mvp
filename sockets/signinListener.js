@@ -2,11 +2,11 @@
 let internalErrorEmitter = require("./emitter/internalErrorEmitter");
 let User = require("../models/User");
 let Workspaces = require("../models/Workspace");
-let signInUserSession = require("../utils/signInUserSession");
+let acceptInvitation = require("../utils/Invitations/acceptInvitation");
 
 module.exports = function (socket) {
-    socket.on("signin", (accountInformation) => { // accountInformation.email & accountInformation.password
-        console.log(accountInformation);
+    socket.on("signin", (accountInformation) => { // accountInformation.email & accountInformation.password && invitationUid (optional)
+        console.log("AccountInformation = ", accountInformation);
 
         /*accountInformation.email = escape(accountInformation.email);
         accountInformation.password = escape(accountInformation.password);*/
@@ -22,7 +22,10 @@ module.exports = function (socket) {
                         {
                             findAllWorkspaces(user.workspaces)
                                 .then(workspaces => {
-                                    socket.emit("signinSucced", {workspaces : workspaces, user: user});
+                                    if (!accountInformation.invitationUid)
+                                        socket.emit("signinSucced", {workspaces : workspaces, user: user});
+                                    else
+                                        emitWithInvitation(accountInformation, user, socket);
                                 })
                                 .catch(err => {
                                     socket.emit("signinFailed");
@@ -63,4 +66,13 @@ function findAllWorkspaces(nestedWorkspaces) {
                 })
         });
     });
+}
+
+function emitWithInvitation(accountInformation, user, socket) {
+    acceptInvitation(accountInformation.invitationUid, user)
+        .then((res) => socket.emit("signinSucced", res.workspaceId))
+        .catch((err) => {
+            console.log(err);
+            internalErrorEmitter(socket)
+        });
 }
