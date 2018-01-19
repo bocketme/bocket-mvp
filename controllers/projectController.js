@@ -140,9 +140,8 @@ function getRenderInformation(workspaceId, userMail, title) {
                                         all_parts: 100,
                                         last_updates: 10,
                                         duplicates: 35,
-                                        NodeTypeEnum: JSON.stringify(NodeTypeEnum), /* const for fronst end */
+                                        NodeTypeEnum: JSON.stringify(NodeTypeEnum), /* const for front end */
                                         ViewTypeEnum: JSON.stringify(ViewTypeEnum),
-                                        userAvatar: user.avatar
                                     });
                                  })
                             })
