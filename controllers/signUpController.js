@@ -11,9 +11,9 @@ let signInUserSession = require("../utils/signInUserSession");
 let Team = require("../models/Team");
 
 let signUpController = {
-    
+
     // TODO: FAILLE XSS
-    
+
     index: function (req, res) {
         let tasks = [
             checkEmail,
@@ -28,77 +28,80 @@ let signUpController = {
                 return res.redirect("/");
             }
         }
-        
+
         let Documents = {}
-        
-        Documents.user = UserSchema.newDocument({
+
+        let user = UserSchema.newDocument({
             completeName: req.body.completeName,
             password : req.body.password,
             email : req.body.email,
             workspaces: [],
             organizations: []
         });
-        Documents.user.save()
+
+        user.save()
         .then((newUser) => {
-            Documents.user = newUser
             console.log(Documents.user);
-            Documents.organization = OrganizationSchema.newDocument({
+            Documents.user = newUser;
+            let organization = OrganizationSchema.newDocument({
                 owner: {
-                    _id: Documents.user._id, 
-                    completeName: Documents.user.completeName, 
+                    _id: Documents.user._id,
+                    completeName: Documents.user.completeName,
                     email: Documents.user.email
                 },
                 members: [{
-                    _id: Documents.user._id, 
-                    completeName: Documents.user.completeName, 
+                    _id: Documents.user._id,
+                    completeName: Documents.user.completeName,
                     email: Documents.user.email
                 }],
                 name: req.body.organizationName
             })
-            return Documents.organization.save();
+            return organization.save();
         })
         .then(newOrga => {
-            Documents.organization = newOrga;
             console.log("new Organization is created", newOrga);
+            Documents.organization = newOrga;
             let team = Team.newDocument({
                 owners: [{
+                    _id: Documents.user._id,
                     completeName: Documents.user.completeName,
+                    email: Documents.user.email,
                 }],
                 email: Documents.user.email,
             })
             return team.save();
         })
         .then(newTeam => {
-            Documents.team = newTeam
             console.log("\n\nnew team has been add", newTeam);
-            Documents.workspace = WorkspaceSchema({
-                name : name,
+            Documents.team = newTeam
+            let workspace = WorkspaceSchema.newDocument({
+                name : req.body.workspaceName,
                 owner: {
-                    _id:            Documents.user._id, 
-                    completeName:   Documents.user.completeName, 
+                    _id:            Documents.user._id,
+                    completeName:   Documents.user.completeName,
                     email:          Documents.user.email
                 },
                 organization: {
-                    _id:    Documents.organization._id, 
-                    name:   Documents.organization.name, 
+                    _id:    Documents.organization._id,
+                    name:   Documents.organization.name,
                 },
                 team: {
-                    _id:        Documents.team._id, 
-                    owners:     Documents.team.owners, 
-                    members:    Documents.team.members, 
+                    _id:        Documents.team._id,
+                    owners:     Documents.team.owners,
+                    members:    Documents.team.members,
                     consults:   Documents.team.consults
                 }
             });
-            return Documents.workspace.save()
+            return workspace.save()
         })
         .then(newWorkspace => {
-            Documents.workspace = newWorkspace;
             console.log("\n\nnew workspace has been add \n", Documents.workspace);
-            Documents.user.push({ _id: Documents.workspace._id, name: Documents.workspace.name });
+            Documents.workspace = newWorkspace;
+            Documents.user.workspaces.push({ _id: Documents.workspace._id, name: Documents.workspace.name });
             return Documents.user.save();
         })
         .then(() => {
-            Documents.assembly = AssemblySchema.newDocument({
+            let assembly = AssemblySchema.newDocument({
                 name: nodeMasterConfig.name,
                 description: nodeMasterConfig.description,
                 ownerOrganization: {
@@ -106,12 +109,12 @@ let signUpController = {
                     name:   Documents.organization.name
                 },
             });
-            return Documents.assembly.save();
+            return assembly.save();
         })
         .then(newAssembly => {
-            Documents.assembly = newAssembly;
             console.log("\n\nnew assembly has been add \n", Documents.assembly);
-            Documents.node = NodeSchema.newDocument({
+            Documents.assembly = newAssembly;
+            let node = NodeSchema.newDocument({
                 name:           nodeMasterConfig.name,
                 description:    nodeMasterConfig.description,
                 type:           NodeTypeEnum.assembly,
@@ -123,36 +126,44 @@ let signUpController = {
                 }],
                 owners: [{
                     _id:    Documents.user._id,
+                    completeName:   Documents.user.completeName,
                     email:  Documents.user.email
                 }],
+                team: {
+                    _id:        Documents.team._id,
+                    owners:     Documents.team.owners,
+                    members:    Documents.team.members,
+                    consults:   Documents.team.consults
+                },
                 Workspaces: [Documents.workspace._id]
             });
-            return Documents.node.save();
+            return node.save();
         })
         .then(nodeMaster => {
-            Documents.node = nodeMaster;
             console.log("\n\nnew node has been add \n", Documents.node);
+            Documents.node = nodeMaster;
             Documents.workspace.node_master = nodeMaster;
             return Documents.workspace.save()
         })
         .then(() => {
+            console.log("")
             Documents.user.workspaces.push({
-                _id: Documents.workspace._id, 
+                _id: Documents.workspace._id,
                 name: Documents.workspace.name});
             return Documents.user.save();
         })
         .then(() => {
             Documents.organization.workspaces.push({
-                _id: Documents.workspace._id, 
+                _id: Documents.workspace._id,
                 name: Documents.workspace.name});
             return Documents.organization.save();
         })
         .then(() => {
-            Documents.assembly.whereUsed.push(nodeMaster._id);
+            Documents.assembly.whereUsed.push(Documents.node._id);
             return Documents.assembly.save();
         })
         .catch(err => {
-            console.error("[Sign up Controller] -  erreur \n" + err);
+            console.error(new Error("[Sign up Controller] -  erreur \n" + err));
             Object.values(Documents).forEach(Documents => {
                 if (Documents)
                     Documents.remove();

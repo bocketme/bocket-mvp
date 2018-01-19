@@ -64,16 +64,6 @@ NodeSchema.plugin(uniqueValidator);
 NodeSchema.statics.newDocument = (nodeInformation) => {
     if (!nodeInformation.name)
         console.error(new Error("The Name of the Node is missing"));
-NodeSchema.statics.initializeNode = (name, description, workspaces, user, team) => {
-    return new Node({
-        name: name,
-        description: description,
-        Workspace: workspaces,
-        Users: user,
-        type: TypeEnum.assembly,
-        team: team
-    })
-};
 
     if (!nodeInformation.type)
         console.error(new Error("The Type of the Node is missing"));
