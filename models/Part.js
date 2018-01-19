@@ -7,13 +7,7 @@ const configServer = require('../config/server');
 const TypeEnum = require('../enum/NodeTypeEnum');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const NestedComment = require("./nestedSchema/NestedActivitySchema");
-const Organization = require('./Organization');
 const PartFileSystem = require('../config/PartFileSystem');
-
-function createPartFilSystem(chemin) {
-
-    return;
-}
 
 let NestedOrganization = mongoose.Schema({
     _id: {type:  mongoose.SchemaTypes.ObjectId, require: true},
@@ -38,16 +32,14 @@ let PartSchema = mongoose.Schema({
 function createDirectories (partPath, lastPath) {
     return new Promise((resolve, reject) => {
         fs.mkdir(path.join(partPath, lastPath), (err) => {
-            console.log("MOIOIOIOI ", lastPath);
             if(err)
                 reject(err);
             resolve();
         })
     })
-};
+}
 
 PartSchema.pre('validate', function (next) {
-    console.log('Part - init  : \n', this);
     if(!this.path) {
         this.path = '/' + this.ownerOrganization.name + '/' + this.name + ' - ' + this._id;
         let partPath = path.join(configServer.files3D, this.path);
@@ -61,7 +53,6 @@ PartSchema.pre('validate', function (next) {
                     directories = Object.values(PartFileSystem);
                 let promises = [];
                 directories.forEach(lastPath => {
-                    console.log(partPath, lastPath);
                     promises.push(createDirectories(partPath, lastPath));
                 });
                 Promise.all(promises)

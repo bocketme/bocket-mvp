@@ -19,9 +19,9 @@ let UserSchema = new mongoose.Schema({
 });
 
 /**
- * 
- * 
- * @param {Object} UserInformation 
+ *
+ *
+ * @param {Object} UserInformation
  */
 UserSchema.statics.newDocument = (UserInformation) => {
     return new User(UserInformation);
