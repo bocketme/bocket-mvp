@@ -41,7 +41,14 @@ function createNewNode(req, res){
     //TODO - Vérifier les droits de l'utilisateur -- Fonction bis
 
     //Créer le noeud
-    Node.initialize(name, description, { _id : workspace._id, name: workspace.name })
+    Node.newDocument({
+        name: name,
+        description: description,
+        Workspaces: {
+            _id : workspace._id,
+            name: workspace.name
+        }
+    })
         .then((node) => {
             //Vérifier le type-Mime des fichiers
             //Ecrire les fichiers de specs -- DRIVE ???
@@ -134,7 +141,7 @@ function createNewNode(req, res){
                     if(workspace.users && workspace.users.length !== 0){
                         workspace.users.forEach(worker => {
                             if (worker.email == userMail){
-                                resolve
+                                resolve();
                             }
                         });
                     }

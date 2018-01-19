@@ -106,7 +106,7 @@ module.exports = {
 }
 
 function getRenderInformation(workspaceId, userMail, title) {
-    console.log("getRenderInformation", workspaceId, userMail);
+    //console.log("getRenderInformation", workspaceId, userMail);
     return new Promise((resolve, reject) => {
         Workspace.findById({_id: workspaceId})
         .then(workspace => {

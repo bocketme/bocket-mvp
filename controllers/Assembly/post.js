@@ -60,7 +60,7 @@ const newAssembly = (req, res) => {
         files_3d.forEach(file => {
             type_mime(0, file.mimetype)
                 .then(() => {
-                    return create3DFile(config.gitfiles, documentID, file.originalname, file.buffer)
+                    return create3DFile(config.files3D, documentID, file.originalname, file.buffer)
                 })
                 .then(() => {
                     relativePath.file3D.push(path.join(documentID, file.originalname));
@@ -80,10 +80,23 @@ const newAssembly = (req, res) => {
             else if (parentNode.type !== TypeEnum.assembly)
                 res.status(401).send("The node is a " + parentNode.type + ", it should be an " + TypeEnum.assembly);
             else {
-                let assembly = Assembly.initialize(name, description, relativePath.file3D, relativePath.specFiles, tags);
+                Assembly.findById(parentAssembly => {
+                let assembly = Assembly.newDocument({
+                    name: name,
+                    description: description,
+                    tags: tags,
+                    ownerOrganization: parentAssembly.ownerOrganization,
+                });
                 assembly.save()
                     .then((newAssembly) => {
-                        let subNode = Node.createNodeWithContent(name, description, TypeEnum.assembly, newAssembly._id, relativePath.specFiles, tags);
+                        let subNode = Node.newDocument({
+                            name: name,
+                            description: description,
+                            type: TypeEnum.assembly,
+                            content: newAssembly._id,
+                            specFiles: relativePath.specFiles,
+                            tags: tags,
+                        });
                         subNode.save()
                             .then((subNode) => {
                                 parentNode.children.push({
@@ -117,6 +130,8 @@ const newAssembly = (req, res) => {
                         console.log(new Error("[Function newPart] Could'nt save the part"));
                         throw err;
                     });
+
+                })
             }
         })
         .catch(() => {

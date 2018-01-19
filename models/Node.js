@@ -1,14 +1,18 @@
-let serverConfiguration = require("../config/server");
-let mongoose = require("mongoose");
-let NestedNode = require("./nestedSchema/NestedNodeSchema");
-let uniqueValidator = require('mongoose-unique-validator');
-let createNode = require("./utils/create/createNode");
-let NestedUser = require("./nestedSchema/NestedUserSchema");
-let NestedComment = require("./nestedSchema/NestedActivitySchema");
-let NodeTypeEnum = require("../enum/NodeTypeEnum");
-let NestedSpecFiles = require('./nestedSchema/NestedSpecFile');
-let TypeEnum = require('../enum/NodeTypeEnum');
-let NestedAnnotation = require('./nestedSchema/NestedAnnotation');
+const serverConfiguration = require("../config/server");
+const mongoose = require("mongoose");
+const path = require('path');
+const fs = require('fs');
+const NestedNode = require("./nestedSchema/NestedNodeSchema");
+const uniqueValidator = require('mongoose-unique-validator');
+const createNode = require("./utils/create/createNode");
+const NestedUser = require("./nestedSchema/NestedUserSchema");
+const NestedComment = require("./nestedSchema/NestedActivitySchema");
+const NodeTypeEnum = require("../enum/NodeTypeEnum");
+const NestedSpecFiles = require('./nestedSchema/NestedSpecFile');
+const TypeEnum = require('../enum/NodeTypeEnum');
+const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
+let NestedTeam = require('./nestedSchema/NestedTeamSchema');
+const THREE = require('three');
 
 let NestedWorkspace = mongoose.Schema({
     _id: {type: mongoose.SchemaTypes.ObjectId, require: true},
@@ -16,51 +20,58 @@ let NestedWorkspace = mongoose.Schema({
 });
 
 let NodeSchema = mongoose.Schema({
+    //The core Information of the node
     name: {type:String, require:true},
+    //TODO: Verificate the information
     description: String,
-    content: {type: mongoose.SchemaTypes.ObjectId, require: false},
-    type: { type:String, default: TypeEnum.empty},
-    specpath: {type: [String], default: []},
-    tags: {type: [String], default: []},
-    children: {type: [NestedNode], default: []},
+
+    //The content linked with the node
+    type: { type:String, require: true},
+    content: {type: mongoose.SchemaTypes.ObjectId, require: true},
+    matrix: {type:[] ,default: new THREE.Matrix4()},
+    Workspaces: { type:[NestedWorkspace], require: true},
+
+//The system Information of the Node
     created: {type: Date, default:  Date.now()},
     modified: {type: Date, default: Date.now()},
-    Users: {type: [NestedUser], default: []},
-    Workspace: [String],
+    maturity: {type: String, default: NodeTypeEnum.maturity[0]},
+    activities : {type: [NestedComment], default: []},
+
+//The
+    tags: {type: [String], default: []},
+    children: {type: [NestedNode], default: []},
+    team: {type: NestedTeam, required: true},
     owners: {type: [NestedUser], default: []},
-    maturity: {type: String, default: [NodeTypeEnum.maturity[0]]},
-    activities : {type: [NestedComment], default: []}
 });
 
 NodeSchema.plugin(uniqueValidator);
 
-NodeSchema.statics.initializeNode = (name, description, workspaces, user) => {
-    return new Node({
-        name: name,
-        description: description,
-        Workspace: workspaces,
-        Users: user,
-        type: TypeEnum.assembly
-    })
-};
+/**
+ *
+ * @param nodeInformation - The Object With all the information
+ * @param nodeInformation.name - The name of the node (required)
+ * @param nodeInformation.type - The type of the node (required)
+ * @param nodeInformation.content - The content of the node(required)
+ * @param nodeInformation.Workspaces - The Workspace of the node (required)
+ * @param nodeInformation.ownerOrganization - The owner's organization of the node (required)
+ * @param nodeInformation.description - The description of the node
+ * @param nodeInformation.specFiles - The specFiles of the node
+ * @param nodeInformation.tags - The tags of the node
+ * @param nodeInformation.children - The children of the node
+ * @param nodeInformation.Users - The Users of the node
+ * @param nodeInformation.owners - The owners of the node
+ */
+NodeSchema.statics.newDocument = (nodeInformation) => {
+    if (!nodeInformation.name)
+        console.error(new Error("The Name of the Node is missing"));
 
-NodeSchema.statics.createNode = (name, description, type, specpath) => {
-    return new Node({
-        name: name,
-        description: description,
-        type: type,
-        specpath: specpath,
-    });
-};
-NodeSchema.statics.createNodeWithContent = (name, description, type, content, specpath, tags) => {
-    return new Node({
-        name: name,
-        description: description,
-        type: type,
-        specpath: specpath,
-        tags: tags,
-        content: content,
-    });
+    if (!nodeInformation.type)
+        console.error(new Error("The Type of the Node is missing"));
+
+    if (!nodeInformation.content)
+        console.error(new Error("The Content of the Node is missing"));
+
+    return new Node(nodeInformation);
 };
 
 let Node = mongoose.model("Node", NodeSchema, "Nodes");

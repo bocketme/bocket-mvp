@@ -50,9 +50,7 @@ let mongoose = require('mongoose');
 mongoose.Promise = Promise;
 //Set up default mongoose connection
 let mongoDB = config.mongoDB;
-mongoose.connect(mongoDB, {
-    useMongoClient: true
-});
+mongoose.connect(mongoDB)   ;
 
 //Get the default connection
 let db = mongoose.connection;
@@ -113,25 +111,5 @@ app.use(express.static('public'));
 
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on("listening", () => {
-    var filesToVerify =
-        [{name: 'avatar', path: config.avatar},
-            {name: 'bocket', path: config.gitfiles},
-            {name: 'tpm', path: config.tpm},
-            {name: 'spec', path: config.specfiles}];
-    verifyAccess(filesToVerify);
+
 });
-
-function verifyAccess(params){
-    for (var i = 0; i< params.length; i++ ) {
-        fs.access(params[i].path, logError(params[i]))
-    }
-}
-
-function logError(content){
-    return (err) => {
-        if (err){
-            if(err.errno== -4058)
-                console.log("Create the directory "+ content.name +" in" + content.path);
-        }
-    }
-}

@@ -20,10 +20,12 @@ module.exports = (socket) => {
                     TypeEnum: TypeEnum,
                     sub_level: sub_level
                 }, (err, html) => {
-                    if (err)
+                    if (err){
                         console.log(err);
-                    socket.emit("nodeChild", html, nodeId);
+                        socket.emit("error", err);
+                    }
+                    else socket.emit("nodeChild", html, nodeId);
                 });
             });
     });
-}
+};
