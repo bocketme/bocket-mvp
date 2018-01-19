@@ -2,6 +2,7 @@ let escape = require('escape-html');
 let ModelsMaker = require("../models/utils/create/ModelsMaker");
 let nodeMasterConfig = require("../config/nodeMaster");
 let signInUserSession = require("../utils/signInUserSession");
+let acceptInvitation = require("../utils/Invitations/acceptInvitation");
 
 let NodeSchema = require("../models/Node");
 let Invitation = require("../models/Invitation");
@@ -40,43 +41,12 @@ let signUpController = {
                         let workspace = ModelsMaker.CreateWorkspace(req.body.workspaceName, newOrga, newUser);
                         if (req.body.invitationUid) {
                             console.log("INVITATION");
-                            Invitation.findOne({uid: req.body.invitationUid})
+                            acceptInvitation(req.body.invitationUid, newUser)
                                 .then(inv => {
-                                    if (inv === null) {
-                                        console.log("Invitation invalid");
-                                        return ;
-                                    }
-                                    Workspace.findById(inv.workspace.id)
-                                        .then(w => {
-                                            newUser.workspaces.push({_id: w._id, name: w.name});
-                                            newUser.organizations.push(inv.organization);
-                                            w.users.push({_id: user._id, completeName: newUser.completeName, email: newUser.email});
-                                            newUser.save()
-                                                .then(() => {
-                                                    w.save()
-                                                        .then( () => {
-                                                            inv.remove();
-                                                            req.session = signInUserSession(req.session, {email: user.email});
-                                                            res.redirect("project/" + w._id);
-                                                            req.session.completeName = newUser.completeName;
-                                                            req.session.currentWorkspace = w._id;
-
-                                                        })
-                                                        .catch(() => {
-                                                            newOrga.remove();
-                                                            newUser.remove();
-                                                        });
-                                                })
-                                                .catch(() => {
-                                                    newOrga.remove();
-                                                    newUser.remove();
-                                                });
-                                        })
-                                        .catch(err => {
-                                            console.log(err);
-                                            newOrga.remove();
-                                            newUser.remove();
-                                        });
+                                    req.session = signInUserSession(req.session, {email: user.email});
+                                    req.session.completeName = newUser.completeName;
+                                    req.session.currentWorkspace = newWorkspace._id;
+                                    res.redirect("project/" + workspace._id);
                                 })
                                 .catch(err => {
                                     console.log(err);

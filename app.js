@@ -93,12 +93,11 @@ app.set('twig options', {
     strict_variables: false,
 });
 
+app.use("/signOut", signOut);
 app.use("/", index);
-
 app.use("/user", user);
 app.use("/signin", signin);
 app.use("/signup", signup);
-app.use("/signOut", signOut);
 app.use("/project", project);
 app.use("/node", node);
 app.use("/workspace", workspace);
