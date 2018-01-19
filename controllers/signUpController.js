@@ -98,10 +98,10 @@ let signUpController = {
 
                 if (req.body.invitationUid) {
                     console.log("INVITATION");
-                    acceptInvitation(req.body.invitationUid, newUser)
+                    acceptInvitation(req.body.invitationUid, Documents.user)
                         .then(invitationInfo => {
                             req.session = signInUserSession(req.session, {email: user.email});
-                            req.session.completeName = newUser.completeName;
+                            req.session.completeName = Documents.user.completeName;
                             req.session.currentWorkspace = invitationInfo.workspaceId;
                             res.redirect("/project/" + invitationInfo.workspaceId);
                         })
@@ -109,8 +109,8 @@ let signUpController = {
                             console.log(err);
                             newOrga.remove();
                             newUser.remove();
-                        })
-                    Promise.reject("Invitation");
+                        });
+                    return Promise.reject("Invitation");
                 } else
                     return workspace.save()
             })

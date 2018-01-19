@@ -4,7 +4,7 @@
 let path = require('path');
 
 module.exports = {
-    port: "8080",
+    port: "4243",
     protocol: "http",
     url: "localhost:" + this.port,
     mongoDB: "mongodb://localhost/bocketmemvp",
