@@ -13,11 +13,17 @@ let internalError = {code: 2, message: "Internal Error"};
  */
 function acceptInvitation(invitationUid, user) {
     return new Promise((resolve, rej) => {
+        let invitation = null;
         Invitation.findOne({uid: invitationUid})
-            .then(inv => updateUser(inv, user))
+            .then(inv => {
+                if (inv === null) rej();
+                invitation = inv;
+                return updateUser(inv, user)
+            })
             .then(res => updateWorkspace(res.workspace, res.user))
             .then((workspaceId) => {
-                resolve({workspaceId: workspaceId})
+                resolve({workspaceId: workspaceId});
+                invitation.remove();
             })
             .catch(err => {
                 rej(err);
