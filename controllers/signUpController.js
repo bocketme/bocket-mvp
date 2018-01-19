@@ -42,11 +42,11 @@ let signUpController = {
                         if (req.body.invitationUid) {
                             console.log("INVITATION");
                             acceptInvitation(req.body.invitationUid, newUser)
-                                .then(inv => {
+                                .then(invitationInfo => {
                                     req.session = signInUserSession(req.session, {email: user.email});
                                     req.session.completeName = newUser.completeName;
-                                    req.session.currentWorkspace = newWorkspace._id;
-                                    res.redirect("project/" + workspace._id);
+                                    req.session.currentWorkspace = invitationInfo.workspaceId;
+                                    res.redirect("project/" + invitationInfo.workspaceId);
                                 })
                                 .catch(err => {
                                     console.log(err);
