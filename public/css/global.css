@@ -57,3 +57,11 @@ input::placeholder {
 .btn {
     background: #FF2E63 !important;
 }
+
+.display-none {
+    display: none;
+}
+
+.display-block {
+    display: block;
+}

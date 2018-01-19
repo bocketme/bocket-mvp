@@ -1,0 +1,12 @@
+#invite-people-div #invite-people-close {
+    position: relative;
+    left: 94%;
+}
+
+#invite-people-div #invite-people-close:hover {
+    cursor: pointer;
+    color: #9b9b9b;
+}
+
+#invite-people-div #invite-people-form {
+}

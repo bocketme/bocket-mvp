@@ -42,6 +42,8 @@ module.exports = {
                     }
                     else {
                         req.session.userMail = result.email;
+                        req.session.completeName = result.completeName;
+                        req.session.currentWorkspace = req.body.workspaceId;
                         res.redirect(req.originalUrl + "/" + req.body.workspaceId);
                     }
                 });
@@ -52,6 +54,7 @@ module.exports = {
         }
         else {
             console.log("User a une session");
+            req.session.currentWorkspace = req.body.workspaceId;
             res.redirect(req.originalUrl + "/" + req.body.workspaceId);
         }
     },
@@ -103,7 +106,7 @@ module.exports = {
 }
 
 function getRenderInformation(workspaceId, userMail, title) {
-    //console.log("getRenderInformation", workspaceId, userMail);
+    console.log("getRenderInformation", workspaceId, userMail);
     return new Promise((resolve, reject) => {
         Workspace.findById({_id: workspaceId})
         .then(workspace => {
@@ -169,7 +172,7 @@ function getRenderInformation(workspaceId, userMail, title) {
         .catch(err => {
             if (err.name === "CastError") // Workspace not found
             {
-                console.log("[projectController.indexPOST] : ", "Workspace not found2");
+                console.log("[projectController.indexPOST] : ", "Workspace not found2", err);
                 reject(404);
             }
             else {
