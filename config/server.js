@@ -4,7 +4,7 @@
 let path = require('path');
 
 module.exports = {
-    port: "4243",
+    port: "8080",
     protocol: "http",
     url: "localhost:" + this.port,
     mongoDB: "mongodb://localhost/bocketmemvp",
@@ -12,5 +12,5 @@ module.exports = {
     files3D: path.resolve("./data/files3D"),
     avatar: path.resolve("./data/avatar"),
     secretSession: "kdjqskdjkqsjdsjqdklqsjdkjziooajdiazjdskjdqklsjdjaziodjsqjdlj",
-    secretKey: "Why you're always lying ? Why you're always lying ?",
+    secretKey: "Bocket make a new World of Possibilities",
 };

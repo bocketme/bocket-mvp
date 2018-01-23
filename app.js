@@ -26,7 +26,7 @@ let expressSession = require("express-session");
 const MongoStore = require('connect-mongo')(expressSession); //session store
 let session = expressSession({
     secret: config.secretSession,
-    store: new MongoStore({ url: config.mongoDB}),
+    store: new MongoStore({ url: config.mongoDB }),
     resave: true,
     saveUninitialized: true
 });
@@ -50,7 +50,7 @@ let mongoose = require('mongoose');
 mongoose.Promise = Promise;
 //Set up default mongoose connection
 let mongoDB = config.mongoDB;
-mongoose.connect(mongoDB)   ;
+mongoose.connect(mongoDB);
 
 //Get the default connection
 let db = mongoose.connection;
@@ -111,5 +111,24 @@ app.use(express.static('public'));
 
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on("listening", () => {
-
+    fs.access("./data", (err) => {
+        if (err) {
+            if (err.code == 'ENOENT') {
+                fs.mkdir("./data", (err) => {
+                    if (err)
+                    throw err
+                    fs.mkdir(config.files3D, err => {
+                        if (err)
+                        throw err
+                    })
+                    fs.mkdir(config.avatar, err => {
+                        if (err)
+                        throw err
+                    })
+                })
+            }
+            else 
+            throw err
+        }
+    })
 });
