@@ -61,5 +61,4 @@ typings/
 .env
 
 converter/
-viewer/
 data/
