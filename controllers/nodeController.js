@@ -45,7 +45,7 @@ let nodeController = {
                     updateNode(work.node_master, cible, title)
                     .then(node => {
                         work.node_master = node
-                        console.log(node);                
+                        //console.log(node);                
                         work.save()
                         .catch(err => {
                             console.log(err);

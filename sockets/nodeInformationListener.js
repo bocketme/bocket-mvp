@@ -15,7 +15,7 @@ module.exports = function (socket) {
             if (err || !node)
             socket.emit("NodeError");
             else {
-                console.log(node);
+                //console.log(node);
                 let userId = []
                 node.owners.forEach(user => {
                     userId.push({
