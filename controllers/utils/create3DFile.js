@@ -11,15 +11,15 @@ function create3DFile(chemin, nameFile, data){
         fs.access(chemin, err => {
             if(err)
                     return reject(err);
-            fs.writeFile(path.join(chemin, partFileSystem.rawFile,nameFile), data, err => {
+            fs.writeFile(path.join(chemin, partFileSystem.data,nameFile), data, err => {
                 if (err)
                     return reject(err);
                 try {
-                    console.log("path here : " + path.join(chemin, partFileSystem.rawFile, nameFile));
-                    let pathConvertedFile = converter.JSimport(path.join(chemin, partFileSystem.rawFile, nameFile));
-                    console.log(pathConvertedFile);
+                    console.log("path here : " + path.join(chemin, partFileSystem.data, nameFile));
+                    let pathConvertedFile = converter.JSimport(path.join(chemin, partFileSystem.data, nameFile));
+                    console.log("pathConverted File", pathConvertedFile);
                 } catch (e) {
-                    console.log(e);
+                    console.log("Error \n", e);
                 }
                 resolve();
             })
