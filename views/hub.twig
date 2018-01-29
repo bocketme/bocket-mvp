@@ -57,11 +57,6 @@
                     <span class='right-align badge'>{{ last_updates }}</span>
                 </button>
             </a>
-            <a href="/project/{{ in_use.id }}/duplicates">
-                <button class="not-a-button" {% if "Duplicates" in title %} id="selected" {% endif %}>duplicates
-                    <span class='right-align badge'>{{ duplicates }}</span>
-                </button>
-            </a>
         </div>
 
     </div>
@@ -80,7 +75,8 @@
             <li class="option-node">
                 <a class="dropdown-menu modal-trigger modal-node-selector" href="#create-new-node"> New node... </a>
             </li>
-            <!-- Create empty node -->#}
+            <!-- Create empty node -->
+            #}
             <li class="option-node">
                 <a class="dropdown-menu modal-trigger modal-node-selector" href="#import-part"> New Part... </a>
             </li>
@@ -116,7 +112,8 @@
             </li>
             <li class="option-node">
                 <a class="dropdown-menu modal-trigger modal-node-selector" href="#insert-assembly"> Insert existing Assembly</a>
-            </li> --> #}
+            </li> -->
+            #}
         </ul>
 
         {# Modals #} {# {% include "modals/create_part.twig" %} #}
@@ -127,7 +124,7 @@
         {# {% include "modals/import_specfiles.twig"%} #}
 
         <div id="second_column_content" class="clear">
-            {% include "hub/search.twig" %}
+            <h6 id="assembly-title">Assembly</h6>
             {% include "hub/node_tree.twig" %}
             {% include "hub/location.twig" %}
             {% include "hub/content.twig" %}

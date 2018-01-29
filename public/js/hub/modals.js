@@ -22,9 +22,10 @@
                     postRequest.addEventListener("load", (reqEvent) => {
                         if (postRequest.readyState === postRequest.DONE) {
                             if (postRequest.status === 200) {
-                                $('#'+nodeId+'-body').html(postRequest.response)
+                                $('#'+nodeId+'-body').html(postRequest.response);
                                 var element = document.querySelectorAll('.three-node');
                                 $(element).click(loadNodeInformation);
+                                Materialize.toast("Import finished, start Conversion", 1000);
                             }  else if (postRequest.status === 404) {
                                 Materialize.toast("Not Found", 1000);
                             } else if (postRequest.status === 401) {

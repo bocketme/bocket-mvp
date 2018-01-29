@@ -26,3 +26,11 @@
         {% endif %}
     </ul>
 </div>
+{% if sockets %}
+    {% for socket in sockets %}
+        <script>
+            console.log("{{ socket.message }}");
+            socket.emit("{{ socket.order }}" {% for data in socket.dataToSend %} ,"{{ data }}" {% endfor %});
+        </script>
+    {% endfor %}
+{% endif %}

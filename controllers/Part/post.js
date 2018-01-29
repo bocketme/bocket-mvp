@@ -10,9 +10,11 @@ const create3DFile = require('../utils/create3DFile');
 const twig = require('twig');
 const Assembly = require('../../models/Assembly');
 const createArchive = require('../utils/createArchive');
+
 /**
  * Create a new Part for the specified node
  */
+
 const newPart = (req, res) => {
 
     let nodeId = escape(req.params.nodeId),
@@ -68,7 +70,12 @@ const newPart = (req, res) => {
                                                     node: newParentNode,
                                                     TypeEnum: NodeTypeEnum,
                                                     sub_level: sub_level,
-                                                    breadcrumb: breadcrumb
+                                                    breadcrumb: breadcrumb,
+                                                    sockets: [{
+                                                        message: "The node " + subNode._id + "was created. Converting...",
+                                                        order: "[Converter Import] - Start",
+                                                        dataToSend: [subNode._id, files_3d[0].originalname],
+                                                    }]
                                                 }, (err, html) => {
                                                     if (err)
                                                         console.log(err);
@@ -77,8 +84,8 @@ const newPart = (req, res) => {
                                                         resolve();
                                                     })
                                                         .then(() => {
+                                                            res.send(html);
                                                         });
-                                                    res.send(html)
                                                 });
                                             })
                                             .catch(err => {
