@@ -27,7 +27,7 @@ const newPart = (req, res) => {
         files_3d = req.files['file3D'];
 
     sub_level++;
-    console.log(nodeId)
+    console.log(nodeId);
     NodeSchema.findById(nodeId)
         .then((parentNode) => {
             if (!parentNode)
