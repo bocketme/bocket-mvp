@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="50px" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>warning icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="CHARTE" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="PICTOGRAMMES" transform="translate(-2594.000000, -154.000000)" fill-rule="nonzero" fill="#FF2E63">
+            <g id="warning-icon" transform="translate(2594.000000, 154.000000)">
+                <path d="M25,0.734 C11.598,0.734 0.734,11.598 0.734,25 C0.734,38.402 11.598,49.266 25,49.266 C38.402,49.266 49.266,38.403 49.266,25 C49.266,11.598 38.402,0.734 25,0.734 Z M25,10.144 C26.512,10.144 27.738,11.369 27.738,12.881 L27.039,29.214 C26.969,30.69 25.82,31.252 25,31.252 C24.081,31.252 23.042,30.768 22.961,29.214 L22.261,12.881 C22.262,11.369 23.488,10.144 25,10.144 Z M27.471,39.531 C26.826,40.182 25.923,40.553 25,40.553 C24.076,40.553 23.173,40.182 22.522,39.531 C21.871,38.881 21.5,37.978 21.5,37.053 C21.5,36.136 21.871,35.234 22.522,34.581 C23.173,33.931 24.076,33.553 25,33.553 C25.923,33.553 26.82,33.931 27.471,34.581 C28.129,35.233 28.5,36.136 28.5,37.053 C28.5,37.979 28.129,38.881 27.471,39.531 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>
