@@ -13,3 +13,6 @@
 [submodule "convertisseur/assimp2json"]
 	path = convertisseur/assimp2json
 	url = https://github.com/bocketme/assimp2json.git
+[submodule "viewer"]
+	path = viewer
+	url = https://github.com/bocketme/viewer
