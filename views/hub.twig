@@ -125,7 +125,11 @@
 
         <div id="second_column_content" class="clear">
             <h6 id="assembly-title">Assembly</h6>
-            {% include "hub/node_tree.twig" %}
+            {% if "Last Updates" in title  %}
+                {% include "hub/lastUpdate/node_tree.twig" %}
+            {% else %}
+                {% include "hub/allNode/node_tree.twig" %}
+            {% endif %}
             {% include "hub/location.twig" %}
             {% include "hub/content.twig" %}
         </div>

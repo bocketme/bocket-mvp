@@ -24,7 +24,10 @@ let PartSchema = mongoose.Schema({
     quality: {type: Number, default:0},
     tags: {type: [], default: []},
     annotation: {type: [NestedAnnotation], default: []},
-    activities : {type: [NestedComment], default: []}
+    activities : {type: [NestedComment], default: []},
+
+    created: {type: Date, default:  Date.now()},
+    modified: {type: Date, default: Date.now()},
 
     //owners: {type: [nestedOwners], default: []}
 });

@@ -29,7 +29,11 @@ let AssemblyScheama = mongoose.Schema({
     whereUsed: {type: [String], default: []},
     tags: {type: [], default: []},
     annotation: {type: [NestedAnnotation], default: []},
-    activities : {type: [NestedComment], default: []}
+    activities : {type: [NestedComment], default: []},
+
+    //Date
+    created: {type: Date, default:  Date.now()},
+    modified: {type: Date, default: Date.now()}
 });
 
 AssemblyScheama.post('save', (assembly, next) => {

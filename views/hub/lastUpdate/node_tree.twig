@@ -1,0 +1,43 @@
+<ul class="collapsible collapsible-first bocket-scrollbar" data-collapsible="accordion">
+    <li>
+        <div id="{{ nodemaster._id }}" class="collapsible-header three-node search_child valign-wrapper">
+            <i class="material-icons">keyboard_arrow_right</i>
+            <img class="pad-right" src="/img/07-Assembly icon.svg">
+            <span class="p-node" data-node="part" data-breadcrumbs="{{ node.name }}" data-sublevel="0">{{ node.name }}</span>
+        </div>
+        <div id="{{ nodemaster._id }}-body" class="collapsible-body container valign-wrapper">
+            {% for node in nodes %}
+            {% if child.type == TypeEnum.assembly %}
+    <li>
+        <div id="{{ child._id }}" class="collapsible-header three-node search_child valign-wrapper">
+            <span style="padding-left:{{ sub_level * 20 }}px"></span>
+            <i class="material-icons">keyboard_arrow_right</i>
+            <img class="pad-right" src="/img/07-Assembly icon.svg">
+            {# search the breadcrumbs #}
+            <span class="p-node" data-node="{{ TypeEnum.assembly }}" data-sublevel="{{ sub_level }}">{{ child.name }}</span>
+        </div>
+        <div id="{{ child._id }}-body" class="collapsible-body container valign-wrapper">
+        </div>
+    </li>
+    {% else %}
+        <li>
+            <div id="{{ child._id }}" class="collapsible-header three-node valign-wrapper">
+                <span style="padding-left:{{ sub_level * 30 }}px"></span>
+                <img class="pad-right" src="/img/07-Part icon.svg">
+                {# search the breadcrumbs #}
+                <span class="p-node" data-node="{{ TypeEnum.part }}" data-sublevel="{{ sub_level }}">{{ child.name }}</span>
+            </div>
+        </li>
+    {% endif %}
+    {% endfor %}
+        </div>
+    </li>
+</ul>
+
+<ul id='node-tree-context-menu' class='dropdown-content'>
+    <li class="option-node"><a id="new-part" class="dropdown-menu" href="#!">New Part</a></li>
+    <li class="option-node"><a id="new-assembly" class="dropdown-menu" href="#!">New Assembly</a></li>
+    <li class="divider"></li>
+    <li class="option-node"><a id="preview" class="dropdown-menu" href="#!">Remove</a></li>
+    <li class="option-node"><a id="preview" class="dropdown-menu" href="#!">Duplicate</a></li>
+</ul>

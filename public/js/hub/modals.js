@@ -98,18 +98,21 @@ $('#submit-import-part').click((event) => {
             formdata.append("tags", JSON.stringify(chips));
 
             var structure = makerProductStructure(name, NodeTypeEnum.part, sub_level, breadcrumb + '/' + name);
-            var icon = document.getElementById("status-node");
 
             postRequest.addEventListener("load", (reqEvent) => {
                 if (postRequest.readyState === postRequest.UNSENT){
                     var nodeParent = document.getElementById('#'+nodeId+'-body');
                     nodeParent.appendChild(structure);
+                    var icon = document.getElementById("status-node");                    
                     icon.setAttribute("src", "/img/Product_Structure/refresh icon.svg");
                 }
 
                 if (postRequest.readyState === postRequest.DONE) {
+                    var icon = document.getElementById("status-node");                        
                     if (postRequest.status === 200) {
                         $('#'+nodeId+'-body').html(postRequest.response);
+                        icon = document.getElementById("status-node");
+                        icon.setAttribute("src", "/img/Product_Structure/refresh icon.svg");
                         var element = document.querySelectorAll('.three-node');
                         $(element).click(loadNodeInformation);
                     }  else if (postRequest.status === 404) {
@@ -117,17 +120,19 @@ $('#submit-import-part').click((event) => {
                         Materialize.toast("Not Found", 1000);
                     } else if (postRequest.status === 401) {
                         icon.setAttribute("src", "/img/Product_Structure/warning icon.svg");
-                        Materialize.toast("The selected node is not an assembly", 1000);
-                    } else
+                        Materialize.toast("The selected node is not an assembly", 4000);
+                    } else {
+                        Materialize.toast("Intern Error", 4000);
                         icon.setAttribute("src", "/img/Product_Structure/warning icon.svg")
+                    }
                 }
             }, false);
 
             postRequest.addEventListener("error", function(event) {
-                Materialize.toast("The Part was not created", 1000);
+                Materialize.toast("The Part was not created", 4000);
             }, false);
             postRequest.addEventListener("abort", function(event) {
-                Materialize.toast("Network Error - The Part could not be created", 1000);
+                Materialize.toast("Network Error - The Part could not be created", 4000);
             }, false);
 
             postRequest.open('POST', '/part/' + nodeId, true);
