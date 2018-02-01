@@ -202,6 +202,7 @@ function getLastUpdatesPage(workspaceId, userMail, title) {
         workspace: null,
         lastUpdate: null
     };
+
     return new Promise((resolve, reject) => {
         Workspace.findById({_id: workspaceId})
             .catch((err) => {

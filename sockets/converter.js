@@ -8,7 +8,7 @@ const NodeSchema = require ("../models/Node"),
     converter = require("../convertisseur/converter"),
     partFileSystem = require("../config/PartFileSystem");
 
-module.exports = (socket) => {
+module.exports = (io, socket) => {
     socket.on("[Converter Import] - Start", (nodeId, nameFile) => {
         NodeSchema.findById(nodeId)
             .then((node) => {

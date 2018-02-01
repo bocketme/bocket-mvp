@@ -5,11 +5,23 @@ const luxon = require('luxon'),
     _ = require('lodash'),
     TypeEnumNode = require('../../enum/NodeTypeEnum');
 
-/**
- * Try
- * @param content
- */
 module.export = lastUpdates;
+
+async function lastUpdates(workspaceId) {
+    try {
+        let nodes = await NodeSchema.find({"": workspaceId});
+
+        nodes.forEach(node => {
+
+        });
+
+        
+    } catch (err) {
+
+    }
+}
+
+
 
 function lastUpdates(workspaceId) {
     Promise.all([PartFinder(workspaceId), AssemblyFinder(workspaceId), NodeFinder(workspaceId)])
@@ -35,7 +47,15 @@ function PartFinder(workspaceId){
                 });
             })
             .then(nodes => {
-                resolve(_.uniq(_.flattenDeep(nodes)));
+                resolve(
+                    _.uniq(
+                        _.flattenDeep(
+                            nodes.map(() => {
+
+                            })
+                        )
+                    )
+                );
             })
     })
 }

@@ -16,19 +16,26 @@ let invitePeopleListener = require("./invitePeopleListener");
 
 module.exports = function(io) {
     io.on('connection', function (socket) {
+        // Signin / Signup
         betaRegistrationListener(socket);
         checkUniqueField(socket);
         signinListener(socket);
-        newNodeListener(socket);
-        NodeInformationListener(socket);
+        
+        // Get/Add informatoin
         contentInformationListener(socket);
-        searchNodeChildren(socket);
-        nodeViewer(socket);
-        newActivityComment(socket);
         getActivities(socket);
+        newActivityComment(socket);
         addCommentListener(socket);
+
+        // Node Information
+        NodeInformationListener(socket);
+        searchNodeChildren(socket);
+        converter(io, socket);
+        nodeViewer(socket);        
+        newNodeListener(socket);        
+        
+        // Socket Management
         invitePeopleListener(socket);
-        converter(socket);
         joinWorkspaceListener(io, socket);
         leaveWorkspaceListener(io, socket);
     });
