@@ -25,7 +25,7 @@ module.exports = function(io) {
         nodeViewer(socket);
         newActivityComment(socket, io);
         getActivities(socket);
-        addCommentListener(socket);
+        addCommentListener(socket, io);
         invitePeopleListener(socket);
         joinWorkspaceListener(io, socket);
         leaveWorkspaceListener(io, socket);
