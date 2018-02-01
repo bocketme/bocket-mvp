@@ -23,7 +23,7 @@ module.exports = function(io) {
         contentInformationListener(socket);
         searchNodeChildren(socket);
         nodeViewer(socket);
-        newActivityComment(socket);
+        newActivityComment(socket, io);
         getActivities(socket);
         addCommentListener(socket);
         invitePeopleListener(socket);

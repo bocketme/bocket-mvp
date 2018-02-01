@@ -10,6 +10,8 @@ function joinWorkspaceListener(io, socket) {
     query.elemMatch("workspaces", {"_id" : workspaceId})
         .then(user => {
             if (user !== null) {
+                console.log(user.email, "join", workspaceId);
+                var nsp = io.of(workspaceId);
                 socket.join(workspaceId);
             }
         })
