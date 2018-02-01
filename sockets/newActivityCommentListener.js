@@ -12,7 +12,6 @@ module.exports = (socket) => {
         //TODO: ajouter type dans comment & filepath
         //TODO: check if the user has rights
         console.log("context", context);
-        console.log("context", context);
 
         User.findOne({email: socket.handshake.session.userMail})
             .then(user => {
