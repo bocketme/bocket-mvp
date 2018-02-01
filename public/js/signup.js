@@ -44,9 +44,12 @@ $(document).ready(function() {
         if ($( "#workspaceSignUp" ).valid())
         {
             e.preventDefault();
+            console.log("icii");
             var organizationName = $("#companyName");
             checkUniqueField("Organization", "name", organizationName.val(),
                 function () {
+                    var completeName = $("#completeName");
+                    completeName.val(CapitalizeCompleteName(completeName.val()));
                     $("#workspaceSignUp").submit();
                     already = true;
                 },
@@ -62,13 +65,13 @@ $(document).ready(function() {
     };
 
     $.validator.methods.completeName = function (value, element) {
-        return this.optional(element) || /[A-Z][a-z]+ [A-Z][a-z]+/.test(value);
+        return this.optional(element) || /[a-z]+ [a-z]+/.test(value);
     };
 
     $.validator.addMethod(
         "completeName",
         function(value, element) {
-            return this.optional(element) || /[A-Z][a-z]+ [A-Z][a-z]+/.test(value);
+            return this.optional(element) || /[a-zA-z]+ [a-zA-Z]+/.test(value);
         },
         "Please check your input."
     );
@@ -128,5 +131,17 @@ $(document).ready(function() {
             showBox($("#userSignInBox"));
         });
     });
+
+    function CapitalizeCompleteName(completeName) {
+        var tmp = completeName.split(" ");
+
+        tmp[0] = tmp[0].toLowerCase();
+        tmp[1] = tmp[1].toLowerCase();
+
+        tmp[0] = tmp[0].charAt(0).toUpperCase() + tmp[0].slice(1);
+        tmp[1] = tmp[1].charAt(0).toUpperCase() + tmp[1].slice(1);
+
+        return tmp[0] + " " + tmp[1];
+    }
 
 });
