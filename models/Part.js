@@ -8,6 +8,8 @@ const TypeEnum = require('../enum/NodeTypeEnum');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const NestedComment = require("./nestedSchema/NestedActivitySchema");
 const PartFileSystem = require('../config/PartFileSystem');
+const NodeSchema = require('./Node');
+const deleteDirPromise = require('./utils/async/deleteDirPromise');
 
 let NestedOrganization = mongoose.Schema({
     _id: { type: mongoose.SchemaTypes.ObjectId, require: true },
@@ -74,45 +76,20 @@ PartSchema.pre('validate', function (next) {
     return next();
 });
 
+//Function remove to test
 PartSchema.pre('remove', function (next) {
     if (!this.path)
         next(new Error("The Part contains no path for the information"));
 
     let partPath = path.join(configServer.files3D, this.path);
 
+    NodeSchema.find({content: this._id, type: TypeEnum.part }).forEach(node => { node.remove(); });    
+    
     deleteDirPromise(partPath)
     .then(() => next());
 });
 
-async function deleteDirPromise(path) {
-    try {
-        let stat = await fs.stat(path);
-
-        if (stat.isDirectory()) {
-        
-            let files = await fs.readdir(path);
-        
-            files.forEach(file => {
-                deleteDirPromise(path.join(path, file))
-                .catch(err => { throw err });
-            });
-        
-            let deleteDir = await fs.rmdir(path);
-            
-            if (deleteDir instanceof Error)
-                throw deleteDir;
-
-        } else {
-            let file = await fs.unlink(path);
-            
-            if (file instanceof Error)
-                throw file;
-        }
-
-    } catch (err) {
-        throw err
-    }
-}
+//Automatisation
 
 PartSchema.statics.newDocument = (partInformation) => {
     return new Part(partInformation);

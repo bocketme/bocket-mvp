@@ -53,6 +53,19 @@ AssemblyScheama.post('save', (assembly, next) => {
     return next()
 });
 
+//Function remove to test
+AssemblyScheama.pre('remove', function (next) {
+    if (!this.path)
+        next(new Error("The Part contains no path for the information"));
+
+    let assemblyPath = path.join(configServer.files3D, this.path);
+
+    NodeSchema.find({content: this._id, type: TypeEnum.part }).forEach(node => { node.remove(); });    
+    
+    deleteDirPromise(assemblyPath)
+    .then(() => next());
+});
+
 AssemblyScheama.statics.newDocument = (assemblyInformation) => {
     return new Assembly(assemblyInformation);
 };
