@@ -38,7 +38,7 @@ let NodeSchema = mongoose.Schema({
     maturity: {type: String, default: NodeTypeEnum.maturity[0]},
     activities : {type: [NestedComment], default: []},
 
-    //The
+    //The 
     tags: {type: [String], default: []},
     children: {type: [NestedNode], default: []},
     team: {type: NestedTeam, required: true},

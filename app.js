@@ -120,15 +120,14 @@ server.on("listening", () => {
                     fs.mkdir(config.files3D, err => {
                         if (err)
                         throw err
-                    })
+                    });
                     fs.mkdir(config.avatar, err => {
                         if (err)
                         throw err
-                    })
-                })
+                    });
+                });
             }
-            else 
-            throw err
+            else throw err;
         }
     })
 });
