@@ -15,34 +15,36 @@ let NestedTeam = require('./nestedSchema/NestedTeamSchema');
 const THREE = require('three');
 
 let NestedWorkspace = mongoose.Schema({
-    _id: {type: mongoose.SchemaTypes.ObjectId, require: true},
-    name: {type: String, require: true}
+  _id: {type: mongoose.SchemaTypes.ObjectId, require: true},
+  name: {type: String, require: true}
 });
 
 let NodeSchema = mongoose.Schema({
-    //The core Information of the node
-    name: {type:String, require:true},
+  //The core Information of the node
+  name: {type:String, require:true},
 
-    //TODO: Verificate the information
-    description: String,
+  //TODO: Verificate the information
+  description: String,
 
-    //The content linked with the node
-    type: { type:String, require: true},
-    content: {type: mongoose.SchemaTypes.ObjectId, require: true},
-    matrix: {type:[] ,default: new THREE.Matrix4()},
-    Workspaces: { type:[NestedWorkspace], require: true},
+  //The content linked with the node
+  type: { type:String, require: true},
+  content: {type: mongoose.SchemaTypes.ObjectId, require: true},
+  matrix: {type:[] ,default: new THREE.Matrix4()},
+  Workspaces: { type:[NestedWorkspace], require: true},
 
-    //The system Information of the Node
-    created: {type: Date, default:  Date.now()},
-    modified: {type: Date, default: Date.now()},
-    maturity: {type: String, default: NodeTypeEnum.maturity[0]},
-    activities : {type: [NestedComment], default: []},
+  //The system Information of the Node
+  created: {type: Date, default:  Date.now()},
+  modified: {type: Date, default: Date.now()},
+  maturity: {type: String, default: NodeTypeEnum.maturity[0]},
+  activities : {type: [NestedComment], default: []},
 
-    //The
-    tags: {type: [String], default: []},
-    children: {type: [NestedNode], default: []},
-    team: {type: NestedTeam, required: true},
-    owners: {type: [NestedUser], default: []},
+  //The
+  tags: {type: [String], default: []},
+  children: {type: [NestedNode], default: []},
+  parent : {type: String, default: null},
+
+  team: {type: NestedTeam, required: true},
+  owners: {type: [NestedUser], default: []},
 });
 
 NodeSchema.plugin(uniqueValidator);
@@ -58,21 +60,24 @@ NodeSchema.plugin(uniqueValidator);
  * @param nodeInformation.description - The description of the node
  * @param nodeInformation.specFiles - The specFiles of the node
  * @param nodeInformation.tags - The tags of the node
+ * @param nodeInformation.parent - The parent of the node
  * @param nodeInformation.children - The children of the node
  * @param nodeInformation.Users - The Users of the node
  * @param nodeInformation.owners - The owners of the node
  */
 NodeSchema.statics.newDocument = (nodeInformation) => {
-    if (!nodeInformation.name)
-        console.error(new Error("The Name of the Node is missing"));
+  if (!nodeInformation.name)
+    console.error(new Error("The Name of the Node is missing"));
 
-    if (!nodeInformation.type)
-        console.error(new Error("The Type of the Node is missing"));
+  if (!nodeInformation.type)
+    console.error(new Error("The Type of the Node is missing"));
 
-    if (!nodeInformation.content)
-        console.error(new Error("The Content of the Node is missing"));
+  if (!nodeInformation.content)
+    console.error(new Error("The Content of the Node is missing"));
 
-    return new Node(nodeInformation);
+  console.log("PARENT ID  ===========", new Node(nodeInformation));
+
+  return new Node(nodeInformation);
 };
 
 let Node = mongoose.model("Node", NodeSchema, "Nodes");

@@ -30,6 +30,6 @@ module.exports = function(io) {
         invitePeopleListener(socket);
         joinWorkspaceListener(io, socket);
         leaveWorkspaceListener(io, socket);
-        deleteNodeListener(socket);
+        deleteNodeListener(io, socket);
     });
 };
