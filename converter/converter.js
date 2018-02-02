@@ -39,6 +39,7 @@ let JSimport = function (filePath) {
 		error.error.desc = e;
 		return error
 	}
+	console.log(error.error.desc);
 	return geometry;
 };
 
