@@ -62,8 +62,12 @@ let signUpController = {
             })
             .then(newOrga => {
                 console.log("new Organization is created", newOrga);
-                Documents.organization = newOrga;
-                let team = Team.newDocument({
+                    Documents.organization = newOrga;
+                    console.log("Orga a ecrire dans user", Documents.organization._id +"-" + Documents.organization.name);
+                   Documents.user.organizations.push({ _id : Documents.organization._id, name : Documents.organization.name});
+                   return Documents.user.save();
+  
+                    let team = Team.newDocument({
                     owners: [{
                         _id: Documents.user._id,
                         completeName: Documents.user.completeName,
@@ -132,8 +136,8 @@ let signUpController = {
                 return assembly.save();
             })
             .then(newAssembly => {
-                console.log("\n\nnew assembly has been add \n", Documents.assembly);
-                Documents.assembly = newAssembly;
+                
+                Documents.assembly = newAssembly;console.log("\n\nnew assembly has been add \n", Documents.assembly);
                 let node = NodeSchema.newDocument({
                     name:           nodeMasterConfig.name,
                     description:    nodeMasterConfig.description,

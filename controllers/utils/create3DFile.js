@@ -1,7 +1,7 @@
 const fs = require('fs'),
     path = require('path'),
     file_accepted = require('../../utils/extension_file'),
-    converter = require("../../convertisseur/converter"),
+    //converter = require("../../convertisseur/converter"),
     partFileSystem = require("../../config/PartFileSystem");
 
 function create3DFile(chemin, nameFile, data){
@@ -14,13 +14,15 @@ function create3DFile(chemin, nameFile, data){
             fs.writeFile(path.join(chemin, partFileSystem.rawFile,nameFile), data, err => {
                 if (err)
                     return reject(err);
-                try {
+                /*
+                    try {
                     console.log("path here : " + path.join(chemin, partFileSystem.rawFile, nameFile));
                     let pathConvertedFile = converter.JSimport(path.join(chemin, partFileSystem.rawFile, nameFile));
                     console.log(pathConvertedFile);
                 } catch (e) {
                     console.log(e);
                 }
+                */
                 resolve();
             })
         })

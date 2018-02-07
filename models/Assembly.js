@@ -13,16 +13,13 @@ let NestedOrganization = mongoose.Schema({
 });
 
 let AssemblyScheama = mongoose.Schema({
-    name: {type: String, require: true},
+    name: {type: String, require: true, index: true},
 
     //TODO: Access To Assembly => Issue
     //owners: {type: [nestedOwners], default: []}
 
-    description: {type: String, default: "No description aviable"},
+    description: {type: String, default: "No description aviable", index: true},
     path: { type:String },
-    //TODO: Object To Assembly ?? => Issue
-    object: {type: Object, default: {}},
-
     ownerOrganization: {type: NestedOrganization, require: true},
     maturity: {type: String, default: TypeEnum.maturity[0]},
     quality: {type: Number, default:0},

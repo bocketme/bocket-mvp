@@ -7,6 +7,7 @@ const configServer = require('../config/server');
 const TypeEnum = require('../enum/NodeTypeEnum');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const NestedComment = require("./nestedSchema/NestedActivitySchema");
+const NestedAssembly = require("./nestedSchema/NestedAssemblySchema");
 const PartFileSystem = require('../config/PartFileSystem');
 
 let NestedOrganization = mongoose.Schema({
@@ -16,7 +17,7 @@ let NestedOrganization = mongoose.Schema({
 
 let PartSchema = mongoose.Schema({
     name: {type: String, require: true},
-    description: {type: String, default: "No description aviable"},
+    description: {type: String, default: "No description avalaible"},
 
     path: String,
     maturity: {type: String, default: TypeEnum.maturity[0]},
@@ -24,10 +25,16 @@ let PartSchema = mongoose.Schema({
     quality: {type: Number, default:0},
     tags: {type: [], default: []},
     annotation: {type: [NestedAnnotation], default: []},
+    ParentAssemblies: {type: [NestedAssembly], default: []},
     activities : {type: [NestedComment], default: []}
 
     //owners: {type: [nestedOwners], default: []}
 });
+PartSchema.index ({ name: 'text', description: 'text' });
+
+PartSchema.on("indexError", (error) => {
+    console.error(error);
+})
 
 function createDirectories (partPath, lastPath) {
     return new Promise((resolve, reject) => {

@@ -40,6 +40,12 @@ const newPart = (req, res) => {
                             description: description,
                             tags: tags,
                             ownerOrganization: parentAssembly.ownerOrganization,
+                            ParentAssemblies: [
+                                {
+                                    _id: parentAssembly._id,
+                                    name: parentAssembly.name
+                                }
+                            ],
                         });
                         part.save()
                             .then((newPart) => {
@@ -114,20 +120,20 @@ function createFiles(specFiles, files_3d, chemin, name) {
     let sendError = [];
 
     if (specFiles) {
-            specFiles.forEach(spec => {
-                type_mime(1, spec.mimetype)
-                    .then(() => {
-                        return createFile(chemin, spec.originalname, spec.buffer);
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        sendError.push("Could'nt create the file : " + spec.originalname)
-                    });
-            });
+        specFiles.forEach(spec => {
+            type_mime(1, spec.mimetype)
+                .then(() => {
+                    return createFile(chemin, spec.originalname, spec.buffer);
+                })
+                .catch(err => {
+                    console.log(err);
+                    sendError.push("Could'nt create the file : " + spec.originalname)
+                });
+        });
     }
 
     if (files_3d) {
-        for(let i  = 0; i<files_3d.length; i++){
+        for (let i = 0; i < files_3d.length; i++) {
             let file = files_3d[i];
             type_mime(0, file.mimetype)
                 .then(() => {

@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const uniqueValidator = require('mongoose-unique-validator');
 
-const NestedWorkspaceSchema = require("./nestedSchema/NesttedWorkspaceSchema");
-const NestedUserSchema = require('./nestedSchema/NestedUserSchema');
-const NestedOrganizationSchema = require('./nestedSchema/NestedOrganizationSchema');
+let NestedUserSchema = require('./nestedSchema/NestedUserSchema');
+let NestedWorkspaceSchema = require('./nestedSchema/NestedWorkspaceSchema');
+let NestedOrganizationSchema = require('./nestedSchema/NestedOrganizationSchema');
 
 let UserSchema = new mongoose.Schema({
     completeName: {type: String, required: true},
