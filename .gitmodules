@@ -1,6 +1,3 @@
-[submodule "convertisseur/module-assimp"]
-    path = convertisseur/module-assimp
-    url = https://github.com/bocketme/module-assimp.git
 [submodule "viewer/"]
 	path = viewer/
 	url = https://github.com/bocketme/viewer
