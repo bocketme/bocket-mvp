@@ -13,138 +13,137 @@ const createArchive = require('../utils/createArchive');
 /**
  * Create a new Part for the specified node
  */
-const newPart = (req, res) => {
+const newPart = async (req, res) => {
 
     let nodeId = escape(req.params.nodeId),
         name = escape(req.body.name),
         description = escape(req.body.description),
         tags = escape(req.body.tags),
-        sub_level = Number(escape(req.body.sub_level)),
+        sub_level = Number(req.body.sub_level),
         breadcrumb = escape(req.body.breadcrumb),
         specFiles = req.files['specFiles'],
         files_3d = req.files['file3D'];
 
     sub_level++;
-    console.log(nodeId)
-    NodeSchema.findById(nodeId)
-        .then((parentNode) => {
-            if (!parentNode)
-                res.status(404).send("Not Found");
-            else if (parentNode.type !== NodeTypeEnum.assembly)
-                res.status(401).send("The node is a " + parentNode.type + ", it should not be an " + NodeTypeEnum.assembly);
-            else {
-                Assembly.findById(parentNode.content)
-                    .then((parentAssembly) => {
-                        let part = Part.newDocument({
-                            name: name,
-                            description: description,
-                            tags: tags,
-                            ownerOrganization: parentAssembly.ownerOrganization,
-                        });
-                        part.save()
-                            .then((newPart) => {
-                                let subNode = NodeSchema.newDocument({
-                                    name: name,
-                                    description: description,
-                                    type: NodeTypeEnum.part,
-                                    content: newPart._id,
-                                    Workspaces: parentNode.Workspaces,
-                                    tags: tags,
-                                    team: parentNode.team,
-                                });
-                                subNode.save()
-                                    .then((subNode) => {
-                                        parentNode.children.push({
-                                            _id: subNode._id,
-                                            type: subNode.type,
-                                            name: subNode.name,
-                                        });
-                                        parentNode.save()
-                                            .then((newParentNode) => {
-                                                newParentNode.children.forEach(child => {
-                                                    child.breadcrumb = breadcrumb + '/' + child.name
-                                                });
-                                                twig.renderFile('./views/socket/three_child.twig', {
-                                                    node: newParentNode,
-                                                    TypeEnum: NodeTypeEnum,
-                                                    sub_level: sub_level,
-                                                    breadcrumb: breadcrumb
-                                                }, (err, html) => {
-                                                    if (err)
-                                                        console.log(err);
-                                                    new Promise((resolve, reject) => {
-                                                        createFiles(specFiles, files_3d, path.join(config.files3D, newPart.path), newPart.name);
-                                                        resolve();
-                                                    })
-                                                        .then(() => {
-                                                        });
-                                                    res.send(html)
-                                                });
-                                            })
-                                            .catch(err => {
-                                                console.error(new Error("[Function newPart] Could'nt save the node Parent - " + err));
-                                                newPart.remove();
-                                                subNode.remove();
-                                                throw err;
-                                            })
-                                    })
-                                    .catch((err) => {
-                                        console.error(new Error("[Function newPart] Could'nt save the subNode  - " + err));
-                                        subNode.remove();
-                                        throw err
-                                    });
-                            })
-                            .catch(err => {
-                                console.error(new Error("[Function newPart] Could'nt save the part \n" + err));
-                                throw err;
-                            });
-                    })
-                    .catch(err => {
-                        console.error(new Error("[Function newPart] Could'nt save the part \n" + err));
-                        throw err;
-                    });
-            }
-        })
-        .catch(() => {
-            res.status(500).send("Internal Error");
-        });
-};
 
-function createFiles(specFiles, files_3d, chemin, name) {
-    let sendError = [];
+    let parentNode;
+    try {
+        parentNode = await NodeSchema.findById(nodeId);
+
+        if (!parentNode)
+            throw { status: 404, message: "Not Found" };
+        else if (parentNode.type !== NodeTypeEnum.assembly)
+            throw { status: 401, message: "The node is a " + parentNode.type + ", it should not be an " + NodeTypeEnum.assembly };
+    } catch (err) {
+        let message = err.message ? err.message : "Error intern";
+        let status = err.status ? err.status : "500";
+        console.error("[ Post Part Controller ] " + message + "\n" + new Error(err));
+        return res.status(status).send(message);
+    }
+
+    let parentAssembly;
+    try {
+        parentAssembly = await Assembly.findById(parentNode.content);   
+    } catch (err) {
+        let message = err.message ? err.message : "Error intern";
+        let status = err.status ? err.status : 500;
+        console.error("[ Post Part Controller ] " + message + "\n" + new Error(err));
+        return res.status(status).send(message);
+    }
+    
+    
+    let part;
+    try {
+        part = Part.newDocument({
+            name: name,
+            description: description,
+            tags: tags,
+            ownerOrganization: parentAssembly.ownerOrganization,
+        });
+        
+        part = await part.save();
+    } catch (err) {
+        part.remove();
+        console.error("[ Post Part Controller ] \n" + new Error(err))
+        return res.status(500).send("Error Intern");
+    }
+
+    let subNode;
+    try {
+        subNode = NodeSchema.newDocument({
+            name: name,
+            description: description,
+            type: NodeTypeEnum.part,
+            content: part._id,
+            Workspaces: parentNode.Workspaces,
+            tags: tags,
+            team: parentNode.team,
+        });
+        subNode = await subNode.save();
+    } catch (err) {
+        part.remove();
+        subNode.remove();
+        console.error("[ Post Part Controller ] \n" + new Error(err));
+        return res.status(500).send("Error Intern");
+    }
+
+    parentNode.children.push({
+        _id: subNode._id,
+        type: subNode.type,
+        name: subNode.name,
+    });
+
+    let newParentNode;
+
+  
+    try {
+        newParentNode = await parentNode.save()
+    } catch (err) {
+        part.remove();
+        subNode.remove();
+    }
+
+    let chemin = path.join(config.files3D, newPart.path),
+    sendError = [];
 
     if (specFiles) {
-            specFiles.forEach(spec => {
-                type_mime(1, spec.mimetype)
-                    .then(() => {
-                        return createFile(chemin, spec.originalname, spec.buffer);
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        sendError.push("Could'nt create the file : " + spec.originalname)
-                    });
-            });
+        specFiles.forEach(async function (spec) {
+            try {
+                await type_mime(1, spec.mimetype);
+                await createFile(chemin, spec.originalname, spec.buffer);
+            } catch (err) {
+                sendError.push("Could'nt import the file : " + spec.originalname);
+                console.log(err);
+            }
+        });
     }
 
     if (files_3d) {
-        for(let i  = 0; i<files_3d.length; i++){
-            let file = files_3d[i];
-            type_mime(0, file.mimetype)
-                .then(() => {
-                    return create3DFile(chemin, file.originalname, file.buffer);
-                })
-                .then(() => {
-                    if (i == files_3d.length - 1)
-                        return createArchive(chemin, name);
-                })
-                .catch((err) => {
-                    console.error(err);
-                    sendError.push("Could'nt create the file : " + file.originalname);
-                });
-        };
+        files_3d.forEach(async function (file) {
+            try {
+                await create3DFile(chemin, file.originalname, file.buffer);
+            } catch (err) {
+                sendError.push("Could'nt import the file : " + spec.originalname);
+                console.log(err);
+            }
+        });
     }
 
-    return (sendError)
+    twig.renderFile('./views/socket/three_child.twig', {
+        node: newParentNode,
+        TypeEnum: NodeTypeEnum,
+        sub_level: sub_level,
+        breadcrumb: breadcrumb
+    }, (err, html) => {
+        if (err) {
+            console.log(err);
+            newParentNode.children.pop();
+            newParentNode.save();
+            newPart.remove();
+            subNode.remove();
+            return res.status(500).send('Intern Error');
+        } else return res.send(html);
+    });
 }
 
 var controllerPOST = {
