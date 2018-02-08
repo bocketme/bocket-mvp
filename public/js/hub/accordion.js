@@ -15,6 +15,7 @@ function nodeChildrenChargement(event){
 }
 
 function loadNodeInformation(event) {
+
     //Initialisation
     var element = $(event.currentTarget);
     var nodeId = element.attr('id');
@@ -44,7 +45,6 @@ function loadNodeInformation(event) {
     // Value to change - VUE.JS
     third_column.selectNode(fill_value, breadcrumbs_value);
 
-    console.log("Where I am ?");    
     socket.emit("nodeInformation", nodeId);
 
     clearComments($("#activity-comments-location"));

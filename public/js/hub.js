@@ -63,13 +63,6 @@
                 $(".collapsible").collapsible();
             }
         });
-
-        socket.on("fileSpec - Success", (html) => {
-            console.log("New spec chargement");
-            let spec = $("#specs");
-            spec.html(html);
-        });
-
         var views = $(".view");
         views.mouseout(function () {
             $(this).removeClass("viewHover");

@@ -2,9 +2,11 @@ const fs = require('fs'),
     path = require('path'),
     partFileSystem = require("../../config/PartFileSystem");
 
-function createFile(chemin, file) {
+function createFile(chemin, nameFile, data) {
+    console.log("createFile = ",nameFile);
     return new Promise((resolve, reject)=> {
-        fs.writeFile(path.join(chemin, partFileSystem.spec, file.originalname), file.buffer.toString(), err => {
+        data = data.toString();
+        fs.writeFile(path.join(chemin, partFileSystem.spec, nameFile), data, err => {
             if (err)
                 return reject(err);
             resolve();

@@ -3,8 +3,8 @@ let Invitation = require('../models/Invitation');
 let indexController = {
 
     index : function(req, res) {
-        res.render("index");
-        return;
+        return res.render("index", {
+        });
     },
     invitation : (req, res) => {
         Invitation.findOne({uid: req.params.invitationUid})

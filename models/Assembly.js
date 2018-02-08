@@ -29,11 +29,7 @@ let AssemblyScheama = mongoose.Schema({
     whereUsed: {type: [String], default: []},
     tags: {type: [], default: []},
     annotation: {type: [NestedAnnotation], default: []},
-    activities : {type: [NestedComment], default: []},
-
-    //Date
-    created: {type: Date, default:  Date.now()},
-    modified: {type: Date, default: Date.now()}
+    activities : {type: [NestedComment], default: []}
 });
 
 AssemblyScheama.post('save', (assembly, next) => {
@@ -51,19 +47,6 @@ AssemblyScheama.post('save', (assembly, next) => {
         })
     }
     return next()
-});
-
-//Function remove to test
-AssemblyScheama.pre('remove', function (next) {
-    if (!this.path)
-        next(new Error("The Part contains no path for the information"));
-
-    let assemblyPath = path.join(configServer.files3D, this.path);
-
-    NodeSchema.find({content: this._id, type: TypeEnum.part }).forEach(node => { node.remove(); });    
-    
-    deleteDirPromise(assemblyPath)
-    .then(() => next());
 });
 
 AssemblyScheama.statics.newDocument = (assemblyInformation) => {
