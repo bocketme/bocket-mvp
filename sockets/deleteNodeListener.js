@@ -1,6 +1,12 @@
 const socketName = 'deleteNode';
 const Node = require('../models/Node');
 const User = require('../models/User');
+const Workspace = require('../models/Workspace');
+const Organization = require('../models/Organization');
+const rimraf = require('rimraf');
+const path = require('path');
+
+const appDir = path.dirname(require.main.filename);
 
 /**
  * Check if the user can delete the node
@@ -28,6 +34,18 @@ async function doesHeHaveRights(userMail, nodeId) {
   return null;
 }
 
+async function deleteData(workspaceId, node) {
+  try {
+    const workspace = await Workspace.findById(workspaceId);
+    if (!workspace) throw Error('Unknown workspace.');
+    const organization = await Organization.findById(workspace.organization);
+    if (!organization) throw Error('Unknown organization.');
+    rimraf(`${appDir}/data/files3D/${organization.name}/${node.name} - ${node.content}`, () => {});
+  } catch (err) {
+    throw err;
+  }
+}
+
 async function deleteNodeListener(io, session, nodeId) {
   try {
     const node = await doesHeHaveRights(session.userMail, nodeId);
@@ -39,6 +57,7 @@ async function deleteNodeListener(io, session, nodeId) {
     nodeParent.children.splice(indexOfNodeId, 1);
 
     if (node) {
+      await deleteData(session.currentWorkspace, node);
       await node.remove();
       await nodeParent.save();
       io.to(session.currentWorkspace).emit(socketName, nodeId);

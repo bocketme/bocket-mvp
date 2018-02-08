@@ -41,6 +41,7 @@
     "nodemon": "^1.14.11",
     "postprocessing": "^4.1.0",
     "promise": "^8.0.1",
+    "rimraf": "^2.6.2",
     "serve-favicon": "^2.4.5",
     "socket.io": "^2.0.4",
     "stats.js": "^0.17.0",
