@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
     var specs = $("#specs");
     const uploader = $("#specs-uploader");
 
@@ -12,6 +13,7 @@ $(document).ready(function() {
           const file = this.files[i];
           const splittedName = file.name.split('.');
           addSpec($("#specs-collection").find("li:last-child"), {name: splittedName[0], format: splittedName[1]});
+          var uploadIds = fileUploader.upload(file);
         }
     });
 

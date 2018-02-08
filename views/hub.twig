@@ -159,9 +159,12 @@
         $(".workspace-change").on("click", function () {
             socket.emit("leaveWorkspace", workspaceId);
         })
+        var l = 42;
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script src="/js/socket.io-file-client.js"></script>
+    <script src="/js/fileUploader.js"></script>
     <script src="/js/hub.js"></script>
     <script src="/js/hub/accordion.js"></script>
     <script src="/js/hub/tabs.js"></script>
