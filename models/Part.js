@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const fs = require('fs');
 const path = require('path');
+const util = require('util');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const configServer = require('../config/server');
@@ -8,6 +9,8 @@ const TypeEnum = require('../enum/NodeTypeEnum');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const NestedComment = require("./nestedSchema/NestedActivitySchema");
 const PartFileSystem = require('../config/PartFileSystem');
+const asyncForEach = require('./utils/asyncForeach');
+
 
 let NestedOrganization = mongoose.Schema({
     _id: {type:  mongoose.SchemaTypes.ObjectId, require: true},
@@ -39,35 +42,24 @@ function createDirectories (partPath, lastPath) {
     })
 }
 
-PartSchema.pre('validate', function (next) {
-    if(!this.path) {
-        this.path = '/' + this.ownerOrganization.name + '/' + this.name + ' - ' + this._id;
-        let partPath = path.join(configServer.files3D, this.path);
-        fs.access(partPath, err => {
-            if (!err)
-                return next();
-            fs.mkdir(partPath, (err)=> {
-                if (err)
-                    return next(err);
-                let i = 0,
-                    directories = Object.values(PartFileSystem);
-                let promises = [];
-                directories.forEach(lastPath => {
-                    promises.push(createDirectories(partPath, lastPath));
-                });
-                Promise.all(promises)
-                    .then(() => {
-                        return next();
-                    })
-                    .catch(err => {
-                        return next(err);
-                    })
-            })
-        })
-    }
-    return next();
-});
 
+PartSchema.pre('validate', function (next) {
+    if (this.path)
+        return next();
+
+    this.path = '/' + this.ownerOrganization.name + '/' + this.name + ' - ' + this._id;
+    let partPath = path.join(configServer.files3D, this.path);
+
+    fs.mkdir(partPath, (err) => {
+        for (let directory in PartFileSystem) {
+            fs.mkdir(path.join(partPath, PartFileSystem[directory]), (err) => {
+                if (err)
+                    next(err);
+            })
+        }
+    });
+    next();
+});
 PartSchema.statics.newDocument = (partInformation) => {
     return new Part(partInformation);
 };

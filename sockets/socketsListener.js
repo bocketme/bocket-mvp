@@ -12,7 +12,6 @@ let addCommentListener = require("./addCommentToActivityListener");
 let joinWorkspaceListener = require("./joinWorkspaceListener");
 let leaveWorkspaceListener = require("./leaveWorkspaceListener");
 let invitePeopleListener = require("./invitePeopleListener");
-let converterPart = require("./converterPart");
 
 module.exports = function(io) {
     io.on('connection', function (socket) {
@@ -30,6 +29,5 @@ module.exports = function(io) {
         invitePeopleListener(socket);
         joinWorkspaceListener(io, socket);
         leaveWorkspaceListener(io, socket);
-        converterPart(io, socket);
     });
 };

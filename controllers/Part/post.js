@@ -10,6 +10,7 @@ const create3DFile = require('../utils/create3DFile');
 const twig = require('twig');
 const Assembly = require('../../models/Assembly');
 const createArchive = require('../utils/createArchive');
+const asyncForeach = require('../utils/asyncForeach');
 /**
  * Create a new Part for the specified node
  */
@@ -79,6 +80,7 @@ const newPart = async (req, res) => {
             tags: tags,
             team: parentNode.team,
         });
+
         subNode = await subNode.save();
     } catch (err) {
         part.remove();
@@ -103,14 +105,12 @@ const newPart = async (req, res) => {
         subNode.remove();
     }
 
-    let chemin = path.join(config.files3D, newPart.path),
-    sendError = [];
-
+    let chemin = path.join(config.files3D, part.path);
     if (specFiles) {
-        specFiles.forEach(async function (spec) {
+        asyncForeach(specFiles, async function (spec, i, specFiles) {
             try {
                 await type_mime(1, spec.mimetype);
-                await createFile(chemin, spec.originalname, spec.buffer);
+                await createFile(chemin, spec);
             } catch (err) {
                 sendError.push("Could'nt import the file : " + spec.originalname);
                 console.log(err);
@@ -119,14 +119,13 @@ const newPart = async (req, res) => {
     }
 
     if (files_3d) {
-        files_3d.forEach(async function (file) {
+        asyncForeach(files_3d, async function (file, i, files_3d) {
             try {
-                await create3DFile(chemin, file.originalname, file.buffer);
+                await create3DFile(chemin, file);
             } catch (err) {
-                sendError.push("Could'nt import the file : " + spec.originalname);
+                sendError.push("Could'nt import the file : " + file.originalname);
                 console.log(err);
-            }
-        });
+            }});
     }
 
     twig.renderFile('./views/socket/three_child.twig', {

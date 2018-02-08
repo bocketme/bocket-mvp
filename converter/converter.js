@@ -1,50 +1,18 @@
 
-let converterBridge = require('./lib/plugin.node');
-
-let JSexport = function (filePath) {
-	//not implemented yet
-	return 21;
-};
+let	sharedObjectLoader = require("./lib/sharedObjectLoader.node"); 
 
 /**
- * This abastract execution of the c++ converter class in javascript
- * consider 'converterInstance' as a representation of a c++ class in JS
- * This meaning taht it should be explicitly new and delete. converterBridge
- * is a factory. A new on it provoc a creation of a new converter instance.
- *
- * @name	JSimport
- * @param	filePath path of the file to be converted
+ * JSimport	Call converter from c++
+ * @ame		file_path	The path of the file to be converted
+ * @param	info	The convert look module in module/ directory by default
+ * @return 	0 on success 1 on error
  */
 
-let JSimport = function (filePath) {
-	let error = {
-		'root' : {},
-		'error' : {
-			'code' : 1,
-			'desc' : ""
-		}
-	};
-	let geometry = error;
-	geometry.error.code = 0;
-	try {
-		let converterInstance = converterBridge(filePath);
-		if (converterInstance.ready == 1) {
-			delete converterInstance;
-			error.error.desc = "No converter found for this file format.";
-			return error;
-		}
-		geometry.root = converterInstance.run();
-		converterInstance.release();
-	} catch (e) {
-		error.error.desc = e;
-		return error
-	}
-	return geometry;
-};
+function	JSimport(file_path) {
+	return sharedObjectLoader.converter("module", file_path);
+}
 
-let converter = {
-	"JSimport" : JSimport,
-	"JSexport" : JSexport
-};
 
-module.exports = converter;
+module.exports = {
+	"JSimport" : JSimport
+};
