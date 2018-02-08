@@ -3,16 +3,27 @@ $(document).ready(function() {
     var specs = $("#specs");
     const uploader = $("#specs-uploader");
 
-    specs.on("contextmenu", function (e) {
+    specs.on("contextmenu", function () {
             toggleMenuContextOn("#specs-context-menu");
             return false;
+    });
+
+    socket.on("addSpec", function (fileName) {
+      console.log("ADD SPEC");
+      const splittedName = fileName.split('.');
+      addSpec($("#specs-collection").find("li:last-child"), {name: splittedName[0], format: splittedName[1]});
+    });
+
+    $("#loadSpecs").on("click", function () {
+      console.log("loadSpecs.onClick : ", idOfchoosenNode);
+      socket.emit("getAllSpec", idOfchoosenNode);
     });
 
     uploader.on('change', function() {
         for (var i = 0 ; i < this.files.length ; i++) {
           const file = this.files[i];
           const splittedName = file.name.split('.');
-          addSpec($("#specs-collection").find("li:last-child"), {name: splittedName[0], format: splittedName[1]});
+          //addSpec($("#specs-collection").find("li:last-child"), {name: splittedName[0], format: splittedName[1]});
           var uploadIds = fileUploader.upload(document.getElementById('specs-uploader'), {
             data: {
               nodeId: idOfchoosenNode

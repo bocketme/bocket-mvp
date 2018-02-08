@@ -14,6 +14,7 @@ const leaveWorkspaceListener = require('./leaveWorkspaceListener');
 const invitePeopleListener = require('./invitePeopleListener');
 const fileUploaderListener = require('./fileUploaderListener');
 const SocketIOFile = require('socket.io-file');
+const getAllSpecListener = require('./getAllSpecListener');
 
 module.exports = function(io) {
   io.on('connection', function (socket) {
@@ -41,5 +42,6 @@ module.exports = function(io) {
     invitePeopleListener(socket);
     joinWorkspaceListener(io, socket);
     leaveWorkspaceListener(io, socket);
+    getAllSpecListener(socket);
   });
 };

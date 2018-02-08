@@ -20,7 +20,6 @@ let OrganizationSchema = new mongoose.Schema({
     node: [Node]
 });
 
-
 /**
  * Create a new Organization in the database
  * @param {Object} OrganizationInformation - The information of the organization
