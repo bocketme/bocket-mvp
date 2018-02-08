@@ -1,16 +1,25 @@
 $(document).ready(function() {
     var specs = $("#specs");
+    const uploader = $("#specs-uploader");
 
     specs.on("contextmenu", function (e) {
             toggleMenuContextOn("#specs-context-menu");
             return false;
-        })
+    });
+
+    uploader.on('change', function() {
+        for (var i = 0 ; i < this.files.length ; i++) {
+          const file = this.files[i];
+          const splittedName = file.name.split('.');
+          addSpec($("#specs-collection").find("li:last-child"), {name: splittedName[0], format: splittedName[1]});
+        }
+    });
 
     var contextMenu = $("#specs-context-menu");
 
     $("#specs-context-menu #new_file").on("click", function (){
-        addSpec($("#specs-collection").find("li:last-child"), {name: "Image", format: 'PNG'});
-        console.log("New file");
+        $("#specs-uploader").click();
+      console.log("New file");
     });
 
     contextMenu.find("#remove").on("click", function (){
