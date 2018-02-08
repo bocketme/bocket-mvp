@@ -12,11 +12,11 @@ $(document).ready(function() {
         return false;
     });
 
-    $("#node-tree .collapsible-body").on("contextmenu", "li", function (e) {
-        e.preventDefault();
-        pointedElem = e.target;
-        $(pointedElem).click();
-        toggleMenuContextOn("#node-tree-context-menu");
+    $("#node-tree .collapsible-body").on("contextmenu", ".three-node", function (e) {
+      e.preventDefault();
+      pointedElem = e.currentTarget;
+      $(pointedElem).click();
+      toggleMenuContextOn("#node-tree-context-menu");
     })
 });
 
