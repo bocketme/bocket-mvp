@@ -5,7 +5,7 @@ const NodeSchema = require ("../models/Node"),
     fs = require("fs"),
     configServer = require("../config/server"),
     NodeTypeEnum = require("../enum/NodeTypeEnum"),
-    converter = require("../converter/converter"),
+    converter = require("../convertisseur/converter"),
     partFileSystem = require("../config/PartFileSystem"),
 util = require('util');
 
