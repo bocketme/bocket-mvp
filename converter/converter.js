@@ -1,5 +1,5 @@
 
-let converterBridge = require('./lib/plugin.node');
+//let converterBridge = require('./lib/plugin.node');
 
 let JSexport = function (filePath) {
 	//not implemented yet
@@ -24,10 +24,11 @@ let JSimport = function (filePath) {
 			'desc' : ""
 		}
 	};
-	let geometry = error;
+	return error;
+/*	let geometry = error;
 	geometry.error.code = 0;
 	try {
-		let converterInstance = converterBridge(filePath);
+		//let converterInstance = converterBridge(filePath);
 		if (converterInstance.ready == 1) {
 			delete converterInstance;
 			error.error.desc = "No converter found for this file format.";
@@ -40,7 +41,7 @@ let JSimport = function (filePath) {
 		return error
 	}
 	console.log(error.error.desc);
-	return geometry;
+	return geometry;*/
 };
 
 let converter = {
