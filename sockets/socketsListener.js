@@ -1,22 +1,32 @@
-let betaRegistrationListener = require("./betaRegistrationSListener");
-let checkUniqueField = require("./checkUniqueField");
-let signinListener = require("./signinListener");
-let newNodeListener = require("./newNodeListener");
-let NodeInformationListener = require("./nodeInformationListener");
-let contentInformationListener = require('./contentInformationListener');
-let searchNodeChildren = require('./searchNodeChildren');
-let nodeViewer = require('./nodeViewer');
-let newActivityComment = require('./newActivityCommentListener');
-let getActivities = require("./getActivitiesListener");
-let addCommentListener = require("./addCommentToActivityListener");
-let joinWorkspaceListener = require("./joinWorkspaceListener");
-let leaveWorkspaceListener = require("./leaveWorkspaceListener");
-let invitePeopleListener = require("./invitePeopleListener");
-let fileUploaderListener = require('./fileUploaderListener');
+const betaRegistrationListener = require('./betaRegistrationSListener');
+const checkUniqueField = require('./checkUniqueField');
+const signinListener = require('./signinListener');
+const newNodeListener = require('./newNodeListener');
+const NodeInformationListener = require('./nodeInformationListener');
+const contentInformationListener = require('./contentInformationListener');
+const searchNodeChildren = require('./searchNodeChildren');
+const nodeViewer = require('./nodeViewer');
+const newActivityComment = require('./newActivityCommentListener');
+const getActivities = require('./getActivitiesListener');
+const addCommentListener = require('./addCommentToActivityListener');
+const joinWorkspaceListener = require('./joinWorkspaceListener');
+const leaveWorkspaceListener = require('./leaveWorkspaceListener');
+const invitePeopleListener = require('./invitePeopleListener');
+const fileUploaderListener = require('./fileUploaderListener');
+const SocketIOFile = require('socket.io-file');
 
 module.exports = function(io) {
   io.on('connection', function (socket) {
-    fileUploaderListener(socket);
+    const uploader = new SocketIOFile(socket, {
+      uploadDir: 'data', // simple directory
+      accepts: [], // chrome and some of browsers checking mp3 as 'audio/mp3', not 'audio/mpeg'
+      maxFileSize: 4194304, // 4 MB. default is undefined(no limit)
+      chunkSize: 10240, // default is 10240(1KB)
+      transmissionDelay: 0, // delay of each transmission, higher value saves more cpu resources, lower upload speed. default is 0(no delay)
+      overwrite: true, // overwrite file if exists, default is true.
+    });
+
+    fileUploaderListener(socket, uploader);
     betaRegistrationListener(socket);
     checkUniqueField(socket);
     signinListener(socket);

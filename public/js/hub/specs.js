@@ -13,7 +13,11 @@ $(document).ready(function() {
           const file = this.files[i];
           const splittedName = file.name.split('.');
           addSpec($("#specs-collection").find("li:last-child"), {name: splittedName[0], format: splittedName[1]});
-          var uploadIds = fileUploader.upload(file);
+          var uploadIds = fileUploader.upload(document.getElementById('specs-uploader'), {
+            data: {
+              nodeId: idOfchoosenNode
+            }
+          });
         }
     });
 

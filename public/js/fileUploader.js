@@ -1,6 +1,6 @@
 var fileUploader = new SocketIOFileClient(socket);
 
-console.log("l = ", l);
+console.log("J'INIT FILER UPLOADER");
 
 fileUploader.on('start', (fileInfo) => {
   console.log('Start uploading', fileInfo);
