@@ -5,28 +5,24 @@ const fs = require('fs'),
     partFileSystem = require("../../config/PartFileSystem"),
     util = require('util');
 
-async function create3DFile(chemin, file) {
+const optionStream = {
+    flags: 'w',
+    encoding: 'utf8',
+    fd: null,
+    mode: 0o666,
+    autoClose: true
+}
 
+async function create3DFile(chemin, file) {
     let filePath = path.join(chemin, partFileSystem.data, file.originalname);
-    try {
-        let newFile = fs.writeFileSync(filePath, file.buffer.toString());
+    let file3D = fs.createWriteStream(filePath, optionStream);
+
+    file3D.end(file.buffer);
+
+    file3D.on("close", (listener) => {
         let pathConvertedFile = converter.JSimport(filePath);
-        console.log(pathConvertedFile);
         console.log("path here : " + filePath);
-        console.log(newFile);
-    } catch (err) {
-        console.error(err);
-        return {status : 500, message: "Intern Error"}
-    }
-    try {
-        let pathConvertedFile = converter.JSimport(filePath);
-        console.log(pathConvertedFile);
-        console.log("path here : " + filePath);
-    } catch (err) {
-        console.error(new Error(err));
-        return {status : 500, message: "Intern Error"}
-    }
-    return;
+    });
 }
 
 module.exports = create3DFile;
