@@ -1,5 +1,5 @@
-[submodule "viewer/"]
-	path = viewer/
+[submodule "viewer"]
+	path = viewer
 	url = https://github.com/bocketme/viewer
 [submodule "converter/bocket-plugin"]
 	path = converter/bocket-plugin

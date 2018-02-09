@@ -64,7 +64,8 @@ const newPart = async (req, res) => {
         
         part = await part.save();
     } catch (err) {
-        part.remove();
+        if (part)
+            part.remove();
         console.error("[ Post Part Controller ] \n" + new Error(err))
         return res.status(500).send("Error Intern");
     }
@@ -83,7 +84,8 @@ const newPart = async (req, res) => {
 
         subNode = await subNode.save();
     } catch (err) {
-        part.remove();
+        if (part)
+            part.remove();
         subNode.remove();
         console.error("[ Post Part Controller ] \n" + new Error(err));
         return res.status(500).send("Error Intern");
