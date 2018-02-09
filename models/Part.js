@@ -13,35 +13,34 @@ const asyncForEach = require('./utils/asyncForeach');
 
 
 let NestedOrganization = mongoose.Schema({
-    _id: {type:  mongoose.SchemaTypes.ObjectId, require: true},
-    name: {type: String, require: true}
+    _id: { type: mongoose.SchemaTypes.ObjectId, require: true },
+    name: { type: String, require: true }
 });
 
 let PartSchema = mongoose.Schema({
-    name: {type: String, require: true},
-    description: {type: String, default: "No description aviable"},
+    name: { type: String, require: true },
+    description: { type: String, default: "No description aviable" },
 
     path: String,
-    maturity: {type: String, default: TypeEnum.maturity[0]},
-    ownerOrganization: {type: NestedOrganization, require: true},
-    quality: {type: Number, default:0},
-    tags: {type: [], default: []},
-    annotation: {type: [NestedAnnotation], default: []},
-    activities : {type: [NestedComment], default: []}
+    maturity: { type: String, default: TypeEnum.maturity[0] },
+    ownerOrganization: { type: NestedOrganization, require: true },
+    quality: { type: Number, default: 0 },
+    tags: { type: [], default: [] },
+    annotation: { type: [NestedAnnotation], default: [] },
+    activities: { type: [NestedComment], default: [] }
 
     //owners: {type: [nestedOwners], default: []}
 });
 
-function createDirectories (partPath, lastPath) {
+function mkdirPromise(path) {
     return new Promise((resolve, reject) => {
-        fs.mkdir(path.join(partPath, lastPath), (err) => {
-            if(err)
+        fs.mkdir(path, (err) => {
+            if (err)
                 reject(err);
-            resolve();
+            else resolve();
         })
     })
 }
-
 
 PartSchema.pre('validate', function (next) {
     if (this.path)
@@ -50,15 +49,24 @@ PartSchema.pre('validate', function (next) {
     this.path = '/' + this.ownerOrganization.name + '/' + this.name + ' - ' + this._id;
     let partPath = path.join(configServer.files3D, this.path);
 
-    fs.mkdir(partPath, (err) => {
+    mkdirPromise(partPath)
+    .then(() => {
+        let promises = [];
         for (let directory in PartFileSystem) {
-            fs.mkdir(path.join(partPath, PartFileSystem[directory]), (err) => {
-                if (err)
-                    next(err);
-            })
+            promises.push(
+                mkdirPromise(path.join(partPath, PartFileSystem[directory]))
+            );
         }
+        Promise.all(promises)
+            .then(() => {
+                return next()
+            })
+            .catch(err => {
+                return next(err)
+            });
+    }).catch(err => {
+        return next(err);
     });
-    next();
 });
 PartSchema.statics.newDocument = (partInformation) => {
     return new Part(partInformation);

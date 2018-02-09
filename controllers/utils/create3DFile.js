@@ -3,30 +3,31 @@ const fs = require('fs'),
     file_accepted = require('../../utils/extension_file'),
     converter = require("../../converter/converter"),
     partFileSystem = require("../../config/PartFileSystem"),
-    util = require('util');
+    util = require('util'),
+    pino = require('pino')();
+
+const optionStream = {
+    flags: 'w',
+    encoding: 'utf8',
+    fd: null,
+    mode: 0o666,
+    autoClose: true
+}
+
+let converterInfo = pino.child({type: converter});
 
 async function create3DFile(chemin, file) {
-
     let filePath = path.join(chemin, partFileSystem.data, file.originalname);
-    try {
-        let newFile = fs.writeFileSync(filePath, file.buffer.toString());
-        let pathConvertedFile = converter.JSimport(filePath);
-        console.log(pathConvertedFile);
-        console.log("path here : " + filePath);
-        console.log(newFile);
-    } catch (err) {
-        console.error(err);
-        return {status : 500, message: "Intern Error"}
-    }
-    try {
-        let pathConvertedFile = converter.JSimport(filePath);
-        console.log(pathConvertedFile);
-        console.log("path here : " + filePath);
-    } catch (err) {
-        console.error(new Error(err));
-        return {status : 500, message: "Intern Error"}
-    }
-    return;
+    let file3D = fs.createWriteStream(filePath, optionStream);
+
+    file3D.end(file.buffer);
+
+    file3D.on("close", () => {
+        let resultImport = converter.JSimport(filePath);
+        pino.info("The result of the import \n ${resultImport}");
+        converterInfo.info(resultImport);
+        console.log("Import : " + resultImport);
+    });
 }
 
 module.exports = create3DFile;

@@ -71,7 +71,7 @@ $(document).ready(function() {
     $.validator.addMethod(
         "completeName",
         function(value, element) {
-            return this.optional(element) || /[a-zA-z]+ [a-zA-Z]+/.test(value);
+            return this.optional(element) || /[a-zA-Z\-]+ [a-zA-Z\-]+/.test(value);
         },
         "Please check your input."
     );

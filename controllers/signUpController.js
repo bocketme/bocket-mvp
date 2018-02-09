@@ -225,7 +225,7 @@ function checkOrganizationName(body) {
 }
 
 function checkCompleteName(body) {
-    let regex = /[A-Z][a-z]+ [A-Z][a-z]+/;
+    let regex = /[A-Za-z/-]+ [A-Za-z/-]+/;
     let completeName = body.completeName;
     console.log("COMPLETENAME =", completeName);
     body.completeName = escape(body.completeName);
