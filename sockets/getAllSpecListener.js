@@ -9,7 +9,6 @@ async function getAllSpec(socket, nodeId, workspaceId) {
   try {
     const { content } = await getContentOfNode(nodeId);
 
-    console.log(workspaceId);
     const organization =
         await Organization.findOne({ workspaces: { $elemMatch: { _id: workspaceId } } });
     if (organization == null) throw Error('unknown organization');
