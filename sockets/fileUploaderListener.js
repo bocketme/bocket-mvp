@@ -47,6 +47,7 @@ module.exports = (socket, uploader) => {
     getUploadir(fileInfo.name, fileInfo.data.nodeId, socket.handshake.session.currentWorkspace)
       .then((ret) => {
         mv(`${appDir}/${fileInfo.uploadDir}`, ret, () => {});
+        socket.emit('addSpec', fileInfo.name);
         fileInfo.uploadDir = ret;
         console.log('Upload Complete.');
         console.log(fileInfo);
