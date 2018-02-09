@@ -15,7 +15,7 @@
                     var sub_level = $("#" + nodeId).contents().filter("span.p-node").attr("data-sublevel");
                     var breadcrumb = $("#" + nodeId).contents().filter("span.p-node").attr("data-breadcrumbs");
 
-                    formdata.append("sub_level", sub_level);
+                     formdata.append("sub_level", sub_level);
                     formdata.append("breadcrumb", breadcrumb);
                     formdata.append("tags", JSON.stringify(chips));
 
@@ -140,7 +140,12 @@
 
         $('body').on('click', '#submit-add-existing' , (event) => {
             event.preventDefault();
+
             var nodeId = $('.selected-accordion').attr('id');
+  
+            var sub_level = $("#" + nodeId).contents().filter("span.p-node").attr("data-sublevel");
+            var breadcrumb = $("#" + nodeId).contents().filter("span.p-node").attr("data-breadcrumbs");
+
             let dataToSend = [];
             $('.add-existing-checkbox').each((index, element) => {
                 if ($(element).is(':checked')) {
@@ -152,8 +157,15 @@
                     delete id;
                 }
             });
-            console.log ("id to send :", dataToSend);
-            socket.emit("GetSelectedItemsToAdd", dataToSend, nodeId);
+ //           console.log('------------------------------');
+ //           console.log ("id to send :", dataToSend);
+ //           console.log("ParenNode :", nodeId);
+ //           console.log("sub_level :", sub_level);
+ //           console.log("breadcrumb :", breadcrumb);
+ //           console.log('------------------------------');
+
+            socket.emit("GetSelectedItemsToAdd", dataToSend, nodeId, breadcrumb, sub_level);
+   
             delete dataToSend;
             $("#add-existing").modal("close");
               

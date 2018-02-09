@@ -21,6 +21,10 @@ module.exports = (socket) => {
                 console.log("Orga name", Orga);
                 //search for assembly
                 //var SearchAssemblyResults = AssemblySchema.find ({'name': {'$regex': saisie},'description': {'$regex': saisie}, 'ownerOrganization': Orga});
+               ////////////////////////////////////////////////////////////
+                //La recherche d'assemblage est retirée pour release Apple
+                //////////////////////////////////////////////////////////
+              /*
                 AssemblySchema.find ({'name': {'$regex': saisie}, 'ownerOrganization': Orga})
                     .then(comms => {
 
@@ -30,7 +34,7 @@ module.exports = (socket) => {
                                 _com.type = TypeEnum.assembly
                                 return _com
                         });
-
+                */
                         PartSchema.find ({'name': {'$regex': saisie}, 'ownerOrganization': Orga})
                         .then(commsPart=>{
                             commsPart = commsPart.map(com => {
@@ -41,9 +45,9 @@ module.exports = (socket) => {
                             });                            
                             //comms.push(commsPart);
                             //console.lownerOrganization.nameog("comms: ", comms);
-                            var elements = [...comms, ...commsPart];
-
-                            /*
+                            //var elements = [...comms, ...commsPart];
+                            var elements = [...commsPart];
+                      /*      
                             for (var i = 0, l = elements.length; i < l; i++) {
                                 let comm = elements[i];
                             
@@ -59,7 +63,7 @@ module.exports = (socket) => {
                                 console.log('------------------------------');
                                 
                             }
- */         
+          */
                             twig.renderFile('./views/socket/AddExistingSearchAnswer.twig', {
                                 elements: elements,
                                 TypeEnum:TypeEnum,
@@ -77,10 +81,12 @@ module.exports = (socket) => {
                         .catch(err=>{//error on search part
                             console.log("search part",err); 
                         }); 
+                    /*
                     })
                     .catch(err=>{//error on search assembly
                     console.log("search assy",err); 
                     });
+                    */
             })
             .catch(err => {//error on workspace search
             console.log("get workspace", err);
