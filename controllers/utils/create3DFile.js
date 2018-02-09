@@ -3,7 +3,8 @@ const fs = require('fs'),
     file_accepted = require('../../utils/extension_file'),
     converter = require("../../converter/converter"),
     partFileSystem = require("../../config/PartFileSystem"),
-    util = require('util');
+    util = require('util'),
+    pino = require('pino')();
 
 const optionStream = {
     flags: 'w',
@@ -13,15 +14,19 @@ const optionStream = {
     autoClose: true
 }
 
+let converterInfo = pino.child({type: converter});
+
 async function create3DFile(chemin, file) {
     let filePath = path.join(chemin, partFileSystem.data, file.originalname);
     let file3D = fs.createWriteStream(filePath, optionStream);
 
     file3D.end(file.buffer);
 
-    file3D.on("close", (listener) => {
-        let pathConvertedFile = converter.JSimport(filePath);
-        console.log("path here : " + filePath);
+    file3D.on("close", () => {
+        let resultImport = converter.JSimport(filePath);
+        pino.info("The result of the import \n ${resultImport}");
+        converterInfo.info(resultImport);
+        console.log("Import : " + resultImport);
     });
 }
 
