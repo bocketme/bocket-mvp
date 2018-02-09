@@ -12,11 +12,12 @@ async function getAllSpec(socket, nodeId, workspaceId) {
     console.log(workspaceId);
     const organization =
         await Organization.findOne({ workspaces: { $elemMatch: { _id: workspaceId } } });
+    if (organization == null) throw Error('unknown organization');
 
     const targetDirectoryName = `${content.name} - ${content._id}`;
     fs.readdir(`${appDir}/data/files3D/${organization.name}`, (dirError, directories) => {
       if (!dirError) {
-        console.log(targetDirectoryName)
+        console.log(targetDirectoryName);
         directories.forEach((name) => {
           console.log('dirname:', name, targetDirectoryName, name === targetDirectoryName);
           if (name === targetDirectoryName) {

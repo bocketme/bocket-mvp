@@ -33,25 +33,25 @@ $(document).ready(function() {
 
     var contextMenu = $("#specs-context-menu");
 
-    $("#specs-context-menu #new_file").on("click", function (){
+    contextMenu.on("click", "#new_file", function (){
         $("#specs-uploader").click();
       console.log("New file");
     });
 
-    contextMenu.find("#remove").on("click", function (){
+    contextMenu.on("click", "#remove", function (){
         console.log("Remove");
         $(pointedElem).closest("li").remove();
     });
 
-    contextMenu.find("#preview").on("click", function (){
+    contextMenu.on("click", "#preview", function (){
         console.log("Preview");
     });
 
-    contextMenu.find("#rename").on("click", function (){
+    contextMenu.on("click", "#rename", function (){
         console.log("Rename");
     });
 
-    contextMenu.find("#download").on("click", function (){
+    contextMenu.on("click", "#download", function (){
         console.log("Download");
     });
 });
