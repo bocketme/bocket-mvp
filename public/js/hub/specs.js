@@ -3,12 +3,21 @@ $(document).ready(function() {
     var specs = $("#specs");
     const uploader = $("#specs-uploader");
 
-    specs.on("contextmenu", function () {
-            toggleMenuContextOn("#specs-context-menu");
-            return false;
+    var TEST = null;
+
+    specs.on("contextmenu", function (e) {
+      toggleMenuContextOff("#spec-context-menu");
+      toggleMenuContextOn("#specs-context-menu");
+      return false;
     });
 
-    socket.on("addSpec", function (fileName) {
+  specs.on("contextmenu", "li", function (e) {
+    toggleMenuContextOff("#specs-context-menu");
+    toggleMenuContextOn("#spec-context-menu");
+    return false;
+  });
+
+  socket.on("addSpec", function (fileName) {
       console.log("ADD SPEC");
       const splittedName = fileName.split('.');
       addSpec($("#specs-collection").find("li:last-child"), {name: splittedName[0], format: splittedName[1]});
@@ -63,7 +72,7 @@ $(document).ready(function() {
  */
 function addSpec(lastSpec, file) {
     lastSpec.after("" +
-        "<li class=\"collection-item\">" +
+        "<li class=\"collection-item\" filename='" + file.name + "." + file.format + "'>" +
             "<div class=\"row\">\n" +
             "    <div class=\"col s12\">\n" +
             "        <div class=\"col s1\"><img src=\"/img/file-icon.svg\"></div>\n" +
