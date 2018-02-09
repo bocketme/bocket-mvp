@@ -18,11 +18,11 @@ const getAllSpecListener = require('./getAllSpecListener');
 const removeSpecListener = require('./removeSpecListener');
 const renameSpecListener = require('./renameSpecListener');
 
-module.exports = function(io) {
-  io.on('connection', function (socket) {
+module.exports = function (io) {
+  io.on('connection', (socket) => {
     const uploader = new SocketIOFile(socket, {
       uploadDir: 'data', // simple directory
-      accepts: [], // chrome and some of browsers checking mp3 as 'audio/mp3', not 'audio/mpeg'
+      accepts: ['image/png', 'image/jpeg', 'application/pdf', 'application/vnd.oasis.opendocument.text', 'image/svg+xml'], // chrome and some of browsers checking mp3 as 'audio/mp3', not 'audio/mpeg'
       maxFileSize: 4194304, // 4 MB. default is undefined(no limit)
       chunkSize: 10240, // default is 10240(1KB)
       transmissionDelay: 0, // delay of each transmission, higher value saves more cpu resources, lower upload speed. default is 0(no delay)
