@@ -61,3 +61,7 @@ typings/
 .env
 
 data/
+
+converter/lib/
+
+module/
