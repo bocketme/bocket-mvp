@@ -75,7 +75,7 @@ let signUpController = {
             })
             .then(newTeam => {
                 console.log("\n\nnew team has been add", newTeam);
-                Documents.team = newTeam
+                Documents.team = newTeam;
                 let workspace = WorkspaceSchema.newDocument({
                     name : req.body.workspaceName,
                     owner: {
