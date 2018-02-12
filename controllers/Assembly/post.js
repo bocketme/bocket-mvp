@@ -1,15 +1,15 @@
 const path = require('path'),
-    escapre = require('escape-html'),
+    escape = require('escape-html'),
     config = require('../../config/server'),
     type_mime = require('../../utils/type-mime'),
     NodeTypeEnum = require('../../enum/NodeTypeEnum'),
     createFile = require('../utils/createFile'),
     create3DFile = require('../utils/create3DFile'),
-    twig = require('twig');
+    twig = require('twig'),
+    pino = require('pino')();
 
 const nodeSchema = require("../../models/Node");
 const assemblySchema = require('../../models/Assembly');
-const createArchive = require('../utils/createArchive');
 const asyncForeach = require('../utils/asyncForeach');
 
 /********************************************************/
@@ -30,11 +30,9 @@ const newAssembly = async  (req, res) => {
         name = escape(req.body.name),
         description = escape(req.body.description),
         tags = escape(req.body.tags),
-        sub_level = escape(req.body.sub_level) + 1,
-        breadcrumb =    escape(req.body.breadcrumb),
-        specFiles = req.files['specFiles'],
-        files_3d = req.files['file3D'],
-        sendError = [];
+        sub_level = Number(req.body.sub_level),
+        breadcrumb = escape(req.body.breadcrumb),
+        specFiles = req.files['specFiles'];
 
     sub_level++;
 
@@ -49,57 +47,56 @@ const newAssembly = async  (req, res) => {
     } catch (err) {
         let message = err.message ? err.message : "Error intern";
         let status = err.status ? err.status : "500";
-        console.error("[ Post Part Controller ] " + message + "\n" + new Error(err));
+        pino.error("[ Post Assembly Controller ] " + message + "\n" + new Error(err));
         return res.status(status).send(message);
     }
 
-    let parentAssembly
+    let parentAssembly;
     try {
         parentAssembly = await assemblySchema.findById(parentNode.content);
     } catch (err) {
         let message = err.message ? err.message : "Error intern";
         let status = err.status ? err.status : 500;
-        console.error("[ Post Part Controller ] " + message + "\n" + new Error(err));
+        pino.error("[ Post Assembly Controller ] " + message + "\n" + new Error(err));
         return res.status(status).send(message);
     }
 
-
     let assembly;
     try {
-        assembly = assemblySchema.create({
+        assembly = await assemblySchema.create({
         name: name,
         description: description,
         tags: tags,
             ownerOrganization: parentAssembly.ownerOrganization,
         });
 
-        assembly = await assembly.save();
+        await assembly.save();
     } catch (err) {
+        pino.error("[ Post Assembly Controller ] " + message + "\n" + new Error(err));
        if (assembly)
            assembly.remove();
-        console.error("[ Post Part Controller ] \n" + new Error(err));
         return res.status(500).send("Error Intern");
     }
 
-
     let subNode;
     try {
-        subNode = NodeSchema.newDocument({
+        subNode = await nodeSchema.create({
             name: name,
             description: description,
-            type: NodeTypeEnum.part,
-            content: part._id,
+            type: NodeTypeEnum.assembly,
+            content: assembly._id,
             Workspaces: parentNode.Workspaces,
             tags: tags,
             team: parentNode.team,
         });
 
-        subNode = await subNode.save();
+        await subNode.save();
     } catch (err) {
-        if (part)
-            part.remove();
-        subNode.remove();
-        console.error("[ Post Part Controller ] \n" + new Error(err));
+        pino.error("[ Post Assembly Controller ] " + message + "\n" + new Error(err));
+        if (assembly)
+            assembly.remove();
+        if (subNode)
+            subNode.remove();
         return res.status(500).send("Error Intern");
     }
 
@@ -108,54 +105,44 @@ const newAssembly = async  (req, res) => {
         type: subNode.type,
         name: subNode.name,
     });
-
-    let newParentNode;
     try {
-        newParentNode = await parentNode.save()
+        await parentNode.save()
     } catch (err) {
-        part.remove();
-        subNode.remove();
+        if (assembly)
+            assembly.remove();
+        if (subNode)
+            subNode.remove();
     }
 
-    let chemin = path.join(config.files3D, part.path);
+    //TODO: Affichage d'erreur specFiles
+    let chemin = path.join(config.files3D, assembly.path);
     if (specFiles) {
         asyncForeach(specFiles, async function (spec) {
             try {
                 await type_mime(1, spec.mimetype);
                 await createFile(chemin, spec);
             } catch (err) {
-                return new Error("Could'nt import the file : " + spec.originalname);
-                console.log(err);
+                pino.error("[ Post Assembly Controller ] \n" + new Error(err));
             }
         });
     }
 
-    /*
-    if (files_3d) {
-        asyncForeach(files_3d, async function (file, i, files_3d) {
-            try {
-                await create3DFile(chemin, file);
-            } catch (err) {
-                sendError.push("Could'nt import the file : " + file.originalname);
-                console.log(err);
-            }});
-    }
-    */
-
     twig.renderFile('./views/socket/three_child.twig', {
-        node: newParentNode,
+        node: parentNode,
         TypeEnum: NodeTypeEnum,
         sub_level: sub_level,
         breadcrumb: breadcrumb
     }, (err, html) => {
         if (err) {
-            console.log(err);
-            newParentNode.children.pop();
-            newParentNode.save();
+            pino.error("[ Post Assembly Controller ] \n" + new Error(err));
+            parentNode.children.pop();
+            parentNode.save();
             assembly.remove();
             subNode.remove();
             return res.status(500).send('Intern Error');
-        } else return res.send(html);
+        }
+        console.log(html);
+        return res.send(html);
     });
 };
 
