@@ -1,9 +1,6 @@
 [submodule "viewer"]
 	path = viewer
 	url = https://github.com/bocketme/viewer
-[submodule "converter/bocket-plugin"]
-	path = converter/bocket-plugin
-	url = https://github.com/bocketme/bocket-plugin.git
 [submodule "converter/SharedObjectLoader"]
 	path = converter/SharedObjectLoader
 	url = https://github.com/bocketme/SharedObjectLoader.git
