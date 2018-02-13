@@ -27,6 +27,14 @@ input::placeholder {
     color: #9b9b9b; !important;
 }
 
+.switch label input[type=checkbox]:checked+.lever {
+    background-color: #4286f4;
+}
+
+.switch label input[type=checkbox]:checked+.lever:after {
+    background-color: #4286f4;
+}
+
 #logo {
     width: 70%;
     margin-top: 9%;

@@ -118,6 +118,7 @@ let signUpController = {
                 console.log("\n\nnew workspace has been add \n", Documents.workspace);
                 Documents.workspace = newWorkspace;
                 Documents.user.workspaces.push({ _id: Documents.workspace._id, name: Documents.workspace.name });
+                //TODO: Documents.user.organizations
                 return Documents.user.save();
             })
             .then(() => {
@@ -164,13 +165,6 @@ let signUpController = {
                 Documents.node = nodeMaster;
                 Documents.workspace.node_master = nodeMaster;
                 return Documents.workspace.save()
-            })
-            .then(() => {
-                console.log("")
-                Documents.user.workspaces.push({
-                    _id: Documents.workspace._id,
-                    name: Documents.workspace.name});
-                return Documents.user.save();
             })
             .then(() => {
                 Documents.organization.workspaces.push({
