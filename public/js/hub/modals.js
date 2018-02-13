@@ -11,13 +11,11 @@
                     var form = document.getElementById("form-import-part");
                     var formdata = new FormData(form);
                     var postRequest = new XMLHttpRequest();
-                    var chips = $('#tags-import-part').material_chip('data');
                     var sub_level = $("#"+nodeId).contents().filter("span.p-node").attr("data-sublevel");
                     var breadcrumb = $("#"+nodeId).contents().filter("span.p-node").attr("data-breadcrumbs");
 
                     formdata.append("sub_level", sub_level);
                     formdata.append("breadcrumb", breadcrumb);
-                    formdata.append("tags", JSON.stringify(chips));
 
                     postRequest.addEventListener("load", (reqEvent) => {
                         if (postRequest.readyState === postRequest.DONE) {
@@ -61,13 +59,11 @@
                         form = document.getElementById("form-import-assembly"),
                         formdata = new FormData(form),
                         postRequest = new XMLHttpRequest(),
-                        chips = $('#tags-import-part').material_chip('data'),
                         sub_level = $(nodeId).contents().filter("span").attr("data-sublevel"),
                         breadcrumb = $(nodeId).contents().filter("span").attr("data-breadcrumbs");
 
                     formdata.append("sub_level", sub_level);
                     formdata.append("breadcrmb", breadcrumb);
-                    formdata.append("tags", JSON.stringify(chips));
 
                     postRequest.addEventListener("load", (reqEvent) => {
                         if (postRequest.readyState === postRequest.DONE) {

@@ -19,7 +19,6 @@ const newPart = async (req, res) => {
     let nodeId = escape(req.params.nodeId),
         name = escape(req.body.name),
         description = escape(req.body.description),
-        tags = escape(req.body.tags),
         sub_level = Number(req.body.sub_level),
         breadcrumb = escape(req.body.breadcrumb),
         specFiles = req.files['specFiles'],
@@ -58,7 +57,6 @@ const newPart = async (req, res) => {
         part = Part.newDocument({
             name: name,
             description: description,
-            tags: tags,
             ownerOrganization: parentAssembly.ownerOrganization,
         });
         
@@ -78,7 +76,6 @@ const newPart = async (req, res) => {
             type: NodeTypeEnum.part,
             content: part._id,
             Workspaces: parentNode.Workspaces,
-            tags: tags,
             team: parentNode.team,
         });
 
