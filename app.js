@@ -102,6 +102,7 @@ app.use("/workspace", workspace);
 app.use("/part", part);
 app.use("/assembly", assembly);
 app.post("/test", (req, res) => {
+    console.log(req.body);
     console.log(req.query);
     console.log(req.params);
     res.send(req.query);
@@ -120,7 +121,7 @@ server.on("listening", () => {
                     fs.mkdir(config.files3D, err => {
                         if (err)
                         throw err
-                    })
+                    });
                     fs.mkdir(config.avatar, err => {
                         if (err)
                         throw err
