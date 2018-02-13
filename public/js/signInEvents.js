@@ -22,15 +22,17 @@ $(document).ready(function() {
         $(".workspace").on("click", chosenWorkspace);
         $("#emailWorkspace").val($("#emailSignIn").val());
         $("#passwordlWorkspace").val($("#passwordSignIn").val());
-        if () {
-            hideBox($(boxId), function () {
-                showBox($(workspacesPicker));
-            });
-        } else if () {
-            hideBox($(), function(){
-                showBox($(workspacesPicker));
-            });
-        }
+        // if () {
+        hideBox($(boxId), function () {
+            showBox($(workspacesPicker));
+        });
+        /*
+} else if () {
+        hideBox($(), function(){
+            showBox($(workspacesPicker));
+        });
+    }
+    */
     });
 
 // Change color when a workspace is choose
