@@ -7,7 +7,6 @@ $(document).ready(function() {
         orga = signinInfo.organization;
         //console.log("workspaces : ", workspaces);
         var ul = $("ul");
-        $(".organizationOption").remove();
         ul.empty(); // delete all <ul>
         ul.append("<li></li>"); // Add one <li> in order toh add the next <li> after it
         workspaces.forEach((workspace) => {
@@ -23,9 +22,15 @@ $(document).ready(function() {
         $(".workspace").on("click", chosenWorkspace);
         $("#emailWorkspace").val($("#emailSignIn").val());
         $("#passwordlWorkspace").val($("#passwordSignIn").val());
-        hideBox($(boxId), function () {
-            showBox($(workspacesPicker));
-        });
+        if () {
+            hideBox($(boxId), function () {
+                showBox($(workspacesPicker));
+            });
+        } else if () {
+            hideBox($(), function(){
+                showBox($(workspacesPicker));
+            });
+        }
     });
 
 // Change color when a workspace is choose
@@ -49,6 +54,7 @@ $(document).ready(function() {
         hideBox($(workspacesPicker), function () {
             $(disabledNameId).val(user.completeName);
             console.log("ici3 \n", orga);
+            $(".organizationOption").remove();
             let selector = document.getElementById('organizationSelect');
             for (var i = 0 ; i < orga.length ; i++)
             {
@@ -69,6 +75,23 @@ $(document).ready(function() {
         return true;
     });
 
+    $("#submit-btn-new-workspace").click((event) => {
+        event.preventDefault();
+
+        let data = {};
+
+        let userId = user._id;
+
+        let organization = ($('#workspaceCreation :checkbox').is(':checked')) ?
+            {type: "new", name: $('#newOrgnanizationName').val()}  :
+            {type: "search", _id: $('#organizationSelect').val(), name: $('#organizationSelect option:selected').text()};
+
+        let workspace = $('#newWorkspaceName').val();
+
+        console.log(data);
+
+        socket.emit("signInNewWorkspace", userId, organization, workspace);
+    });
 
 
     $('#workspaceCreation :checkbox').change(function() {
