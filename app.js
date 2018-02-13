@@ -117,19 +117,19 @@ server.on("listening", () => {
             if (err.code == 'ENOENT') {
                 fs.mkdir("./data", (err) => {
                     if (err)
-                    throw err
+                    throw err;
                     fs.mkdir(config.files3D, err => {
                         if (err)
-                        throw err
+                        throw err;
                     });
                     fs.mkdir(config.avatar, err => {
                         if (err)
-                        throw err
+                        throw err;
                     })
                 })
             }
             else 
-            throw err
+            throw err;
         }
     })
 });

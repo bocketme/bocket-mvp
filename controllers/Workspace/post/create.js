@@ -1,7 +1,7 @@
 const escape = require('escape-html');
 
-const Workspace = require("../models/Workspace"),
-const Organization = require("../models/Organization"),
+const Workspace = require("../models/Workspace");
+const Organization = require("../models/Organization");
 const User = require("../models/User");
 
 let createNewWorkspace = async (req, res) => {
@@ -32,7 +32,7 @@ create3Workspace = (req, res) => { // req = { organizationId, workspaceName, ema
 
     let organization = {
         _id: organizationId,
-        name: organizationName²
+        name: organizationName
     };
 
     console.log("orga : ", organization);
