@@ -17,6 +17,7 @@ let OrganizationSchema = new mongoose.Schema({
     members : [User],
     workspaces: [Workspace],
     // adresse : String
+    //TODO: Why? - L'organization a une liste de noeud ???
     node: [Node]
 });
 
