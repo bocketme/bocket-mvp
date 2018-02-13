@@ -50,23 +50,21 @@ PartSchema.pre('validate', function (next) {
     let partPath = path.join(configServer.files3D, this.path);
 
     mkdirPromise(partPath)
-    .then(() => {
-        let promises = [];
-        for (let directory in PartFileSystem) {
-            promises.push(
-                mkdirPromise(path.join(partPath, PartFileSystem[directory]))
-            );
-        }
-        Promise.all(promises)
-            .then(() => {
-                return next()
-            })
-            .catch(err => {
-                return next(err)
-            });
-    }).catch(err => {
-        return next(err);
-    });
+        .then(() => {
+            let promises = [];
+            for (let directory in PartFileSystem) {
+                promises.push(
+                    mkdirPromise(path.join(partPath, PartFileSystem[directory]))
+                );
+            }
+            return Promise.all(promises);
+        })
+        .then(() => {
+            return next()
+        })
+        .catch(err => {
+            return next(err)
+        });
 });
 PartSchema.statics.newDocument = (partInformation) => {
     return new Part(partInformation);

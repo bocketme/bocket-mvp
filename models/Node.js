@@ -1,17 +1,13 @@
 const serverConfiguration = require("../config/server");
 const mongoose = require("mongoose");
-const path = require('path');
-const fs = require('fs');
 const NestedNode = require("./nestedSchema/NestedNodeSchema");
 const uniqueValidator = require('mongoose-unique-validator');
-const createNode = require("./utils/create/createNode");
 const NestedUser = require("./nestedSchema/NestedUserSchema");
 const NestedComment = require("./nestedSchema/NestedActivitySchema");
 const NodeTypeEnum = require("../enum/NodeTypeEnum");
-const NestedSpecFiles = require('./nestedSchema/NestedSpecFile');
-const TypeEnum = require('../enum/NodeTypeEnum');
-const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
-let NestedTeam = require('./nestedSchema/NestedTeamSchema');
+const NestedTeam = require('./nestedSchema/NestedTeamSchema');
+const PartSchema = require('./Part');
+const AssemblySchema = require('./Assembly');
 const THREE = require('three');
 
 let NestedWorkspace = mongoose.Schema({
@@ -73,6 +69,24 @@ NodeSchema.statics.newDocument = (nodeInformation) => {
         console.error(new Error("The Content of the Node is missing"));
 
     return new Node(nodeInformation);
+};
+
+NodeSchema.pre("remove", function (next) {
+    let promises = [];
+    this.children.forEach(function (child) {
+        promises.push(NodeSchema.findByIdAndRemove(child._id))
+    });
+    if (this.type === NodeTypeEnum.part)
+        promises.push(PartSchema.findByIdAndRemove(this.content));
+    else if (this.type ===  NodeTypeEnum.assembly)
+        promises.push(AssemblySchema.findByIdAndRemove(this.content));
+    Promise.all(promises)
+        .then(() => next())
+        .catch(err => next(err));
+});
+
+const deleteChildren = async () => {
+
 };
 
 let Node = mongoose.model("Node", NodeSchema, "Nodes");

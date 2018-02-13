@@ -27,12 +27,15 @@ let AssemblyScheama = mongoose.Schema({
     maturity: {type: String, default: TypeEnum.maturity[0]},
     quality: {type: Number, default:0},
     whereUsed: {type: [String], default: []},
+
+    //Update tags unused for the 1.0
     tags: {type: [], default: []},
+
     annotation: {type: [NestedAnnotation], default: []},
     activities : {type: [NestedComment], default: []}
 });
 
-AssemblyScheama.post('save', (assembly, next) => {
+AssemblyScheama.pre('save', function(next) {
     if(!assembly.path) {
         assembly.path = '/' + assembly.ownerOrganization.name + '/' + assembly.name + ' - ' + assembly._id;
         let assemblyPath = path.join(configServer.files3D, assembly.path);
@@ -42,12 +45,50 @@ AssemblyScheama.post('save', (assembly, next) => {
             fs.mkdir(assemblyPath, (err)=> {
                 if (err)
                     return next(err);
-                return next()
+                return next();
             })
         })
     }
     return next()
 });
+AssemblyScheama.pre("remove", function (next) {
+    if (!this.path)
+        return next(new Error("[Critical Error] : The Assembly has no path"));
+
+    deleteFolderRecursive(this.path)
+        .then(() => next())
+        .catch(err => next(err));
+});
+
+var deleteFolderRecursive = function(path) {
+    return new Promise((resolve, reject) => {
+        fs.readdir(path, (err, docs) => {
+            let promises = [];
+            docs.forEach(doc => {
+                let currentPath = path.join(path, doc);
+                if (fs.stat(currentPath).isDirectory())
+                    promises.push(deleteFolderRecursive(currentPath));
+                else
+                    promises.push(deleteFile(currentPath));
+            });
+            Promise.all(promises)
+                .then(() => resolve())
+                .catch(err => reject(err));
+        });
+    });
+};
+
+const deleteFile = (currentPath) => {
+    return new Promise((resolve, reject) => {
+        fs.unlink(currentPath, (err) => {
+            if (err)
+                reject(err);
+            resolve;
+        });
+    })
+}
+
+
 
 AssemblyScheama.statics.newDocument = (assemblyInformation) => {
     return new Assembly(assemblyInformation);
@@ -58,4 +99,5 @@ AssemblyScheama.plugin(uniqueValidator);
 let Assembly = mongoose.model("Assembly", AssemblyScheama, "Assemblies");
 
 module.exports = Assembly;
+
 
