@@ -126,7 +126,8 @@ let signUpController = {
             })
             .then(() => {
                 let assembly = AssemblySchema.newDocument({
-                    name: nodeMasterConfig.name,
+                    name: req.body.workspaceName,
+                    
                     description: nodeMasterConfig.description,
                     ownerOrganization: {
                         _id:    Documents.organization._id,
@@ -139,7 +140,7 @@ let signUpController = {
                 
                 Documents.assembly = newAssembly;console.log("\n\nnew assembly has been add \n", Documents.assembly);
                 let node = NodeSchema.newDocument({
-                    name:           nodeMasterConfig.name,
+                    name:           req.body.workspaceName,
                     description:    nodeMasterConfig.description,
                     type:           NodeTypeEnum.assembly,
                     content:        Documents.assembly._id,
@@ -160,6 +161,7 @@ let signUpController = {
                         consults:   Documents.team.consults
                     },
                     Workspaces: [Documents.workspace._id]
+                //    Workspaces: [Documents.workspace._id, Documents.workspace.name]
                 });
                 return node.save();
             })
@@ -168,13 +170,6 @@ let signUpController = {
                 Documents.node = nodeMaster;
                 Documents.workspace.node_master = nodeMaster;
                 return Documents.workspace.save()
-            })
-            .then(() => {
-                console.log("")
-                Documents.user.workspaces.push({
-                    _id: Documents.workspace._id,
-                    name: Documents.workspace.name});
-                return Documents.user.save();
             })
             .then(() => {
                 Documents.organization.workspaces.push({
@@ -186,12 +181,20 @@ let signUpController = {
                 Documents.assembly.whereUsed.push(Documents.node._id);
                 return Documents.assembly.save();
             })
+      /*      .then(()=>{
+                Documents.workspace=newWorkspace;
+                Documents.node.workspaces.push({
+                    "_id": Documents.workspace._id,
+                    "name": Documents.workspace.name});
+                return Documents.node.save();
+            })
+       */    
             .then(()=> {
             req.session = signInUserSession(req.session, {email: Documents.user.email});
             req.session.completeName = Documents.user.completeName;
             req.session.currentWorkspace = Documents.workspace._id;
             res.redirect("/project/" + Documents.workspace._id);
-        })
+            })
     .catch(err => {
             if (err === "Invitation") return ;
             console.error(new Error("[Sign up Controller] -  erreur \n" + err));
