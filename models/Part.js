@@ -8,6 +8,7 @@ const configServer = require('../config/server');
 const TypeEnum = require('../enum/NodeTypeEnum');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const NestedComment = require("./nestedSchema/NestedActivitySchema");
+const NestedAssembly = require("./nestedSchema/NestedAssemblySchema");
 const PartFileSystem = require('../config/PartFileSystem');
 const asyncForEach = require('./utils/asyncForeach');
 
@@ -31,6 +32,11 @@ let PartSchema = mongoose.Schema({
 
     //owners: {type: [nestedOwners], default: []}
 });
+PartSchema.index ({ name: 'text', description: 'text' });
+
+PartSchema.on("indexError", (error) => {
+    console.error(error);
+})
 
 function mkdirPromise(path) {
     return new Promise((resolve, reject) => {

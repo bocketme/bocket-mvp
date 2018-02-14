@@ -60,6 +60,12 @@ const newPart = async (req, res) => {
             description: description,
             tags: tags,
             ownerOrganization: parentAssembly.ownerOrganization,
+            ParentAssemblies: [
+               {
+                   _id: parentAssembly._id,
+                   name: parentAssembly.name
+               }
+           ],
         });
         
         part = await part.save();
@@ -119,7 +125,7 @@ const newPart = async (req, res) => {
             }
         });
     }
-
+      
     if (files_3d) {
         asyncForeach(files_3d, async function (file, i, files_3d) {
             try {

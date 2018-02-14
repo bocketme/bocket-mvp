@@ -43,8 +43,12 @@ let ioListener = require("./sockets/socketsListener")(io);
 app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon-bocket.png')));
 
 //configure and verify the server
-server.listen(config.port);
-
+try {
+    server.listen(config.port);
+}
+catch (e) {
+    console.log("Unable to bind on port : " + config.port);
+}
 //Import the mongoose module
 let mongoose = require('mongoose');
 mongoose.Promise = Promise;
