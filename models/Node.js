@@ -42,6 +42,8 @@ let NodeSchema = mongoose.Schema({
     //The
     tags: {type: [String], default: []},
     children: {type: [NestedNode], default: []},
+    whereUsed: {type: [NestedNode], default: []},
+    
     team: {type: NestedTeam, required: true},
     owners: {type: [NestedUser], default: []},
 });
