@@ -1,32 +1,33 @@
 const fs = require('fs'),
     path = require('path'),
     file_accepted = require('../../utils/extension_file'),
-    //converter = require("../../convertisseur/converter"),
-    partFileSystem = require("../../config/PartFileSystem");
+    converter = require("../../converter/converter"),
+    partFileSystem = require("../../config/PartFileSystem"),
+    util = require('util'),
+    pino = require('pino')();
 
-function create3DFile(chemin, nameFile, data){
-    return new Promise((resolve, reject) => {
-        let _nameFile = nameFile.match("[^.*]+")[0];
-        data = data.toString();
-        fs.access(chemin, err => {
-            if(err)
-                    return reject(err);
-            fs.writeFile(path.join(chemin, partFileSystem.rawFile,nameFile), data, err => {
-                if (err)
-                    return reject(err);
-                /*
-                    try {
-                    console.log("path here : " + path.join(chemin, partFileSystem.rawFile, nameFile));
-                    let pathConvertedFile = converter.JSimport(path.join(chemin, partFileSystem.rawFile, nameFile));
-                    console.log(pathConvertedFile);
-                } catch (e) {
-                    console.log(e);
-                }
-                */
-                resolve();
-            })
-        })
-    })
+const optionStream = {
+    flags: 'w',
+    encoding: 'utf8',
+    fd: null,
+    mode: 0o666,
+    autoClose: true
+}
+
+let converterInfo = pino.child({type: converter});
+
+async function create3DFile(chemin, file) {
+    let filePath = path.join(chemin, partFileSystem.data, file.originalname);
+    let file3D = fs.createWriteStream(filePath, optionStream);
+
+    file3D.end(file.buffer);
+
+    file3D.on("close", () => {
+        let resultImport = converter.JSimport(filePath);
+        pino.info("The result of the import \n ${resultImport}");
+        converterInfo.info(resultImport);
+        console.log("Import : " + resultImport);
+    });
 }
 
 module.exports = create3DFile;
