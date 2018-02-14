@@ -49,6 +49,7 @@ const newPart = (req, res) => {
                         });
                         part.save()
                             .then((newPart) => {
+                             console.log ("Par/post ParentNode :", parentNode);
                                 let subNode = NodeSchema.newDocument({
                                     name: name,
                                     description: description,
@@ -57,6 +58,7 @@ const newPart = (req, res) => {
                                     Workspaces: parentNode.Workspaces,
                                     tags: tags,
                                     team: parentNode.team,
+ //                                   whereUsed: parentNode._id,
                                 });
                                 subNode.save()
                                     .then((subNode) => {
