@@ -15,7 +15,8 @@ function nodeChildrenChargement(event){
 }
 
 function loadNodeInformation(event) {
-
+  $('#activity-tab').tabs('select_tab', 'activity');
+    console.log("looooooooooooooooad");
     //Initialisation
     var element = $(event.currentTarget);
     var nodeId = element.attr('id');
