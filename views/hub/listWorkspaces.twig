@@ -1,0 +1,11 @@
+<p>{{ in_use.name }}</p>
+<ul class="collection">
+    {% for workspace in workspaces %}
+        <a href="/project/{{workspace._id}}">
+            <li class="collection-item avatar collection-item-workspace">
+                <i class="tiny material-icons circle">folder</i>
+                <p style="font-size: 70%; " class="truncate">{{ workspace.name }}</p>
+            </li>
+        </a>
+    {% endfor %}
+</ul>

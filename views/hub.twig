@@ -19,8 +19,10 @@
 
 {% block body %}
 <div id="hub" class="row">
-    <div id="first_column" class="col s2">
+    <div id="first_column" class="col s1">
+        {% include "./hub/listWorkspaces.twig" %}
 
+        {#
         <button class="dropdown-button" data-beloworigin="true" data-activates='workspaces-dropdown'>
             <div>
                 {{ in_use.name }}
@@ -63,12 +65,12 @@
                 </button>
             </a>
         </div>
-
+        #}
     </div>
 
     {% include "./hub/invitePeople.twig" %}
 
-    <div id="second_column" class="col s3">
+    <div id="second_column" class="col s2">
         <div class="data-header">
             <i class="material-icons favorite" style="color: #9b9b9b; font-size:10px;">star</i>{{ data_header }}
             <img class="triple-dots" data-activates='options-node'></img>
@@ -134,7 +136,7 @@
         </div>
     </div>
 
-    <div id="third_column" class="col s7">
+    <div id="third_column" class="col s9">
         {% include "hub/third_collumn_header.twig" %}
 
         <div id="third_column_content">

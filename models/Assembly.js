@@ -6,6 +6,10 @@ const NestedComment = require("./nestedSchema/NestedActivitySchema");
 const configServer = require("../config/server");
 const fs = require('fs');
 const path = require('path');
+const util = require('util');
+
+const readDir = util.promisify(fs.readdir);
+const unlink = util.promisify(fs.unlink);
 
 let NestedOrganization = mongoose.Schema({
     _id: {type:  mongoose.SchemaTypes.ObjectId, require: true},
@@ -35,6 +39,7 @@ let AssemblyScheama = mongoose.Schema({
     activities : {type: [NestedComment], default: []}
 });
 
+/*
 AssemblyScheama.pre('save', function(next) {
     if(!assembly.path) {
         assembly.path = '/' + assembly.ownerOrganization.name + '/' + assembly.name + ' - ' + assembly._id;
@@ -46,11 +51,12 @@ AssemblyScheama.pre('save', function(next) {
                 if (err)
                     return next(err);
                 return next();
-            })
-        })
+            });
+        });
     }
-    return next()
+    return next();
 });
+
 AssemblyScheama.pre("remove", function (next) {
     if (!this.path)
         return next(new Error("[Critical Error] : The Assembly has no path"));
@@ -60,35 +66,26 @@ AssemblyScheama.pre("remove", function (next) {
         .catch(err => next(err));
 });
 
-var deleteFolderRecursive = function(path) {
-    return new Promise((resolve, reject) => {
-        fs.readdir(path, (err, docs) => {
-            let promises = [];
-            docs.forEach(doc => {
-                let currentPath = path.join(path, doc);
-                if (fs.stat(currentPath).isDirectory())
-                    promises.push(deleteFolderRecursive(currentPath));
-                else
-                    promises.push(deleteFile(currentPath));
-            });
-            Promise.all(promises)
-                .then(() => resolve())
-                .catch(err => reject(err));
-        });
+const deleteFolderRecursive = async function(path) {
+
+    let elements = await readDir(path);
+
+    let promises = [];
+
+    elements.forEach(element => {
+        let currentPath = path.join(path, element);
+
+        if(fs.stat(currentPath).isDirectory())
+            promises.push(deleteFolderRecursive(currentPath));
+        else
+            promises.push(unlink(currentPath));
     });
+
+    Promise.all(promises)
+        .then(() => resolve())
+        .catch(err => reject(err));
 };
-
-const deleteFile = (currentPath) => {
-    return new Promise((resolve, reject) => {
-        fs.unlink(currentPath, (err) => {
-            if (err)
-                reject(err);
-            resolve;
-        });
-    })
-}
-
-
+*/
 
 AssemblyScheama.statics.newDocument = (assemblyInformation) => {
     return new Assembly(assemblyInformation);
@@ -97,7 +94,6 @@ AssemblyScheama.statics.newDocument = (assemblyInformation) => {
 AssemblyScheama.plugin(uniqueValidator);
 
 let Assembly = mongoose.model("Assembly", AssemblyScheama, "Assemblies");
-
 module.exports = Assembly;
 
 

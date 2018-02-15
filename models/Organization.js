@@ -28,7 +28,7 @@ let OrganizationSchema = new mongoose.Schema({
  */
 OrganizationSchema.statics.newDocument = (OrganizationInformation) => {
     return new Organization(OrganizationInformation);
-}
+};
 
 OrganizationSchema.pre('save', function (next) {
     let organizationPath = path.join(config.files3D, '/' + this.name);

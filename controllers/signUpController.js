@@ -31,7 +31,7 @@ let signUpController = {
                 return res.redirect("/");
             }
         }
-        let Documents = {}
+        let Documents = {};
 
         let user = UserSchema.newDocument({
             completeName: req.body.completeName,
@@ -57,7 +57,7 @@ let signUpController = {
                         email: Documents.user.email
                     }],
                     name: req.body.organizationName
-                })
+                });
                 return organization.save();
             })
             .then(newOrga => {

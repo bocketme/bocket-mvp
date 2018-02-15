@@ -1,27 +1,39 @@
 const userSchema = require('../models/User'),
     workspaceSchema = require('../models/Workspace'),
     organizationSchema = require('../models/Organization'),
-    nodeSchema = require('../models/Node');
+    assemblySchema = require('../models/Assembly'),
+    nodeSchema = require('../models/Node'),
+    teamSchema = require('../models/Team'),
+    NodeTypeEnum = require('../enum/NodeTypeEnum');
 
-const pino = require('pino')();
+const nodeMasterConfig = require("../config/nodeMaster");
+const pino = require('pino');
+const pretty = pino.pretty();
+pretty.pipe(process.stdout);
+const log = pino({
+    name: 'app',
+    safe: true
+}, pretty);
 
 module.exports = (io, socket) => {
 
-    socket.on("signInNewWorkspace", (userId, orga, workspace) => {
+    socket.on("signInNewWorkspace", (userId, orga, workspaceName) => {
         (async () => {
 
+            log.info("search the user");
             let user;
             try {
                 user = await userSchema.findById(userId);
             } catch (e) {
-                return new Error(e)
+                throw new Error(e)
             }
 
+            log.info("search / create organization");
             let organization;
-
-            if (orga.type === "create") {
+            console.log(orga);
+            if (orga.type === "new") {
                 try {
-                    organization = await organizationSchema.craete({
+                    organization = await organizationSchema.create({
                         name: orga.name,
                         owner: [{
                             _id: user._id,
@@ -35,41 +47,75 @@ module.exports = (io, socket) => {
                         }]
                     });
                     await organization.save();
-                } catch (err) {
-                    return new Error(e)
+                } catch (e) {
+                    throw new Error(e)
                 }
             } else if (orga.type === "search") {
                 try {
                     organization = await organizationSchema.findById(orga._id);
                 } catch (e) {
-                    return new Error(e)
+                    throw new Error(e);
                 }
             } else {
-                pino.error("Type of orga false or inexisting " + orga.type);
+                throw new Error("Type of orga false or inexisting : " + orga.type);
                 socket.emit("newOrgaFailed");
             }
 
-            let nodeMaster;
-
+            log.info("create assembly");
+            let newassembly;
             try {
-                nodeMaster = await nodeSchema.create({
-
+                newassembly = await assemblySchema.create({
+                    name: workspaceName,
+                    description: nodeMasterConfig.description,
+                    ownerOrganization: {
+                        _id: organization._id,
+                        name: organization.name,
+                    },
                 });
-                await nodeMaster.save();
+
+                await newassembly.save();
             } catch (e) {
-                return new Error(e);
+                throw new Error(e);
             }
 
-            let Workspace;
+            log.info("create team");
+            let team;
 
             try {
-                Workspace = await workspaceSchema.create({
-                    name: workspace.name,
-                    owner: [{
+                team = await teamSchema.create({
+                    owners : [{
                         _id: user._id,
                         completeName: user.completeName,
                         email: user.email,
                     }],
+                });
+
+                await team.save();
+            } catch (e) {
+                throw new Error(e)
+            }
+
+            log.info("create nodemaster");
+            let nodeMaster;
+
+            try {
+                nodeMaster = await nodeSchema.create({
+                    name: workspaceName,
+                    type: NodeTypeEnum.assembly,
+                    content: newassembly._id,
+                    team: team
+                });
+                await nodeMaster.save();
+            } catch (e) {
+                throw new Error(e);
+            }
+
+            log.info("create workspace");
+            let workspace;
+            try {
+                workspace = await workspaceSchema.create({
+                    name: workspaceName,
+                    owner: user,
                     node_master: {
                         _id: nodeMaster._id,
                         name: nodeMaster.name,
@@ -78,21 +124,58 @@ module.exports = (io, socket) => {
                     organization: {
                         _id: organization._id,
                         name: organization.name,
-                    }
+                    },
+                    team: team,
                 });
 
-                await Workspace.save();
+                await workspace.save();
             } catch (e) {
-                return new Error(e)
+                throw new Error(e)
             }
+
+            log.info("last changements");
+            try {
+                nodeMaster.Workspaces.push(workspace);
+                await nodeMaster.save();
+
+                newassembly.whereUsed.push(nodeMaster._id);
+                await newassembly.save();
+
+                user.workspaces.push(workspace);
+                await user.save();
+            } catch (e){
+                throw new Eroor(e);
+            }
+
+            let workspaces = [];
+            try {
+                let owners = await workspaceSchema.find({"team.owners._id": user._id});
+                workspaces.push(...owners);
+                let members = await workspaceSchema.find({"team.members._id": user._id});
+                workspaces.push(...members);
+                let consults = await workspaceSchema.find({"team.consults._id": user._id});
+                workspaces.push(...consults);
+            } catch (e) {
+                throw new Error(e);
+            }
+
+            let ownerOrganization;
 
             try {
-
-            } catch (e){
-                return new Eroor(e);
+                ownerOrganization = await organizationSchema.find({"owner._id": user._id})
+            } catch (e) {
+                throw new Error(e);
             }
+
+            return {
+                user: user,
+                workspaces: workspaces,
+                organization: ownerOrganization,
+            }
+        })().then((res) => {
+            socket.emit("signinSucced", res)
         })
-            .catch(err => pino.error(err));
+            .catch(err => log.error(err));
     });
 
 

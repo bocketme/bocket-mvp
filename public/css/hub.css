@@ -460,3 +460,9 @@ div.collapsible-body  ul {
 #location h5, #content h5 {
     font-size: 14px;
 }
+
+.collection-item-workspace {
+    background-color: inherit !important;
+    padding-bottom:0px !important;
+    border: none !important;
+}
