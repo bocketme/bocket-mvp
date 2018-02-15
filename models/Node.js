@@ -14,6 +14,7 @@ const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 let NestedTeam = require('./nestedSchema/NestedTeamSchema');
 const THREE = require('three');
 
+
 let NestedWorkspace = mongoose.Schema({
     _id: {type: mongoose.SchemaTypes.ObjectId, require: true},
     name: {type: String, require: true}
@@ -41,6 +42,8 @@ let NodeSchema = mongoose.Schema({
     //The
     tags: {type: [String], default: []},
     children: {type: [NestedNode], default: []},
+    whereUsed: {type: [NestedNode], default: []},
+    
     team: {type: NestedTeam, required: true},
     owners: {type: [NestedUser], default: []},
 });

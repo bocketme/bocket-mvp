@@ -7,13 +7,15 @@ const User = require("../models/User"),
     path = require("path"),
     configServer = require("../config/server"),
     NodeTypeEnum = require("../enum/NodeTypeEnum"),
-    PartFileSystem = require('../config/PartFileSystem');;
+    PartFileSystem = require('../config/PartFileSystem');
+TypeEnum = require('../enum/NodeTypeEnum');
+
 
 module.exports = function (socket) {
     socket.on("nodeInformation", (nodeID) => {
         Node.findById(nodeID, (err, node) => {
             if (err || !node)
-            socket.emit("NodeError");
+                socket.emit("NodeError");
             else {
                 //console.log(node);
                 let userId = []
@@ -23,42 +25,68 @@ module.exports = function (socket) {
                         name: user.completeName
                     })
                 });
+                var contentId = node.content;
+                var contentType = node.type;
+                console.log("CONTENT TYPE ET ID", contentType + " et " + contentId);
 
-                socket.emit("nodeLocation", {
-                    maturity: node.maturity,
-                    owners: userId,
-                    createdOn: node.created,
-                    modified: node.modified
-                });
 
-                if (node.type == NodeTypeEnum.assembly){
-                    Assembly.findById(node.content)
-                    .then((assembly) => {
-                        fs.readdir(path.join(configServer.files3D, assembly.path, PartFileSystem.spec), (err, files)=> {
-                            socket.emit("fileSpec", files);
-                        });
-                    })
-                    .catch(() => {
-                            socket.emit("[Node Information]", "The ");
-                    })
+
+
+                if (node.type == NodeTypeEnum.assembly) {
+                    content = Assembly.findById(node.content)
+                        .then((content) => {
+
+                            var contentName = content.name;
+                            var contentDescription = content.description;
+                            var contentCreated = node.created;
+                            var    contentOrganization= content.ownerOrganization.name;
+
+                            socket.emit("nodeLocation", {
+                                name: content.name,
+                                description: content.description,
+                                created: contentCreated,
+                                organization: contentOrganization,
+                            });
+
+                            fs.readdir(path.join(configServer.files3D, assembly.path, PartFileSystem.spec), (err, files) => {
+                                socket.emit("fileSpec", files);
+                            });
+                        })
+                        .catch(() => {
+                            socket.emit("[Node Information]", "The Node has no file");
+                        })
                 } else if (node.type == NodeTypeEnum.part) {
-                    Assembly.findById(node.content)
-                    .then(() => {
-                        fs.readdir(path.join(configServer.files3D, assembly.path, PartFileSystem.spec), (err, files)=> {
-                            socket.emit("fileSpec", files);
-                        });
-                    })
-                    .catch(() => {
+                    content = Part.findById(node.content)
+                        .then((content) => {
 
-                    })
+                            var contentName = content.name;
+                            var contentDescription = content.description;
+                            var contentCreated = node.created;
+                            var    contentOrganization= content.ownerOrganization.name;
+                            console.log("CONTENT PART", content.name);
+                            socket.emit("nodeLocation", {
+                                name: content.name,
+                                description: content.description,
+                                created: contentCreated,
+                                organization: contentOrganization,
+                            });
+
+                            fs.readdir(path.join(configServer.files3D, part.path, PartFileSystem.spec), (err, files) => {
+                                socket.emit("fileSpec", files);
+                            });
+                        })
+                        .catch(() => {
+                            socket.emit("[Node Information]", "The Node has no file");
+                        })
 
                 } else {
                     socket.emit("[Node Information] - error", "The node is neither a part nor an assembly.")
                 }
 
+
                 //All the other information
                 socket.emit("nodeInformation", node)
-            }
+            };
         });
     });
 

@@ -17,6 +17,8 @@ const SocketIOFile = require('socket.io-file');
 const getAllSpecListener = require('./getAllSpecListener');
 const removeSpecListener = require('./removeSpecListener');
 const renameSpecListener = require('./renameSpecListener');
+let GetSearchCriteria = require("./GetSearchCriteria");
+let GetSelectedItemsToAdd = require("./GetSelectedItemsToAdd");
 
 module.exports = function (io) {
   io.on('connection', (socket) => {
@@ -46,6 +48,8 @@ module.exports = function (io) {
     leaveWorkspaceListener(io, socket);
     getAllSpecListener(socket);
     removeSpecListener(io, socket);
-    renameSpecListener(io, socket);
+    renameSpecListener(io, socket)
+    GetSearchCriteria(socket);
+    GetSelectedItemsToAdd(socket);
   });
 };

@@ -119,8 +119,10 @@ function getRenderInformation(workspaceId, userMail, title) {
                     {
                         Node.findById(workspace.node_master._id)
                             .then(node_master => {
-                                // console.log("NODE_MASTER = ", node_master);
+                                console.log(" RENDER INFO NODE_MASTER = ", node_master);
                                 let children = node_master.children.length !== 0;
+                                console.log(" RENDER INFO children = ", children);
+                                
                                 let node = {name : node_master.name, _id: node_master._id, type: node_master.type, children: []};
                                 let i = 0;
                                 while (i < node_master.children.length)
@@ -129,15 +131,13 @@ function getRenderInformation(workspaceId, userMail, title) {
                                     i += 1;
                                 }
                                  console.log("NODES = ", node);
-
-                                 fs.readFile('./test/test.obj',{encoding: 'utf8'},(err, doc) => {
+                                 
                                     resolve({
                                         // workspaceId: workspaceId,
                                         title: workspace.name + ' - ' + title,
                                         in_use: {name: workspace.name, id: workspace._id},
                                         data_header: 'All Parts',
                                         user: user.completeName,
-                                        nodeFile: doc,
                                         workspaces: user.workspaces,
                                         node: node,
                                         all_parts: 100,
@@ -146,7 +146,6 @@ function getRenderInformation(workspaceId, userMail, title) {
                                         NodeTypeEnum: JSON.stringify(NodeTypeEnum), /* const for front end */
                                         ViewTypeEnum: JSON.stringify(ViewTypeEnum),
                                     });
-                                 })
                             })
                             .catch(err => {
                                 console.log("[project controller] : error while finding node_master: ", err);

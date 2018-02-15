@@ -44,18 +44,28 @@ InvitationSchema.pre('save', function (next) {
 InvitationSchema.post('save', function (invitation) {
 
     console.log("ici");
+    console.log("serverConfig url :", serverConfig.url);
+    
+    let httpURL ="";
+    //httpURL = serverConfig.protocol+ "://www.bocket.me:" + serverConfig.port;
+    httpURL = serverConfig.protocol+ "://localhost:" + serverConfig.port;
+    console.log("http url :", httpURL);
+    
     let renderVar = {
         completeName: invitation.people.completeName,
         workspace: invitation.workspace,
         author : invitation.author,
-        url: serverConfig.url + "/" + invitation.uid
+        
+        //url: serverConfig.url + "/" + invitation.uid
+        url: httpURL + "/" + invitation.uid
+        
     };
     //http://localhost:8080/project/5a4f4a87488d0c0770f8bef0
     Twig.renderFile('./views/email.twig', renderVar, function (err, html) {
         let mailOptions = {
             from: mailConfig.email,
             to: invitation.people.email,
-            subject: 'Sending Email using Node.js',
+            subject: 'Someone invited you to collaborate into a bocket 3D workspace',
             html: html
             //html: `uid = <a href="google.com">${invitation.uid}</a>`
         };

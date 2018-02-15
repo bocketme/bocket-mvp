@@ -52,8 +52,13 @@ module.exports = socket => {
                     .then((part) => {
                         let chemin = path.join(config.files3D, part.path, PartFileSystem.data);
                         promisifyReaddir(chemin)
-                        .then(file => {
-                            return promisifyReadFile(path.join(chemin, file[0]));
+                        .then(files => {
+                            for(let i = 0; i<files.length; i++) {
+                                //TODO: EXTERNALIZE FOR A VARIABLE
+                                if (path.extname == '.json')
+                                    return promisifyReadFile(path.join(chemin, files[i]));
+                            }
+                            return Promise.reject("There is no 3D files");
                         })
                         .then((data) => {
                             socket.emit("addPart", data, node._id, node.matrix, parent._id);
@@ -79,7 +84,7 @@ function promisifyReadFile (chemin) {
     return (new Promise ((resolve, reject) => {
         fs.readFile(chemin, 'utf8', (err, data) => {
             if(err)
-            reject(err)
+            reject(err);
             resolve(data);
         })
     }));

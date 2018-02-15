@@ -4,9 +4,16 @@
   "description": "Bocket web application.",
   "main": "app.js",
   "scripts": {
-    "test": "webpack && nodemon app.js --ignore './data'  -e js,twig,css,json",
-    "start": "nodemon app.js --ignore './data'  -e js,twig,css,json",
-    "webpack": "webpack --config ./dev.config.js"
+    "test": "webpack && nodemon app.js -e js,twig,css,json",
+    "start": "nodemon app.js -e js,twig,css,json",
+    "webpack": "webpack --config ./dev.config.js",
+    "debug": "node $NODE_DEBUG_OPTION app.js"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "data/*",
+      "converter/*"
+    ]
   },
   "repository": {
     "type": "git",
@@ -40,6 +47,7 @@
     "mv": "^2.1.1",
     "nodemailer": "^4.4.1",
     "nodemon": "^1.14.11",
+    "pino": "^4.10.4",
     "postprocessing": "^4.1.0",
     "promise": "^8.0.1",
     "serve-favicon": "^2.4.5",

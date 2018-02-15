@@ -88,6 +88,11 @@
             <li class="option-node">
                 <a class="dropdown-menu modal-trigger modal-node-selector" href="#import-assembly"> New Assembly... </a>
             </li>
+            {#
+            <li class="option-node">
+                <a class="dropdown-menu modal-trigger modal-node-selector" href="#add-existing"> Add Existing... </a>
+            </li>
+            #}
             <li class="option-node">
                 <a class="dropdown-menu modal-trigger modal-node-selector" href="#upload-file3d"> Duplicate Part/Assembly </a>
             </li>
@@ -122,14 +127,15 @@
         {# Modals #} {# {% include "modals/create_part.twig" %} #}
         {% include "modals/new_node.twig" %}
         {% include "modals/import_part.twig"%}
-        {% include "modals/import_assembly.twig" %}
+        {#{% include "modals/import_assembly.twig" %} #}
+        {% include "modals/add_existing.twig"%}
         {% include "modals/upload_files3d.twig" %}
         {# {% include "modals/import_specfiles.twig"%} #}
 
         <div id="second_column_content" class="clear">
             {% include "hub/search.twig" %}
             {% include "hub/node_tree.twig" %}
-            {% include "hub/location.twig" %}
+           {# {% include "hub/location.twig" %} #}
             {% include "hub/content.twig" %}
         </div>
     </div>
