@@ -1,7 +1,7 @@
-let li = null;
 $(document).ready(function() {
 
   let specs = $("#specs");
+  let li = null;
   const uploader = $("#specs-uploader");
 
   specs.on("contextmenu", function (e) {
@@ -23,13 +23,13 @@ $(document).ready(function() {
   });
 
   socket.on("addSpec", function (fileName) {
-    console.log("ADD SPEC");
     const splittedName = fileName.split('.');
-    addSpec($("#specs-collection").find("li:last-child"), {name: splittedName[0], format: splittedName[1]});
+    addSpec($("#specs-collection"), {name: splittedName[0], format: splittedName[1]});
   });
 
   $("#loadSpecs").on("click", function () {
     console.log("loadSpecs.onClick : ", idOfchoosenNode);
+    $("#specs-collection").empty();
     socket.emit("getAllSpec", idOfchoosenNode);
   });
 
@@ -124,8 +124,8 @@ $(document).ready(function() {
  * @param lastSpec : JQuery on lastComment
  * @param file : {{name : string, format :  string}}
  */
-function addSpec(lastSpec, file) {
-  lastSpec.after("" +
+function addSpec(ul, file) {
+  ul.append("" +
       "<li class=\"collection-item\" filename='" + file.name + "." + file.format + "'>" +
       "<div class=\"row\">\n" +
       "    <div class=\"col s12\">\n" +
