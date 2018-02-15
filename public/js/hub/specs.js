@@ -1,8 +1,8 @@
+let li = null;
 $(document).ready(function() {
 
   let specs = $("#specs");
   const uploader = $("#specs-uploader");
-  let li = null;
 
   specs.on("contextmenu", function (e) {
     pointedElem = e.target;
@@ -113,8 +113,7 @@ $(document).ready(function() {
 
   socket.on("renameSpec", function (data) {
     if (idOfchoosenNode === data.nodeId) {
-      console.log("removeSpec = ", data);
-      $("#specs").find("li.collection-item[filename='" + data.filename + "']").remove();
+      li.attr("filename", data.filename);
     }
   });
 

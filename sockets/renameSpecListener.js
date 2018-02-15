@@ -19,7 +19,7 @@ module.exports = (io, socket) => {
     renameSpecListener(nodeId, lastName, currentName, socket.handshake.session.currentWorkspace)
       .then(() => {
         io.to(socket.handshake.session.currentWorkspace)
-          .emit(listenerName, { nodeId, lastName, currentName });
+          .emit(listenerName, { nodeId, filename: currentName });
       })
       .catch((err) => {
         // Todo: Make an error emiter
