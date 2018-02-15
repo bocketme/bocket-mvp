@@ -11,9 +11,12 @@ $(document).ready(function() {
     return false;
   });
 
+  let downloadButton = $("#download");
+
   specs.on("contextmenu", "li", function (e) {
     pointedElem = e.target;
     li = $(this);
+    downloadButton.attr('href', '/download/'+ idOfchoosenNode + '/' + li.attr("filename"));
     toggleMenuContextOff("#specs-context-menu");
     toggleMenuContextOn("#spec-context-menu");
     return false;
@@ -98,7 +101,7 @@ $(document).ready(function() {
   });
 
   specContextMenu.on("click", "#download", function (){
-    console.log("Download");
+    console.log("Download: ", idOfchoosenNode, $(pointedElem).closest("li").attr("filename"));
   });
 
   socket.on("removeSpec", function (data) {
