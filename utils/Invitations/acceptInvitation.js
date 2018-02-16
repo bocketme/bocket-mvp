@@ -12,6 +12,7 @@ const internalError = { code: 2, message: 'Internal Error' };
  * @return {Promise}
  */
 function acceptInvitation(invitationUid, user) {
+//            .then(res => updateTeam(res.team, res.user))
   return new Promise((resolve, rej) => {
     let invitation = null;
     Invitation.findOne({ uid: invitationUid })
@@ -62,6 +63,15 @@ function updateWorkspace(workspace, user) {
       .catch(err => rej(err));
   });
 }
+/*function updateTeam(team, user) {
+    return new Promise((res, rej) => {
+        console.log("Team = ", team);
+        team.members.push({_id: user._id, completeName: user.completeName, email: user.email});
+        team.save()
+            .then((w) => res(w._id))
+            .catch(err => rej(err));
+    });
+} */
 
 async function updateOwnerOrganization({ _id, completeName, email }, organizationId) {
   const orga = await Organisation.findById(organizationId);
