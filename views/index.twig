@@ -7,29 +7,29 @@
 {% endblock %}
 
 {% block body %}
-    <div class="">
-        <div class="main">
-            <div class="row content">
-                <div class="col s1"></div>
-                <div class="col s4 informations">
-                    <p>
-                        <br>
-                        <br>
-                        <span class="info1">Whatever your 3D software is</span><br>
-                        <span class="info2">Build 3D projects,<br>In a single place.</span>
-                        <br>
+<div class="">
+    <div class="main">
+        <div class="row content">
+            <div class="col s1"></div>
+            <div class="col s4 informations">
+                <p>
+                    <br>
+                    <br>
+                    <span class="info1">Whatever your 3D software is</span><br>
+                    <span class="info2">Build 3D projects,<br>In a single place.</span>
+                    <br>
+                    <br>
+                </p>
+                <input id="email_beta" type="email" placeholder="Enter your email address..." class="validate col s6" required>
+                <div class="col"></div>
+                <a id="beta_button" class="waves-effect waves-light btn col s3">Join our beta</a>
+                {% if beta %}
+                    <p style="margin-left: -0.5em !important;" class="col s12">
+                        <span class="subtitle">Wanna do more ?</span>
+                        <a id="slackRequest" href="mailto:hello@bocket.me">Request an access to our Slack</a>
                         <br>
                     </p>
-                    <input id="email_beta" type="email" placeholder="Enter your email address..." class="validate col s6" required>
-                    <div class="col"></div>
-                    <a id="beta_button" class="waves-effect waves-light btn col s3">Join our beta</a>
-                    {% if beta %}
-                        <p style="margin-left: -0.5em !important;" class="col s12">
-                            <span class="subtitle">Wanna do more ?</span>
-                            <a id="slackRequest" href="mailto:hello@bocket.me">Request an access to our Slack</a>
-                            <br>
-                        </p>
-                    {% else %}
+                {% else %}
                     <p style="margin-left: -0.5em !important;" class="col s12">
                         <span class="subtitle">Want to create an account ?</span>
                         <span id="signUp">Sign up here</span>
@@ -37,28 +37,28 @@
                         <span class="subtitle">Already a member ?</span>
                         <a id="signIn">Sign in here</a>
                     </p>
-                    {% endif %}
-                </div>
-                <div class="col s6" style="margin-bottom: 1.2em;">
-                    <img id="overview" src="/img/site-vitrine-overview.png" alt="overview">
-                </div>
+                {% endif %}
             </div>
-        </div>
-        <div id="popup1" class="overlay">
-            <div class="row popup">
-                <a id="close" href="#"><i class="material-icons">close</i></a>
-                <p class="col s12"><h5 id ="popup-title">Thank you for your interest !</h5></p>
-                <p id="first-desc" class="popup-desc" class="col s12">
-                    We will keep you in touch very soon.<br>
-                </p>
-                <p id="second-desc" class="popup-desc no-margin-top" class="col s12">
-                    Enjoy your day :)
-                </p>
+            <div class="col s6" style="margin-bottom: 1.2em;">
+                <img id="overview" src="/img/site-vitrine-overview.png" alt="overview">
             </div>
         </div>
     </div>
-    <div id="blur"></div>
-    {% include "signupAccountBox.twig" %}
+    <div id="popup1" class="overlay">
+        <div class="row popup">
+            <a id="close" href="#"><i class="material-icons">close</i></a>
+            <p class="col s12"><h5 id ="popup-title">Thank you for your interest !</h5></p>
+            <p id="first-desc" class="popup-desc" class="col s12">
+                We will keep you in touch very soon.<br>
+            </p>
+            <p id="second-desc" class="popup-desc no-margin-top" class="col s12">
+                Enjoy your day :)
+            </p>
+        </div>
+    </div>
+</div>
+<div id="blur"></div>
+{% include "signupAccountBox.twig" %}
     {% include "signupWorkspace.twig" %}
     {% include "signinAccountBox.twig" %}
     {% include "workplacesPickerBox.twig" %}
@@ -68,9 +68,9 @@
 {% block js %}
 
     {% if invitation %}
-    <script type="application/javascript">
-        var invitationUid = "{{ invitationUid }}";
-    </script>
+        <script type="application/javascript">
+          var invitationUid = "{{ invitationUid }}";
+        </script>
     {% endif %}
     <script type="application/javascript" src="/js/betaRegistration.js"></script>
     <script type="application/javascript" src="/js/checkEmail.js"></script>
@@ -82,13 +82,14 @@
     {% else %}
         <script type="application/javascript" src="/js/signInInvitationEvents.js"></script>
         <script type="application/javascript">
-            $(document).ready(function () {
-                $("#signIn").click();
-                $("#workspaceName").val("{{ workspaceName }}").attr("type", "hidden");//prop('disabled', true).parent().css("display", "none");
-                $("#completeName").val("{{ completeName }}");
-                $("h1#new-workspace").text("Give us some information");
-                $("#hiddenInvitation").val(invitationUid);
-            });
+          $(document).ready(function () {
+            $("#signUp").click();
+            $(".email-inv").val('{{ email }}');
+            $("#workspaceName").val("{{ workspaceName }}").attr("type", "hidden");//prop('disabled', true).parent().css("display", "none");
+            $("#completeName").val("{{ completeName }}");
+            $("h1#new-workspace").text("Give us some information");
+            $("#hiddenInvitation").val(invitationUid);
+          });
         </script>
     {% endif %}
 {% endblock %}
