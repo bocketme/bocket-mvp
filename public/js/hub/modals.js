@@ -55,14 +55,15 @@
             event.preventDefault();
             var cible = third_column.$data.selected;
             if (cible !== "Select a node") {
-                if (document.getElementById('import_assembly_file3d').files[0]) {
                     var nodeId = $('.selected-accordion').attr('id'),
                         form = document.getElementById("form-import-assembly"),
                         formdata = new FormData(form),
                         postRequest = new XMLHttpRequest(),
-                        sub_level = $(nodeId).contents().filter("span").attr("data-sublevel"),
-                        breadcrumb = $(nodeId).contents().filter("span").attr("data-breadcrumbs");
+                        sub_level = $("#"+nodeId).contents().filter("span").attr("data-sublevel"),
+                        breadcrumb = $("#"+nodeId).contents().filter("span").attr("data-breadcrumbs");
 
+                    console.log(sub_level);
+                    console.log(breadcrumb);
                     formdata.append("sub_level", sub_level);
                     formdata.append("breadcrmb", breadcrumb);
 
@@ -91,8 +92,6 @@
                     form.reset();
                     $("#import-assembly").modal("close");
                     $("#form-import-assembly").find("input").val("");
-                } else
-                    Materialize.toast("You must add a 3d File", 1000);
             } else
                 Materialize.toast("You must select a node", 1000);
         });
