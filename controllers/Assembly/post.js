@@ -4,7 +4,6 @@ const path = require('path'),
     type_mime = require('../../utils/type-mime'),
     NodeTypeEnum = require('../../enum/NodeTypeEnum'),
     createFile = require('../utils/createFile'),
-    create3DFile = require('../utils/create3DFile'),
     twig = require('twig'),
     pino = require('pino')();
 
@@ -29,7 +28,6 @@ const newAssembly = async  (req, res) => {
     let nodeId = escape(req.params.nodeId),
         name = escape(req.body.name),
         description = escape(req.body.description),
-        tags = escape(req.body.tags),
         sub_level = Number(req.body.sub_level),
         breadcrumb = escape(req.body.breadcrumb),
         specFiles = req.files['specFiles'];
@@ -66,7 +64,6 @@ const newAssembly = async  (req, res) => {
         assembly = await assemblySchema.create({
         name: name,
         description: description,
-        tags: tags,
             ownerOrganization: parentAssembly.ownerOrganization,
         });
 
@@ -86,7 +83,6 @@ const newAssembly = async  (req, res) => {
             type: NodeTypeEnum.assembly,
             content: assembly._id,
             Workspaces: parentNode.Workspaces,
-            tags: tags,
             team: parentNode.team,
         });
 
