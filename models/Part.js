@@ -9,6 +9,7 @@ const TypeEnum = require('../enum/NodeTypeEnum');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const NestedComment = require("./nestedSchema/NestedActivitySchema");
 const NestedAssembly = require("./nestedSchema/NestedAssemblySchema");
+const NestedUser = require("./nestedSchema/NestedUserSchema");
 const PartFileSystem = require('../config/PartFileSystem');
 const asyncForEach = require('./utils/asyncForeach');
 
@@ -27,6 +28,7 @@ let PartSchema = mongoose.Schema({
     ownerOrganization: { type: NestedOrganization, require: true },
     quality: { type: Number, default: 0 },
     tags: { type: [], default: [] },
+    creator: {type: NestedUser, require: true},
     annotation: { type: [NestedAnnotation], default: [] },
     activities: { type: [NestedComment], default: [] }
 
