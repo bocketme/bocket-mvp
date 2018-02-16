@@ -1,11 +1,18 @@
-<p>{{ in_use.name }}</p>
-<ul class="collection">
+<div id="header-workspace">
+    <h4>{{ in_use.name }}</h4>
+</div>
+<div id="list-workspace" class="collection bocket-scrollbar">
     {% for workspace in workspaces %}
-        <a href="/project/{{workspace._id}}">
-            <li class="collection-item avatar collection-item-workspace">
-                <i class="tiny material-icons circle">folder</i>
-                <p style="font-size: 70%; " class="truncate">{{ workspace.name }}</p>
-            </li>
-        </a>
+        {% if (workspace.id == in_use.id) %}
+        {% else %}
+            <a class="collection-item avatar collection-item-workspace" style="min-height: 60px !important;" href="/project/{{workspace._id}}">
+                <i class="tiny material-icons circle" style="font-size: 1rem !important;">folder</i>
+                <p style="font-size: 70%; color: white; " class="truncate">{{ workspace.name }}</p>
+            </a>
+        {% endif %}
     {% endfor %}
-</ul>
+    <a class="collection-item avatar collection-item-workspace" style="min-height: 60px !important;" href="/project/{{workspace._id}}">
+        <i class="tiny material-icons circle" style="font-size: 1rem !important;">add</i>
+        <p style="font-size: 70%; color: white; " class="truncate">Add Workspace</p>
+    </a>
+</div>

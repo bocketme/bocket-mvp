@@ -466,3 +466,21 @@ div.collapsible-body  ul {
     padding-bottom:0px !important;
     border: none !important;
 }
+
+.collection-item-workspace:hover {
+    background-color: #535151 !important;
+}
+
+.collection {
+    border: none !important;
+}
+
+#list-workspace{
+    max-height: 80%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#header-workspace{
+    height: 10%;
+}
