@@ -6,7 +6,15 @@ const fs = require('fs');
 const path = require('path');
 const PartFileSystem = require('../config/PartFileSystem')
 const config = require('../config/server');
+
+
 const pino = require('pino');
+const pretty = pino.pretty();
+pretty.pipe(process.stdout);
+const log = pino({
+    name: 'app',
+    safe: true
+}, pretty);
 
 module.exports = socket => {
     socket.on("start viewer", (workspaceId) =>{
@@ -54,9 +62,10 @@ module.exports = socket => {
                                 let chemin = path.join(config.files3D, part.path, PartFileSystem.data);
                                 promisifyReaddir(chemin)
                                     .then(files => {
+                                        log.info(files);
                                         for(let i = 0; i<files.length; i++) {
                                             //TODO: EXTERNALIZE FOR A VARIABLE
-                                            if (path.extname == '.json')
+                                            if (path.extname(files[i]) == '.json')
                                                 return promisifyReadFile(path.join(chemin, files[i]));
                                         }
                                         return Promise.reject("There is no 3D files");
@@ -86,7 +95,7 @@ function promisifyReadFile (chemin) {
         fs.readFile(chemin, 'utf8', (err, data) => {
             if(err)
                 reject(err);
-            pino.info("File found at : ", chemin);
+            log.info("File found at : ", chemin);
             resolve(data);
         })
     }));
