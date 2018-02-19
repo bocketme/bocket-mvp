@@ -109,67 +109,57 @@ function getRenderInformation(workspaceId, userMail, title) {
     console.log("getRenderInformation", workspaceId, userMail);
     return new Promise((resolve, reject) => {
         Workspace.findById({_id: workspaceId})
-            .then(workspace => {
-                if (workspace !== null)
-                {
-                    User.findOne({email: userMail})
-                        .then(user => {
-                            console.log(user);
-                            if (user !== null)
-                            {
-                                Node.findById(workspace.node_master._id)
-                                    .then(node_master => {
-                                        // console.log("NODE_MASTER = ", node_master);
-                                        let children = node_master.children.length !== 0;
-                                        let node = {name : node_master.name, _id: node_master._id, type: node_master.type, children: []};
-                                        let i = 0;
-                                        while (i < node_master.children.length)
-                                        {
-                                            node.children.push({title: node_master.children[i].title, _id: node_master.children[i]._id, children: []});
-                                            i += 1;
-                                        }
-                                        console.log("NODES = ", node);
-                                        resolve({
-                                            // workspaceId: workspaceId,
-                                            title: workspace.name + ' - ' + title,
-                                            in_use: {name: workspace.name, id: workspace._id},
-                                            data_header: 'All Parts',
-                                            user: user.completeName,
-                                            workspaces: user.workspaces,
-                                            node: node,
-                                            NodeTypeEnum: JSON.stringify(NodeTypeEnum), /* const for front end */
-                                            ViewTypeEnum: JSON.stringify(ViewTypeEnum),
-                                        });
-                                    })
-                                    .catch(err => {
-                                        console.log("[project controller] : error while finding node_master: ", err);
-                                        reject(500)
+        .then(workspace => {
+            if (workspace !== null)
+            {
+                User.findOne({email: userMail})
+                .then(user => {
+                    console.log(user);
+                    if (user !== null)
+                    {
+                        Node.findById(workspace.node_master._id)
+                            .then(node_master => {
+                                console.log(" RENDER INFO NODE_MASTER = ", node_master);
+                                let children = node_master.children.length !== 0;
+                                console.log(" RENDER INFO children = ", children);
+                                
+                                let node = {name : node_master.name, _id: node_master._id, type: node_master.type, children: []};
+                                let i = 0;
+                                while (i < node_master.children.length)
+                                {
+                                    node.children.push({title: node_master.children[i].title, _id: node_master.children[i]._id, children: []});
+                                    i += 1;
+                                }
+                                 console.log("NODES = ", node);
+                                 
+                                    resolve({
+                                        // workspaceId: workspaceId,
+                                        title: workspace.name + ' - ' + title,
+                                        in_use: {name: workspace.name, id: workspace._id},
+                                        data_header: 'All Parts',
+                                        user: user.completeName,
+                                        workspaces: user.workspaces,
+                                        node: node,
+                                        all_parts: 100,
+                                        last_updates: 10,
+                                        duplicates: 35,
+                                        NodeTypeEnum: JSON.stringify(NodeTypeEnum), /* const for front end */
+                                        ViewTypeEnum: JSON.stringify(ViewTypeEnum),
                                     });
-                            }
-                            else
-                            {
-                                console.log("[projectController.indexPOST] : ", "User not found");
-                                reject("/signin")
-                            }
-                        })
-                        .catch(err => {
-                            console.log("[projectController.indexPOST] :", err);
-                            reject(500);
-                        });
-                }
-                else {
-                    console.log("[projectController.indexPOST] : ", "Workspace not found1");
-                    reject(404);
-                }
-            })
-            .catch(err => {
-                if (err.name === "CastError") // Workspace not found
-                {
-                    console.log("[projectController.indexPOST] : ", "Workspace not found2", err);
-                    reject(404);
-                }
-                else {
-                    console.log("[projectController.indexPOST] : ", err);
+                            })
+                            .catch(err => {
+                                console.log("[project controller] : error while finding node_master: ", err);
+                                reject(500)
+                            });
+                    }
+                    else
+                    {
+                        console.log("[projectController.indexPOST] : ", "User not found");
+                        reject("/signin")
+                    }
+                })
+                .catch(err => {
+                    console.log("[projectController.indexPOST] :", err);
                     reject(500);
                 }
             });

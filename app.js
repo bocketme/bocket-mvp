@@ -25,10 +25,10 @@ const assembly = require("./routes/assembly");
 let expressSession = require("express-session");
 const MongoStore = require('connect-mongo')(expressSession); //session store
 let session = expressSession({
-    secret: config.secretSession,
-    store: new MongoStore({ url: config.mongoDB }),
-    resave: true,
-    saveUninitialized: true
+  secret: config.secretSession,
+  store: new MongoStore({ url: config.mongoDB }),
+  resave: true,
+  saveUninitialized: true
 });
 let sharedsession = require("express-socket.io-session");
 
@@ -43,8 +43,12 @@ let ioListener = require("./sockets/socketsListener")(io);
 app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon-bocket.png')));
 
 //configure and verify the server
-server.listen(config.port);
-
+try {
+    server.listen(config.port);
+}
+catch (e) {
+    console.log("Unable to bind on port : " + config.port);
+}
 //Import the mongoose module
 let mongoose = require('mongoose');
 mongoose.Promise = Promise;
@@ -62,7 +66,7 @@ app.use(morgan('dev'));
 
 app.use(session);
 io.use(sharedsession(session, {
-    autoSave: true
+  autoSave: true
 }));
 
 module.exports = app;
@@ -88,7 +92,12 @@ app.use(bodyParser.json());
 app.engine('twig', require('twig').__express);
 app.set("view engine", "twig");
 app.set('twig options', {
-    strict_variables: false,
+  strict_variables: false,
+});
+
+app.get('/vincent/dl', (req, res) => {
+  console.log("qdqsdq");
+  res.download(__dirname + "/README.md");
 });
 
 app.use("/signOut", signOut);
@@ -102,10 +111,9 @@ app.use("/workspace", workspace);
 app.use("/part", part);
 app.use("/assembly", assembly);
 app.post("/test", (req, res) => {
-    console.log(req.body);
-    console.log(req.query);
-    console.log(req.params);
-    res.send(req.query);
+  console.log(req.query);
+  console.log(req.params);
+  res.send(req.query);
 });
 
 app.use(express.static('public'));

@@ -19,7 +19,6 @@ const newPart = async (req, res) => {
     let nodeId = escape(req.params.nodeId),
         name = escape(req.body.name),
         description = escape(req.body.description),
-        tags = escape(req.body.tags),
         sub_level = Number(req.body.sub_level),
         breadcrumb = escape(req.body.breadcrumb),
         specFiles = req.files['specFiles'],
@@ -58,8 +57,13 @@ const newPart = async (req, res) => {
         part = Part.newDocument({
             name: name,
             description: description,
-            tags: tags,
             ownerOrganization: parentAssembly.ownerOrganization,
+            ParentAssemblies: [
+               {
+                   _id: parentAssembly._id,
+                   name: parentAssembly.name
+               }
+           ],
         });
         
         part = await part.save();
@@ -78,7 +82,6 @@ const newPart = async (req, res) => {
             type: NodeTypeEnum.part,
             content: part._id,
             Workspaces: parentNode.Workspaces,
-            tags: tags,
             team: parentNode.team,
         });
 
@@ -119,7 +122,7 @@ const newPart = async (req, res) => {
             }
         });
     }
-
+      
     if (files_3d) {
         asyncForeach(files_3d, async function (file, i, files_3d) {
             try {

@@ -62,8 +62,12 @@ let signUpController = {
             })
             .then(newOrga => {
                 console.log("new Organization is created", newOrga);
-                Documents.organization = newOrga;
-                let team = Team.newDocument({
+                    Documents.organization = newOrga;
+                    console.log("Orga a ecrire dans user", Documents.organization._id +"-" + Documents.organization.name);
+                   Documents.user.organizations.push({ _id : Documents.organization._id, name : Documents.organization.name});
+                   return Documents.user.save();
+  
+                    let team = Team.newDocument({
                     owners: [{
                         _id: Documents.user._id,
                         completeName: Documents.user.completeName,
@@ -123,7 +127,8 @@ let signUpController = {
             })
             .then(() => {
                 let assembly = AssemblySchema.newDocument({
-                    name: nodeMasterConfig.name,
+                    name: req.body.workspaceName,
+                    
                     description: nodeMasterConfig.description,
                     ownerOrganization: {
                         _id:    Documents.organization._id,
@@ -133,10 +138,10 @@ let signUpController = {
                 return assembly.save();
             })
             .then(newAssembly => {
-                console.log("\n\nnew assembly has been add \n", Documents.assembly);
-                Documents.assembly = newAssembly;
+                
+                Documents.assembly = newAssembly;console.log("\n\nnew assembly has been add \n", Documents.assembly);
                 let node = NodeSchema.newDocument({
-                    name:           nodeMasterConfig.name,
+                    name:           req.body.workspaceName,
                     description:    nodeMasterConfig.description,
                     type:           NodeTypeEnum.assembly,
                     content:        Documents.assembly._id,
@@ -157,6 +162,7 @@ let signUpController = {
                         consults:   Documents.team.consults
                     },
                     Workspaces: [Documents.workspace._id]
+                //    Workspaces: [Documents.workspace._id, Documents.workspace.name]
                 });
                 return node.save();
             })
@@ -176,12 +182,20 @@ let signUpController = {
                 Documents.assembly.whereUsed.push(Documents.node._id);
                 return Documents.assembly.save();
             })
+      /*      .then(()=>{
+                Documents.workspace=newWorkspace;
+                Documents.node.workspaces.push({
+                    "_id": Documents.workspace._id,
+                    "name": Documents.workspace.name});
+                return Documents.node.save();
+            })
+       */    
             .then(()=> {
             req.session = signInUserSession(req.session, {email: Documents.user.email});
             req.session.completeName = Documents.user.completeName;
             req.session.currentWorkspace = Documents.workspace._id;
             res.redirect("/project/" + Documents.workspace._id);
-        })
+            })
     .catch(err => {
             if (err === "Invitation") return ;
             console.error(new Error("[Sign up Controller] -  erreur \n" + err));

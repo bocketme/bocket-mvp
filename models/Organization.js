@@ -2,7 +2,7 @@ const serverConfiguration = require("../config/server");
 const mongoose = require("mongoose");
 const uniqueValidator = require('mongoose-unique-validator');
 const User = require("./nestedSchema/NestedUserSchema");
-const Workspace = require("./nestedSchema/NesttedWorkspaceSchema");
+const Workspace = require("./nestedSchema/NestedWorkspaceSchema");
 const config = require('../config/server');
 const fs = require('fs');
 const path = require('path');
@@ -20,7 +20,6 @@ let OrganizationSchema = new mongoose.Schema({
     //TODO: Why? - L'organization a une liste de noeud ???
     node: [Node]
 });
-
 
 /**
  * Create a new Organization in the database

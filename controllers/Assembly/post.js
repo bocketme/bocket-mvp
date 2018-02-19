@@ -4,9 +4,16 @@ const path = require('path'),
     type_mime = require('../../utils/type-mime'),
     NodeTypeEnum = require('../../enum/NodeTypeEnum'),
     createFile = require('../utils/createFile'),
-    create3DFile = require('../utils/create3DFile'),
-    twig = require('twig'),
-    pino = require('pino')();
+    twig = require('twig');
+
+
+const pino = require('pino');
+const pretty = pino.pretty();
+pretty.pipe(process.stdout);
+const log = pino({
+    name: 'app',
+    safe: true
+}, pretty)
 
 const nodeSchema = require("../../models/Node");
 const assemblySchema = require('../../models/Assembly');
@@ -29,7 +36,6 @@ const newAssembly = async  (req, res) => {
     let nodeId = escape(req.params.nodeId),
         name = escape(req.body.name),
         description = escape(req.body.description),
-        tags = escape(req.body.tags),
         sub_level = Number(req.body.sub_level),
         breadcrumb = escape(req.body.breadcrumb),
         specFiles = req.files['specFiles'];
@@ -47,7 +53,7 @@ const newAssembly = async  (req, res) => {
     } catch (err) {
         let message = err.message ? err.message : "Error intern";
         let status = err.status ? err.status : "500";
-        pino.error("[ Post Assembly Controller ] " + message + "\n" + new Error(err));
+        log.error("[ Post Assembly Controller ] " + message + "\n" + new Error(err));
         return res.status(status).send(message);
     }
 
@@ -57,7 +63,7 @@ const newAssembly = async  (req, res) => {
     } catch (err) {
         let message = err.message ? err.message : "Error intern";
         let status = err.status ? err.status : 500;
-        pino.error("[ Post Assembly Controller ] " + message + "\n" + new Error(err));
+        log.error("[ Post Assembly Controller ] " + message + "\n" + new Error(err));
         return res.status(status).send(message);
     }
 
@@ -66,13 +72,12 @@ const newAssembly = async  (req, res) => {
         assembly = await assemblySchema.create({
         name: name,
         description: description,
-        tags: tags,
             ownerOrganization: parentAssembly.ownerOrganization,
         });
 
         await assembly.save();
     } catch (err) {
-        pino.error("[ Post Assembly Controller ] " + message + "\n" + new Error(err));
+        log.error("[ Post Assembly Controller ] " + message + "\n" + new Error(err));
        if (assembly)
            assembly.remove();
         return res.status(500).send("Error Intern");
@@ -86,13 +91,12 @@ const newAssembly = async  (req, res) => {
             type: NodeTypeEnum.assembly,
             content: assembly._id,
             Workspaces: parentNode.Workspaces,
-            tags: tags,
             team: parentNode.team,
         });
 
         await subNode.save();
     } catch (err) {
-        pino.error("[ Post Assembly Controller ] " + message + "\n" + new Error(err));
+        log.error("[ Post Assembly Controller ] " + message + "\n" + new Error(err));
         if (assembly)
             assembly.remove();
         if (subNode)
@@ -122,7 +126,7 @@ const newAssembly = async  (req, res) => {
                 await type_mime(1, spec.mimetype);
                 await createFile(chemin, spec);
             } catch (err) {
-                pino.error("[ Post Assembly Controller ] \n" + new Error(err));
+                log.error("[ Post Assembly Controller ] \n" + new Error(err));
             }
         });
     }
@@ -134,14 +138,13 @@ const newAssembly = async  (req, res) => {
         breadcrumb: breadcrumb
     }, (err, html) => {
         if (err) {
-            pino.error("[ Post Assembly Controller ] \n" + new Error(err));
+            log.error("[ Post Assembly Controller ] \n" + new Error(err));
             parentNode.children.pop();
             parentNode.save();
             assembly.remove();
             subNode.remove();
             return res.status(500).send('Intern Error');
         }
-        console.log(html);
         return res.send(html);
     });
 };
