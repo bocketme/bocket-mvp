@@ -30,7 +30,7 @@ OrganizationSchema.statics.newDocument = (OrganizationInformation) => {
 };
 
 OrganizationSchema.pre('save', function (next) {
-    let organizationPath = path.join(config.files3D, '/' + this.name);
+    let organizationPath = path.join(config.files3D, '/' + this.name + "-" + this._id);
     fs.access(organizationPath, (err) => {
         if (err){
             fs.mkdir(path.join(organizationPath), (err) => {

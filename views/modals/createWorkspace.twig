@@ -1,0 +1,47 @@
+<!-- Modal Structure -->
+<div id="workspace-creation" class="modal">
+    <div class="modal-header">
+        <h4 style="font-weight: bolder !important;">Create a new Workspace</h4>
+    </div>
+    <div class="modal-content container">
+        <div class="modal-body">
+            <form id="form-create-workspace">
+
+                <div class="input-field col s12">
+                    <input id="disabledName" name="disabledName" value="{{ user }}" type="text" class="validate" disabled>
+                </div>
+
+                <div class="input-field col s12">
+                    <input id="newWorkspaceName" name="WorkspaceName" type="text" class="validate" required>
+                    <label for="newWorkspaceName">Workspace Name</label>
+                </div>
+
+                <div class="switch">
+                    <label>
+                        Search
+                        <input id="pickorNew" type="checkbox">
+                        <span class="lever"></span>
+                        New
+                    </label>
+                </div>
+
+                <div class="input-field">
+                    <input id="newOrgnanizationName" name="OrgnanizationName" type="text" class="validate" disabled>
+                </div>
+
+                <select id="organizationSelect" name="organizationId" class="browser-default">
+                    {% if ownerOrganization %}
+                        <option value="null" disabled selected>Choose your organization</option>
+                        {% for organization in ownerOrganization %}
+                            <option value="{{ organization._id }}">{{ organization.name }}</option>
+                        {% endfor %}
+                    {% else %}
+                        <option value="null" disabled selected>You have no organization</option>
+                    {% endif %}
+                </select>
+
+                <button id="creation-workspace-submit" class="btn button-form-validate" type="submit">Create new Part</button>
+            </form>
+        </div>
+    </div>
+</div>

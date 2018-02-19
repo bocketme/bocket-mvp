@@ -120,10 +120,10 @@ app.use(express.static('public'));
 
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on("listening", () => {
-    fs.access(config.files3D, (err) => {
+    fs.access(config.data , (err) => {
         if (err) {
             if (err.code == 'ENOENT') {
-                fs.mkdir("./data", (err) => {
+                fs.mkdir(config.data, (err) => {
                     if (err)
                     throw err;
                     fs.mkdir(config.files3D, err => {

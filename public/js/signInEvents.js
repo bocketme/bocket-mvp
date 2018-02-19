@@ -50,7 +50,6 @@ $(document).ready(function() {
     $("#createWorkspace").on("click", function () {
         hideBox($(workspacesPicker), function () {
             $(disabledNameId).val(user.completeName);
-            console.log("ici3 \n", orga);
             $(".organizationOption").remove();
             let selector = document.getElementById('organizationSelect');
             for (var i = 0 ; i < orga.length ; i++)
@@ -75,8 +74,6 @@ $(document).ready(function() {
     $("#submit-btn-new-workspace").click((event) => {
         event.preventDefault();
 
-        let data = {};
-
         let userId = user._id;
 
         let organization = ($('#workspaceCreation :checkbox').is(':checked')) ?
@@ -85,13 +82,12 @@ $(document).ready(function() {
 
         let workspace = $('#newWorkspaceName').val();
 
-        console.log(data);
-
         socket.emit("signInNewWorkspace", userId, organization, workspace);
     });
 
 
     $('#workspaceCreation :checkbox').change(function() {
+        $('#organizationSelect').attr('value',null);
         if (this.checked) {
             $('#organizationSelect').hide();
             $('#organizationSelect').attr('disabled',true).removeClass('disabled');
