@@ -40,10 +40,11 @@ main {
     height: 100%;
 }
 
-#first_column {
+#side-nav {
     background-color: #3c3c3c;
     padding: 0 !important;
     height: 100%;
+    overflow-x: hidden;
 }
 
 #second_column {
@@ -463,7 +464,6 @@ div.collapsible-body  ul {
 
 .collection-item-workspace {
     background-color: inherit !important;
-    padding-bottom:0px !important;
     border: none !important;
 }
 
@@ -481,6 +481,20 @@ div.collapsible-body  ul {
     overflow-x: hidden;
 }
 
-#header-workspace{
-    height: 10%;
+.icon-list-workspace{
+    width: 60px;
+    height: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #fff;
+    border-radius: 50%;
+}
+
+.first-letter-workspace{
+    text-align: center;
+    padding-top: 20px;
+}
+
+.collection-manager{
+    box-sizing: unset;
 }
