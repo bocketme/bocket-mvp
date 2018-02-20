@@ -4,9 +4,11 @@
   "description": "Bocket web application.",
   "main": "app.js",
   "scripts": {
-    "test": "webpack && nodemon app.js -e js,twig,css,json",
-    "start": "nodemon app.js -e js,twig,css,json",
-    "webpack": "webpack --config ./dev.config.js",
+    "start": "node app.js",
+    "test": "nodemon app.js -e js,twig, css,json",
+    "prod": "webpack && node app.js",
+    "dev": "webpack --config ./dev.config.js",
+    "webpack dev": "webpack --config ./dev.config.js",
     "debug": "node $NODE_DEBUG_OPTION app.js"
   },
   "nodemonConfig": {
