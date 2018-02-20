@@ -1,7 +1,6 @@
 module.exports = {
-    data: './file3D',
-    import: './import',
-    nodes: './nodes',
-    spec: './spec',
+    data: 'file3D',
+    nodes: 'nodes',
+    spec: 'spec',
     tmp: 'tmp'
 };

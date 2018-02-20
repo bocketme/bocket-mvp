@@ -4,7 +4,7 @@
 const path =              require('path');
 const data =              path.resolve("./.data");
 const files3D =           path.join(data, "files");
-const avatar =            path.resolve(data, "avatar");
+const avatar =            path.join(data, "avatar");
 
 module.exports = {
   port: "8080",
