@@ -36,23 +36,25 @@ PartSchema.index ({ name: 'text', description: 'text' });
 
 PartSchema.on("indexError", (error) => {
     console.error(error);
-})
+});
 
 function mkdirPromise(path) {
-    return new Promise((resolve, reject) => {
-        fs.mkdir(path, (err) => {
-            if (err)
-                reject(err);
-            else resolve();
-        })
+  return new Promise((resolve, reject) => {
+    fs.mkdir(path, (err) => {
+      if (err)
+        reject(err);
+      else resolve();
     })
+  })
 }
 
 PartSchema.pre('validate', function (next) {
     if (this.path)
         return next();
 
-    this.path = '/' + this.ownerOrganization.name + '/' + this.name + ' - ' + this._id;
+    console.log(this);
+
+    this.path = '/' + this.ownerOrganization.name + '-' + this.ownerOrganization._id + '/' + this.name + ' - ' + this._id;
     let partPath = path.join(configServer.files3D, this.path);
 
     mkdirPromise(partPath)

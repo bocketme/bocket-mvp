@@ -7,10 +7,16 @@ const configServer = require("../config/server");
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
+const AssemblyFileSystem = require('../config/AssemblyFileSystem');
 
 const readDir = util.promisify(fs.readdir);
 const unlink = util.promisify(fs.unlink);
 
+/** 
+ * Mongoose Schema for 
+ * @param {number} _id - The id of the nested organization
+ * @param {string} name - The name of the organization
+*/
 let NestedOrganization = mongoose.Schema({
     _id: {type:  mongoose.SchemaTypes.ObjectId, require: true},
     name: {type: String, require: true}
@@ -36,24 +42,45 @@ let AssemblyScheama = mongoose.Schema({
     activities : {type: [NestedComment], default: []}
 });
 
-/*
-AssemblyScheama.pre('save', function(next) {
-    if(!assembly.path) {
-        assembly.path = '/' + assembly.ownerOrganization.name + '/' + assembly.name + ' - ' + assembly._id;
-        let assemblyPath = path.join(configServer.files3D, assembly.path);
-        fs.access(assemblyPath, err => {
-            if (!err)
-                return next();
-            fs.mkdir(assemblyPath, (err)=> {
-                if (err)
-                    return next(err);
-                return next();
-            });
-        });
-    }
+function mkdirPromise(path) {
+  return new Promise((resolve, reject) => {
+    fs.mkdir(path, (err) => {
+      if (err)
+        reject(err);
+      else resolve();
+    })
+  })
+}
+
+AssemblyScheama.pre('validate', function(next) {
+  if (this.path)
     return next();
+
+  console.log(this);
+  console.log(this.ownerOrganization);
+
+  this.path = '/' + this.ownerOrganization.name + '-' + this.ownerOrganization._id + '/' + this.name + ' - ' + this._id;
+  let assemblyPath = path.join(configServer.files3D, this.path);
+
+  mkdirPromise(assemblyPath)
+    .then(() => {
+      let promises = [];
+      for (let directory in AssemblyFileSystem) {
+        promises.push(
+          mkdirPromise(path.join(assemblyPath, AssemblyFileSystem[directory]))
+        );
+      }
+      return Promise.all(promises);
+    })
+    .then(() => {
+      return next()
+    })
+    .catch(err => {
+      return next(err)
+    });
 });
 
+/*
 AssemblyScheama.pre("remove", function (next) {
     if (!this.path)
         return next(new Error("[Critical Error] : The Assembly has no path"));
@@ -64,7 +91,6 @@ AssemblyScheama.pre("remove", function (next) {
 });
 
 const deleteFolderRecursive = async function(path) {
-
     let elements = await readDir(path);
 
     let promises = [];
