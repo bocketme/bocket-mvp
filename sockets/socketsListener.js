@@ -24,6 +24,7 @@ let createWorkspaceInHub = require('./createWorkspaceInHub');
 
 module.exports = function (io) {
   io.on('connection', (socket) => {
+    //TODO: How it works ?
     const uploader = new SocketIOFile(socket, {
       uploadDir: 'data', // simple directory
       accepts: ['image/png', 'image/jpeg', 'application/pdf', 'application/vnd.oasis.opendocument.text', 'image/svg+xml'], // chrome and some of browsers checking mp3 as 'audio/mp3', not 'audio/mpeg'

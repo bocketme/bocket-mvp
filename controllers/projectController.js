@@ -13,7 +13,7 @@ module.exports = {
    * ALPHA - Ne marche qu'avec un seul utilisateur, dont on a enregistré les donnée dans un JWT
    */
   index: (req, res) => {
-    getRenderInformation(req.params.workspaceId, req.session.userMail, "All Parts")
+    getRenderInformation(req.params.workspaceId, req.session.userMail)
       .then(context => res.render("hub", context))
       .catch(err => {
         if (err === 404 || err === 500)
@@ -59,54 +59,9 @@ module.exports = {
       res.redirect(req.originalUrl + "/" + req.body.workspaceId);
     }
   },
-  last_updates: (req, res) => {
-    getRenderInformation(req.params.workspaceId, req.session.userMail, "Last Updates")
-      .then(context => res.render("hub", context))
-      .catch(err => {
-        if (err == 400 || err == 500)
-          res.sendStatus(err);
-        else
-          res.redirect(err);
-      });
-  },
-
-  duplicates: (req, res) => {
-    getRenderInformation(req.params.workspaceId, req.session.userMail, "Duplicates")
-      .then(context => res.render("hub", context))
-      .catch(err => {
-        if (err === 400 || err === 500)
-          res.sendStatus(err);
-        else
-          res.redirect(err);
-      })
-  },
-  /**
-   * Ajoute un projet à l'utilisateur X
-   */
-  add: (req, res) => {
-    res.send();
-  },
-  /**
-   * Modifie les données d'un projet
-   * 1 - Vérifie les autorisations de l'utilisateur
-   * 2 - Supprime le projet
-   * 3 - Envoie une réponse 200
-   * 2.1 - Envoie une réponse "Not Authorized"
-   */
-  update: (req, res) => { res.send() },
-  /**
-   * Supprime un projet :
-   * 1 - Vérifie les autorisations de l'utilisateur
-   * 2 - Supprime le projet
-   * 3 - Envoie une réponse 200
-   * 2.1 - Envoie une réponse "Not Authorized"
-   */
-  delete: (req, res) => {
-    // project.findByIdAndRemove()
-  }
 }
 
-function getRenderInformation(workspaceId, userMail, title) {
+function getRenderInformation(workspaceId, userMail) {
   console.log("getRenderInformation", workspaceId, userMail);
   return new Promise((resolve, reject) => {
     Workspace.findById({_id: workspaceId})
@@ -140,8 +95,7 @@ function getRenderInformation(workspaceId, userMail, title) {
                 Organization.find({"owner._id": user._id})
                 .then((ownerOrganization) => {
                   resolve({
-                    // workspaceId: workspaceId,
-                    title: workspace.name + ' - ' + title,
+                    title: workspace.name,
                     in_use: {name: workspace.name, id: workspace._id},
                     data_header: 'All Parts',
                     user: user.completeName,
@@ -151,7 +105,8 @@ function getRenderInformation(workspaceId, userMail, title) {
                     all_parts: 100,
                     last_updates: 10,
                     duplicates: 35,
-                    NodeTypeEnum: JSON.stringify(NodeTypeEnum), /* const for front end */
+                    /* Const for front end */
+                    NodeTypeEnum: JSON.stringify(NodeTypeEnum), 
                     ViewTypeEnum: JSON.stringify(ViewTypeEnum),
                   });
                 });

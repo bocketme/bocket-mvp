@@ -3,11 +3,11 @@ const config = require("./config/server"); // SERVER CONFIGURATION
 const bodyParser = require('body-parser');
 const morgan = require('morgan'); // NODEJS DEBUGGER
 const Promise = require("promise");
-// const cookieParser = require("cookie-parser");
 const twig = require('twig');
 const favicon = require('serve-favicon');
 const path = require('path');
 const fs = require('fs');
+const mongoose = require('mongoose');
 
 /* ROUTES */
 const index = require("./routes/index");
@@ -16,7 +16,6 @@ const signup = require("./routes/signup");
 const signOut = require("./routes/signOut");
 const project = require("./routes/project");
 const node = require("./routes/node");
-const workspace = require("./routes/workspace");
 const user = require("./routes/user");
 const part = require("./routes/part");
 const assembly = require("./routes/assembly");
@@ -49,8 +48,7 @@ try {
 catch (e) {
     console.log("Unable to bind on port : " + config.port);
 }
-//Import the mongoose module
-let mongoose = require('mongoose');
+
 mongoose.Promise = Promise;
 //Set up default mongoose connection
 let mongoDB = config.mongoDB;
@@ -106,8 +104,6 @@ app.use("/user", user);
 app.use("/signin", signin);
 app.use("/signup", signup);
 app.use("/project", project);
-app.use("/node", node);
-app.use("/workspace", workspace);
 app.use("/part", part);
 app.use("/assembly", assembly);
 app.post("/test", (req, res) => {
