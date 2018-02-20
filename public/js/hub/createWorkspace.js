@@ -2,6 +2,7 @@ $(document).ready(function() {
   let _new = "new";
   let search = "search";
 
+  let modalNewOrganization = $("#workspace-creation");
   let organizationSelect = $('#organizationSelect');
   let organizationCreation = $('#newOrgnanizationName');
 
@@ -14,7 +15,6 @@ $(document).ready(function() {
   checkbox.change(function() {
     organizationCreation.attr('value',null);
     if (this.checked) {
-
       organizationSelect.hide();
       organizationSelect.attr('disabled',true).removeClass('disabled');
 
@@ -32,7 +32,6 @@ $(document).ready(function() {
   button.click(function (event) {
     event.preventDefault();
 
-    let userId = user._id;
 
     let organization = ($('#workspaceCreation :checkbox').is(':checked')) ?
       {type: _new, name: $('#newOrgnanizationName').val()}  :
@@ -50,6 +49,10 @@ $(document).ready(function() {
 
     let workspace = $('#newWorkspaceName').val();
 
-    socket.emit("hubNewWorkspace", userId, organization, workspace);
+    modalNewOrganization.modal('close');
+
+    console.log(organization, workspace);
+
+    socket.emit("createWorkspaceInHub", organization, workspace);
   });
 });

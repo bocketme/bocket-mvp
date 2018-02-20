@@ -19,7 +19,8 @@ const removeSpecListener = require('./removeSpecListener');
 const renameSpecListener = require('./renameSpecListener');
 let GetSearchCriteria = require("./GetSearchCriteria");
 let GetSelectedItemsToAdd = require("./GetSelectedItemsToAdd");
-let createWorkspace = require('./createWorkspace');
+let createWorkspaceInSignIn = require('./createWorkspaceInSignIn');
+let createWorkspaceInHub = require('./createWorkspaceInHub');
 
 module.exports = function (io) {
   io.on('connection', (socket) => {
@@ -32,7 +33,8 @@ module.exports = function (io) {
       overwrite: true, // overwrite file if exists, default is true.
     });
 
-    createWorkspace(io, socket);
+    createWorkspaceInHub(io, socket);
+    createWorkspaceInSignIn(io, socket);
     fileUploaderListener(socket, uploader);
     betaRegistrationListener(socket);
     checkUniqueField(socket);
@@ -50,8 +52,9 @@ module.exports = function (io) {
     leaveWorkspaceListener(io, socket);
     getAllSpecListener(socket);
     removeSpecListener(io, socket);
-    renameSpecListener(io, socket)
+    renameSpecListener(io, socket);
     GetSearchCriteria(socket);
     GetSelectedItemsToAdd(socket);
+
   });
 };

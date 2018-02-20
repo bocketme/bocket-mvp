@@ -77,10 +77,12 @@ const newAssembly = async  (req, res) => {
 
         await assembly.save();
     } catch (err) {
+        let message = "Error intern";
+        let status = "500";
         log.error("[ Post Assembly Controller ] " + message + "\n" + new Error(err));
        if (assembly)
            assembly.remove();
-        return res.status(500).send("Error Intern");
+        return res.status(status).send(message);
     }
 
     let subNode;
