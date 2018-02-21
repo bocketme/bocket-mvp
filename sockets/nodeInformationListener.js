@@ -39,13 +39,15 @@ module.exports = function (socket) {
                             var contentName = content.name;
                             var contentDescription = content.description;
                             var contentCreated = node.created;
-                            var    contentOrganization= content.ownerOrganization.name;
+                            var contentOrganization= content.ownerOrganization.name;
+                            var contentCreator= content.creator.completeName;
 
                             socket.emit("nodeLocation", {
                                 name: content.name,
                                 description: content.description,
                                 created: contentCreated,
                                 organization: contentOrganization,
+                                creator: contentCreator,
                             });
 
                             fs.readdir(path.join(configServer.files3D, assembly.path, PartFileSystem.spec), (err, files) => {
@@ -63,12 +65,15 @@ module.exports = function (socket) {
                             var contentDescription = content.description;
                             var contentCreated = node.created;
                             var    contentOrganization= content.ownerOrganization.name;
+                            var contentCreator= content.creator.completeName;
+
                             console.log("CONTENT PART", content.name);
                             socket.emit("nodeLocation", {
                                 name: content.name,
                                 description: content.description,
                                 created: contentCreated,
                                 organization: contentOrganization,
+                                creator: contentCreator,
                             });
 
                             fs.readdir(path.join(configServer.files3D, part.path, PartFileSystem.spec), (err, files) => {

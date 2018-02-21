@@ -3,6 +3,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 const TypeEnum = require('../enum/NodeTypeEnum');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const NestedComment = require("./nestedSchema/NestedActivitySchema");
+const NestedUser = require("./nestedSchema/NestedUserSchema");
 const configServer = require("../config/server");
 const fs = require('fs');
 const path = require('path');
@@ -39,6 +40,7 @@ let AssemblyScheama = mongoose.Schema({
     tags: {type: [], default: []},
 
     annotation: {type: [NestedAnnotation], default: []},
+    creator: {type: NestedUser, require: true},
     activities : {type: [NestedComment], default: []}
 });
 

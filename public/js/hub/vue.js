@@ -124,6 +124,7 @@ var contentVue = new Vue ({
         title: "Select a Node",
         url: "",
         description: "There is no description",
+        creator: null,
         organization: "",
         created: null,
     },
@@ -133,6 +134,7 @@ var contentVue = new Vue ({
             contentVue.$data.title = content.name;
             contentVue.$data.description = content.description;
             contentVue.$data.created = content.created;
+            contentVue.$data.creator = content.creator;
             contentVue.$data.organization = content.organization;
         },
         partOrAssembly: (partOrAssembly) => {

@@ -1,5 +1,6 @@
 const Part = require("../../models/Part");
 const NodeSchema = require("../../models/Node");
+const UserSchema = require("../../models/User");
 const config = require('../../config/server');
 const escape = require('escape-html');
 const path = require('path');
@@ -25,6 +26,19 @@ const newPart = async (req, res) => {
         files_3d = req.files['file3D'];
 
     sub_level++;
+
+    userEmail = req.session.userMail ;
+    console.log("email en session", userEmail);
+    let creator;
+    try{
+        creator = await UserSchema.findOne({email: userEmail});
+        console.log("creator", creator);
+    } catch (err) {
+        let message = err.message ? err.message : "Error intern";
+        let status = err.status ? err.status : "500";
+        console.error("[ Post Part Controller ] creator  :" + message + "\n" + new Error(err));
+        return res.status(status).send(message);
+    }
 
     let parentNode;
     try {
@@ -64,6 +78,11 @@ const newPart = async (req, res) => {
                    name: parentAssembly.name
                }
            ],
+           creator: {
+            _id: creator._id,
+            completeName: creator.completeName,
+            email: creator.email
+        },
         });
         
         part = await part.save();
