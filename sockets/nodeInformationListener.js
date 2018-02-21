@@ -28,7 +28,7 @@ module.exports = function (socket) {
                 var contentId = node.content;
                 var contentType = node.type;
 
-                log.info("Content Information");
+                log.info("Content Information : ", node.type);
 
                 if (node.type == NodeTypeEnum.assembly) {
                     content = Assembly.findById(node.content)
