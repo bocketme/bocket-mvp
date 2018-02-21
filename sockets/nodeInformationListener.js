@@ -8,7 +8,6 @@ const path = require("path");
 const configServer = require("../config/server");
 const NodeTypeEnum = require("../enum/NodeTypeEnum");
 const PartFileSystem = require('../config/PartFileSystem');
-const TypeEnum = require('../enum/NodeTypeEnum');
 const log = require('../utils/log');
 
 module.exports = function (socket) {
@@ -29,8 +28,10 @@ module.exports = function (socket) {
                 var contentType = node.type;
 
                 log.info("Content Information : ", node.type);
+                log.info("Content Information : ", node.type === NodeTypeEnum.part);
+                log.info("Content Information : ", node.type === NodeTypeEnum.assembly);
 
-                if (node.type == NodeTypeEnum.assembly) {
+                if (node.type === NodeTypeEnum.assembly) {
                     content = Assembly.findById(node.content)
                         .then((content) => {
 
@@ -56,7 +57,7 @@ module.exports = function (socket) {
                         .catch(() => {
                             socket.emit("[Node Information]", "The Node has no file");
                         })
-                } else if (node.type == NodeTypeEnum.part) {
+                } else if (node.type === NodeTypeEnum.part) {
                     content = Part.findById(node.content)
                         .then((content) => {
 
@@ -84,6 +85,7 @@ module.exports = function (socket) {
                         })
 
                 } else {
+                    log.info("socket emit | nodeLocation - error")                    
                     socket.emit("[Node Information] - error", "The node is neither a part nor an assembly.")
                 }
 
