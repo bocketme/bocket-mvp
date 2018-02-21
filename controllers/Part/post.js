@@ -12,7 +12,7 @@ const twig = require('twig');
 const Assembly = require('../../models/Assembly');
 const createArchive = require('../utils/createArchive');
 const asyncForeach = require('../utils/asyncForeach');
-const log = require('../utils/log');
+const log = require('../../utils/log');
 /**
 * Create a new Part for the specified node
 */
