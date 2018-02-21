@@ -1,15 +1,15 @@
-const User = require("../models/User"),
-    Node = require("../models/Node"),
-    Part = require("../models/Part"),
-    Assembly = require("../models/Assembly"),
-    escape = require("escape-html"),
-    fs = require("fs"),
-    path = require("path"),
-    configServer = require("../config/server"),
-    NodeTypeEnum = require("../enum/NodeTypeEnum"),
-    PartFileSystem = require('../config/PartFileSystem');
-TypeEnum = require('../enum/NodeTypeEnum');
-
+const User = require("../models/User");
+const Node = require("../models/Node");
+const Part = require("../models/Part");
+const Assembly = require("../models/Assembly");
+const escape = require("escape-html");
+const fs = require("fs");
+const path = require("path");
+const configServer = require("../config/server");
+const NodeTypeEnum = require("../enum/NodeTypeEnum");
+const PartFileSystem = require('../config/PartFileSystem');
+const TypeEnum = require('../enum/NodeTypeEnum');
+const log = require('../utils/log');
 
 module.exports = function (socket) {
     socket.on("nodeInformation", (nodeID) => {
@@ -27,10 +27,8 @@ module.exports = function (socket) {
                 });
                 var contentId = node.content;
                 var contentType = node.type;
-                console.log("CONTENT TYPE ET ID", contentType + " et " + contentId);
 
-
-
+                log.info("Content Information");
 
                 if (node.type == NodeTypeEnum.assembly) {
                     content = Assembly.findById(node.content)
@@ -42,6 +40,7 @@ module.exports = function (socket) {
                             var contentOrganization= content.ownerOrganization.name;
                             var contentCreator= content.creator.completeName;
 
+                            log.info("socket emit | nodeLocation")
                             socket.emit("nodeLocation", {
                                 name: content.name,
                                 description: content.description,
@@ -67,7 +66,7 @@ module.exports = function (socket) {
                             var    contentOrganization= content.ownerOrganization.name;
                             var contentCreator= content.creator.completeName;
 
-                            console.log("CONTENT PART", content.name);
+                            log.info("socket emit | nodeLocation")                            
                             socket.emit("nodeLocation", {
                                 name: content.name,
                                 description: content.description,
