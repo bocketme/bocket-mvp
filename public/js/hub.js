@@ -63,6 +63,13 @@
             }
         });
 
+        socket.on("updateWorkspaceList", (html) => {
+            var listWorkspace = $('#list-workspace');
+            listWorkspace.empty();
+            listWorkspace.append(html);
+            $('#trigger-creation-workspace').modal();
+        });
+
         socket.on('nodeChild', (html, nodeId, force) => {
             console.log("Find Node Child");
             var collapsible_body = $('#' + nodeId + '-body');

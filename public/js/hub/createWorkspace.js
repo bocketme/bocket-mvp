@@ -32,8 +32,7 @@ $(document).ready(function() {
   button.click(function (event) {
     event.preventDefault();
 
-
-    let organization = ($('#workspaceCreation :checkbox').is(':checked')) ?
+    let organization = ($('#workspace-creation :checkbox').is(':checked')) ?
       {type: _new, name: $('#newOrgnanizationName').val()}  :
       {type: search, _id: $('#organizationSelect').val(), name: $('#organizationSelect option:selected').text()};
 

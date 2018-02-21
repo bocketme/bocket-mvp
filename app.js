@@ -15,7 +15,6 @@ const signin = require("./routes/signin");
 const signup = require("./routes/signup");
 const signOut = require("./routes/signOut");
 const project = require("./routes/project");
-const node = require("./routes/node");
 const user = require("./routes/user");
 const part = require("./routes/part");
 const assembly = require("./routes/assembly");

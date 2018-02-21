@@ -7,6 +7,7 @@ const teamSchema = require('../models/Team');
 const NodeTypeEnum = require('../enum/NodeTypeEnum');
 const log = require('../utils/log');
 const nodeMasterConfig = require('../config/nodeMaster');
+const twig = require('twig');
 
 module.exports = (io, socket) => {
   socket.on("createWorkspaceInHub", (organizationInfo, workspaceInfo) => {
@@ -149,13 +150,13 @@ module.exports = (io, socket) => {
             members: team.members,
           },
         });
-
-
+        
+        
         await workspace.save();
         
         user.workspaces.push(workspace);
         await user.save();
-
+        
         organization.workspaces.push(workspace);
         await organization.save();
       } catch (err) {
@@ -176,9 +177,17 @@ module.exports = (io, socket) => {
         }
         throw new Error("Cannot create the Workspace. Exciting 'createWorkspaceInHub' socket ...\n" + err);
       }
+      return user.workspaces;
     })()
-    .then(() => {
+    .then((workspaces) => {
       log.info("Finish");
+      twig.renderFile("./views/hub/listWorkspaces.twig", {
+        workspaces: workspaces
+      }, (err, res) => {
+        if(err)
+        return Promise.reject(err);
+        return socket.emit("updateWorkspaceList", res);
+      });
     })
     .catch((err) => log.error(err));
     
