@@ -3,7 +3,6 @@ const checkUniqueField = require('./checkUniqueField');
 const signinListener = require('./signinListener');
 const newNodeListener = require('./newNodeListener');
 const NodeInformationListener = require('./nodeInformationListener');
-const contentInformationListener = require('./contentInformationListener');
 const searchNodeChildren = require('./searchNodeChildren');
 const nodeViewer = require('./nodeViewer');
 const newActivityComment = require('./newActivityCommentListener');
@@ -43,7 +42,6 @@ module.exports = function (io) {
     signinListener(socket);
     newNodeListener(socket);
     NodeInformationListener(socket);
-    contentInformationListener(socket);
     searchNodeChildren(socket);
     nodeViewer(socket);
     newActivityComment(socket);

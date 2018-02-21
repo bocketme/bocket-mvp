@@ -17,12 +17,12 @@ module.exports = (io, socket) => {
       try {
         user = await userSchema.findOne({ email: currentSession.userMail, completeName: currentSession.completeName });
         if (!user)
-        throw new Error("There is no user found");
+          throw new Error("There is no user found");
       } catch (err) {
         throw new Error("Cannot get the User. Exciting 'createWorkspaceInHub' socket ...\n" + err);
       }
-      
-      
+
+
       let organization;
       try {
         if (organizationInfo.type === "new") {
@@ -39,18 +39,18 @@ module.exports = (io, socket) => {
               email: user.email,
             }],
           });
-          
+
           await organization.save();
-          
+
         } else if (organizationInfo.type === "search") {
           organization = await organizationSchema.findOne({ "_id": organizationInfo._id, name: organizationInfo.name });
-          
+
           if (!organization)
-          throw new Error("Initialize a new organization");
+            throw new Error("Initialize a new organization");
         } else {
           throw new Error("The instruction type is incorrect or non-existent : " + organizationInfo.type);
         }
-        
+
       } catch (err) {
         if (organization && organizationInfo.type === "new") {
           try {
@@ -62,7 +62,7 @@ module.exports = (io, socket) => {
         }
         throw new Error("Cannot get/create the Organization. Exciting 'createWorkspaceInHub' socket ...\n" + err);
       }
-      
+
       let assembly;
       try {
         assembly = await assemblySchema.create({
@@ -72,15 +72,20 @@ module.exports = (io, socket) => {
             _id: organization._id,
             name: organization.name,
           },
+          creator: {
+            _id: user._id,
+            completeName: user.completeName,
+            email: user.email,
+          },
         });
-        
+
         await assembly.save();
       } catch (err) {
         throw new Error("Cannot get an assembly \n" + err);
       }
-      
+
       let team;
-      
+
       try {
         team = await teamSchema.create({
           owners: [{
@@ -94,14 +99,14 @@ module.exports = (io, socket) => {
             email: user.email,
           }],
         });
-        
+
         await team.save();
       } catch (err) {
         throw new Error("Cannot create the team \n" + err);
       }
-      
+
       let nodeMaster;
-      
+
       try {
         nodeMaster = await nodeSchema.create({
           name: workspaceInfo,
@@ -125,7 +130,7 @@ module.exports = (io, socket) => {
       } catch (err) {
         throw Error("Cannot create the nodeMaster \n" + err);
       }
-      
+
       let workspace;
       try {
         workspace = await workspaceSchema.create({
@@ -150,28 +155,28 @@ module.exports = (io, socket) => {
             members: team.members,
           },
         });
-        
-        
+
+
         await workspace.save();
-        
+
         user.workspaces.push(workspace);
         await user.save();
-        
+
         organization.workspaces.push(workspace);
         await organization.save();
       } catch (err) {
-        
+
         try {
-          
+
           if (assembly)
-          await assembly.remove();
+            await assembly.remove();
           if (nodeMaster)
-          await nodeMaster.remove();
+            await nodeMaster.remove();
           if (workspace)
-          await workspace.remove();
+            await workspace.remove();
           if (organization && organizationInfo.type === "create")
-          await organization.remove();
-          
+            await organization.remove();
+
         } catch (err) {
           log.fatal("[Critical Failure] - " + err);
         }
@@ -179,17 +184,17 @@ module.exports = (io, socket) => {
       }
       return user.workspaces;
     })()
-    .then((workspaces) => {
-      log.info("Finish");
-      twig.renderFile("./views/hub/listWorkspaces.twig", {
-        workspaces: workspaces
-      }, (err, res) => {
-        if(err)
-        return Promise.reject(err);
-        return socket.emit("updateWorkspaceList", res);
-      });
-    })
-    .catch((err) => log.error(err));
-    
+      .then((workspaces) => {
+        log.info("Finish");
+        twig.renderFile("./views/hub/listWorkspaces.twig", {
+          workspaces: workspaces
+        }, (err, res) => {
+          if (err)
+            return Promise.reject(err);
+          return socket.emit("updateWorkspaceList", res);
+        });
+      })
+      .catch((err) => log.error(err));
+
   });
 };

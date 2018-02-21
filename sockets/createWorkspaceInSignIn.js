@@ -63,6 +63,11 @@ module.exports = (io, socket) => {
                         _id: organization._id,
                         name: organization.name,
                     },
+                    creator: {
+                        _id: user._id,
+                        completeName: user.completeName,
+                        email: user.email,
+                    },
                 });
                 
                 await newassembly.save();
