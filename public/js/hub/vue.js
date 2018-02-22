@@ -66,6 +66,7 @@ var threeNode = new Vue({
     }
 });
 */
+/*
 var locationVue = new Vue ({
     el: "#location",
     data: {
@@ -104,7 +105,7 @@ var locationVue = new Vue ({
         }
     }
 });
-
+*/
 var search = new Vue({
     el: "#search-and-branch",
     data: {
@@ -122,39 +123,25 @@ var contentVue = new Vue ({
     data: {
         title: "Select a Node",
         url: "",
-        styleObject: {
-            'background-color' : 'grey',
-        },
-        maturity: "",
-        users: [],
+        description: "There is no description",
+        creator: null,
         organization: "",
-        used: "",
-        pourcent: "0%",
+        created: null,
     },
     methods:{
-        partOrAssembly: (partOrAssembly) => {
-            this.$data.pourcent = partOrAssembly.pourcent;
-            this.$data.used = partOrAssembly.used;
-            this.$data.organization = partOrAssembly.organization;
-            this.$data.users = partOrAssembly.users;
+        nodeInformation: (content) => {
+            console.log(contentVue.$data);
+            contentVue.$data.title = content.name;
+            contentVue.$data.description = content.description;
+            contentVue.$data.created = content.created;
+            contentVue.$data.creator = content.creator;
+            contentVue.$data.organization = content.organization;
         },
-        maturityInformation: (maturity) => {
-            this.$data.maturity = maturity;
-            if (maturity == NodeTypeEnum.maturity[0]) {
-                this.$data.styleObject = {
-                    'background-color' : 'red',
-                };
-            } else if (maturity == NodeTypeEnum.maturity[1])
-            {
-                this.$data.styleObject = {
-                    'background-color' : 'yellow',
-                };
-            } else if (maturity == NodeTypeEnum.maturity[2])
-            {
-                this.$data.styleObject = {
-                    'background-color' : 'green',
-                };
-            }
+        partOrAssembly: (partOrAssembly) => {
+            contentVue.$data.pourcent = partOrAssembly.pourcent;
+            contentVue.$data.used = partOrAssembly.used;
+            contentVue.$data.organization = partOrAssembly.organization;
+            contentVue.$data.users = partOrAssembly.users;
         }
     }
 });

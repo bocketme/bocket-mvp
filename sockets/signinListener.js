@@ -2,6 +2,7 @@
 let internalErrorEmitter = require("./emitter/internalErrorEmitter");
 let User = require("../models/User");
 let Workspaces = require("../models/Workspace");
+let Organization = require("../models/Organization");
 let acceptInvitation = require("../utils/Invitations/acceptInvitation");
 
 module.exports = function (socket) {
@@ -22,10 +23,16 @@ module.exports = function (socket) {
                         {
                             findAllWorkspaces(user.workspaces)
                                 .then(workspaces => {
-                                    if (!accountInformation.invitationUid)
-                                        socket.emit("signinSucced", {workspaces : workspaces, user: user});
-                                    else
-                                        emitWithInvitation(accountInformation, user, socket);
+                                    findOwnerOrganization(user.id)
+                                        .then((organization) => {
+                                            if (!accountInformation.invitationUid)
+                                                socket.emit("signinSucced", {workspaces : workspaces, user: user, organization: organization});
+                                            else
+                                                emitWithInvitation(accountInformation, user, socket);
+                                        })
+                                        .catch(err => {
+                                            socket.emit("signinFailed");
+                                        });
                                 })
                                 .catch(err => {
                                     socket.emit("signinFailed");
@@ -75,4 +82,19 @@ function emitWithInvitation(accountInformation, user, socket) {
             console.log(err);
             internalErrorEmitter(socket)
         });
+}
+
+function findOwnerOrganization(userId) {
+    return new Promise((resolve, reject) => {
+        Organization.find({"owner._id": userId})
+            .then(orga => {
+                if (!orga)
+                    resolve(null);
+                resolve(orga);
+            })
+            .catch(err => {
+                console.log(err);
+                reject(err);
+            })
+    });
 }

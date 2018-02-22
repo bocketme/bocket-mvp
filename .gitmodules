@@ -1,12 +1,6 @@
-[submodule "convertisseur/bocket-plugin"]
-    path = convertisseur/bocket-plugin
-    url = https://github.com/bocketme/bocket-plugin.git
-[submodule "convertisseur/module-assimp"]
-    path = convertisseur/module-assimp
-    url = https://github.com/bocketme/module-assimp.git
-[submodule "viewer/"]
-	path = viewer/
+[submodule "viewer"]
+	path = viewer
 	url = https://github.com/bocketme/viewer
-[submodule "convertisseur/assimp2json"]
-	path = convertisseur/assimp2json
-	url = https://github.com/bocketme/assimp2json.git
+[submodule "converter/SharedObjectLoader"]
+	path = converter/SharedObjectLoader
+	url = https://github.com/bocketme/SharedObjectLoader.git

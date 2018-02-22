@@ -3,11 +3,11 @@ const config = require("./config/server"); // SERVER CONFIGURATION
 const bodyParser = require('body-parser');
 const morgan = require('morgan'); // NODEJS DEBUGGER
 const Promise = require("promise");
-// const cookieParser = require("cookie-parser");
 const twig = require('twig');
 const favicon = require('serve-favicon');
 const path = require('path');
 const fs = require('fs');
+const mongoose = require('mongoose');
 
 /* ROUTES */
 const index = require("./routes/index");
@@ -15,8 +15,6 @@ const signin = require("./routes/signin");
 const signup = require("./routes/signup");
 const signOut = require("./routes/signOut");
 const project = require("./routes/project");
-const node = require("./routes/node");
-const workspace = require("./routes/workspace");
 const user = require("./routes/user");
 const part = require("./routes/part");
 const assembly = require("./routes/assembly");
@@ -25,10 +23,10 @@ const assembly = require("./routes/assembly");
 let expressSession = require("express-session");
 const MongoStore = require('connect-mongo')(expressSession); //session store
 let session = expressSession({
-    secret: config.secretSession,
-    store: new MongoStore({ url: config.mongoDB }),
-    resave: true,
-    saveUninitialized: true
+  secret: config.secretSession,
+  store: new MongoStore({ url: config.mongoDB }),
+  resave: true,
+  saveUninitialized: true
 });
 let sharedsession = require("express-socket.io-session");
 
@@ -43,10 +41,13 @@ let ioListener = require("./sockets/socketsListener")(io);
 app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon-bocket.png')));
 
 //configure and verify the server
-server.listen(config.port);
+try {
+    server.listen(config.port);
+}
+catch (e) {
+    console.log("Unable to bind on port : " + config.port);
+}
 
-//Import the mongoose module
-let mongoose = require('mongoose');
 mongoose.Promise = Promise;
 //Set up default mongoose connection
 let mongoDB = config.mongoDB;
@@ -62,13 +63,13 @@ app.use(morgan('dev'));
 
 app.use(session);
 io.use(sharedsession(session, {
-    autoSave: true
+  autoSave: true
 }));
 
 module.exports = app;
 
 // for parsing application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
@@ -88,7 +89,12 @@ app.use(bodyParser.json());
 app.engine('twig', require('twig').__express);
 app.set("view engine", "twig");
 app.set('twig options', {
-    strict_variables: false,
+  strict_variables: false,
+});
+
+app.get('/vincent/dl', (req, res) => {
+  console.log("qdqsdq");
+  res.download(__dirname + "/README.md");
 });
 
 app.use("/signOut", signOut);
@@ -97,38 +103,36 @@ app.use("/user", user);
 app.use("/signin", signin);
 app.use("/signup", signup);
 app.use("/project", project);
-app.use("/node", node);
-app.use("/workspace", workspace);
 app.use("/part", part);
 app.use("/assembly", assembly);
 app.post("/test", (req, res) => {
-    console.log(req.query);
-    console.log(req.params);
-    res.send(req.query);
+  console.log(req.query);
+  console.log(req.params);
+  res.send(req.query);
 });
 
 app.use(express.static('public'));
 
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on("listening", () => {
-    fs.access("./data", (err) => {
+    fs.access(config.data , (err) => {
         if (err) {
             if (err.code == 'ENOENT') {
-                fs.mkdir("./data", (err) => {
+                fs.mkdir(config.data, (err) => {
                     if (err)
-                    throw err
+                    throw err;
                     fs.mkdir(config.files3D, err => {
                         if (err)
-                        throw err
-                    })
+                        throw err;
+                    });
                     fs.mkdir(config.avatar, err => {
                         if (err)
-                        throw err
+                        throw err;
                     })
                 })
             }
             else 
-            throw err
+            throw err;
         }
     })
 });

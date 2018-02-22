@@ -40,10 +40,11 @@ main {
     height: 100%;
 }
 
-#first_column {
+#side-nav {
     background-color: #3c3c3c;
     padding: 0 !important;
     height: 100%;
+    overflow-x: hidden;
 }
 
 #second_column {
@@ -459,4 +460,41 @@ div.collapsible-body  ul {
 
 #location h5, #content h5 {
     font-size: 14px;
+}
+
+.collection-item-workspace {
+    background-color: inherit !important;
+    border: none !important;
+}
+
+.collection-item-workspace:hover {
+    background-color: #535151 !important;
+}
+
+.collection {
+    border: none !important;
+}
+
+#list-workspace{
+    max-height: 80%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.icon-list-workspace{
+    width: 60px;
+    height: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #fff;
+    border-radius: 50%;
+}
+
+.first-letter-workspace{
+    text-align: center;
+    padding-top: 20px;
+}
+
+.collection-manager{
+    box-sizing: unset;
 }

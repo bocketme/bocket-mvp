@@ -8,6 +8,13 @@
             outDuration: 200, // Transition out duration
             startingTop: '2%', // Starting top style attribute
             endingTop: '10%', // Ending top style attribute
+            ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+                let context = "#" + modal.context.id;
+                let form = $(context).find('form')
+                if (form[0])
+                   // console.log("form :", form);
+                    form[0].reset();
+              }
         });
         $(".collapsible").collapsible();
         $(".collapsible").collapsible('open', 1);
@@ -39,14 +46,16 @@
         $('.chips').material_chip();
 
         //Socket
-        socket.on("nodeLocation", (node) => {
-            locationVue.nodeInformation(node);
-            locationVue.maturityInformation(node.maturity);
-            if ($('#location').hasClass('hide') || $('#content').hasClass('hide')) {
-                $('#location').removeClass('hide');
+        socket.on("nodeLocation", (content) => {
+            console.log("CONTENT SELECT", content);
+            
+            contentVue.nodeInformation(content);
+            //locationVue.maturityInformation(content.maturity);
+            if ( $('#content').hasClass('hide')) {
+                /*$('#location').removeClass('hide');
                 $('#location').fadeOut(0, () => {
                     $('#location').fadeIn('slow');
-                });
+                });*/
                 $('#content').removeClass('hide');
                 $('#content').fadeOut(0, () => {
                     $('#content').fadeIn('slow');
@@ -54,11 +63,19 @@
             }
         });
 
-        socket.on('nodeChild', (html, nodeId) => {
+        socket.on("updateWorkspaceList", (html) => {
+            var listWorkspace = $('#list-workspace');
+            listWorkspace.empty();
+            listWorkspace.append(html);
+            $('#trigger-creation-workspace').modal();
+        });
+
+        socket.on('nodeChild', (html, nodeId, force) => {
             console.log("Find Node Child");
-            var collapsible_body = $('#'+nodeId+'-body');
-            if(collapsible_body.hasClass("container")) {
-                collapsible_body.removeClass("container");
+            var collapsible_body = $('#' + nodeId + '-body');
+            if (collapsible_body.hasClass("container") || force) {
+                if (!force)
+                    collapsible_body.removeClass("container");
                 collapsible_body.html(html);
                 $(".collapsible").collapsible();
             }
@@ -66,21 +83,21 @@
         var views = $(".view");
         views.mouseout(function () {
             $(this).removeClass("viewHover");
-                $(this).addClass("viewNotHover");
+            $(this).addClass("viewNotHover");
             if (!$(this).hasClass("viewClicked"))
                 $(this).addClass("viewNoteHover");
         });
 
-            $(this).removeClass("viewNotHover");
+        $(this).removeClass("viewNotHover");
         views.mouseover(function () {
             $(this).addClass("viewHover");
         });
 
         $('.part-editor').click((event) => {
-            if(idOfchoosenNode){
-                let part = "/part/"+idOfchoosenNode+"/modeler";
+            if (idOfchoosenNode) {
+                let part = "/part/" + idOfchoosenNode + "/modeler";
                 window.open(part, '_blank');
-            }else Materialize.toast("You must select a part", 1000);
+            } else Materialize.toast("You must select a part", 1000);
         });
 
         views.on("click", function () {

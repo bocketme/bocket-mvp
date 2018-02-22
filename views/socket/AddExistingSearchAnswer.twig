@@ -1,0 +1,26 @@
+
+<div>
+
+
+ <form id="form-items-to-add">
+  <ul>         
+
+{% for obj in elements %}
+    <li>
+    <p><input type="checkbox" id="{{obj._id}}" class="add-existing-checkbox" />
+        <label for="{{obj._id}}">
+        {% if obj.type  == TypeEnum.assembly %}<img class="pad-right" src="/img/07-Assembly icon.svg">
+        {% else %}<img class="pad-right" src="/img/07-Part icon.svg">{% endif %}
+
+        {{obj.name}}
+        {{obj.description}}
+        {{obj.maturity}}
+        {{obj.ownerOrganization.name}}</label>
+        </p></li>
+{% endfor %}
+     </ul>
+     
+      <button id="submit-add-existing" class="btn button-form-validate" type="submit">Add items</button>
+     </form>
+
+</div>

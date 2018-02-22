@@ -4,9 +4,18 @@
   "description": "Bocket web application.",
   "main": "app.js",
   "scripts": {
-    "test": "webpack && nodemon app.js --ignore './data'  -e js,twig,css,json",
-    "start": "nodemon app.js --ignore './data'  -e js,twig,css,json",
-    "webpack": "webpack --config ./dev.config.js"
+    "start": "node app.js",
+    "test": "nodemon app.js -e js,twig, css,json",
+    "prod": "webpack && node app.js",
+    "dev": "webpack --config ./dev.config.js",
+    "webpack dev": "webpack --config ./dev.config.js",
+    "debug": "node $NODE_DEBUG_OPTION app.js"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "data/*",
+      "converter/*"
+    ]
   },
   "repository": {
     "type": "git",
@@ -34,15 +43,19 @@
     "mocha": "^4.1.0",
     "mongodb": "^2.2.34",
     "mongoose": "^5.0.0",
-    "mongoose-unique-validator": "^1.0.6",
+    "mongoose-unique-validator": "^2.0.0",
     "morgan": "^1.9.0",
     "multer": "^1.3.0",
+    "mv": "^2.1.1",
     "nodemailer": "^4.4.1",
     "nodemon": "^1.14.11",
+    "pino": "^4.10.4",
     "postprocessing": "^4.1.0",
     "promise": "^8.0.1",
     "serve-favicon": "^2.4.5",
     "socket.io": "^2.0.4",
+    "socket.io-file": "^2.0.2",
+    "socket.io-file-client": "^2.0.2",
     "stats.js": "^0.17.0",
     "three": "^0.88.0",
     "twig": "^1.10.5",
@@ -52,7 +65,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
-    "clean-webpack-plugin": "^0.1.17",
+    "clean-webpack-plugin": "^0.1.18",
     "jquery": "^3.2.1",
     "jquery-validation": "^1.17.0",
     "webpack": "^3.10.0",

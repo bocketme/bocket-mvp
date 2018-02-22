@@ -2,7 +2,7 @@ const serverConfiguration = require("../config/server");
 const mongoose = require("mongoose");
 const uniqueValidator = require('mongoose-unique-validator');
 const User = require("./nestedSchema/NestedUserSchema");
-const Workspace = require("./nestedSchema/NesttedWorkspaceSchema");
+const Workspace = require("./nestedSchema/NestedWorkspaceSchema");
 const config = require('../config/server');
 const fs = require('fs');
 const path = require('path');
@@ -17,9 +17,9 @@ let OrganizationSchema = new mongoose.Schema({
     members : [User],
     workspaces: [Workspace],
     // adresse : String
+    //TODO: Why? - L'organization a une liste de noeud ???
     node: [Node]
 });
-
 
 /**
  * Create a new Organization in the database
@@ -27,10 +27,10 @@ let OrganizationSchema = new mongoose.Schema({
  */
 OrganizationSchema.statics.newDocument = (OrganizationInformation) => {
     return new Organization(OrganizationInformation);
-}
+};
 
 OrganizationSchema.pre('save', function (next) {
-    let organizationPath = path.join(config.files3D, '/' + this.name);
+    let organizationPath = path.join(config.files3D, '/' + this.name + "-" + this._id);
     fs.access(organizationPath, (err) => {
         if (err){
             fs.mkdir(path.join(organizationPath), (err) => {

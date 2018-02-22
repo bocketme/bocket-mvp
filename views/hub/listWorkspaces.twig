@@ -1,0 +1,19 @@
+<div id="list-workspace" class="collection collection-manager bocket-scrollbar" style="max-height: 90% !important; padding: 0px !important; margin: 0px !important;">
+    {% for workspace in workspaces %}
+        <a class="collection-item collection-item-workspace {% if workspace.id == in_use.id %} {{ "active" }} {% endif %}" style="min-height: auto !important; padding: 0px !important;" href="/project/{{workspace._id}}">
+        {% if (workspace.image) %}
+        {% else %}
+            <div>
+                <div class="icon-list-workspace" style="background-color: {{ color[i] }};">
+                    <p class="first-letter-workspace">{{ workspace.name|first |capitalize }}</p>
+                </div>
+            </div>
+        {% endif %}
+        <p style="font-size: 50%; color: white; text-align: center;">{{ workspace.name }}</p>
+        </a>
+    {% endfor %}
+    <a id="trigger-creation-workspace" class="collection-item avatar collection-item-workspace modal-trigger" href="#workspace-creation" style="min-height: auto !important; padding: 0px !important;">
+        <i class="tiny material-icons" style="font-size: 1rem !important;">add</i>
+        <p style="font-size: 70%; color: white; ">Add Workspace</p>
+    </a>
+</div>

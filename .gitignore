@@ -60,5 +60,9 @@ typings/
 # dotenv environment variables file
 .env
 
-converter/
+.data/
 data/
+
+converter/lib/
+
+module/

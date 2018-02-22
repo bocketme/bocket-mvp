@@ -7,21 +7,34 @@
                 <div class="input-field col s12">
                     <input id="disabledName" name="disabledName" type="text" class="validate" disabled>
                 </div>
-                    <label>Organizations</label>
-                    <select id="organizationSelect" name="organizationId" class="browser-default">
-                        <option value="" disabled selected>Choose your organization</option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                        <option value="3">Option 3</option>
-                    </select>
+
+                <div class="switch">
+                    <label>
+                        Search
+                        <input id="pickorNew" type="checkbox">
+                        <span class="lever"></span>
+                        New
+                    </label>
+                </div>
+
+
+                <select id="organizationSelect" name="organizationId" class="browser-default">
+                    <option value="null" disabled selected>Choose your organization</option>
+                </select>
+
+                <div class="input-field">
+                    <input id="newOrgnanizationName" name="OrgnanizationName" type="text" class="validate" disabled>
+                </div>
+
                 <div class="input-field col s12">
                     <input id="newWorkspaceName" name="workspaceName" type="text" class="validate" required>
                     <label for="newWorkspaceName">Workspace name</label>
                 </div>
+
                 <input id="hiddenEmailWorkspace" name="email" type="hidden">
                 <input id="hiddenPasswordWorkspace" name="password" type="hidden">
                 <input id="hiddenOrganizationNameWorkspace" name="organizationName" type="hidden">
-                <button id="submit-btn-workspace" class="btn waves-effect waves-light submit-btn"  style="color: white;" type="submit">Continue
+                <button id="submit-btn-new-workspace" class="btn waves-effect waves-light submit-btn"  style="color: white;" type="submit">Continue
                 </button>
             </form>
         </div>

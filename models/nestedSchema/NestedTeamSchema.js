@@ -1,5 +1,5 @@
 let mongoose = require("mongoose");
-let NestedUser = require("./NestedUserSchema")
+let NestedUser = require("./NestedUserSchema");
 
 let NestedTeamSchema = new mongoose.Schema({
     _id : {type : mongoose.SchemaTypes.ObjectId, required: true},
@@ -7,5 +7,6 @@ let NestedTeamSchema = new mongoose.Schema({
     members: {type: [NestedUser], default: []},
     consults: {type: [NestedUser], default: []},
 });
+
 
 module.exports = NestedTeamSchema;

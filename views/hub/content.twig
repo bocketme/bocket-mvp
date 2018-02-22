@@ -4,19 +4,19 @@
         <div class="col s4 offset-s4"> <img id="content-img-title" alt=""> <span id="content-title"> {% verbatim %} {{ title }} {% endverbatim %}</span></div>
     </div>
     <div class="row">
-        <div class="col s5 offset-s1"><p>Maturity :</p></div>
-        <div class="col s4 offset-s2"> {% verbatim %} <div class="maturity-cube" v-bind:style="styleObject"></div> {{ maturity }}{% endverbatim %} </div>
+        <div class="col s5 offset-s1"><p>Description :</p></div>
+        <div class="col s4 offset-s2"> {% verbatim %} <p style="description"> {{ description }} <p> {% endverbatim %} </div>
+    </div>
+   <div class="row">
+        <div class="col s5 offset-s1"><p>Creation Date :</p></div>
+        <div class="col s4 offset-s2"> {% verbatim %} <p style="created"> {{ created }} <p> {% endverbatim %} </div>
+    </div>
+   <div class="row">
+        <div class="col s5 offset-s1"><p>Creator :</p></div>
+        <div class="col s4 offset-s2"> {% verbatim %} <p style="organization"> {{ creator }} <p> {% endverbatim %} </div>
     </div>
     <div class="row">
-        <div class="col s5 offset-s1"><p>Owners</p></div>
-        <div class="col s4 offset-s2">{% verbatim %} <img v-for="(user, index) in users" v-bind:src="user.url" alt="user.name" class="user-image"> {% endverbatim %} </div>
-    </div>
-    <div class="row">
-        <div class="col s5 offset-s1"><p>Where Used : </p></div>
-        <div class="col s4 offset-s2 valign-wrapper"><p>{% verbatim %} {{used}} {% endverbatim %}</p></div>
-    </div>
-    <div class="row">
-        <div class="col s5 offset-s1"><p>Quality :</p></div>
-        <div class="col s4 offset-s2 valign-wrapper"><p>{% verbatim %} {{pourcent}} {% endverbatim %}</p></div>
+        <div class="col s5 offset-s1"><p>Owner Organization :</p></div>
+        <div class="col s4 offset-s2"> {% verbatim %} <p style="organization"> {{ organization }} <p> {% endverbatim %} </div>
     </div>
 </div>

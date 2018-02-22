@@ -7,7 +7,7 @@
             <div class="modal-body">
                 <form id="form-create-part" method="post" action="/test">
                     <div class="input-field col s12">
-                        <input id="create-part-name" type="text" name="part-name" class="validate">
+                        <input id="create-part-name" type="text" name="part-name" class="validate" required>
                         <label for="last_name">Part Name</label>
                     </div>
 
@@ -19,7 +19,7 @@
                     <div class="file-field input-field col s12">
                         <div class="files-button btn upload_button">
                             <span>...</span>
-                            <input type="file" multiple id="create-part-files3D" name="create-part-files3D" @change="chargefile">
+                            <input type="file" multiple id="create-part-files3D" name="create-part-files3D" @change="chargefile" required>
                         </div>
                         <div class="file-path-wrapper">
                             <input class="file-path validate" type="text" placeholder="Upload your 3D Model">
