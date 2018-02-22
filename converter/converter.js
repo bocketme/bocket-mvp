@@ -12,7 +12,6 @@ function	JSimport(file_path) {
 	return sharedObjectLoader.converter("module", file_path);
 }
 
-
 module.exports = {
 	"JSimport" : JSimport
 };

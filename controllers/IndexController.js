@@ -32,6 +32,7 @@ const indexController = {
     getPathToSpec(nodeId, req.session.currentWorkspace)
       .then((p) => {
         p = path.join(path.resolve(p), filename);
+        console.log(p);
         read(path.join(p))
           .then(() => res.download(p))
           .catch(() => res.status(405).send('File not found'));

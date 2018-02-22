@@ -13,7 +13,7 @@ async function gePathToSpec(nodeId, workspaceId) {
   const workspace = await Workspace.findById(workspaceId);
   const organization = await Organization.findOne(workspace.organization._id);
   if (!organization) throw Error(`${functionName}: unknown organization`);
-  return path.join(serverConfig.files3D, organization.name, `${content.name} - ${content._id}`, PartFileSystemConfig.import);
+  return path.join(serverConfig.files3D, `${organization.name}-${organization._id}`, `${content.name} - ${content._id}`, PartFileSystemConfig.spec);
 }
 
 module.exports = gePathToSpec;
