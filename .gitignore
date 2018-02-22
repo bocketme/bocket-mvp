@@ -60,9 +60,17 @@ typings/
 # dotenv environment variables file
 .env
 
+# Data Files
 .data/
 data/
 
 converter/lib/
 
 module/
+
+### Code ###
+# Visual Studio Code - https://code.visualstudio.com/
+.settings/
+.vscode/
+tsconfig.json
+jsconfig.json
