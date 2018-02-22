@@ -11,7 +11,7 @@
             ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
                 let context = "#" + modal.context.id;
                 let form = $(context).find('form')
-                if (form[0])
+                if (form[0] && modal.context.id !== "edit-part")
                    // console.log("form :", form);
                     form[0].reset();
               }

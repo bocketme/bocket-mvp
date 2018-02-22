@@ -167,6 +167,14 @@
               
         });
 
+        $(".edit-part-btn").on("click", () => {
+          let editPart = $("#edit-part");
+          let content = $("#content");
+
+          editPart.find("#part-name").val(content.find("#content-title").text());
+          editPart.find("#part-description").val(content.find("#content-description").text());
+        });
+
         //////////////////////////////////////////////////////////////////////
         $('.modal-node-selector').click((event) => {
             if (third_column.$data.selected == "Select a node") {
