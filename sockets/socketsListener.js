@@ -16,6 +16,7 @@ const SocketIOFile = require('socket.io-file');
 const getAllSpecListener = require('./getAllSpecListener');
 const removeSpecListener = require('./removeSpecListener');
 const renameSpecListener = require('./renameSpecListener');
+const editPartListener = require('./editPartListener');
 let GetSearchCriteria = require("./GetSearchCriteria");
 let GetSelectedItemsToAdd = require("./GetSelectedItemsToAdd");
 let createWorkspaceInSignIn = require('./createWorkspaceInSignIn');
@@ -55,6 +56,6 @@ module.exports = function (io) {
     renameSpecListener(io, socket);
     GetSearchCriteria(socket);
     GetSelectedItemsToAdd(socket);
-
+    editPartListener(socket);
   });
 };
