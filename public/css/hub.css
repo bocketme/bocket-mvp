@@ -498,3 +498,8 @@ div.collapsible-body  ul {
 .collection-manager{
     box-sizing: unset;
 }
+
+.pref-option{
+    position: relative !important;
+    top: 100px !important;
+}
