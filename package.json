@@ -14,7 +14,8 @@
   "nodemonConfig": {
     "ignore": [
       "data/*",
-      "converter/*"
+      "converter/*",
+      "public/js/dist/*"
     ]
   },
   "repository": {
