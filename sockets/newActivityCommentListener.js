@@ -3,7 +3,7 @@ const addActivity = require("./utils/addActivity");
 const ActivityTypeEnum = require("../enum/ActivitiyTypeEnum");
 const User = require("../models/User");
 
-module.exports = (socket) => {
+module.exports = (socket, io) => {
     /**
      * Add a new comment in the activities of node
      * @Param context : { nodeId: string, comment : { author : string, content : string, date: Date }, viewTYpe }
@@ -11,7 +11,6 @@ module.exports = (socket) => {
     socket.on("newActivityComment", (context) => {
         //TODO: ajouter type dans comment & filepath
         //TODO: check if the user has rights
-        console.log("context", context);
         console.log("context", context);
 
         User.findOne({email: socket.handshake.session.userMail})
@@ -22,7 +21,7 @@ module.exports = (socket) => {
                 addActivity(ActivityTypeEnum.comment, context, context.viewType)
                     .then(activity => {
                         console.log("then", activity);
-                        newActivityEmitter(socket, activity, context.viewType);
+                        newActivityEmitter(io, socket, activity, context.viewType, socket.handshake.session.currentWorkspace);
                     })
                     .catch(err => console.log("[newCommentListener] :", err));
             })

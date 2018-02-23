@@ -9,7 +9,7 @@ const TypeNodeEnum = require("../enum/NodeTypeEnum");
 const TypeActivityEnum = require('../enum/ActivitiyTypeEnum');
 const formatDate = require("./utils/formatDate");
 
-module.exports = (socket) => {
+module.exports = (socket, io) => {
     /**
      * Add a new comment to an activity
      * @Param data: {nodeId : string, activityIndex : String, comment: {content: String, date: Date}, viewType : ViewTypeEnum}
@@ -25,17 +25,16 @@ module.exports = (socket) => {
                 if (!user) return console.log(`User not found : ${email}`);
                 Node.findById(data.nodeId)
                     .then(node => {
-                        console.log("ici");
                         if (data.viewType === TypeViewEnum.location)
                             addComment(node, data.activityIndex, data.comment, user.completeName)
-                                .then((m) => NewActivityCommentEmitter(socket, data.nodeId, m))
+                                .then((m) => NewActivityCommentEmitter(io, data.nodeId, m, socket.handshake.session.currentWorkspace))
                                 .catch(err => console.log(`[${addCommentToActivity}1]: ${err}`));
                         else if (data.viewType === TypeViewEnum.content) {
                             let modelFindeur = (node.type === TypeNodeEnum.assembly) ? (Assembly) : (Part);
                             modelFindeur.findById(node.content)
                                 .then(model => {
                                     addComment(model, data.activityIndex, data.comment, user.completeName)
-                                        .then((m) => NewActivityCommentEmitter(socket, data.nodeId, m))
+                                        .then((m) => NewActivityCommentEmitter(io, data.nodeId, m, socket.handshake.session.currentWorkspace))
                                         .catch(err => console.log(`[${addCommentToActivity}2]: ${err}`));
                                 })
                                 .catch(err => console.log(`[${addCommentToActivity}3]: ${err}`));

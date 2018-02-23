@@ -13,30 +13,12 @@ module.exports = (socket) => {
      */
   socket.on("getActivities", (context) => {
     let nodeId = context.nodeId;
-    let nbr = (!context.nbr) ? (5) : (context.nbr);
 
     Node.findById(nodeId)
         .then(node => {
             if (node === null) return console.log("[getActivities]: node not found");
             //console.log("getActivityCommentsLister: ", node.activities, nbr);
-            if (context.viewType === ViewTypeEnum.location)
-                getActivityCommentsEmitter(socket, node.activities, context.viewType, nbr);
-            else if (node.type === NodeTypeEnum.assembly) {
-                console.log("Assembly id: ", node.content);
-                Assembly.findById(node.content)
-                    .then(assembly => {
-                        let activities = (assembly !== null) ? (assembly.activities) : ([]);
-                        getActivityCommentsEmitter(socket, activities, context.viewType, nbr)
-                    })
-                    .catch(err => console.log("[getActivities] Assembly : ", err));
-            } else {
-                Part.findById(node.content)
-                    .then(part => {
-                        let activities = (part !== null) ? (part.activities) : ([]);
-                        getActivityCommentsEmitter(socket, activities, context.viewType, nbr)
-                    })
-                    .catch(err => console.log("[getActivityComments] Part : ", err));
-            }
+            getActivityCommentsEmitter(socket, node.activities, ViewTypeEnum.content, node.activities.length);
         })
         .catch(err => console.log("[getActivities]: ", err, "\nNodeId: ", nodeId, "\nnbr: ", nbr))
   })

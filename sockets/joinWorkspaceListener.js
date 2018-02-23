@@ -3,13 +3,15 @@ let User = require("../models/User");
 /**
  * Joins a socketIo channel when an user joins a workspace
  * @param socket : SocketIo
- * @param workspaceId : String
  */
-function joinWorkspaceListener(io, socket, workspaceId) {
+function joinWorkspaceListener(io, socket) {
+    let workspaceId = socket.handshake.session.currentWorkspace;
     let query = User.findOne({email: socket.handshake.session.userMail});
     query.elemMatch("workspaces", {"_id" : workspaceId})
         .then(user => {
             if (user !== null) {
+                console.log(user.email, "join", workspaceId);
+                var nsp = io.of(workspaceId);
                 socket.join(workspaceId);
             }
         })
@@ -17,7 +19,7 @@ function joinWorkspaceListener(io, socket, workspaceId) {
 }
 
 module.exports = (io, socket) => {
-    socket.on("joinWorkspace", (workspaceId) => {
-        joinWorkspaceListener(io, socket, workspaceId);
+    socket.on("joinWorkspace", () => {
+        joinWorkspaceListener(io, socket);
     });
 };
