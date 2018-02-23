@@ -4,7 +4,7 @@
   "description": "Bocket web application.",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node $NODE_DEBUG_OPTION app.js",
     "test": "nodemon app.js -e js,twig, css,json",
     "prod": "webpack && node app.js",
     "dev": "webpack --config ./dev.config.js",
