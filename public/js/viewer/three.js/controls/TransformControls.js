@@ -777,6 +777,15 @@
 
 			if ( scope.object === undefined ) return;
 
+      if (scope.object.geometry) {
+        if (!scope.object.geometry.boundingBox)
+          scope.object.geometry.computeBoundingBox();
+        worldPosition.setFromMatrixPosition(scope.object.matrixWorld);
+        worldPosition.add(scope.object.geometry.boundingBox.center());
+      } else {
+        worldPosition.setFromMatrixPosition(scope.object.matrixWorld);
+      }
+
 			scope.object.updateMatrixWorld();
 			worldPosition.setFromMatrixPosition( scope.object.matrixWorld );
 			worldRotation.setFromRotationMatrix( tempMatrix.extractRotation( scope.object.matrixWorld ) );
@@ -852,9 +861,6 @@
 				var intersect = intersectObjects( pointer, _gizmo[ _mode ].pickers.children );
 
 				if ( intersect ) {
-
-					event.preventDefault();
-					event.stopPropagation();
 
 					scope.dispatchEvent( mouseDownEvent );
 
@@ -1098,7 +1104,7 @@
 
 		function onPointerUp( event ) {
 
-			event.preventDefault(); // Prevent MouseEvent on mobile
+			// event.preventDefault(); // Prevent MouseEvent on mobile
 
 			if ( event.button !== undefined && event.button !== 0 ) return;
 
