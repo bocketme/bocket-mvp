@@ -3,6 +3,7 @@ const validateEmail = require("../utils/validate/validateEmail");
 const validateCompleteName = require("../utils/validate/validateCompleteName");
 const Invitation = require("../models/Invitation");
 const Workspace = require("../models/Workspace");
+const log = require('../utils/log');
 
 /**
  * InvitePeopleListener
@@ -41,7 +42,8 @@ function checkData(data) {
 
 module.exports = (socket) => {
     socket.on(invitePeople, (data) => {
-        console.log("data", data);
+        log.info("data", data);
+        log.info("Workspace invitation : " + socket.handshake.session.currentWorkspace);
         invitePeopleListener(socket.handshake.session.currentWorkspace, socket.handshake.session.completeName, data)
     });
 };

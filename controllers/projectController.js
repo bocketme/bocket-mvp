@@ -7,12 +7,18 @@ let fs = require('fs');
 let NodeTypeEnum = require("../enum/NodeTypeEnum");
 let ViewTypeEnum = require("../enum/ViewTypeEnum");
 let path = require('path');
+
+const log = require('../utils/log');
+
 module.exports = {
   /**
    * Affiche tous les projets d'un utilisateur
    * ALPHA - Ne marche qu'avec un seul utilisateur, dont on a enregistré les donnée dans un JWT
    */
   index: (req, res) => {
+    log.info("Workspace asked : " + req.params.workspaceId);
+    req.session.currentWorkspace = req.params.workspaceId;
+    log.info("Workspace in session : " + req.session.currentWorkspace);    
     getRenderInformation(req.params.workspaceId, req.session.userMail)
       .then(context => res.render("hub", context))
       .catch(err => {
