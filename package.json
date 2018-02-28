@@ -14,7 +14,8 @@
   "nodemonConfig": {
     "ignore": [
       "data/*",
-      "converter/*"
+      "converter/*",
+      "public/js/dist/*"
     ]
   },
   "repository": {
@@ -28,6 +29,7 @@
   },
   "homepage": "https://github.com/bocketme/bocket-mvp#readme",
   "dependencies": {
+    "BocketViewer": "file://./viewer",
     "archiver": "^2.1.1",
     "babylonjs": "^3.2.0-alpha0",
     "bcrypt": "^1.0.3",
@@ -50,7 +52,7 @@
     "nodemailer": "^4.4.1",
     "nodemon": "^1.14.11",
     "pino": "^4.10.4",
-    "postprocessing": "^4.1.0",
+    "postprocessing": "^4.3.0",
     "promise": "^8.0.1",
     "serve-favicon": "^2.4.5",
     "socket.io": "^2.0.4",
