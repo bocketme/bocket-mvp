@@ -35,12 +35,12 @@ module.exports = function (socket) {
         } catch (err) {
             throw Error(err);
         }
-        socket.emit("nodeLocation", {
+        socket.emit("[Node] - Details", {
             name: content.name,
             description: content.description,
             created: node.created,
             organization: content.ownerOrganization.name,
-            creator: "titi" //content.creator.completeName,
+            creator: content.creator.completeName,
         });
         fs.readdir((path.join(configServer.files3D, content.path, PartFileSystem.spec)), {encoding: 'utf8'}, (err, files) => {
             if (err) 
@@ -128,7 +128,6 @@ module.exports = function (socket) {
                         })
 
                 } else {
-                    log.info("socket emit | nodeLocation - error")
                     socket.emit("[Node Information] - error", "The node is neither a part nor an assembly.")
                 }
 

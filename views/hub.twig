@@ -21,86 +21,68 @@
     <div id="hub" class="row">
         {% include "./hub/invitePeople.twig" %}
 
-        <div id="second_column" class="col s4">
-            <div id="side-nav" class="col s2">
+        <div id="second_column" class="col s3">
+            <div id="side-nav" class="col s3">
                 {% include "./hub/listWorkspaces.twig" %}
             </div>
-            <div class="col s10">
-                <div class="data-header">
-                    <i class="material-icons favorite" style="color: #9b9b9b; font-size:10px;">star</i>{{ data_header }}
-                    <img class="triple-dots" data-activates='options-node'></img>
-                </div>
+            <div class="col s9">
 
-                <ul id='options-node' class='dropdown-content'>
-                    <!-- NODE MENU -->
-                    {#
-                    <li class="option-node">
-                        <a class="dropdown-menu modal-trigger modal-node-selector" href="#create-new-node"> New node... </a>
-                    </li>
-                    <!-- Create empty node -->#}
-                    <li class="option-node">
-                        <a class="dropdown-menu modal-trigger modal-node-selector" href="#import-part"> New Part... </a>
-                    </li>
-                    <!-- display panel create new part US2 -->
-                    <li class="option-node">
-                        <a class="dropdown-menu modal-trigger modal-node-selector" href="#import-assembly"> New Assembly... </a>
-                    </li>
-                    <li class="option-node">
-                        <a class="dropdown-menu modal-trigger modal-node-selector" href="#upload-file3d"> Duplicate Part/Assembly </a>
-                    </li>
-                    <!-- display panel create new assemby US2 -->
-                    <li class="divider"></li>
-                    <!-- CONTENT MENU -->
-                    <li class="option-node">
-                        <a class="dropdown-menu modal-trigger modal-node-selector" href="#upload-file3d"> Update 3D file... </a>
-                    </li>
-                    <!-- display panel create new assemby -->
-                    <li class="divider"></li>
-                    <li class="option-node"> <a class="dropdown-menu part-editor">Edit Part</a> </li>
+                <button class="dropdown-button" data-beloworigin="true" data-activates='workspaces-dropdown'>
+                    <div>
+                        {{ in_use.name }}
+                        <i class="tiny material-icons">arrow_drop_down</i>
+                    </div>
+                    <div class="username-dropdown">
+                        {{ user }}
+                    </div>
+                </button>
 
-                    <!-- display local explorer window -->
-
-
-                    {#
-                    <li class="option-node">
-                        <a class="dropdown-menu modal-trigger modal-node-selector" href="#import-specfiles"> Import file...</a>
+                <ul id="workspaces-dropdown" class="dropdown-content">
+                    <li class="option-node" id="manage-user">
+                        <a class="dropdown-menu">Manage User</a>
                     </li>
-                    <!-- display local explorer window -->
-                    <li class="divider"></li>
-                    <!-- MORE ACTIONS MENU voir menu déroulant dans gdrive -->
-                    <li class="option-node">
-                        <a class="dropdown-menu modal-trigger modal-node-selector" href="#insert-part"> Insert existing part</a>
+                    <li class="option-node" id="invite-people-btn">
+                        <a class="dropdown-menu">Invite people</a>
                     </li>
                     <li class="option-node">
-                        <a class="dropdown-menu modal-trigger modal-node-selector" href="#insert-assembly"> Insert existing Assembly</a>
-                    </li> --> #}
+                        <a class="dropdown-menu" href="/signOut">Sign Out</a>
+                    </li>
                 </ul>
 
-                {# Modals #} {# {% include "modals/create_part.twig" %} #}
-                {% include "modals/new_node.twig" %}
+                {# Modals #}
+                {# {% include "modals/create_part.twig" %} #}
+                {# {% include "modals/new_node.twig" %} #}
+                {# {% include "modals/import_specfiles.twig"%} #}
+
                 {% include "modals/import_part.twig"%}
                 {% include "modals/import_assembly.twig" %}
                 {% include "modals/upload_files3d.twig" %}
                 {% include "modals/createWorkspace.twig" %}
-                {# {% include "modals/import_specfiles.twig"%} #}
 
                 <div id="second_column_content" class="clear">
-                    {% include "hub/search.twig" %}
-                    {% include "hub/node_tree.twig" %}
+                    {# 
+                    {% include "hub/search.twig" %} 
                     {% include "hub/location.twig" %}
                     {% include "hub/content.twig" %}
+                    #}
+                    {% include "hub/nodeThree.twig" %}
+                    {% include "hub/fileThree.twig" %}
+                    
                 </div>
             </div>
         </div>
 
-        <div id="third_column" class="col s8">
-            {% include "hub/third_collumn_header.twig" %}
-
-            <div id="third_column_content">
-                {% include 'hub/viewer.twig' %}
+        <div id="third_column" class="col s9">
+            {% include "hub/header.twig" %}
+            <div id="third_column_content" class="row">
+                    {% include 'hub/viewer.twig' %}
+                    {% include "hub/sideNav.twig" %}
+                {#
                 {% include "hub/tabs.twig" %}
-                <input id="activity-uploader" style="display: none" type="file">
+                <input id="activity-uploader" style="display: none" type="file">                
+                #}
             </div>
+
         </div>
 
     </div>
@@ -109,16 +91,16 @@
 
 {% block js %}
     <script>
-        var workspaceId = "{{ in_use.id }}";
-        var idOfchoosenNode = undefined;
-        var NodeTypeEnum = {{ NodeTypeEnum }};
-        var ViewTypeEnum = {{ ViewTypeEnum }};
-        var view = ViewTypeEnum.location;
-        socket.emit("joinWorkspace", workspaceId);
-        $(".workspace-change").on("click", function () {
-            socket.emit("leaveWorkspace", workspaceId);
-        });
-        var l = 42;
+      var workspaceId = "{{ in_use.id }}";
+      var idOfchoosenNode = undefined;
+      var NodeTypeEnum = {{ NodeTypeEnum }};
+      var ViewTypeEnum = {{ ViewTypeEnum }};
+      var view = ViewTypeEnum.location;
+      socket.emit("joinWorkspace", workspaceId);
+      $(".workspace-change").on("click", function () {
+        socket.emit("leaveWorkspace", workspaceId);
+      });
+      var l = 42;
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>

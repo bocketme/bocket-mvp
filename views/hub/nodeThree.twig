@@ -1,0 +1,66 @@
+<div>
+    <p>
+        Structure
+        <span class="secondary-content"><img src="/img/add-content-icon.png" class="" data-activates='options-node'></span>
+    </p>
+</div>
+<ul id="node-tree" class="collapsible collapsible-first bocket-scrollbar" data-collapsible="accordion">
+    <li>
+        <div id="{{ node._id }}" class="collapsible-header three-node search_child valign-wrapper">
+            <i class="material-icons">keyboard_arrow_right</i>
+            <img class="pad-right" src="/img/07-Assembly icon.svg">
+            <span class="p-node" data-node="part" data-breadcrumbs="{{ node.name }}" data-sublevel="0">{{ node.name }}</span>
+        </div>
+        <div id="{{ node._id }}-body" class="collapsible-body container valign-wrapper">
+        </div>
+    </li>
+</ul>
+
+<ul id='node-tree-context-menu' class='dropdown-content'>
+    <li class="option-node"><a id="new-part" class="dropdown-menu" href="#!">New Part</a></li>
+    <li class="option-node"><a id="new-assembly" class="dropdown-menu" href="#!">New Assembly</a></li>
+    <li class="divider"></li>
+    <li class="option-node"><a id="remove" class="dropdown-menu" href="#!">Remove</a></li>
+    <li class="option-node"><a id="duplicate" class="dropdown-menu" href="#!">Duplicate</a></li>
+</ul>
+
+
+<ul id='options-node' class='dropdown-content'>
+    <!-- NODE MENU -->
+    <li class="option-node">
+        <a class="dropdown-menu modal-trigger modal-node-selector" href="#import-part"> New Part... </a>
+    </li>
+    <!-- display panel create new part US2 -->
+    <li class="option-node">
+        <a class="dropdown-menu modal-trigger modal-node-selector" href="#import-assembly"> New Assembly... </a>
+    </li>
+    <li class="option-node">
+        <a class="dropdown-menu modal-trigger modal-node-selector" href="#upload-file3d"> Duplicate Part/Assembly </a>
+    </li>
+    <!-- display panel create new assemby US2 -->
+    <li class="divider"></li>
+    <!-- CONTENT MENU -->
+    <li class="option-node">
+        <a class="dropdown-menu modal-trigger modal-node-selector" href="#upload-file3d"> Update 3D file... </a>
+    </li>
+    <!-- display panel create new assemby -->
+    <li class="divider"></li>
+    <li class="option-node"> <a class="dropdown-menu part-editor">Edit Part</a> </li>
+
+    <!-- display local explorer window -->
+
+
+    {#
+    <li class="option-node">
+        <a class="dropdown-menu modal-trigger modal-node-selector" href="#import-specfiles"> Import file...</a>
+    </li>
+    <!-- display local explorer window -->
+    <li class="divider"></li>
+    <!-- MORE ACTIONS MENU voir menu déroulant dans gdrive -->
+    <li class="option-node">
+        <a class="dropdown-menu modal-trigger modal-node-selector" href="#insert-part"> Insert existing part</a>
+    </li>
+    <li class="option-node">
+        <a class="dropdown-menu modal-trigger modal-node-selector" href="#insert-assembly"> Insert existing Assembly</a>
+    </li> --> #}
+</ul>

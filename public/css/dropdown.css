@@ -1,7 +1,7 @@
 .dropdown-button{
-    background-color:  inherit;
+    background-color: inherit;
     border: none;
-    color: white;
+    color: #262626;
     width: 100%;
     text-align: left;
     text-decoration: none;
@@ -12,17 +12,16 @@
     padding-top: 20px;
 }
 
-.dropdown-button:hover{
-    background-color:  #262626;    
-}
-
-.dropdown-button:focus, .dropdown-button:active{
-    background-color:  #262626;
-    color: white;
+.dropdown-button:hover, .dropdown-button:focus, .dropdown-button:active{
+    background-color: #f9f9f9;
 }
 
 .dropdown-content li>a, .dropdown-content li>span{
-    
+    background-color: inherit;
+}
+
+.dropdown-content li>a:hover, .dropdown-content li>span:hover{
+    background-color: #262626
 }
 
 .dropdown {

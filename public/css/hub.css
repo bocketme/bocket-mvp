@@ -49,13 +49,14 @@ main {
 
 #second_column {
     background-color: #f7f7f7;
-    border-right: 5px inset;
+    border: none;
     padding: 0 !important;
     height: 100%;
 }
 
 #third_column {
     padding: 0 !important;
+    border: none;    
     background-color: #f7f7f7;
     height: 100%;
 }

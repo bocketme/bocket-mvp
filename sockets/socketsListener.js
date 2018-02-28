@@ -16,10 +16,10 @@ const SocketIOFile = require('socket.io-file');
 const getAllSpecListener = require('./getAllSpecListener');
 const removeSpecListener = require('./removeSpecListener');
 const renameSpecListener = require('./renameSpecListener');
-let GetSearchCriteria = require("./GetSearchCriteria");
-let GetSelectedItemsToAdd = require("./GetSelectedItemsToAdd");
-let createWorkspaceInSignIn = require('./createWorkspaceInSignIn');
-let createWorkspaceInHub = require('./createWorkspaceInHub');
+const GetSearchCriteria = require("./GetSearchCriteria");
+const GetSelectedItemsToAdd = require("./GetSelectedItemsToAdd");
+const createWorkspaceInSignIn = require('./createWorkspaceInSignIn');
+const createWorkspaceInHub = require('./createWorkspaceInHub');
 
 const configServer = require('../config/server');
 module.exports = function (io) {

@@ -8,6 +8,8 @@ const favicon = require('serve-favicon');
 const path = require('path');
 const fs = require('fs');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
+const csurf = require('csurf');
 
 /* ROUTES */
 const index = require("./routes/index");
@@ -75,6 +77,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
+/*
+//Use helmet to secure the headers.
+app.use(helmet());
+
+//Use csurg against CSRF fails
+app.use(csurf());
+
+app.use(function (req, res, next) {
+  res.locals._csrf = req.csrfToken();
+  res.cookie('XSRF-TOKEN', req.csrfToken());
+  next();
+});
+*/
 
 // Display body request
 /*app.use(function (req, res, next) {
@@ -91,12 +106,7 @@ app.set("view engine", "twig");
 app.set('twig options', {
   strict_variables: false,
 });
-
-app.get('/vincent/dl', (req, res) => {
-  console.log("qdqsdq");
-  res.download(__dirname + "/README.md");
-});
-
+app.use(express.static('public'));
 app.use("/signOut", signOut);
 app.use("/", index);
 app.use("/user", user);
@@ -105,13 +115,6 @@ app.use("/signup", signup);
 app.use("/project", project);
 app.use("/part", part);
 app.use("/assembly", assembly);
-app.post("/test", (req, res) => {
-  console.log(req.query);
-  console.log(req.params);
-  res.send(req.query);
-});
-
-app.use(express.static('public'));
 
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on("listening", () => {

@@ -4,6 +4,31 @@ $(function () {
     $('body').on('click', '.search_child', nodeChildrenChargement);
 });
 
+
+const headerTitle = new class HeaderTitle {
+  constructor() {
+    this.title = $('#node-title');
+    this.breadcrumb = document.getElementById("node-breadcrumb");
+  }
+
+  breadcrumbConstructor(bread) {
+      while(this.breadcrumb.firstChild)
+        this.breadcrumb.removeChild(this.breadcrumb.firstChild)
+    bread.forEach(breadcrumb => {
+      let link = document.createElement('a');
+      link.className = "breadcrumb";
+      link.innerHTML = breadcrumb;
+      console.log(link);
+      this.breadcrumb.appendChild(link);
+    })
+  }
+
+  update(nodeInfo) {
+    this.title.text(nodeInfo.title);
+    this.breadcrumbConstructor(nodeInfo.breadcrumb.split("/"));
+  }
+};
+
 function nodeChildrenChargement(event){
     let element = $(event.currentTarget);
     let nodeId = element.attr('id');
@@ -36,7 +61,10 @@ function loadNodeInformation(event) {
     element.addClass('selected-accordion');
 
     // Value to change - VUE.JS
-    third_column.selectNode(fill_value, breadcrumbs_value);
+    headerTitle.update({
+      title: fill_value,
+      breadcrumb:breadcrumbs_value
+    });
     /*
     TODO: Location...
     clearComments($("#activity-comments-location"));

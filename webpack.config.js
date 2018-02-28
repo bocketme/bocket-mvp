@@ -13,25 +13,11 @@ module.exports = {
     target: "web",
     output: {
         filename: '[name].js',
-        path: path.resolve("./public/js/dist"),
+        path: path.resolve("./public/js/viewer/bocket"),
     },
     plugins: [
         new CleanWebpackPlugin(
-            ['dist'], {root: path.resolve("./public/js/")}
+            ['bocket'], {root: path.resolve("./public/js/viewer/")}
         ),
-        new webpack.LoaderOptionsPlugin({
-            debug: true
-        })
-    ],
-    module: {
-        rules: [{
-            test: /\.worker\.js$/,
-            use: {
-                loader: 'worker-loader',
-                options: {
-                    publicPath: '/js/dist/'
-                }
-            }
-        }]
-    }
+    ]
 };
