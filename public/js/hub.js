@@ -47,8 +47,6 @@
 
         //Socket
         socket.on("nodeLocation", (content) => {
-            console.log("CONTENT SELECT", content);
-            
             contentVue.nodeInformation(content);
             //locationVue.maturityInformation(content.maturity);
             if ( $('#content').hasClass('hide')) {
