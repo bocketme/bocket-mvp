@@ -12,7 +12,7 @@ $(document).ready(function() {
         return false;
     });
 
-    $("#node-tree").find(".collapsible-body").on("contextmenu", function (e) {
+    $("#node-tree .collapsible-body").on("contextmenu", "li", function (e) {
         e.preventDefault();
         pointedElem = e.target;
         $(pointedElem).click();

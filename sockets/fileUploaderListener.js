@@ -1,4 +1,6 @@
 const mv = require('mv');
+const fsPart = require('../config/PartFileSystem');
+const config = require('../config/server');
 const Node = require('../models/Node');
 const Workspace = require('../models/Workspace');
 const Part = require('../models/Part');
@@ -33,7 +35,7 @@ async function getUploadir(fileName, nodeId, workspaceId) {
       content = await Assembly.findById(node.content);
     }
     if (!content) throw Error('Unknown content');
-    ret = `${appDir}/data/files3D/${workspace.organization.name}/${content.name} - ${node.content}/import/${fileName}`;
+    ret = `${config.files3D}/${workspace.organization.name}-${workspace.organization._id}/${content.name} - ${node.content}/${fsPart.spec}/${fileName}`;
   } catch (e) {
     throw e;
   }

@@ -24,8 +24,10 @@ $(document).ready(function() {
      * @param context : {{ viewType : String, activities : [String] }}
      */
     socket.on("getActivities", function (context) {
+        console.log("aaaaaaa : ", context);
         var activities = context.activities;
-        var ul = (context.viewType === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
+        var ul = "#activity-comments";
+        clearComments($(ul));
         for (var i = activities.length - 1; i >= 0 ; i--) {
             let comment = activities[i];
             printActivityComment($(ul + " li:first"), comment, comment.formatDate);
@@ -37,7 +39,7 @@ $(document).ready(function() {
     });
 
     socket.on("newActivity", function (context) {
-        var ul = (context.viewType === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
+        var ul = "#activity-comments";
         console.log("Nouveau commentaire", context);
         printActivityComment($(ul + " li:first"), context.activity, context.activity.formatDate);
     });

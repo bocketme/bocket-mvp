@@ -9,14 +9,12 @@ function nodeChildrenChargement(event){
     let nodeId = element.attr('id');
     let breadcrumbs_value = element.contents().filter("span.p-node").attr("data-breadcrumbs");
     let sub_level = element.contents().filter("span.p-node").attr("data-sublevel");
-    console.log(element.hasClass("search_child"));
     element.removeClass("search_child");
     socket.emit("nodeChildren", nodeId, breadcrumbs_value, sub_level);
 }
 
 function loadNodeInformation(event) {
   $('#activity-tab').tabs('select_tab', 'activity');
-    console.log("looooooooooooooooad");
     //Initialisation
     let element = $(event.currentTarget);
     let nodeId = element.attr('id');

@@ -31,6 +31,36 @@
             stopPropagation: false // Stops event propagation
         });
 
+        $('.pref-option-style').dropdown({
+            inDuration: 300,
+            outDuration: 225,
+            constrainWidth: false, // Does not change width of dropdown to that of the activator
+            hover: false, // Activate on hover
+            gutter: 0, // Spacing from edge
+            belowOrigin: true, // Displays dropdown below the button
+            alignment: 'down', // Displays dropdown with edge aligned to the left of button
+            stopPropagation: false // Stops event propagation
+        });
+        $('.pref-option-style').on('click', () => {
+            let top = $('#pref-option').css('top');
+            $('#pref-option').css('top', (parseInt(top) + 20) + "px");
+        });
+
+        $('.team-option-style').dropdown({
+            inDuration: 300,
+            outDuration: 225,
+            constrainWidth: false, // Does not change width of dropdown to that of the activator
+            hover: false, // Activate on hover
+            gutter: 0, // Spacing from edge
+            belowOrigin: true, // Displays dropdown below the button
+            alignment: 'down', // Displays dropdown with edge aligned to the left of button
+            stopPropagation: false // Stops event propagation
+        });
+        $('.team-option-style').on('click', () => {
+            let top = $('#team-option').css('top');
+            $('#team-option').css('top', (parseInt(top) + 20) + "px");
+        });
+
         $(".triple-dots").dropdown({
             inDuration: 300,
             outDuration: 225,
@@ -47,8 +77,6 @@
 
         //Socket
         socket.on("nodeLocation", (content) => {
-            console.log("CONTENT SELECT", content);
-            
             contentVue.nodeInformation(content);
             //locationVue.maturityInformation(content.maturity);
             if ( $('#content').hasClass('hide')) {
