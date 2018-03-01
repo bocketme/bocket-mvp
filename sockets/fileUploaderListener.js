@@ -7,7 +7,7 @@ const Part = require('../models/Part');
 const Assembly = require('../models/Assembly');
 const path = require('path');
 const NodeTypeEnum = require('../enum/NodeTypeEnum');
-const getNodeDataDirectory = require('../utils/node/getNodeDataDirectory');
+const getContentOfNode = require('../utils/node/getContentOfNode');
 const cleanDirectory = require('../utils/cleanDirectory/app');
 const PartFileSytemConfig = require('../config/PartFileSystem');
 const succeededEmitter = require('../sockets/emitter/actionSucceeded');
@@ -44,12 +44,15 @@ async function getUploadir(fileName, nodeId, workspaceId) {
 
 async function edit3DFile(fileInfo, data, workspaceId) {
   const { nodeId } = data;
+  const { content, type } = await getContentOfNode(nodeId);
+  if (!content) { throw Error(''); }
 
-  let p = await getNodeDataDirectory(nodeId, workspaceId);
-  p = path.join(p, PartFileSytemConfig.data);
-  cleanDirectory(p, () => { });
-  p = path.join(p, fileInfo.name);
-  mv(fileInfo.uploadDir, p, console.log);
+  if (type === NodeTypeEnum.part) {
+    let p = path.join(config.files3D, content.path, PartFileSytemConfig.data);
+    cleanDirectory(p, () => { });
+    p = path.join(p, fileInfo.name);
+    mv(fileInfo.uploadDir, p, console.log);
+  }
 }
 
 module.exports = (socket, uploader) => {

@@ -188,6 +188,11 @@
               editPart: 'yes',
             }
           });
+          editPart.modal('close');
+        });
+
+        socket.on('editPart', ({ nodeId, newName }) => {
+          $('#node-tree').find('div#' + nodeId).find('span.p-node').text(newName);
         });
 
         //////////////////////////////////////////////////////////////////////
@@ -198,5 +203,5 @@
             } else $('.button-form-validate').removeClass("disabled");
         });
 
-    });
+    })
 })(jQuery); // end of jQuery name space

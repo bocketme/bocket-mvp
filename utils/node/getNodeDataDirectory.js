@@ -3,7 +3,6 @@ const Workspace = require('../../models/Workspace');
 const getContentOfNode = require('./getContentOfNode');
 const path = require('path');
 const serverConfig = require('../../config/server');
-const PartFileSystemConfig = require('../../config/PartFileSystem');
 
 const functionName = 'getPathToSpec';
 

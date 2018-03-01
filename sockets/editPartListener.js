@@ -1,12 +1,11 @@
 const listenerName = 'editPart';
-const Path = require('path');
 const Node = require('../models/Node');
-const mv = require('mv');
 const getContentOfNode = require('../utils/node/getContentOfNode');
 const NodeTypeEnum = require('../enum/NodeTypeEnum');
-const getNodeDataDirectory = require('../utils/node/getNodeDataDirectory');
+const actionSucceeded = require('./emitter/actionSucceeded');
+const actionFailed = require('./emitter/actionFailed');
 
-async function editPart(newName, newDescription, nodeId, workspaceId) {
+async function editPart(newName, newDescription, nodeId) {
   const { node, content, type } = await getContentOfNode(nodeId);
 
   // console.log('editPart -> node: ', node);
@@ -25,15 +24,6 @@ async function editPart(newName, newDescription, nodeId, workspaceId) {
 
     parentNode.children[index].name = newName;
 
-    const path = await getNodeDataDirectory(nodeId, workspaceId);
-    const pathTokenized = path.split('/');
-    const dataDirNameTokenized = pathTokenized[pathTokenized.length - 1].split(' - ');
-    pathTokenized.pop();
-    dataDirNameTokenized[0] = newName;
-    const newPath = Path.join('/', ...pathTokenized, dataDirNameTokenized.join(' - '));
-    mv(path, newPath, (err) => { console.log('EDIT PARTTTTTT: ', err)});
-    console.log('PATH =======', path);
-
     await node.save();
     await content.save();
     await parentNode.save();
@@ -44,9 +34,13 @@ module.exports = (socket) => {
   socket.on(listenerName, ({ name, description, nodeId }) => {
     console.log('name:', name, 'description:', description, 'nodeId:', nodeId);
     editPart(name, description, nodeId, socket.handshake.session.currentWorkspace)
-        .then()
-        .catch((err) => {
-          console.log(`[${listenerName}] error: ${err}`);
-        });
+      .then(() => {
+        actionSucceeded(socket, { title: 'Edit Part', description: 'Succeeded' });
+        socket.emit(listenerName, { nodeId, newName: name })
+      })
+      .catch((err) => {
+        actionFailed(socket, { title: 'Edit Part', description: 'Internal Server Error, please retry' });
+        console.log(`[${listenerName}] error: ${err}`);
+      });
   });
 };
