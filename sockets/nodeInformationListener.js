@@ -40,7 +40,7 @@ module.exports = function (socket) {
             description: content.description,
             created: node.created,
             organization: content.ownerOrganization.name,
-            creator: "titi" //content.creator.completeName,
+            creator: content.creator.completeName,
         });
         fs.readdir((path.join(configServer.files3D, content.path, PartFileSystem.spec)), {encoding: 'utf8'}, (err, files) => {
             if (err) 
