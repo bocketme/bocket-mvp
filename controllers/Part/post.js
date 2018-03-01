@@ -166,7 +166,10 @@ const newPart = async (req, res) => {
         node: newParentNode,
         TypeEnum: NodeTypeEnum,
         sub_level: sub_level,
-        breadcrumb: breadcrumb
+        breadcrumb: breadcrumb,
+        socket: {
+            message: 'Update File 3D'
+        }
     }, (err, html) => {
         if (err) {
             log.error(err);

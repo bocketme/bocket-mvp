@@ -126,8 +126,6 @@
                     } //add 
                     $("#form-add-existing").append(data);
 
-                    //console.log(data);
-
                 });
 
             } else
@@ -153,13 +151,6 @@
                     delete id;
                 }
             });
- //           console.log('------------------------------');
- //           console.log ("id to send :", dataToSend);
- //           console.log("ParenNode :", nodeId);
- //           console.log("sub_level :", sub_level);
- //           console.log("breadcrumb :", breadcrumb);
- //           console.log('------------------------------');
-
             socket.emit("GetSelectedItemsToAdd", dataToSend, nodeId, breadcrumb, sub_level);
    
             delete dataToSend;

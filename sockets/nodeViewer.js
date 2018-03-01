@@ -7,21 +7,38 @@ const path = require('path');
 const PartFileSystem = require('../config/PartFileSystem')
 const config = require('../config/server');
 const log = require('../utils/log');
+const defaults = {
+    flags: 'r',
+    encoding: null,
+    fd: null,
+    mode: 0o666,
+    autoClose: true,
+    highWaterMark: 64 * 1024
+};
+
+const loading = {
+    on: {
+        start: "[Viewer] - Start Workspace",
+        save: "[Viewer] - Save",
+        cancel: "[Viewer] - Cancel",
+
+    },
+    emit: {
+        assembly: "[Viewer] - Add Assmbly",
+        start: "[Viewer] - Start Loading",
+        pending: "[Viewer] - Stream",
+        end: "[Viewer] - End Loading",
+        error: "[Viewer] - Error Loading"
+    }
+}
 
 class File3DManager {
     constructor(socket) {
         this.socket = socket;
-        this._loading = {
-            start: "[Viewer] - Start Loading",
-            pending: "[Viewer] - Stream",
-            end: "[Viewer] - End Loading",
-            error: "[Viewer] - Error Loading"
-        }
     }
 
     async loadWorkspace(workspaceId) {
         let workspace = await workspaceSchema.findById(workspaceId);
-
         let start = await this.loadNode(workspace.node_master._id, workspace);
     }
 
@@ -33,75 +50,104 @@ class File3DManager {
      * @memberof File3DManager
      */
     async loadNode(nodeId, parent) {
-        socket.emit(this._loading.start, node._id, node.name, node.content);
-
         let node = await nodeSchema.findById(nodeId);
-
+        log.info("Chargement : " + nodeId)
         let content;
 
         if (node.type === nodeTypeEnum.assembly) {
             this.socket.emit("addAssembly", nodeId, node.matrix, parent._id);
             let promises = [];
             node.children.forEach(child => {
-                promises.push(promiseNode(child._id, {
+                promises.push(this.loadNode(child._id, {
                     name: node.name,
                     _id: node._id
                 }));
             });
 
-            await Promise.all(promises).then(this.socket.emit(this._loading.end, node._id));
+            await Promise.all(promises).then(this.socket.emit(() => loading.emit.end, node._id));
 
-        } else if (node.type === nodeTypeEnum.part) content = await partSchema.findById(node.content);
+        } else if (node.type === nodeTypeEnum.part) {
+            this.socket.emit(loading.emit.start, node._id);
+            await this.loadPart(node, parent).catch(err => log.error(err));
+        }
     }
 
-    async loadPart(partId) {
-        let part = await partSchema.findById(partId);
+    /**
+     * 
+     * 
+     * @param {Object} node 
+     * @memberof File3DManager
+     */
+    async loadPart(node, parent) {
+        let part = await partSchema.findById(node.content).catch(err => log.error(err));
 
         let chemin = path.join(config.files3D, part.path, PartFileSystem.data);
-        
+
         let files = await promisifyReaddir(chemin);
 
         for (let i = 0; i < files.length; i++) {
             if (path.extname(files[i]) == '.json') {
-                this.streamFile(chemin);
+                this.streamFile(node, parent, path.join(chemin, files[i]));
                 break;
             }
         }
-        read.on('data', (chunk) => {
-            progress += chunk.length;
-            console.log("J'ai lu " + Math.round(100 * progress / total))    
-        });
-        console.log(readStream);
     }
 
-    streamFile(id, file) {
+    /**
+     * 
+     * 
+     * @param {String} workspaceId 
+     * @param {String} nodeId 
+     * @param {Array} matrix 
+     * @memberof File3DManager
+     */
+    save(workspaceId, nodeId, matrix) {
+        Node.findById(nodeId)
+            .then(node => {
+                node.matrix = matrix;
+                node.save();
+            });
+    }
+
+    /**
+     * 
+     * 
+     * @param {any} node 
+     * @param {any} file 
+     * @memberof File3DManager
+     */
+    streamFile(node, parent, file) {
         fs.stat(file, (err, stat) => {
             let total = stat.size;
             let progress = 0;
-            let read = fs.createReadStream(chemin);
-            
+
+            let read = fs.createReadStream(file, {autoClose: true, encoding: 'utf8' });
+
             read.on('data', chunk => {
-                this.socket.emit(this._loading.pending, id, chunk);
                 progress += chunk.length;
-                log.info("J'ai lu " + Math.round(100 * progress / total) + "%");
+                log.info("["+node._id+"] " + "J'ai lu " + Math.round(100 * progress / total) + "%");
+                this.socket.emit(loading.emit.pending, node._id, chunk);
             });
 
-            read.on('end', socket.emit(this._loading.end, id));
+            read.on('end', () => this.socket.emit(loading.emit.end, node._id, node.matrix, parent._id));
 
             read.on('error', (err) => {
                 log.error(err);
-                this.socket.emit(this._loading.error, id);
+                this.socket.emit(loading.emit.error, node._id);
             })
         });
     }
 };
 
 module.exports = socket => {
-    
+
     const file3DManager = new File3DManager(socket);
 
-    socket.on()
-    
+    socket.on(loading.on.start, (workspaceId) => file3DManager.loadWorkspace(workspaceId))
+
+    socket.on(loading.on.save, (workspaceId, nodeId, matrix) => file3DManager.save(workspaceId, nodeId, matrix));
+
+    /*
     socket.on("start viewer", (workspaceId) => {
         Workspace.findById(workspaceId)
             .then((workspace) => {
@@ -174,6 +220,7 @@ module.exports = socket => {
                 });
         })
     }
+    */
 };
 
 function promisifyReadFile(chemin) {
