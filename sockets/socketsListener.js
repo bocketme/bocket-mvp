@@ -17,15 +17,14 @@ const getAllSpecListener = require('./getAllSpecListener');
 const removeSpecListener = require('./removeSpecListener');
 const renameSpecListener = require('./renameSpecListener');
 const editPartListener = require('./editPartListener');
-let GetSearchCriteria = require("./GetSearchCriteria");
-let GetSelectedItemsToAdd = require("./GetSelectedItemsToAdd");
-let createWorkspaceInSignIn = require('./createWorkspaceInSignIn');
-let createWorkspaceInHub = require('./createWorkspaceInHub');
+const GetSearchCriteria = require("./GetSearchCriteria");
+const GetSelectedItemsToAdd = require("./GetSelectedItemsToAdd");
+const createWorkspaceInSignIn = require('./createWorkspaceInSignIn');
+const createWorkspaceInHub = require('./createWorkspaceInHub');
 
 const configServer = require('../config/server');
 module.exports = function (io) {
   io.on('connection', (socket) => {
-    //TODO: How it works ?
     const uploader = new SocketIOFile(socket, {
       uploadDir: configServer.data, // simple directory
       accepts: ['image/png', 'image/jpeg', 'application/pdf', 'application/vnd.oasis.opendocument.text', 'image/svg+xml'], // chrome and some of browsers checking mp3 as 'audio/mp3', not 'audio/mpeg'

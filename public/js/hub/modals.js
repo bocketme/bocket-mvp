@@ -176,12 +176,18 @@
         });
 
         $("#submit-edit-part").on("click", (e) => {
-            e.preventDefault();
-            const editPart = $("#edit-part");
-            const name = editPart.find("#part-name").val();
-            const description = editPart.find("#part-description").val();
+          e.preventDefault();
+          const editPart = $("#edit-part");
+          const name = editPart.find("#part-name").val();
+          const description = editPart.find("#part-description").val();
 
-            socket.emit("editPart", { name, description, nodeId: idOfchoosenNode });
+          socket.emit("editPart", { name, description, nodeId: idOfchoosenNode });
+          let uploadIds = fileUploader.upload(document.getElementById('edit-part-file3D'), {
+            data: {
+              nodeId: idOfchoosenNode,
+              editPart: 'yes',
+            }
+          });
         });
 
         //////////////////////////////////////////////////////////////////////

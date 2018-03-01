@@ -6,7 +6,7 @@ const NodeTypeEnum = require('../enum/NodeTypeEnum');
 async function editPart(newName, newDescription, nodeId) {
   const { node, content, type } = await getContentOfNode(nodeId);
 
-  console.log('editPart -> node: ', node);
+  //console.log('editPart -> node: ', node);
 
   if (type === NodeTypeEnum.part) {
     const parentNode = await Node.findOne({ children: { $in: [{ _id: nodeId, type, name: node.name }] } });
