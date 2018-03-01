@@ -777,7 +777,7 @@
 
 			if (scope.object === undefined) return;
 
-			if (scope.object instanceof THREE.Group && this.getMode() === "translate") {
+			if (scope.object instanceof THREE.Group && this.getMode() === "translate" && scope.object.children.length>0) {
 				let box = new THREE.BoxHelper().setFromObject(scope.object);
 				let center = box.geometry.boundingSphere.center
 				worldPosition.set(center.x, center.y, center.z);
