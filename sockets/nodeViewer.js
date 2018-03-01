@@ -21,7 +21,7 @@ const loading = {
         start: "[Viewer] - Start Workspace",
         save: "[Viewer] - Save",
         cancel: "[Viewer] - Cancel",
-
+        update: "[Viewer] - Update",
     },
     emit: {
         assembly: "[Viewer] - Add Assmbly",
@@ -32,14 +32,22 @@ const loading = {
     }
 }
 
+function errLog(err) {
+    log.error(err)
+}
+
 class File3DManager {
     constructor(socket) {
         this.socket = socket;
     }
 
+    async update(workspaceId, nodeId) {
+        this.loadNode(nodeId);
+    }
+
     async loadWorkspace(workspaceId) {
-        let workspace = await workspaceSchema.findById(workspaceId);
-        let start = await this.loadNode(workspace.node_master._id, workspace);
+        let workspace = await workspaceSchema.findById(workspaceId).catch(errLog);
+        let start = await this.loadNode(workspace.node_master._id, workspace).catch(errLog);
     }
 
     /**
@@ -64,11 +72,11 @@ class File3DManager {
                 }));
             });
 
-            await Promise.all(promises).then(this.socket.emit(() => loading.emit.end, node._id));
+            await Promise.all(promises).then(this.socket.emit(() => loading.emit.end, node._id)).catch(errLog);
 
         } else if (node.type === nodeTypeEnum.part) {
             this.socket.emit(loading.emit.start, node._id);
-            await this.loadPart(node, parent).catch(err => log.error(err));
+            await this.loadPart(node, parent).catch(errLog);
         }
     }
 
@@ -79,11 +87,11 @@ class File3DManager {
      * @memberof File3DManager
      */
     async loadPart(node, parent) {
-        let part = await partSchema.findById(node.content).catch(err => log.error(err));
+        let part = await partSchema.findById(node.content).catch(errLog);
 
         let chemin = path.join(config.files3D, part.path, PartFileSystem.data);
 
-        let files = await promisifyReaddir(chemin);
+        let files = await promisifyReaddir(chemin).catch(errLog);
 
         for (let i = 0; i < files.length; i++) {
             if (path.extname(files[i]) == '.json') {
@@ -139,13 +147,24 @@ class File3DManager {
     }
 };
 
-module.exports = socket => {
+module.exports = (io, socket)=> {
 
     const file3DManager = new File3DManager(socket);
 
     socket.on(loading.on.start, (workspaceId) => file3DManager.loadWorkspace(workspaceId))
 
     socket.on(loading.on.save, (workspaceId, nodeId, matrix) => file3DManager.save(workspaceId, nodeId, matrix));
+
+    socket.on(loading.on.update, (workspaceId, nodeId) => {
+        file3DManager.socket = io.to(socket.handshake.session.currentWorkspace);
+
+        file3DManager.update(workspaceId, nodeId);
+
+        file3DManager.socket = socket;
+        /*
+        file3DManager.update(workspaceId, nodeId);
+        */
+    })
 
     /*
     socket.on("start viewer", (workspaceId) => {

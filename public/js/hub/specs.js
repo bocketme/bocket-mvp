@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
   let specs = $("#specs");
   let li = null;
   const uploader = $("#specs-uploader");
@@ -116,7 +115,6 @@ $(document).ready(function() {
       li.attr("filename", data.filename);
     }
   });
-
 });
 
 /**

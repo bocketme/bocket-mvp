@@ -2,16 +2,25 @@
     <div class="collection with-header">
         <h5>
             Files
-            <span class="secondary-content" id="files"><img src="/img/add-content-icon.png"></span>
+            <a class="dropdown-image secondary-content" data-activates='spec-tree-menu'><img src="/img/add-content-icon.png"></a>
         </h5>
     </div>
     <ul id="specs-collection" class="collection">
         <li></li>
     </ul>
-    <input id="specs-uploader" style="display: none" type="file" multiple>
+    
+    <input id="specs-uploader" style="display: none" type="file" multiple="multiple">
+
+    <ul id='spec-tree-menu' class='dropdown-content'>
+        <li class="option-node">
+            <a id="new_file" class="dropdown-menu" href="#!">New file</a>
+        </li>
+    </ul>
 
     <ul id='specs-context-menu' class='dropdown-content'>
-        <li class="option-node"><a id="new_file" class="dropdown-menu" href="#!">New file</a></li>
+        <li class="option-node">
+            <a id="new_file" class="dropdown-menu" href="#!">New file</a>
+        </li>
         {#<li class="option-node"><a id="remove" class="dropdown-menu" href="#!">Remove</a></li>
         <li class="divider"></li>
         <li class="option-node"><a id="preview" class="dropdown-menu" href="#!">Preview</a></li>
@@ -21,13 +30,19 @@
     </ul>
 
     <ul id='spec-context-menu' class='dropdown-content'>
-        <li class="option-node"><a id="remove" class="dropdown-menu" href="#!">Remove</a></li>
-        <li class="option-node"><a id="rename" class="dropdown-menu" href="#!">Rename</a></li>
+        <li class="option-node">
+            <a id="remove" class="dropdown-menu" href="#!">Remove</a>
+        </li>
+        <li class="option-node">
+            <a id="rename" class="dropdown-menu" href="#!">Rename</a>
+        </li>
         {#
             <li class="divider"></li>
             <li class="option-node"><a id="preview" class="dropdown-menu" href="#!">Preview</a></li>
         #}
         <li class="divider"></li>
-        <li class="option-node"><a id="download" class="dropdown-menu" href="#!">Download</a></li>
+        <li class="option-node">
+            <a id="download" class="dropdown-menu" href="#!">Download</a>
+        </li>
     </ul>
 </div>

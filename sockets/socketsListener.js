@@ -43,7 +43,7 @@ module.exports = function (io) {
     newNodeListener(socket);
     NodeInformationListener(socket);
     searchNodeChildren(socket);
-    nodeViewer(socket);
+    nodeViewer(io, socket);
     newActivityComment(socket, io);
     getActivities(socket);
     addCommentListener(socket);

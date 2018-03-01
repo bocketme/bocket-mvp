@@ -168,7 +168,9 @@ const newPart = async (req, res) => {
         sub_level: sub_level,
         breadcrumb: breadcrumb,
         socket: {
-            message: 'Update File 3D'
+            message: 'Update File 3D',
+            order: "[Viewer] - Update",
+            dataToSend: subNode._id,
         }
     }, (err, html) => {
         if (err) {

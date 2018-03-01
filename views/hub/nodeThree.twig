@@ -1,7 +1,7 @@
 <div>
     <p>
         Structure
-        <span class="secondary-content"><img src="/img/add-content-icon.png" class="" data-activates='options-node'></span>
+        <a class="dropdown-image secondary-content" data-activates='node-tree-dropdown-menu'><img src="/img/add-content-icon.png"></a>
     </p>
 </div>
 <ul id="node-tree" class="collapsible collapsible-first bocket-scrollbar" data-collapsible="accordion">
@@ -25,7 +25,7 @@
 </ul>
 
 
-<ul id='options-node' class='dropdown-content'>
+<ul id='node-tree-dropdown-menu' class='dropdown-content'>
     <!-- NODE MENU -->
     <li class="option-node">
         <a class="dropdown-menu modal-trigger modal-node-selector" href="#import-part"> New Part... </a>
@@ -34,20 +34,24 @@
     <li class="option-node">
         <a class="dropdown-menu modal-trigger modal-node-selector" href="#import-assembly"> New Assembly... </a>
     </li>
+    {#
     <li class="option-node">
         <a class="dropdown-menu modal-trigger modal-node-selector" href="#upload-file3d"> Duplicate Part/Assembly </a>
     </li>
+
+    <!-- display panel create new assemby -->
+    <li class="divider"></li>
+    <li class="option-node"> <a class="dropdown-menu part-editor">Edit Part</a> </li>
+
+    <!-- display local explorer window -->
+    
+    #}
     <!-- display panel create new assemby US2 -->
     <li class="divider"></li>
     <!-- CONTENT MENU -->
     <li class="option-node">
         <a class="dropdown-menu modal-trigger modal-node-selector" href="#upload-file3d"> Update 3D file... </a>
     </li>
-    <!-- display panel create new assemby -->
-    <li class="divider"></li>
-    <li class="option-node"> <a class="dropdown-menu part-editor">Edit Part</a> </li>
-
-    <!-- display local explorer window -->
 
 
     {#
