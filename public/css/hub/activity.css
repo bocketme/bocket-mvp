@@ -1,8 +1,9 @@
 #activity {
-    width: 100%;
+    width: 95%;
     height: 90%;
     border: #00ffc8;
     overflow-y: scroll;
+    position: fixed;
 }
 
 #activity p, #activity .card-title, #activity span.what {
@@ -105,6 +106,7 @@ li.indicator {
 }
 #activity .activity-comments li {
     z-index: 999 !important;
+    display: inline;
 }
 
 #activity .file-title {
@@ -126,9 +128,14 @@ li.indicator {
 
 #activity .comments {
     height: 200px;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
 }
 
 #activity .avatar {
-    width: 4%;
+    width: 7%;
+    margin-top: 10px;
+}
+
+.side-nav {
+    overflow: hidden;
 }
