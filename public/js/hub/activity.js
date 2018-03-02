@@ -126,7 +126,8 @@ function printActivityComment(lastComment, comment, when) {
  * @param index : String (index of the comment)
  */
 function printCommentOfActivity(comment, index) {
-    var ulId = (view === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
+
+    var ulId = (view === ViewTypeEnum.location) ? ("#activity-comments") : ("#activity-comments-content");    
     let avatar = getAvatar(comment.avatar, comment.author);
     $(`${ulId} .comment-input[data-index=${index}]`).parent().prev().append(`
         <li class="commentOfActivity">
@@ -171,7 +172,7 @@ function addCommentToActivity(event, elem) {
     var content = element.val();
     var ul = (view === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
     //console.log("index = ", $(ul).index($(elem)));
-    console.log("")
+   // console.log(content);
     socket.emit('addCommentToActivity', { nodeId: idOfchoosenNode,  activityIndex: element.attr('data-index'), comment: {content: content, date: new Date()}, viewType: view});
 }
 
