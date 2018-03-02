@@ -4,7 +4,7 @@
         // Submit the insertion of a new part
         $('#submit-import-part').click((event) => {
             event.preventDefault();
-            var cible = third_column.$data.selected;
+            var cible = headerTitle.title;
             if (cible !== "Select a node") {
                 var nodeId = $('.selected-accordion').attr('id');
                 if (document.getElementById('import-part-file3D').files[0]) {
@@ -53,7 +53,7 @@
         // Submit the insert of
         $('#submit-import-assembly').click(event => {
             event.preventDefault();
-            var cible = third_column.$data.selected;
+            var cible = headerTitle.title;
             if (cible !== "Select a node") {
                     var nodeId = $('.selected-accordion').attr('id'),
                         form = document.getElementById("form-import-assembly"),
@@ -102,7 +102,7 @@
 
             //    console.log ("submit-search-existing trigger");
             event.preventDefault();
-            var cible = third_column.$data.selected;
+            var cible = headerTitle.title;
 
             if (cible !== "Select a node") {
                 var nodeId = $('.selected-accordion').attr('id');
@@ -160,7 +160,7 @@
 
         //////////////////////////////////////////////////////////////////////
         $('.modal-node-selector').click((event) => {
-            if (third_column.$data.selected == "Select a node") {
+            if (headerTitle.title == "Select a node") {
                 Materialize.toast("You must select a node", 2000);
                 $('.button-form-validate').addClass("disabled");
             } else $('.button-form-validate').removeClass("disabled");
