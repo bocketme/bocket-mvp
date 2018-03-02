@@ -1,21 +1,20 @@
-const workspaceListener = "workspaceManager";
+const workspaceListenerName = 'workspaceManager';
 const WorkspaceModel = require('../models/Workspace');
 
-async function wokspaceListener(workspaceId) {
-    //return { members } = await WorkspaceModel.findById(workspaceId);
-    return await WorspaceModel.findById(worspaceId).members;
+async function workspaceListener(workspaceId) {
+  const { team } = await WorkspaceModel.findById(workspaceId);
+  return { owner: false, members: team.members };
 }
 
 module.exports = (socket) => {
-    socket.on(workspaceListener, ({ type }) => {
-
-        if (type === "workspace") {
-            workspaceListener(socket.handshake.session.currentWorkspace)
-                .then(data => {
-                    console.log(data);
-                    socket.emit(data);
-                })
-                .catch(console.log);
-            }
-    });
+  socket.on(workspaceListenerName, ({ type }) => {
+    if (type === 'workspace') {
+      workspaceListener(socket.handshake.session.currentWorkspace)
+        .then((data) => {
+          console.log('data:', data);
+          socket.emit(workspaceListenerName, data);
+        })
+        .catch(console.log);
+    }
+  });
 };

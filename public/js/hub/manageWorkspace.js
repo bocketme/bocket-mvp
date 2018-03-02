@@ -20,7 +20,7 @@ $(document).ready(function () {
     manageWorkspaceDiv.toggle();
   }
 
-  socket.on('workspaceManager', togglemanageWorkspace());
+  socket.on('workspaceManager', togglemanageWorkspace);
 
 
   //togglemanageWorkspace();
