@@ -161,9 +161,6 @@ module.exports = (io, socket)=> {
         file3DManager.update(workspaceId, nodeId);
 
         file3DManager.socket = socket;
-        /*
-        file3DManager.update(workspaceId, nodeId);
-        */
     })
 
     /*
