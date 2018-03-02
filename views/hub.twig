@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/hub/activity.css">
     <link rel="stylesheet" href="/css/hub/specs.css">
     <link rel="stylesheet" href="/css/hub/invitePeople.css">
+    <link rel="stylesheet" href="/css/hub/manageWorkspace.css">
 {% endblock %}
 
 {% block title %}{{ title }}{% endblock title %}
@@ -20,6 +21,7 @@
 {% block body %}
     <div id="hub" class="row">
         {% include "./hub/invitePeople.twig" %}
+        {% include "./hub/manageWorkspace/manageWorkspace.twig" %}
 
         <div id="second_column" class="col s4">
             <div id="side-nav" class="col s2">
@@ -124,6 +126,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script src="/js/socket.io-file-client.js"></script>
     <script src="/js/fileUploader.js"></script>
+    <script src="/js/getAvatar.js"></script>
     <script src="/js/hub.js"></script>
     <script src="/js/hub/accordion.js"></script>
     <script src="/js/hub/tabs.js"></script>
@@ -133,6 +136,7 @@
     <script src="/js/hub/activity.js"></script>
     <script src="/js/hub/specs.js"></script>
     <script src="/js/hub/invitePeople.js"></script>
+    <script src="/js/hub/manageWorkspace.js"></script>
     <script src="/js/contextMenu.js"></script>
     <script src="/js/hub/nodeTreeContextMenuEvents.js"></script>
     <script src="/js/initial.js"></script>

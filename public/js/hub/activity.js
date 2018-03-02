@@ -68,15 +68,6 @@ function addCommentActivity(lastComment, comment, view) {
     socket.emit(newComment, {nodeId: idOfchoosenNode, comment: comment, viewType: view});
 }
 
-function getAvatar(avatarSrc, author) {
-    let avatar;
-    if (!avatarSrc)
-        avatar = '<img data-name="' + author + '" class="avatar col s2 profile"/>';
-    else
-        avatar = '<img class=\"avatar col s2\" src=\"'+ avatarSrc +'">';
-    return avatar
-}
-
 /**
  *
  * @Param lastComment = Jquery on lastComment

@@ -1,0 +1,15 @@
+#manage-workspace {
+    padding: 2%;
+}
+
+#manage-workspace-first-column {
+    border-right: #9b9b9b solid 1px;
+    height: 100%;
+}
+
+#manage-workspace-first-column .btn {
+    margin-bottom: 2%;
+}
+
+#manage-workspace-second_column #panel {
+}
