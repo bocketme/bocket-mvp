@@ -20,6 +20,11 @@ $(document).ready(function () {
     manageWorkspaceDiv.toggle();
   }
 
+  socket.on('workspaceManager', togglemanageWorkspace());
+
+
   //togglemanageWorkspace();
-  manageWorkspaceBtn.on('click', togglemanageWorkspace);
+  manageWorkspaceBtn.on('click', () => {
+    socket.emit('workspaceManager', { type: 'workspace' })
+  });
 });
