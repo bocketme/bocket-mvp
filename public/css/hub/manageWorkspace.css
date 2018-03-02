@@ -1,10 +1,37 @@
 #manage-workspace {
-    padding: 2%;
+    padding: 0 !important;
+    background-color: #f9f9f9;
+}
+
+#manage-workspace .collection-item {
+    background-color: #f9f9f9;
+}
+
+.manage-workspace-icon-title {
+    position: relative;
+    bottom: 20px;
+}
+
+#manage-workspace .collection .collection-item.active {
+    background-color: #26a69a !important;
+}
+
+#manage-workspace .collection-item:hover{
+    background-color: #ffffff;
+}
+
+#manage-workspace li {
+    background-color: #f9f9f9;
+}
+
+
+#manage-workspace-title {
+    box-shadow: #9b9b9b 0 0 20px 0;
+    margin-bottom: 3%;
+    height: 5rem !important;
 }
 
 #manage-workspace-first-column {
-    border-right: #9b9b9b solid 1px;
-    height: 100%;
 }
 
 #manage-workspace-first-column .btn {

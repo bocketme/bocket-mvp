@@ -4,11 +4,11 @@
  * @param author
  * @return {String}
  */
-function getAvatar(avatarSrc, author) {
+function getAvatar(avatarSrc, author, classes) {
   let avatar;
   if (!avatarSrc)
-    avatar = '<img data-name="' + author + '" class="avatar col s2 profile"/>';
+    avatar = '<img data-name="' + author + '" class=" avatar profile ' + classes + '"/>';
   else
-    avatar = '<img class=\"avatar col s2\" src=\"'+ avatarSrc +'">';
+    avatar = '<img class="avatar profile '+ classes +'" src=\"'+ avatarSrc +'">';
   return avatar
 }
