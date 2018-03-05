@@ -1,4 +1,4 @@
-<div class="row">
+{# <div class="row">
     <div class="col s12">
         <div class="card">
             <div class="card-content white-text">
@@ -17,4 +17,22 @@
             </div>
         </div>
     </div>
+</div> #}
+
+<div class="row">
+    <div class="col s12">
+    
+        <div class="card">
+            <div class="card-content white-text">
+                <div class="row">
+                    {# {% if userAvatar %}
+                    {% else %}
+                        <img data-name="{{ user }}" class="avatar col s3 profile"/>;
+                    {% endif %} #}
+                    <input id="add-comment-input" class="col s10 add-comment add-comment-input" type="text" placeholder="Share an idea or a file...">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<div class="message-area"></div>

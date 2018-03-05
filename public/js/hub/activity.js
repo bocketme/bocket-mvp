@@ -86,38 +86,41 @@ function getAvatar(avatarSrc, author) {
 function printActivityComment(lastComment, comment, when) {
     addActivity();
     let avatar = getAvatar(comment.avatar, comment.author);
-
-    lastComment.after("<li>" +
-        "<div class=\"row\">\n" +
-        "    <div class=\"col s12\">\n" +
-        "        <div class=\"card\">\n" +
-        "            <div class=\"card-content white-text\">\n" +
-        "                <div class=\"row\">\n" +
-        "                    <div>\n" +
-                                    avatar + '\n' +
-        "                        <span class=\"card-title s10\"> <span class=\"who\">" + comment.author + "</span> <span class=\"what\">added a comment</span>, <span class=\"when\">" + when + "</span></span>\n" +
-        "                    </div>\n" +
-        "                    <p class=\"col s12\">"+ comment.content +"</p>" +
-        "                </div>\n" +
-        "            </div>\n" +
-        "            <div class=\"card-action row\">" +
-        "                <ul class=\"comments\" style=\"display: none;\">" +
-        "                </ul>" +
-        "                <div class=\"cache-toi\" style=\"display: none;\">\n" +
-        "                    <input class=\"comment-input\"  data-index='" + comment.index + "' onkeydown='addCommentToActivity(event, this)' placeholder=\"Add your comment...\" type=\"text\">\n" +
-        "                </div>\n" +
-        "                <div class=\"chip comment\" onclick='slideInputComment(this)' data-id='" + comment._id + "'>\n" +
-        "                    <span class=\"chip-content\">Comment</span>\n" +
-        "                </div>\n" +
-        "                <div class=\"chip activity-upload\" onclick='uploadFile()'>\n" +
-        "                    <span class=\"chip-content\">Attach a file</span>\n" +
-        "                </div>\n" +
-        "            </div>\n" +
-        "        </div>\n" +
-        "    </div>\n" +
-        "</div>" +
-        "</li>");
-    $('.profile').initial();
+    console.log('lastComment'+ lastComment);
+    console.log('comment'+ comment.content  );
+    console.log('when'+ when);
+    $('.message-area').prepend( `<div class='message-display'>${comment.author}: ${comment.content} </div>`);
+    // lastComment.after("<li>" +
+    //     "<div class=\"row\">\n" +
+    //     "    <div class=\"col s12\">\n" +
+    //     "        <div class=\"card\">\n" +
+    //     "            <div class=\"card-content white-text\">\n" +
+    //     "                <div class=\"row\">\n" +
+    //     "                    <div>\n" +
+    //                                 avatar + '\n' +
+    //     "                        <span class=\"card-title s10\"> <span class=\"who\">" + comment.author + "</span> <span class=\"what\">added a comment</span>, <span class=\"when\">" + when + "</span></span>\n" +
+    //     "                    </div>\n" +
+    //     "                    <p class=\"col s12\">"+ comment.content +"</p>" +
+    //     "                </div>\n" +
+    //     "            </div>\n" +
+    //     "            <div class=\"card-action row\">" +
+    //     "                <ul class=\"comments\" style=\"display: none;\">" +
+    //     "                </ul>" +
+    //     "                <div class=\"cache-toi\" style=\"display: none;\">\n" +
+    //     "                    <input class=\"comment-input\"  data-index='" + comment.index + "' onkeydown='addCommentToActivity(event, this)' placeholder=\"Add your comment...\" type=\"text\">\n" +
+    //     "                </div>\n" +
+    //     "                <div class=\"chip comment\" onclick='slideInputComment(this)' data-id='" + comment._id + "'>\n" +
+    //     "                    <span class=\"chip-content\">Comment</span>\n" +
+    //     "                </div>\n" +
+    //     "                <div class=\"chip activity-upload\" onclick='uploadFile()'>\n" +
+    //     "                    <span class=\"chip-content\">Attach a file</span>\n" +
+    //     "                </div>\n" +
+    //     "            </div>\n" +
+    //     "        </div>\n" +
+    //     "    </div>\n" +
+    //     "</div>" +
+    //     "</li>");
+     $('.profile').initial();
 }
 
 /**

@@ -17,6 +17,7 @@ module.exports = (socket, io) => {
      */
     socket.on(addCommentToActivity, (data) => {
         //TODO: check if the user has rights
+        console.log("hello");
         if (!data.nodeId || !data.activityIndex || !data.comment || !data.comment.content || !data.comment.date || !data.viewType)
             return console.log(`[${addCommentToActivity}0]: parameters error :\n`, data);
         let email = socket.handshake.session.userMail;
