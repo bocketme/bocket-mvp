@@ -30,9 +30,8 @@ $(document).ready(function() {
         clearComments($(ul));
         
         for (var i = activities.length - 1; i >= 0 ; i--) {
-    
             let comment = activities[i];
-            printActivityComment($(ul + " li:first"), comment, comment.formatDate);
+            printActivityComment($(ul + " li:first"), comment, comment.formatDate, context.username);
             if (comment.comments.length !== 0)
                 for (var y = 0 ; y < comment.comments.length ; y++ ) {
                     printCommentOfActivity(comment.comments[y], comment.index);
@@ -87,8 +86,7 @@ function getAvatar(avatarSrc, author) {
  */
 function printActivityComment(lastComment, comment, when, username) {
     addActivity();
-    let avatar = getAvatar(comment.avatar, comment.author);
-   // console.log(socket); 
+    let avatar = getAvatar(comment.avatar, comment.author); 
    // console.log('commentauthor'+comment.author);
     if (username === comment.author)    {
        $('.message-area').prepend( `<div class='message-display'>${comment.author}: ${comment.content} </div>`);

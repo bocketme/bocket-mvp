@@ -17,7 +17,7 @@ module.exports = (socket) => {
     Node.findById(nodeId)
         .then(node => {
             if (node === null) return console.log("[getActivities]: node not found");
-            //console.log(node.activities);
+            //console.log("getActivityCommentsLister: ", node.activities, nbr);
             getActivityCommentsEmitter(socket, node.activities, ViewTypeEnum.content, node.activities.length);
         })
         .catch(err => console.log("[getActivities]: ", err, "\nNodeId: ", nodeId, "\nnbr: ", nbr))

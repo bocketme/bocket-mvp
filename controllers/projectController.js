@@ -77,6 +77,7 @@ function getRenderInformation(workspaceId, userMail) {
               //TODO: Why ?
               reject("/signin");
             }
+          //  req.session.userId = user._id;
             Node.findById(workspace.node_master._id)
               .then(node_master => {
                 console.log(" RENDER INFO NODE_MASTER = ", node_master);

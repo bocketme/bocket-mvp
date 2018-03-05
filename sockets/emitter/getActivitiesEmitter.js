@@ -9,7 +9,7 @@ const formatDate = require("../utils/formatDate");
  */
 module.exports = (socket, activities, viewType, nbr) => {
     let today = new Date();
-    let ret = { viewType : viewType, activities: [] };
+    let ret = { viewType : viewType, activities: [], username : socket.handshake.session.completeName};
     let count = 0;
 
     if (!socket || !activities || nbr <= 0)
