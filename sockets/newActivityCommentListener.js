@@ -21,7 +21,7 @@ module.exports = (socket, io) => {
                 addActivity(ActivityTypeEnum.comment, context, context.viewType)
                     .then(activity => {
                         console.log("then", activity);
-                        newActivityEmitter(io, socket, activity, context.viewType, socket.handshake.session.currentWorkspace);
+                        newActivityEmitter(io, socket, activity, context.viewType, socket.handshake.session.currentWorkspace, socket.handshake.session.userMail);
                     })
                     .catch(err => console.log("[newCommentListener] :", err));
             })

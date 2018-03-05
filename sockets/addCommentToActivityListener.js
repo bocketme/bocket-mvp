@@ -28,7 +28,8 @@ module.exports = (socket, io) => {
                     .then(node => {
                         if (data.viewType === TypeViewEnum.location)
                             addComment(node, data.activityIndex, data.comment, user.completeName)
-                                .then((m) => NewActivityCommentEmitter(io, data.nodeId, m, socket.handshake.session.currentWorkspace))
+                                .then((m) => NewActivityCommentEmitter(io,  
+                                     data.nodeId, m, socket.handshake.session.currentWorkspace))
                                 .catch(err => console.log(`[${addCommentToActivity}1]: ${err}`));
                         else if (data.viewType === TypeViewEnum.content) {
                             let modelFindeur = (node.type === TypeNodeEnum.assembly) ? (Assembly) : (Part);

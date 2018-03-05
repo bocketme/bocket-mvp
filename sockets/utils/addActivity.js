@@ -14,6 +14,7 @@ const ViewTypeEnum = require("../../enum/ViewTypeEnum");
  * @param context.comment.content : String
  * @param context.comment.date : String published date
  * @param viewType
+ * 
  */
 function addActivity(type, context, viewType) {
     console.log("viewtype =", viewType);

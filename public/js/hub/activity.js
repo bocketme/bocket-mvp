@@ -28,7 +28,9 @@ $(document).ready(function() {
         var activities = context.activities;
         var ul = "#activity-comments";
         clearComments($(ul));
+        
         for (var i = activities.length - 1; i >= 0 ; i--) {
+    
             let comment = activities[i];
             printActivityComment($(ul + " li:first"), comment, comment.formatDate);
             if (comment.comments.length !== 0)
@@ -41,7 +43,7 @@ $(document).ready(function() {
     socket.on("newActivity", function (context) {
         var ul = "#activity-comments";
         console.log("Nouveau commentaire", context);
-        printActivityComment($(ul + " li:first"), context.activity, context.activity.formatDate);
+        printActivityComment($(ul + " li:first"), context.activity, context.activity.formatDate, context.username);
     });
 
 });
@@ -83,44 +85,18 @@ function getAvatar(avatarSrc, author) {
  * @Param comment = { author : string, content : string, date: Date }
  * @param when Date
  */
-function printActivityComment(lastComment, comment, when) {
+function printActivityComment(lastComment, comment, when, username) {
     addActivity();
     let avatar = getAvatar(comment.avatar, comment.author);
-    console.log('lastComment'+ lastComment);
-    console.log('comment'+ comment.content  );
-    console.log('when'+ when);
-    $('.message-area').prepend( `<div class='message-display'>${comment.author}: ${comment.content} </div>`);
-    // lastComment.after("<li>" +
-    //     "<div class=\"row\">\n" +
-    //     "    <div class=\"col s12\">\n" +
-    //     "        <div class=\"card\">\n" +
-    //     "            <div class=\"card-content white-text\">\n" +
-    //     "                <div class=\"row\">\n" +
-    //     "                    <div>\n" +
-    //                                 avatar + '\n' +
-    //     "                        <span class=\"card-title s10\"> <span class=\"who\">" + comment.author + "</span> <span class=\"what\">added a comment</span>, <span class=\"when\">" + when + "</span></span>\n" +
-    //     "                    </div>\n" +
-    //     "                    <p class=\"col s12\">"+ comment.content +"</p>" +
-    //     "                </div>\n" +
-    //     "            </div>\n" +
-    //     "            <div class=\"card-action row\">" +
-    //     "                <ul class=\"comments\" style=\"display: none;\">" +
-    //     "                </ul>" +
-    //     "                <div class=\"cache-toi\" style=\"display: none;\">\n" +
-    //     "                    <input class=\"comment-input\"  data-index='" + comment.index + "' onkeydown='addCommentToActivity(event, this)' placeholder=\"Add your comment...\" type=\"text\">\n" +
-    //     "                </div>\n" +
-    //     "                <div class=\"chip comment\" onclick='slideInputComment(this)' data-id='" + comment._id + "'>\n" +
-    //     "                    <span class=\"chip-content\">Comment</span>\n" +
-    //     "                </div>\n" +
-    //     "                <div class=\"chip activity-upload\" onclick='uploadFile()'>\n" +
-    //     "                    <span class=\"chip-content\">Attach a file</span>\n" +
-    //     "                </div>\n" +
-    //     "            </div>\n" +
-    //     "        </div>\n" +
-    //     "    </div>\n" +
-    //     "</div>" +
-    //     "</li>");
-     $('.profile').initial();
+   // console.log(socket); 
+   // console.log('commentauthor'+comment.author);
+    if (username === comment.author)    {
+       $('.message-area').prepend( `<div class='message-display'>${comment.author}: ${comment.content} </div>`);
+    }
+    else {
+       $('.message-area').prepend( `<div class='message-other'>${comment.author}: ${comment.content} </div>`);
+    }
+    // $('.profile').initial();
 }
 
 /**
