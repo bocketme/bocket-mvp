@@ -9,6 +9,8 @@ const path = require('path');
 const NodeTypeEnum = require('../enum/NodeTypeEnum');
 
 const appDir = path.dirname(require.main.filename);
+const FSconfig = require('../config/FileSystemConfig');
+const log = require('../utils/log');
 
 /**
  * get the right uploadDir
@@ -23,14 +25,13 @@ async function getUploadir(fileName, nodeId, workspaceId) {
   try {
     const node = await Node.findById(nodeId);
     const workspace = await Workspace.findById(workspaceId);
-    if (!node || !workspace) throw Error('Unknown node');
-    if (node.type === NodeTypeEnum.part) {
+    if (!node || !workspace) throw new Error('Unknown node');
+    if (node.type === NodeTypeEnum.part)
       content = await Part.findById(node.content);
-    } else if (node.type === NodeTypeEnum.part) {
+    else if (node.type === NodeTypeEnum.assembly)
       content = await Assembly.findById(node.content);
-    }
-    if (!content) throw Error('Unknown content');
-    ret = `${config.files3D}/${workspace.organization.name}-${workspace.organization._id}/${content.name} - ${node.content}/${fsPart.spec}/${fileName}`;
+    if (!content) throw new Error('Unknown content');
+    ret = path.join(config.files3D, content.path, fsPart.spec);
   } catch (e) {
     throw e;
   }
@@ -48,16 +49,15 @@ module.exports = (socket, uploader) => {
   uploader.on('complete', (fileInfo) => {
     getUploadir(fileInfo.name, fileInfo.data.nodeId, socket.handshake.session.currentWorkspace)
       .then((ret) => {
-        console.log(" Moving here : ", `${appDir}/${fileInfo.uploadDir}`, ret);
-        mv(`${fileInfo.uploadDir}`, ret, (err) => {console.log(err);});
+        fileInfo.uploadDir = path.join(FSconfig.appDirectory.tmp, fileInfo.name);
+        mv(fileInfo.uploadDir, path.join(ret, fileInfo.name), (err) => log.error(err));
+
         socket.emit('addSpec', fileInfo.name);
         fileInfo.uploadDir = ret;
-        console.log('Upload Complete.');
-        console.log(fileInfo);
+        log.info('Upload Complete.');
+        log.info(fileInfo);
       })
-      .catch((err) => {
-        console.log('Error!', err);
-      });
+      .catch((err) => log.error('Error ! : ', err));
   });
   uploader.on('error', (err) => {
     console.log('Error!', err);

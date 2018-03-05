@@ -41,8 +41,9 @@ class File3DManager {
         this.socket = socket;
     }
 
-    async update(workspaceId, nodeId) {
-        this.loadNode(nodeId);
+    async update(nodeId) {
+        let node = await nodeSchema.findOne({"children._id": nodeId});
+        this.loadNode(nodeId, node);
     }
 
     async loadWorkspace(workspaceId) {
@@ -132,8 +133,7 @@ class File3DManager {
             let read = fs.createReadStream(file, {autoClose: true, encoding: 'utf8' });
 
             read.on('data', chunk => {
-                progress += chunk.length;
-                log.info("["+node._id+"] " + "J'ai lu " + Math.round(100 * progress / total) + "%");
+
                 this.socket.emit(loading.emit.pending, node._id, chunk);
             });
 
@@ -155,10 +155,10 @@ module.exports = (io, socket)=> {
 
     socket.on(loading.on.save, (workspaceId, nodeId, matrix) => file3DManager.save(workspaceId, nodeId, matrix));
 
-    socket.on(loading.on.update, (workspaceId, nodeId) => {
+    socket.on(loading.on.update, (nodeId, token) => {
         file3DManager.socket = io.to(socket.handshake.session.currentWorkspace);
 
-        file3DManager.update(workspaceId, nodeId);
+        file3DManager.update(nodeId);
 
         file3DManager.socket = socket;
     })
