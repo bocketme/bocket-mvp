@@ -474,7 +474,7 @@ div.collapsible-body  ul {
 .collection-item-workspace {
     background-color: inherit !important;
     border: none !important;
-    text-align: center;
+    padding: 5% !important;
 }
 
 .collection-item-workspace:hover {
@@ -491,20 +491,31 @@ div.collapsible-body  ul {
     overflow-x: hidden;
 }
 
-.icon-list-workspace{
-    width: 60px;
-    height: 60px;
-    margin-left: auto;
-    margin-right: auto;
-    color: #fff;
+.circle-responsive-active {
+    background: #ddd;
     border-radius: 50%;
-    background-color: #9b9b9b;
+    padding-bottom: 90%;
+    width: 90%;
+    border: 3px solid #73AD21;
 }
 
-.first-letter-workspace{
+.circle-responsive {
+    background: #ddd;
+    border-radius: 50%;
+    height: 0;
+    padding-bottom: 100%;
+    width: 100%;
+}
+
+.circle-content {
+    color: black;
+    float: left;
+    line-height: 1;
+    font-size: 200%;
+    margin-top: -0.5em;
+    padding-top: 50%;
     text-align: center;
-    padding-top: 20px;
-    font-size: 20px;
+    width: 100%;
 }
 
 .collection-manager{

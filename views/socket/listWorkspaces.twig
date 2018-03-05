@@ -1,8 +1,8 @@
 {% for workspace in workspaces %}
-    <a class="collection-item collection-item-workspace {% if workspace.id == in_use.id %} {{ "active" }} {% endif %}" style="min-height: auto !important; padding: 0px !important;" href="/project/{{workspace._id}}">
+    <a class="collection-item collection-item-workspace center-align {% if workspace.id == in_use.id %} {{ "active" }} {% endif %}" style="min-height: auto !important; padding: 0px !important;" href="/project/{{workspace._id}}">
     {% if (workspace.image) %}
     {% else %}
-        <div>
+        <div class="circle-text">
             <div class="icon-list-workspace" style="background-color: ;">
                 <p class="first-letter-workspace">{{ workspace.name|first |capitalize }}</p>
             </div>
