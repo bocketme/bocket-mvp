@@ -12,8 +12,19 @@
         <p style="font-size: 50%; color: white; text-align: center;">{{ workspace.name }}</p>
         </a>
     {% endfor %}
-    <a id="trigger-creation-workspace" class="collection-item avatar collection-item-workspace modal-trigger" href="#workspace-creation" style="min-height: auto !important; padding: 0px !important;">
+    {# <a id="trigger-creation-workspace" class="collection-item avatar collection-item-workspace modal-trigger" href="#workspace-creation" style="min-height: auto !important; padding: 0px !important;">
         <i class="tiny material-icons" style="font-size: 1rem !important;">add</i>
         <p style="font-size: 70%; color: white; ">Add Workspace</p>
+    </a> #}
+    <div  class="icon-list-workspace">
+    <a 
+        id="trigger-creation-workspace" 
+        class=" modal-trigger"
+        href="#workspace-creation"
+        style="min-height: auto !important; padding: 0px !important;"
+        alt="Add Workspace"
+    >
+        <i class="small material-icons add-workspace" >add</i>
     </a>
+    </div>
 </div>
