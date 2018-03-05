@@ -89,6 +89,12 @@
       stopPropagation: false, // Stops event propagation
     });
 
+    $('#dropdown-trigger-file-spec-menu').on('click', (event) => {
+      event.preventDefault();
+      console.log($('#specs-context-menu'))
+      $('#specs-context-menu').dropdown('open');      
+    })
+
     $('#side-nav-close').click(event => {
       event.preventDefault();
       $('#side-info').sideNav('hide');

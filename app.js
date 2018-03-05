@@ -10,6 +10,8 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const csurf = require('csurf');
+const FSconfig = require('./config/FileSystemConfig');
+const log = require('./utils/log');
 
 /* ROUTES */
 const index = require("./routes/index");
@@ -25,10 +27,10 @@ const assembly = require("./routes/assembly");
 let expressSession = require("express-session");
 const MongoStore = require('connect-mongo')(expressSession); //session store
 let session = expressSession({
-  secret: config.secretSession,
-  store: new MongoStore({ url: config.mongoDB }),
-  resave: true,
-  saveUninitialized: true
+    secret: config.secretSession,
+    store: new MongoStore({ url: config.mongoDB }),
+    resave: true,
+    saveUninitialized: true
 });
 let sharedsession = require("express-socket.io-session");
 
@@ -65,7 +67,7 @@ app.use(morgan('dev'));
 
 app.use(session);
 io.use(sharedsession(session, {
-  autoSave: true
+    autoSave: true
 }));
 
 module.exports = app;
@@ -104,7 +106,7 @@ app.use(function (req, res, next) {
 app.engine('twig', require('twig').__express);
 app.set("view engine", "twig");
 app.set('twig options', {
-  strict_variables: false,
+    strict_variables: false,
 });
 app.use(express.static('public'));
 app.use("/signOut", signOut);
@@ -118,24 +120,16 @@ app.use("/assembly", assembly);
 
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on("listening", () => {
-    fs.access(config.data , (err) => {
-        if (err) {
-            if (err.code == 'ENOENT') {
-                fs.mkdir(config.data, (err) => {
+    for (let dir in FSconfig.appDirectory) {
+        fs.access(dir, err => {
+            if (err) {
+                log.error(err);
+                fs.mkdir(dir, (err) => {
                     if (err)
-                    throw err;
-                    fs.mkdir(config.files3D, err => {
-                        if (err)
-                        throw err;
-                    });
-                    fs.mkdir(config.avatar, err => {
-                        if (err)
-                        throw err;
-                    })
-                })
-            }
-            else 
-            throw err;
-        }
-    })
+                        return log.fatal(err);
+                    log.info(`Directory ${dir} ==> ok`);
+                });
+            } else log.info(`Directory ${dir} ==> ok`);
+        });
+    }
 });

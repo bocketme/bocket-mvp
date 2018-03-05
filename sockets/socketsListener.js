@@ -21,12 +21,12 @@ const GetSelectedItemsToAdd = require("./GetSelectedItemsToAdd");
 const createWorkspaceInSignIn = require('./createWorkspaceInSignIn');
 const createWorkspaceInHub = require('./createWorkspaceInHub');
 
-const configServer = require('../config/server');
+const FSconfig = require('../config/FileSystemConfig');
 module.exports = function (io) {
   io.on('connection', (socket) => {
     //TODO: How it works ?
     const uploader = new SocketIOFile(socket, {
-      uploadDir: configServer.data, // simple directory
+      uploadDir: FSconfig.appDirectory.tmp, // simple directory
       accepts: ['image/png', 'image/jpeg', 'application/pdf', 'application/vnd.oasis.opendocument.text', 'image/svg+xml'], // chrome and some of browsers checking mp3 as 'audio/mp3', not 'audio/mpeg'
       maxFileSize: 4194304, // 4 MB. default is undefined(no limit)
       chunkSize: 10240, // default is 10240(1KB)
