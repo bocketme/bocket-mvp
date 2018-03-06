@@ -7,6 +7,9 @@ module.exports = (io, socket, activity, viewType, channelId, username) => {
 
     let today = new Date();
     activity.formatDate = formatDate(activity.date, today);
-    console.log("newActivityEmitter", { viewType : viewType, activity: activity}, channelId, socket.id);
-    io.to(channelId).emit("newActivity", { viewType : viewType, activity: activity, username: username});
+    //  console.log("newActivityEmitter", { viewType : viewType, activity: activity}, channelId);
+    socket.broadcast.emit("newActivity", { viewType : viewType, activity: activity});
+    socket.emit("newActivity", { viewType : viewType, activity: activity, username: username });
+    
+  //  io.to(channelId).emit("newActivity", { viewType : viewType, activity: activity, username: username});
 };

@@ -15,7 +15,7 @@ module.exports = (socket, activities, viewType, nbr) => {
     if (!socket || !activities || nbr <= 0)
         throw new Error("[getActivityCommentEmitter]: invalid parameter(s)");
     for (let i = activities.length - 1 ; i >= 0 && count < nbr ; i--) {
-        console.log("i = ", i, " ret.activities = ", ret.activities);
+       // console.log("i = ", i, " ret.activities = ", ret.activities);
         let o = JSON.parse(JSON.stringify(activities[i]));
         o.formatDate = formatDate(activities[i].date, today);
         o.index = i;

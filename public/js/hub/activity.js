@@ -3,10 +3,26 @@ var newComment = "newActivityComment";
 $(document).ready(function() {
     $('.profile').initial();
     var empty = "";
-
+    var click =  $("a[href='#comments']");
     $(".activity-upload").on("click", uploadFile);
     $(".comment").on("click", slideInputComment);
+   // $("#activity").animate({ scrollTop: $('#activity').prop("scrollHeight")}, 1000);
+ //  $("#activity").prop("scrollHeight");
+   
+  
+   click.on('click', function(event) { 
+       console.log($("#activity").prop("scrollHeight"));
+    //   $("#activity").scrollTop($("#activity").prop("scrollHeight"));
+       $("#activity").animate({ scrollTop: $(document).height()}, "slow");
+   })
+  //  $("#activity").scrollTop($(document).scrollHeight);
+   // $("#activity").scrollTop($("#activity").prop("scrollHeight"));
+   click.trigger("click");
+ //   click.unbind('click').bind('click', function(event) {
 
+     //$("#activity").animate({ scrollTop: $(window).height()}, "slow");
+     //return false;  
+   
     /**
      * Used when a key enter is pressed on input
      * @Param e : event
@@ -28,7 +44,6 @@ $(document).ready(function() {
         var activities = context.activities;
         var ul = "#activity-comments";
         clearComments($(ul));
-        
         for (var i = activities.length - 1; i >= 0 ; i--) {
             let comment = activities[i];
             printActivityComment($(ul + " li:first"), comment, comment.formatDate, context.username);
@@ -72,9 +87,9 @@ function addCommentActivity(lastComment, comment, view) {
 function getAvatar(avatarSrc, author) {
     let avatar;
     if (!avatarSrc)
-        avatar = '<img data-name="' + author + '" class="avatar col s2 profile"/>';
+        avatar = '<img data-name="' + author + '" class="avatar col s2 profile tooltipped" data-tooltip="'+ author +'" data-position="left" data-delay="50"/>';
     else
-        avatar = '<img class=\"avatar col s2\" src=\"'+ avatarSrc +'">';
+        avatar = '<img class=\"avatar col s2 tooltipped\" src=\"'+ avatarSrc +'">';
     return avatar
 }
 
@@ -87,14 +102,19 @@ function getAvatar(avatarSrc, author) {
 function printActivityComment(lastComment, comment, when, username) {
     addActivity();
     let avatar = getAvatar(comment.avatar, comment.author); 
-   // console.log('commentauthor'+comment.author);
+   // console.log('avatar'+avatar);
     if (username === comment.author)    {
-       $('.message-area').prepend( `<div class='message-display'>${comment.author}: ${comment.content} </div>`);
+       $('.message-area').prepend( `<div class='message-display'> ${comment.content} </div>`);
     }
     else {
-       $('.message-area').prepend( `<div class='message-other'>${comment.author}: ${comment.content} </div>`);
+       $('.message-area').prepend(`<div class="row message-other">
+        ${avatar}
+        ${comment.content}
+       </div>`);
+       //$('.message-area').prepend( `<div class='message-other'>${comment.content} </div>`);
     }
-    // $('.profile').initial();
+     $('.tooltipped').tooltip();
+     $('.profile').initial();
 }
 
 /**

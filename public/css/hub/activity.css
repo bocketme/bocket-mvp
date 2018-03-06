@@ -3,7 +3,7 @@
     height: 90%;
     border: #00ffc8;
     overflow-y: scroll;
-    position: fixed;
+    position: fixed; 
 }
 
 #activity p, #activity .card-title, #activity span.what {
@@ -132,8 +132,9 @@ li.indicator {
 }
 
 #activity .avatar {
-    width: 7%;
-    margin-top: 10px;
+    width: 11%;
+    margin-top: 9px;
+    margin-right:5px;
 }
 
 .side-nav {
