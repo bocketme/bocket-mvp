@@ -187,6 +187,7 @@ module.exports = (io, socket) => {
       .then((workspaces) => {
         log.info("Finish");
         twig.renderFile("./views/hub/listWorkspaces.twig", {
+          in_use: { id: socket.handshake.session.currentWorkspace },
           workspaces: workspaces
         }, (err, res) => {
           if (err)

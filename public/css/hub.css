@@ -492,11 +492,11 @@ div.collapsible-body  ul {
 }
 
 .circle-responsive-active {
-    background: #ddd;
+    background: #73AD21;
     border-radius: 50%;
-    padding-bottom: 90%;
-    width: 90%;
-    border: 3px solid #73AD21;
+    padding-bottom: 100%;
+    width: 100%;
+    height: 0;
 }
 
 .circle-responsive {
@@ -511,7 +511,7 @@ div.collapsible-body  ul {
     color: black;
     float: left;
     line-height: 1;
-    font-size: 200%;
+    font-size: 1vw;
     margin-top: -0.5em;
     padding-top: 50%;
     text-align: center;
@@ -529,5 +529,4 @@ div.collapsible-body  ul {
 
 .add-workspace{
     color: #fff;
-    padding: 15px 15px; 
 }

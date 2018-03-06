@@ -1,25 +1,28 @@
-<div id="list-workspace" class="collection collection-manager bocket-scrollbar" style="max-height: 90% !important; padding: 0px !important; margin: 0px !important;">
+<div id="list-workspace" class="collection collection-manager bocket-scrollbar" style="max-height: 100% !important; padding: 0px !important; margin: 0px !important;">
     {% for workspace in workspaces %}
         <a class="collection-item collection-item-workspace " href="/project/{{workspace._id}}">
             {% if (workspace.image) %}
             {% else %}
-                <div class={% if workspace.id == in_use.id %} {{ "circle-responsive-active" }} {% else %} {{ "circle-responsive" }} {% endif %} >
-                    <div class="circle-content">
-                        {{ workspace.name|first |capitalize }}
+                <div class="container">
+                    <div class={% if workspace.id == in_use.id %} {{ "circle-responsive-active" }} {% else %} {{ "circle-responsive" }} {% endif %} >
+                        <div class="circle-content">
+                            {{ workspace.name|first |capitalize }}
+                        </div>
                     </div>
                 </div>
-
             {% endif %}
             <p style="font-size: 50%; color: white; text-align: center;" class='truncate'>{{ workspace.name }}</p>
         </a>
     {% endfor %}
-    {# <a id="trigger-creation-workspace" class="collection-item avatar collection-item-workspace modal-trigger" href="#workspace-creation" style="min-height: auto !important; padding: 0px !important;">
-        <i class="tiny material-icons" style="font-size: 1rem !important;">add</i>
-        <p style="font-size: 70%; color: white; ">Add Workspace</p>
-       </a> #}
     <div class="icon-list-workspace">
         <a id="trigger-creation-workspace" class=" modal-trigger" href="#workspace-creation" style="min-height: auto !important; padding: 0px !important;" alt="Add Workspace">
-            <i class="small material-icons add-workspace">add</i>
+            <div class="container">
+                <div class="circle-responsive">
+                    <div class="circle-content">
+                        <i class="material-icons responsive-img">add</i>
+                    </div>
+                </div>
+            </div>
         </a>
     </div>
 </div>
