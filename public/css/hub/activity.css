@@ -3,7 +3,7 @@
     height: 90%;
     border: #00ffc8;
     overflow-y: scroll;
-    position: fixed;
+    position: fixed; 
 }
 
 #activity p, #activity .card-title, #activity span.what {
@@ -132,8 +132,9 @@ li.indicator {
 }
 
 #activity .avatar {
-    width: 7%;
-    margin-top: 10px;
+    width: 11%;
+    margin-top: 9px;
+    margin-right:5px;
 }
 
 .side-nav {
@@ -149,5 +150,17 @@ li.indicator {
     background-color: #296bb3;
     word-wrap: break-word; /*retour à la ligne*/
     float: right;
+    border-radius: 20px;
+}
+
+.message-other {
+    color: #000000;
+    padding: 0px 10px;
+    margin-top: 3px;
+    width: 300px;
+    height: auto;
+    background-color: #e9e8e9;
+    word-wrap: break-word; /*retour à la ligne*/
+    float: left;
     border-radius: 20px;
 }

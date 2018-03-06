@@ -1,5 +1,9 @@
 <ul id="side-info" class="side-nav">
-    <li><a id="side-nav-close"><i id="" class="material-icons">close</i></a></li>
+    <li>
+        <a id="side-nav-close">
+            <i id="" class="material-icons">close</i>
+        </a>
+    </li>
     <li>
         <div>
             <ul id="details-tab" class="tabs tabs-fixed-width">
@@ -44,7 +48,6 @@
                     </li>
                 </ul>
 
-
                 {# the Value of the detail is defined in details.js #}
                 {#
                 <div class="row">
@@ -72,16 +75,17 @@
             </div>
 
             <div id="comments" class="col s12">
-                <div id="activity" class="col s12 bocket-scrollbar">
-                    <ul id="activity-comments" class="activity-comments">
-                        <li>
-                            {% include "./activity/add_comment.twig" %}
-                        </li>
-                    </ul>
+                <div id="activity" class="bocket-scrollbar">
+                     <div class="message-area"></div>
+                    <div class="card col s12">
+                        <div class="card-content white-text">
+                            <div class="row">
+                                <input id="add-comment-input" class="col s10 add-comment add-comment-input" type="text" placeholder="Share an idea or a file...">
+                            </div>
+                        </div>
+                    </div>        
                 </div>
             </div>
-
         </div>
     </li>
 </ul>
-
