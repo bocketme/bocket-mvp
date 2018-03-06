@@ -1,9 +1,10 @@
-#activity {
+
+
+.message-area {
     width: 95%;
-    height: 90%;
+    height: 100%;
     border: #00ffc8;
-    overflow-y: scroll;
-    position: fixed; 
+/*    overflow-y: hidden;*/
 }
 
 #activity p, #activity .card-title, #activity span.what {
@@ -138,7 +139,7 @@ li.indicator {
 }
 
 .side-nav {
-    overflow: hidden;
+    overflow: scroll;
 }
 
 .message-display {

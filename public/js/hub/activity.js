@@ -11,13 +11,16 @@ $(document).ready(function() {
    
   
    click.on('click', function(event) { 
-       console.log($("#activity").prop("scrollHeight"));
-    //   $("#activity").scrollTop($("#activity").prop("scrollHeight"));
-       $("#activity").animate({ scrollTop: $(document).height()}, "slow");
+       console.log($("#comments").prop("scrollHeight"));
+       $("#comments").scrollTop($("#comments").prop("scrollHeight"));
+     //  $("#activity").animate({ scrollTop: $(document).height()}, "slow");
    })
+
+   click.trigger("click");
+
   //  $("#activity").scrollTop($(document).scrollHeight);
    // $("#activity").scrollTop($("#activity").prop("scrollHeight"));
-   click.trigger("click");
+   
  //   click.unbind('click').bind('click', function(event) {
 
      //$("#activity").animate({ scrollTop: $(window).height()}, "slow");
@@ -104,10 +107,10 @@ function printActivityComment(lastComment, comment, when, username) {
     let avatar = getAvatar(comment.avatar, comment.author); 
    // console.log('avatar'+avatar);
     if (username === comment.author)    {
-       $('.message-area').prepend( `<div class='message-display'> ${comment.content} </div>`);
+       $('.message-area').append( `<div class='message-display'> ${comment.content} </div>`);
     }
     else {
-       $('.message-area').prepend(`<div class="row message-other">
+       $('.message-area').append(`<div class="row message-other">
         ${avatar}
         ${comment.content}
        </div>`);
@@ -115,6 +118,7 @@ function printActivityComment(lastComment, comment, when, username) {
     }
      $('.tooltipped').tooltip();
      $('.profile').initial();
+
 }
 
 /**
