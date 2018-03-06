@@ -8,7 +8,7 @@ const NodeTypeEnum = require('../../enum/NodeTypeEnum');
  * @param nodeId : {String}
  * @return {Promise<{content: *, type}>}
  */
-async function getContentOfNode(nodeId) {
+async function getContentOfNode(nodeId, workspaceId = null) {
   const node = await Node.findById(nodeId);
   let content = null;
   if (!node) { throw Error(`[getContentNode] Unknown node: ${nodeId}`); }

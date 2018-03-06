@@ -56,9 +56,8 @@ module.exports = function (socket) {
     }
 
     fs.readdir(path.join(configServer.files3D, content.path, PartFileSystem.spec), {encoding: 'utf8'}, (err, files) => {
-      if(err);
-      log.error(err);
-      log.info(files);
+      if(err)
+          log.error(err);
       files.forEach(file => socket.emit('addSpec', file, false));
     });
   };

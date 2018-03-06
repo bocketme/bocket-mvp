@@ -4,9 +4,9 @@
         // Submit the insertion of a new part
         $('#submit-import-part').click((event) => {
             event.preventDefault();
-            var cible = headerTitle.title;
+            const cible = headerTitle.title;
             if (cible !== "Select a node") {
-                var nodeId = $('.selected-accordion').attr('id');
+                const nodeId = idOfchoosenNode;
                 if (document.getElementById('import-part-file3D').files[0]) {
                     var form = document.getElementById("form-import-part");
                     var formdata = new FormData(form);
@@ -53,9 +53,9 @@
         // Submit the insert of
         $('#submit-import-assembly').click(event => {
             event.preventDefault();
-            var cible = headerTitle.title;
+            const cible = headerTitle.title;
             if (cible !== "Select a node") {
-                    var nodeId = $('.selected-accordion').attr('id'),
+                    const nodeId = idOfchoosenNode,
                         form = document.getElementById("form-import-assembly"),
                         formdata = new FormData(form),
                         postRequest = new XMLHttpRequest(),
@@ -105,7 +105,7 @@
             var cible = headerTitle.title;
 
             if (cible !== "Select a node") {
-                var nodeId = $('.selected-accordion').attr('id');
+                var nodeId = idOfchoosenNode;
                 var form = document.getElementById("form-add-existing");
                 //        console.log ("submit-search-existing sur node", nodeId);
 
@@ -135,7 +135,7 @@
         $('body').on('click', '#submit-add-existing' , (event) => {
             event.preventDefault();
 
-            var nodeId = $('.selected-accordion').attr('id');
+            var nodeId = idOfchoosenNode;
   
             var sub_level = $("#" + nodeId).contents().filter("span.p-node").attr("data-sublevel");
             var breadcrumb = $("#" + nodeId).contents().filter("span.p-node").attr("data-breadcrumbs");

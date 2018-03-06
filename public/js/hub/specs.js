@@ -15,7 +15,7 @@ $(document).ready(function() {
 
   let downloadButton = $("#download");
 
-  specs.on("contextmenu", "li", function (e) {
+  $("#specs-collection").on('contextmenu', '.collection-item-files',function (e) {
     pointedElem = e.target;
     li = $(this);
     downloadButton.attr('href', '/download/'+ idOfchoosenNode + '/' + li.attr("filename"));
@@ -25,10 +25,9 @@ $(document).ready(function() {
   });
 
   socket.on("addSpec", function (fileName, native) {
-    const splittedName = fileName.split('.');
     addSpec($("#specs-collection"),
       {
-        name: splittedName[0],
+        name: fileName.slice(0, (Math.max(0, fileName.lastIndexOf(".")) || Infinity)),
         format: fileName.slice((Math.max(0, fileName.lastIndexOf(".")) || Infinity) + 1)
       }, native);
   });
@@ -131,6 +130,7 @@ $(document).ready(function() {
  */
 function addSpec(ul, file, native) {
   let native_icon = '';
+  console.log(file);
   if (native)
     native_icon = "<img src='/img/native-3d-file.png' class='native_icon'>";
   ul.append(`<li class="collection-item-files" ${native?'id="native"':''}" filename="${file.name}.${file.format}">` +

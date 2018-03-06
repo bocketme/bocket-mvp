@@ -18,12 +18,6 @@ $(document).ready(function () {
     toggleMenuContextOn('#native-files');
   });
 
-  $("#specs-collection").on('contextmenu', function (e) {
-    e.preventDefault();
-    toggleMenuContextOff();
-    toggleMenuContextOn('#spec-context-menu');
-  });
-
   $('.node-tree').on('contextmenu', 'li', function (e) {
     e.preventDefault();
     toggleMenuContextOff();

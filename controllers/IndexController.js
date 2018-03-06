@@ -1,8 +1,10 @@
 const Invitation = require('../models/Invitation');
 const getPathToSpec = require('../utils/node/getPathToSpec');
+const contentToNode = require('../utils/node/getContentOfNode');
 const path = require('path');
 const fs = require('fs');
 const util = require('util');
+const FSconfig = require('../config/FileSystemConfig');
 
 const read = util.promisify(fs.readFile);
 
@@ -41,6 +43,17 @@ const indexController = {
         console.log('Error', err);
       });
   },
+  downloadNode: (req, res) => {
+    const { nodeId } = req.params;
+    contentToNode(nodeId)
+      .then(node => {
+        const p = path.join(FSconfig.appDirectory.files3D, content.path, FSconfig.content.data);
+        read(p)
+          .then(() => res.download(p))
+          .catch(() => res.status(405).send('File not found'));
+      });
+    
+  }
 };
 
 module.exports = indexController;
