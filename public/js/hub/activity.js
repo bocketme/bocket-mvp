@@ -8,15 +8,26 @@ $(document).ready(function() {
     $(".comment").on("click", slideInputComment);
    // $("#activity").animate({ scrollTop: $('#activity').prop("scrollHeight")}, 1000);
  //  $("#activity").prop("scrollHeight");
-   
+// $(".message-area").scrollTop($(".message-area").prop("scrollHeight"));
   
-   click.on('click', function(event) { 
-       console.log($("#comments").prop("scrollHeight"));
-       $("#comments").scrollTop($("#comments").prop("scrollHeight"));
+  // click.on('click', function(event) { 
+   //    console.log($(".message-area").prop("scrollHeight"));
+  //     $(".message-area").scrollTop($(".message-area").prop("scrollHeight"));
      //  $("#activity").animate({ scrollTop: $(document).height()}, "slow");
-   })
+ //  })
+ var m = $(".message-area");
 
-   click.trigger("click");
+ $("#activity a").click(function(event) {
+     if (click.hasClass('active')) {
+    console.log($("#message-area").prop("scrollHeight"));
+    $("#message-area").animate({ scrollTop: $("#message-area").prop("scrollHeight")}, "slow");
+  
+//        $("#message-area").scrollTop($("#message-area").prop("scrollHeight"));
+  //      m[0].scrollTop = m[0].scrollHeight;
+    }
+       // $("#message-area").animate({scrollTop: $(document).height}, 'slow');
+   });
+//   click.trigger("click");
 
   //  $("#activity").scrollTop($(document).scrollHeight);
    // $("#activity").scrollTop($("#activity").prop("scrollHeight"));
@@ -107,13 +118,13 @@ function printActivityComment(lastComment, comment, when, username) {
     let avatar = getAvatar(comment.avatar, comment.author); 
    // console.log('avatar'+avatar);
     if (username === comment.author)    {
-       $('.message-area').append( `<div class='message-display'> ${comment.content} </div>`);
+       $('.message-area').append( `<div class='col s12'> <div class='message-display'> ${comment.content} </div> </div>`);
     }
     else {
-       $('.message-area').append(`<div class="row message-other">
+       $('.message-area').append(`<div class='col s12'> <div class="row message-other">
         ${avatar}
         ${comment.content}
-       </div>`);
+       </div> </div>`);
        //$('.message-area').prepend( `<div class='message-other'>${comment.content} </div>`);
     }
      $('.tooltipped').tooltip();
@@ -168,7 +179,7 @@ function slideInputComment(e) {
  */
 function addCommentToActivity(event, elem) {
     if (event.key !== "Enter") return ;
-    console.log("AddCommentToActivity");
+    console.log("AddCommentToActivity");   
     var element = $(elem);
     var content = element.val();
     var ul = (view === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
