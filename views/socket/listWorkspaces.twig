@@ -1,26 +1,28 @@
-{% for workspace in workspaces %}
-    <a class="collection-item collection-item-workspace " href="/project/{{workspace._id}}">
-        {% if (workspace.image) %}
-        {% else %}
+    <div class='add-workspace'></div>
+    {% for workspace in workspaces %}
+        <a class="collection-item collection-item-workspace " href="/project/{{workspace._id}}">
+            {% if (workspace.image) %}
+            {% else %}
+                <div class="container">
+                    <div class={% if workspace.id == in_use.id %} {{ "circle-responsive-active" }} {% else %} {{ "circle-responsive" }} {% endif %} >
+                        <div class="circle-content">
+                            {{ workspace.name|first |capitalize }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <p style="font-size: 50%; color: white; text-align: center;" class='truncate'>{{ workspace.name }}</p>
+        </a>
+    {% endfor %}
+    <div class="icon-list-workspace">
+        <a id="trigger-creation-workspace" class=" modal-trigger" href="#workspace-creation" style="min-height: auto !important; padding: 0px !important;" alt="Add Workspace">
             <div class="container">
-                <div class={% if workspace.id == in_use.id %} {{ "circle-responsive-active" }} {% else %} {{ "circle-responsive" }} {% endif %} >
+                <div class="circle-responsive">
                     <div class="circle-content">
-                        {{ workspace.name|first |capitalize }}
+                    +
                     </div>
                 </div>
             </div>
-        {% endif %}
-        <p style="font-size: 50%; color: white; text-align: center;" class='truncate'>{{ workspace.name }}</p>
-    </a>
-{% endfor %}
-<div class="icon-list-workspace">
-    <a id="trigger-creation-workspace" class=" modal-trigger" href="#workspace-creation" style="min-height: auto !important; padding: 0px !important;" alt="Add Workspace">
-        <div class="container">
-            <div class="circle-responsive">
-                <div class="circle-content">
-                    <i class="material-icons responsive-img">add</i>
-                </div>
-            </div>
-        </div>
-    </a>
-</div>
+        </a>
+    </div>
+    <div class='add-workspace'></div>

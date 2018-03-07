@@ -492,7 +492,7 @@ div.collapsible-body  ul {
 #list-workspace{
     max-height: 100%;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
     margin: 0;
 }
 
@@ -533,7 +533,8 @@ div.collapsible-body  ul {
 }
 
 .add-workspace{
-    color: #fff;
+    width: 100%;
+    height: 10px;
 }
 
 @media screen and (max-width: 600px) {
@@ -542,9 +543,8 @@ div.collapsible-body  ul {
         height: auto;
     }
     #list-workspace {
-        margin-top:7px;
-        margin-bottom:7px; 
-        overflow-y: hidden;
+        overflow-y: auto;
+        max-height: 500px;
     }
     #side-nav {
         width:75px;

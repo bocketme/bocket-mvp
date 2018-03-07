@@ -1,4 +1,5 @@
 <div id="list-workspace" class="collection collection-manager bocket-scrollbar">
+    <div class='add-workspace'></div>
     {% for workspace in workspaces %}
         <a class="collection-item collection-item-workspace " href="/project/{{workspace._id}}">
             {% if (workspace.image) %}
@@ -19,10 +20,11 @@
             <div class="container">
                 <div class="circle-responsive">
                     <div class="circle-content">
-                        <i class="material-icons responsive-img">add</i>
+                    +
                     </div>
                 </div>
             </div>
         </a>
     </div>
+    <div class='add-workspace'></div>
 </div>
