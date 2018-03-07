@@ -134,7 +134,7 @@ li.indicator {
 }
 
 #activity .avatar {
-    width: 17%;
+    width: 23px;
     margin-top: 3px;
     margin-right: 6px;
 }
@@ -153,7 +153,9 @@ li.indicator {
     word-wrap: break-word; /*retour à la ligne*/
     float: right;
     border-radius: 20px;
-    line-height: 29px;    
+    line-height: 29px;
+    animation: animateElement linear .3s;
+    animation-iteration-count: 1;    
 }
 
 .message-other {
@@ -167,6 +169,8 @@ li.indicator {
     float: left;
     border-radius: 20px;
     line-height: 29px;
+    animation: animateElement linear .3s;
+    animation-iteration-count: 1;
 }
 
 
@@ -185,3 +189,14 @@ input#add-comment-input {
 #comments {
     padding:0px;
 }
+
+@keyframes animateElement{
+    0% {
+      opacity:0;
+      transform:  translate(0px,20px);
+    }
+    100% {
+      opacity:1;
+      transform:  translate(0px,0px);
+    }
+  }
