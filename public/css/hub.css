@@ -42,10 +42,10 @@ main {
 
 #side-nav {
     background-color: #3c3c3c;
-    padding: 0 !important;
+    padding: 0;
     height: 100%;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
     width: 75px;
 }
 
@@ -378,7 +378,9 @@ p{
     background-color: #9b9b9b !important;
 }
 
-.modal { width: 35% !important ; height: 75% !important ; }
+.modal { 
+    width: 35%; 
+}
 
 .clear {
     clear: both;
@@ -488,8 +490,10 @@ div.collapsible-body  ul {
 }
 
 #list-workspace{
-    max-height: 90%;
+    max-height: 100%;
     overflow-x: hidden;
+    overflow-y: scroll;
+    margin: 0;
 }
 
 .circle-responsive-active {
@@ -540,9 +544,14 @@ div.collapsible-body  ul {
     #list-workspace {
         margin-top:7px;
         margin-bottom:7px; 
+        overflow-y: hidden;
     }
     #side-nav {
         width:75px;
         height: 100%;
+    }
+    .modal{
+        width: 80%;
+        max-height: 100%;
     }
 }
