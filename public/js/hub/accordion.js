@@ -67,6 +67,9 @@ function loadNodeInformation(event) {
       title: fill_value,
       breadcrumb:breadcrumbs_value
     });
+
+    let buttonNativeDownload = $('#download-native');
+    buttonNativeDownload.attr('href', '#!');
     /*
     TODO: Location...
     clearComments($("#activity-comments-location"));

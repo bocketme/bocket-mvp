@@ -50,7 +50,12 @@ module.exports = (socket, uploader) => {
     getUploadir(fileInfo.name, fileInfo.data.nodeId, socket.handshake.session.currentWorkspace)
       .then((ret) => {
         fileInfo.uploadDir = path.join(FSconfig.appDirectory.tmp, fileInfo.name);
-        mv(fileInfo.uploadDir, path.join(ret, fileInfo.name), (err) => log.error(err));
+        mv(fileInfo.uploadDir,
+          path.join(ret, fileInfo.name),
+          (err) => {
+            if (err)
+              log.error(err)
+          });
 
         socket.emit('addSpec', fileInfo.name);
         fileInfo.uploadDir = ret;

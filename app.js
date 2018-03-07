@@ -121,10 +121,10 @@ app.use("/assembly", assembly);
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on("listening", () => {
     for (let dir in FSconfig.appDirectory) {
-        fs.access(dir, err => {
+        fs.access(FSconfig.appDirectory[dir], err => {
             if (err) {
                 log.error(err);
-                fs.mkdir(dir, (err) => {
+                fs.mkdir(FSconfig.appDirectory[dir], (err) => {
                     if (err)
                         return log.fatal(err);
                     log.info(`Directory ${dir} ==> ok`);
