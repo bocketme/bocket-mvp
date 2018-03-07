@@ -10,6 +10,8 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const csurf = require('csurf');
+const Keygrip = require('keygrip');
+const cookies = require('cookies');
 const FSconfig = require('./config/FileSystemConfig');
 const log = require('./utils/log');
 
@@ -39,7 +41,8 @@ let server = require('http').createServer(app);
 let io = require("socket.io")(server);
 let ioListener = require("./sockets/socketsListener")(io);
 // // parse the cookies of the application
-// app.use(cookieParser);
+const keys = new Keygrip([config.secretKey, config.secretSession], 'sha256', 'hex');
+app.use(cookies.express(keys));
 
 //Initialize the favicon
 app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon-bocket.png')));

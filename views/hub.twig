@@ -21,12 +21,11 @@
     <div id="hub" class="row">
         {% include "./hub/invitePeople.twig" %}
 
-        <div id="second_column" class="col s12 m3 l3">
-            <div id="side-nav" class="col s3 m4 l4 xl4">
+        <div id="second_column" class="col row s12 m3 l3 xl3">
+            <div id="side-nav" class="col s2 m3 l3 xl3">
                 {% include "./hub/listWorkspaces.twig" %}
             </div>
-            <div class="col s9 m6 l8 xl9">
-
+            <div id='main-panel' class="col s10 m9 l9 xl9">
                 <button class="dropdown-button" data-beloworigin="true" data-activates='workspaces-dropdown'>
                     <div>
                         {{ in_use.name }}

@@ -161,7 +161,11 @@ module.exports = (io, socket)=> {
         file3DManager.update(nodeId);
 
         file3DManager.socket = socket;
-    })
+    });
+
+    socket.on(loading.on.save, (workspaceId, nodeId, matrix) => {
+        file3DManager.save(workspaceId, nodeId, matrix);
+    });
 
     /*
     socket.on("start viewer", (workspaceId) => {
