@@ -52,7 +52,7 @@ $(document).ready(function() {
         var ul = "#activity-comments";
         console.log("Nouveau commentaire", context);
         printActivityComment($(ul + " li:first"), context.activity, context.activity.formatDate, context.username);
-        $msgArea.animate({ scrollTop: $msgArea.prop("scrollHeight")}, "slow");
+      //  $msgArea.animate({ scrollTop: $msgArea.prop("scrollHeight")}, "slow");
 
     });
 
