@@ -96,13 +96,13 @@ function getAvatar(avatarSrc, author) {
  * @param when Date
  */
 function printActivityComment(lastComment, comment, when, username) {
-    addActivity();
+
     let avatar = getAvatar(comment.avatar, comment.author); 
     if (username === comment.author)    {
        $('.message-area')
        .append( `<div class='col s12'>
                     <div class='message-display'>
-                        ${comment.content} 
+                        ${comment.content}
                     </div>
                 </div>`);
     }
