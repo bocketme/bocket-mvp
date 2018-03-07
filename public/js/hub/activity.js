@@ -3,38 +3,29 @@ var newComment = "newActivityComment";
 $(document).ready(function() {
     $('.profile').initial();
     var empty = "";
-    var click =  $("a[href='#comments']");
+    const $msgArea = $(".message-area");
+
     $(".activity-upload").on("click", uploadFile);
     $(".comment").on("click", slideInputComment);
-   // $("#activity").animate({ scrollTop: $('#activity').prop("scrollHeight")}, 1000);
- //  $("#activity").prop("scrollHeight");
-   
-  
-   click.on('click', function(event) { 
-       console.log($("#comments").prop("scrollHeight"));
-       $("#comments").scrollTop($("#comments").prop("scrollHeight"));
-     //  $("#activity").animate({ scrollTop: $(document).height()}, "slow");
-   })
 
-   click.trigger("click");
+ 
+    $("a[href='#comments']").on("click", function() {   //when click on comments, scrolldown to the input tchat
+        $("#comments").css({
+            'display':'block',
+            'visibility':'visible'
+        });    
+        $msgArea.animate({ scrollTop: $msgArea.prop("scrollHeight")}, "slow");
+    });
+    $("a[href='#comments']").trigger("click");
 
-  //  $("#activity").scrollTop($(document).scrollHeight);
-   // $("#activity").scrollTop($("#activity").prop("scrollHeight"));
-   
- //   click.unbind('click').bind('click', function(event) {
 
-     //$("#activity").animate({ scrollTop: $(window).height()}, "slow");
-     //return false;  
-   
-    /**
-     * Used when a key enter is pressed on input
-     * @Param e : event
-     */
     $(".add-comment-input").keydown(function (e) {
         if (e.which === 13 && $(this).val() !== empty) {
             var ul = (view === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
             addCommentActivity($(ul + " li:first"), {content: $(this).val(), date: new Date}, view);
             $(this).val(empty);
+            $msgArea.animate({ scrollTop: $msgArea.prop("scrollHeight")}, "slow");
+
         }
     });
 
@@ -61,6 +52,8 @@ $(document).ready(function() {
         var ul = "#activity-comments";
         console.log("Nouveau commentaire", context);
         printActivityComment($(ul + " li:first"), context.activity, context.activity.formatDate, context.username);
+      //  $msgArea.animate({ scrollTop: $msgArea.prop("scrollHeight")}, "slow");
+
     });
 
 });
@@ -103,18 +96,21 @@ function getAvatar(avatarSrc, author) {
  * @param when Date
  */
 function printActivityComment(lastComment, comment, when, username) {
-    addActivity();
+
     let avatar = getAvatar(comment.avatar, comment.author); 
-   // console.log('avatar'+avatar);
     if (username === comment.author)    {
-       $('.message-area').append( `<div class='message-display'> ${comment.content} </div>`);
+       $('.message-area')
+       .append( `<div class='col s12'>
+                    <div class='message-display'>
+                        ${comment.content}
+                    </div>
+                </div>`);
     }
     else {
-       $('.message-area').append(`<div class="row message-other">
+       $('.message-area').append(`<div class='col s12'> <div class="row message-other">
         ${avatar}
         ${comment.content}
-       </div>`);
-       //$('.message-area').prepend( `<div class='message-other'>${comment.content} </div>`);
+       </div> </div>`);
     }
      $('.tooltipped').tooltip();
      $('.profile').initial();
@@ -168,7 +164,7 @@ function slideInputComment(e) {
  */
 function addCommentToActivity(event, elem) {
     if (event.key !== "Enter") return ;
-    console.log("AddCommentToActivity");
+    console.log("AddCommentToActivity");   
     var element = $(elem);
     var content = element.val();
     var ul = (view === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
