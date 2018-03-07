@@ -45,6 +45,8 @@ main {
     padding: 0 !important;
     height: 100%;
     overflow-x: hidden;
+    overflow-y: auto;
+    width: 75px;
 }
 
 .side-nav {
@@ -489,8 +491,7 @@ div.collapsible-body  ul {
 }
 
 #list-workspace{
-    max-height: 80%;
-    overflow-y: auto;
+    max-height: 90%;
     overflow-x: hidden;
 }
 
@@ -522,4 +523,19 @@ div.collapsible-body  ul {
 .add-workspace{
     color: #fff;
     padding: 15px 15px; 
+}
+
+@media screen and (max-width: 600px) {
+    #second_column {
+        min-height: 227px;
+        height: auto;
+    }
+    #list-workspace {
+        margin-top:7px;
+        margin-bottom:7px; 
+    }
+    #side-nav {
+        width:75px;
+        height: 100%;
+    }
 }

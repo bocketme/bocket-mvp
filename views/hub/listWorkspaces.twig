@@ -1,4 +1,4 @@
-<div id="list-workspace" class="collection collection-manager bocket-scrollbar" style="max-height: 90% !important; padding: 0px !important; margin: 0px !important;">
+<div id="list-workspace" class="collection collection-manager bocket-scrollbar">
     {% for workspace in workspaces %}
         <a class="collection-item collection-item-workspace {% if workspace.id == in_use.id %} {{ "active" }} {% endif %}" style="min-height: auto !important; padding: 0px !important;" href="/project/{{workspace._id}}">
         {% if (workspace.image) %}
