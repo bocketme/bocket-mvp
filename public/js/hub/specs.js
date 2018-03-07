@@ -20,7 +20,10 @@ $(document).ready(function() {
     li = $(this);
     downloadButton.attr('href', '/download/'+ idOfchoosenNode + '/' + li.attr("filename"));
     toggleMenuContextOff("#specs-context-menu");
-    toggleMenuContextOn("#spec-context-menu");
+    if(li.is('#native'))
+      toggleMenuContextOn("#native-files");
+    else
+      toggleMenuContextOn("#spec-context-menu");
     return false;
   });
 
@@ -131,8 +134,11 @@ $(document).ready(function() {
 function addSpec(ul, file, native) {
   let native_icon = '';
   console.log(file);
-  if (native)
+  if (native) {
+    let buttonNativeDownload = $('#download-native');
     native_icon = "<img src='/img/native-3d-file.png' class='native_icon'>";
+    buttonNativeDownload.attr('href', `/download/${idOfchoosenNode}/native/${file.name}.${file.format}`);
+  }
   ul.append(`<li class="collection-item-files" ${native?'id="native"':''}" filename="${file.name}.${file.format}">` +
     `<p class="truncate">`+
     `<i class="material-icons tiny">insert_drive_file</i>`+
