@@ -12,7 +12,7 @@ function getNbrOfActivity() {
 
 function addActivity(nbr) {
     if (!nbr) nbr = 1;
-    console.log("nbr = ", nbr);
+   // console.log("nbr = ", nbr);
     if (view === ViewTypeEnum.content)
         return nbrOfActivityContent += nbr;
     else
