@@ -6,14 +6,10 @@
     z-index:    10;
 }
 
-#axisCanvas{    
-    height: 100%;
-    width: 100%;
-}
-
-#renderSurface{
-    height: 100%;
-    width: 100%;
+#renderDiv{
+    padding: 0px;
+    height: 99%;
+    position: relative;
 }
 
 #move-icon
