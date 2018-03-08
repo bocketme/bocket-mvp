@@ -6,12 +6,14 @@ const internalErrorEmitter = require('./emitter/internalErrorEmitter');
 
 async function removeUserFromWorkspace(workspaceId, ownerMail, userEmail) {
     const { owner } = await WorkspaceModel.findById(workspaceId);
+    const user = await UserModel.find({ email : userEmail });
     if (userEmail === owner.email)
         return false;
     if (ownerMail !== owner.email)
         return false;
     await WorkspaceModel.update({ _id : workspaceId }, { $pull : { 'team.members' : { email : userEmail }}});
     await WorkspaceModel.update({ _id : workspaceId }, { $pull : { 'users' : { email : userEmail }}});
+    await UserModel.update({ _id : user.id }, { $pull : { workspaces : { _id : workspaceId }}});
     return true;
 }
 
@@ -44,7 +46,7 @@ async function removeUserFromOrganization(workspaceId, ownerMail, userEmail) {
 module.exports = (socket) => {
     socket.on(removeUserFromOW, ({ command, userEmail }) => {
         if (command === 'workspace') {
-            removeUserFromWorkspace(socket.handshake.session.currentWorkspace, socket.handshake.session.email, userEmail)
+            removeUserFromWorkspace(socket.handshake.session.currentWorkspace, socket.handshake.session.userMail, userEmail)
                 .then((state) => {
                     socket.emit(removeUserFromOW, state);
                 })
@@ -53,7 +55,7 @@ module.exports = (socket) => {
                 });
         }
         if (command === 'organization') {
-            removeUserFromOrganization(socket.handshake.session.currentWorkspace, socket.handshake.session.email, userEmail)
+            removeUserFromOrganization(socket.handshake.session.currentWorkspace, socket.handshake.session.userMail, userEmail)
                 .then((state) => {
                     socket.emit(removeUserFromOW, state);
                 })
