@@ -785,7 +785,7 @@
 				if (!scope.object.geometry.boundingBox)
 					scope.object.geometry.computeBoundingBox();
 				worldPosition.setFromMatrixPosition(scope.object.matrixWorld);
-				worldPosition.add(scope.object.geometry.boundingBox.center());
+				worldPosition.add(scope.object.geometry.boundingBox.getCenter());
 			} else {
 				worldPosition.setFromMatrixPosition(scope.object.matrixWorld);
 			}

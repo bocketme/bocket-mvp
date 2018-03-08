@@ -7,6 +7,8 @@ let fs = require('fs');
 let NodeTypeEnum = require("../enum/NodeTypeEnum");
 let ViewTypeEnum = require("../enum/ViewTypeEnum");
 let path = require('path');
+const log = require('../utils/log');
+
 module.exports = {
   /**
    * Affiche tous les projets d'un utilisateur
@@ -14,7 +16,11 @@ module.exports = {
    */
   index: (req, res) => {
     getRenderInformation(req.params.workspaceId, req.session.userMail)
-      .then(context => res.render("hub", context))
+      .then(context => {
+        req.session.currentWorkspace = req.body.workspaceId;
+        log.info(req.session);
+        res.render("hub", context)
+      })
       .catch(err => {
         if (err === 404 || err === 500)
           res.sendStatus(err);
@@ -77,6 +83,7 @@ function getRenderInformation(workspaceId, userMail) {
               //TODO: Why ?
               reject("/signin");
             }
+          //  req.session.userId = user._id;
             Node.findById(workspace.node_master._id)
               .then(node_master => {
                 console.log(" RENDER INFO NODE_MASTER = ", node_master);

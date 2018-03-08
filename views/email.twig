@@ -1,3 +1,145 @@
 <h1>Hello {{ completeName }} !</h1>
 <h4>You've been invited to participate to  the <b>{{ workspace.name }}</b> 3D Workspace  by <i>{{ author }}</i></h4>
 <p>Please, Join It : </p><a href="{{ url }}"><b>{{ workspace.name }}</b></a>
+
+<style>
+/* ------------------------------------- 
+		GLOBAL 
+------------------------------------- */
+* { 
+	margin:0;
+	padding:0;
+}
+* { font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
+
+img { 
+	max-width: 100%; 
+}
+.collapse {
+	margin:0;
+	padding:0;
+}
+body {
+	-webkit-font-smoothing:antialiased; 
+	-webkit-text-size-adjust:none; 
+	width: 100%!important; 
+	height: 100%;
+}
+
+
+/* ------------------------------------- 
+		ELEMENTS 
+------------------------------------- */
+a { color: #2BA6CB;}
+
+table.condition {
+	padding: 10px 40px 10px 40px;
+	background-color: #221F1F;
+	color:#A4A1A1;
+	font-size:1px;
+}
+
+/* ------------------------------------- 
+		BODY 
+------------------------------------- */
+table.body-wrap { width: 100%;}
+
+
+/* ------------------------------------- 
+		TYPOGRAPHY 
+------------------------------------- */
+
+h3 { font-weight:500; font-size: 27px;}
+
+p { 
+	margin-bottom: 10px; 
+	font-weight: normal; 
+	font-size:12px; 
+	line-height:1.4;
+}
+
+/* --------------------------------------------------- 
+		RESPONSIVENESS
+		Nuke it from orbit. It's the only way to be sure. 
+------------------------------------------------------ */
+
+/* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+.container {
+	display:block!important;
+	max-width:600px!important;
+	margin:0 auto!important; /* makes it centered */
+	clear:both!important;
+}
+
+/* This should also be a block element, so that it will fill 100% of the .container */
+.content {
+	padding:15px;
+	max-width:600px;
+	margin:0 auto;
+	display:block; 
+}
+
+/* Let's make sure tables in the content area are 100% wide */
+.content table { width: 100%; }
+
+/* ------------------------------------------- 
+		PHONE
+		For clients that support media queries.
+		Nothing fancy. 
+-------------------------------------------- */
+@media only screen and (max-width: 600px) {
+	
+
+}
+</style>
+<body>
+	<table class="body-wrap">
+		<tr>
+		<td class="container">
+			<div class="content">
+				<table>
+					<tr>
+						<td>
+							<img src="logo.png"  alt="Smiley face" height="100">
+							<h3>Vous avez été invité à rejoindre Bocket ! </h3>
+						<pre>
+Bonjour prénom, 
+Autreprénom vous demande de le rejoindre dans son 3D Workspace. 
+
+Pour le rejoindre cliquez <a href="#">ici</a>.
+
+
+Pour plus d'informations, n'hésitez pas <a href="#">nous contacter</a>.
+
+L’équipe Bocket vous souhaite une bonne journée 
+</pre>
+												
+						<br/>
+						<br/>												
+						<table class="condition" width="100%">
+							<tr>
+								<td>
+									<p>
+En vous inscrivant à Bocket, vous acceptez nos <a href="#">Conditions d'utilisation</a> et<br>
+notre <a href="#">Déclaration de confidentialité</a>.<br><br>
+Des questions ? Appelez le 0606060606.<br><br>
+Cet e-mail vous a été envoyé dans le cadre de votre souscription à Bocket. Pour <br>
+modifier vos préférences d'e-mail à tout moment, accédez à la page <a href="#">Paramètres <br>
+de communication</a> de votre compte.<br><br>
+Veuillez ne pas répondre à cet e-mail. Si vous avez besoin d'aide ou souhaitez nous<br>
+contacter, vous pouvez consulter notre Centre d'aide : <a href="#">lien site web</a>.<br><br><br><br>
+Ce message est adressé à <a href="#">[quentinwavelet@gmail.com]</a> de la part de Bocket.<br><br>	
+L'utilisation du service et du site Web de Bocket est soumise à nos <a href="#">Conditions<br>
+d'utilisation</a> et à notre <a href="#">Déclaration de confidentialité</a>.<br>
+</p>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+			</div>								
+		</td>
+	</tr>
+</table>
+</body>

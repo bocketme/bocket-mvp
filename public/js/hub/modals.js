@@ -4,9 +4,9 @@
         // Submit the insertion of a new part
         $('#submit-import-part').click((event) => {
             event.preventDefault();
-            var cible = third_column.$data.selected;
+            const cible = headerTitle.title;
             if (cible !== "Select a node") {
-                var nodeId = $('.selected-accordion').attr('id');
+                const nodeId = idOfchoosenNode;
                 if (document.getElementById('import-part-file3D').files[0]) {
                     var form = document.getElementById("form-import-part");
                     var formdata = new FormData(form);
@@ -53,9 +53,9 @@
         // Submit the insert of
         $('#submit-import-assembly').click(event => {
             event.preventDefault();
-            var cible = third_column.$data.selected;
+            const cible = headerTitle.title;
             if (cible !== "Select a node") {
-                    var nodeId = $('.selected-accordion').attr('id'),
+                    const nodeId = idOfchoosenNode,
                         form = document.getElementById("form-import-assembly"),
                         formdata = new FormData(form),
                         postRequest = new XMLHttpRequest(),
@@ -102,10 +102,10 @@
 
             //    console.log ("submit-search-existing trigger");
             event.preventDefault();
-            var cible = third_column.$data.selected;
+            var cible = headerTitle.title;
 
             if (cible !== "Select a node") {
-                var nodeId = $('.selected-accordion').attr('id');
+                var nodeId = idOfchoosenNode;
                 var form = document.getElementById("form-add-existing");
                 //        console.log ("submit-search-existing sur node", nodeId);
 
@@ -126,8 +126,6 @@
                     } //add 
                     $("#form-add-existing").append(data);
 
-                    //console.log(data);
-
                 });
 
             } else
@@ -137,7 +135,7 @@
         $('body').on('click', '#submit-add-existing' , (event) => {
             event.preventDefault();
 
-            var nodeId = $('.selected-accordion').attr('id');
+            var nodeId = idOfchoosenNode;
   
             var sub_level = $("#" + nodeId).contents().filter("span.p-node").attr("data-sublevel");
             var breadcrumb = $("#" + nodeId).contents().filter("span.p-node").attr("data-breadcrumbs");
@@ -153,13 +151,6 @@
                     delete id;
                 }
             });
- //           console.log('------------------------------');
- //           console.log ("id to send :", dataToSend);
- //           console.log("ParenNode :", nodeId);
- //           console.log("sub_level :", sub_level);
- //           console.log("breadcrumb :", breadcrumb);
- //           console.log('------------------------------');
-
             socket.emit("GetSelectedItemsToAdd", dataToSend, nodeId, breadcrumb, sub_level);
    
             delete dataToSend;
@@ -197,7 +188,7 @@
 
         //////////////////////////////////////////////////////////////////////
         $('.modal-node-selector').click((event) => {
-            if (third_column.$data.selected == "Select a node") {
+            if (headerTitle.title == "Select a node") {
                 Materialize.toast("You must select a node", 2000);
                 $('.button-form-validate').addClass("disabled");
             } else $('.button-form-validate').removeClass("disabled");

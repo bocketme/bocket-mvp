@@ -14,6 +14,8 @@ const succeededEmitter = require('../sockets/emitter/actionSucceeded');
 const failedEmitter = require('../sockets/emitter/actionFailed');
 
 const appDir = path.dirname(require.main.filename);
+const FSconfig = require('../config/FileSystemConfig');
+const log = require('../utils/log');
 
 /**
  * get the right uploadDir
@@ -28,14 +30,13 @@ async function getUploadir(fileName, nodeId, workspaceId) {
   try {
     const node = await Node.findById(nodeId);
     const workspace = await Workspace.findById(workspaceId);
-    if (!node || !workspace) throw Error('Unknown node');
-    if (node.type === NodeTypeEnum.part) {
+    if (!node || !workspace) throw new Error('Unknown node');
+    if (node.type === NodeTypeEnum.part)
       content = await Part.findById(node.content);
-    } else if (node.type === NodeTypeEnum.part) {
+    else if (node.type === NodeTypeEnum.assembly)
       content = await Assembly.findById(node.content);
-    }
-    if (!content) throw Error('Unknown content');
-    ret = `${config.files3D}/${workspace.organization.name}-${workspace.organization._id}/${content.name} - ${node.content}/${fsPart.spec}/${fileName}`;
+    if (!content) throw new Error('Unknown content');
+    ret = path.join(config.files3D, content.path, fsPart.spec);
   } catch (e) {
     throw e;
   }

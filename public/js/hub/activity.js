@@ -3,19 +3,29 @@ var newComment = "newActivityComment";
 $(document).ready(function() {
     $('.profile').initial();
     var empty = "";
+    const $msgArea = $(".message-area");
 
     $(".activity-upload").on("click", uploadFile);
     $(".comment").on("click", slideInputComment);
 
-    /**
-     * Used when a key enter is pressed on input
-     * @Param e : event
-     */
+ 
+    $("a[href='#comments']").on("click", function() {   //when click on comments, scrolldown to the input tchat
+        $("#comments").css({
+            'display':'block',
+            'visibility':'visible'
+        });    
+        $msgArea.animate({ scrollTop: $msgArea.prop("scrollHeight")}, "slow");
+    });
+    $("a[href='#comments']").trigger("click");
+
+
     $(".add-comment-input").keydown(function (e) {
         if (e.which === 13 && $(this).val() !== empty) {
             var ul = (view === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
             addCommentActivity($(ul + " li:first"), {content: $(this).val(), date: new Date}, view);
             $(this).val(empty);
+            $msgArea.animate({ scrollTop: $msgArea.prop("scrollHeight")}, "slow");
+
         }
     });
 
@@ -30,7 +40,7 @@ $(document).ready(function() {
         clearComments($(ul));
         for (var i = activities.length - 1; i >= 0 ; i--) {
             let comment = activities[i];
-            printActivityComment($(ul + " li:first"), comment, comment.formatDate);
+            printActivityComment($(ul + " li:first"), comment, comment.formatDate, context.username);
             if (comment.comments.length !== 0)
                 for (var y = 0 ; y < comment.comments.length ; y++ ) {
                     printCommentOfActivity(comment.comments[y], comment.index);
@@ -41,7 +51,9 @@ $(document).ready(function() {
     socket.on("newActivity", function (context) {
         var ul = "#activity-comments";
         console.log("Nouveau commentaire", context);
-        printActivityComment($(ul + " li:first"), context.activity, context.activity.formatDate);
+        printActivityComment($(ul + " li:first"), context.activity, context.activity.formatDate, context.username);
+      //  $msgArea.animate({ scrollTop: $msgArea.prop("scrollHeight")}, "slow");
+
     });
 
 });
@@ -71,9 +83,9 @@ function addCommentActivity(lastComment, comment, view) {
 function getAvatar(avatarSrc, author) {
     let avatar;
     if (!avatarSrc)
-        avatar = '<img data-name="' + author + '" class="avatar col s2 profile"/>';
+        avatar = '<img data-name="' + author + '" class="avatar col s2 profile tooltipped" data-tooltip="'+ author +'" data-position="left" data-delay="50"/>';
     else
-        avatar = '<img class=\"avatar col s2\" src=\"'+ avatarSrc +'">';
+        avatar = '<img class=\"avatar col s2 tooltipped\" src=\"'+ avatarSrc +'">';
     return avatar
 }
 
@@ -83,41 +95,26 @@ function getAvatar(avatarSrc, author) {
  * @Param comment = { author : string, content : string, date: Date }
  * @param when Date
  */
-function printActivityComment(lastComment, comment, when) {
-    addActivity();
-    let avatar = getAvatar(comment.avatar, comment.author);
+function printActivityComment(lastComment, comment, when, username) {
 
-    lastComment.after("<li>" +
-        "<div class=\"row\">\n" +
-        "    <div class=\"col s12\">\n" +
-        "        <div class=\"card\">\n" +
-        "            <div class=\"card-content white-text\">\n" +
-        "                <div class=\"row\">\n" +
-        "                    <div>\n" +
-                                    avatar + '\n' +
-        "                        <span class=\"card-title s10\"> <span class=\"who\">" + comment.author + "</span> <span class=\"what\">added a comment</span>, <span class=\"when\">" + when + "</span></span>\n" +
-        "                    </div>\n" +
-        "                    <p class=\"col s12\">"+ comment.content +"</p>" +
-        "                </div>\n" +
-        "            </div>\n" +
-        "            <div class=\"card-action row\">" +
-        "                <ul class=\"comments\" style=\"display: none;\">" +
-        "                </ul>" +
-        "                <div class=\"cache-toi\" style=\"display: none;\">\n" +
-        "                    <input class=\"comment-input\"  data-index='" + comment.index + "' onkeydown='addCommentToActivity(event, this)' placeholder=\"Add your comment...\" type=\"text\">\n" +
-        "                </div>\n" +
-        "                <div class=\"chip comment\" onclick='slideInputComment(this)' data-id='" + comment._id + "'>\n" +
-        "                    <span class=\"chip-content\">Comment</span>\n" +
-        "                </div>\n" +
-        "                <div class=\"chip activity-upload\" onclick='uploadFile()'>\n" +
-        "                    <span class=\"chip-content\">Attach a file</span>\n" +
-        "                </div>\n" +
-        "            </div>\n" +
-        "        </div>\n" +
-        "    </div>\n" +
-        "</div>" +
-        "</li>");
-    $('.profile').initial();
+    let avatar = getAvatar(comment.avatar, comment.author); 
+    if (username === comment.author)    {
+       $('.message-area')
+       .append( `<div class='col s12'>
+                    <div class='message-display'>
+                        ${comment.content}
+                    </div>
+                </div>`);
+    }
+    else {
+       $('.message-area').append(`<div class='col s12'> <div class="row message-other">
+        ${avatar}
+        ${comment.content}
+       </div> </div>`);
+    }
+     $('.tooltipped').tooltip();
+     $('.profile').initial();
+
 }
 
 /**
@@ -126,7 +123,8 @@ function printActivityComment(lastComment, comment, when) {
  * @param index : String (index of the comment)
  */
 function printCommentOfActivity(comment, index) {
-    var ulId = (view === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
+
+    var ulId = (view === ViewTypeEnum.location) ? ("#activity-comments") : ("#activity-comments-content");    
     let avatar = getAvatar(comment.avatar, comment.author);
     $(`${ulId} .comment-input[data-index=${index}]`).parent().prev().append(`
         <li class="commentOfActivity">
@@ -166,12 +164,12 @@ function slideInputComment(e) {
  */
 function addCommentToActivity(event, elem) {
     if (event.key !== "Enter") return ;
-    console.log("AddCommentToActivity");
+    console.log("AddCommentToActivity");   
     var element = $(elem);
     var content = element.val();
     var ul = (view === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
     //console.log("index = ", $(ul).index($(elem)));
-    console.log("")
+   // console.log(content);
     socket.emit('addCommentToActivity', { nodeId: idOfchoosenNode,  activityIndex: element.attr('data-index'), comment: {content: content, date: new Date()}, viewType: view});
 }
 

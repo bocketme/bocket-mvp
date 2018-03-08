@@ -8,6 +8,12 @@ const favicon = require('serve-favicon');
 const path = require('path');
 const fs = require('fs');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
+const csurf = require('csurf');
+const Keygrip = require('keygrip');
+const cookies = require('cookies');
+const FSconfig = require('./config/FileSystemConfig');
+const log = require('./utils/log');
 
 /* ROUTES */
 const index = require("./routes/index");
@@ -23,10 +29,10 @@ const assembly = require("./routes/assembly");
 let expressSession = require("express-session");
 const MongoStore = require('connect-mongo')(expressSession); //session store
 let session = expressSession({
-  secret: config.secretSession,
-  store: new MongoStore({ url: config.mongoDB }),
-  resave: true,
-  saveUninitialized: true
+    secret: config.secretSession,
+    store: new MongoStore({ url: config.mongoDB }),
+    resave: true,
+    saveUninitialized: true
 });
 let sharedsession = require("express-socket.io-session");
 
@@ -35,7 +41,8 @@ let server = require('http').createServer(app);
 let io = require("socket.io")(server);
 let ioListener = require("./sockets/socketsListener")(io);
 // // parse the cookies of the application
-// app.use(cookieParser);
+const keys = new Keygrip([config.secretKey, config.secretSession], 'sha256', 'hex');
+app.use(cookies.express(keys));
 
 //Initialize the favicon
 app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon-bocket.png')));
@@ -63,7 +70,7 @@ app.use(morgan('dev'));
 
 app.use(session);
 io.use(sharedsession(session, {
-  autoSave: true
+    autoSave: true
 }));
 
 module.exports = app;
@@ -75,6 +82,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
+/*
+//Use helmet to secure the headers.
+app.use(helmet());
+
+//Use csurg against CSRF fails
+app.use(csurf());
+
+app.use(function (req, res, next) {
+  res.locals._csrf = req.csrfToken();
+  res.cookie('XSRF-TOKEN', req.csrfToken());
+  next();
+});
+*/
 
 // Display body request
 /*app.use(function (req, res, next) {
@@ -89,14 +109,9 @@ app.use(bodyParser.json());
 app.engine('twig', require('twig').__express);
 app.set("view engine", "twig");
 app.set('twig options', {
-  strict_variables: false,
+    strict_variables: false,
 });
-
-app.get('/vincent/dl', (req, res) => {
-  console.log("qdqsdq");
-  res.download(__dirname + "/README.md");
-});
-
+app.use(express.static('public'));
 app.use("/signOut", signOut);
 app.use("/", index);
 app.use("/user", user);
@@ -105,34 +120,19 @@ app.use("/signup", signup);
 app.use("/project", project);
 app.use("/part", part);
 app.use("/assembly", assembly);
-app.post("/test", (req, res) => {
-  console.log(req.query);
-  console.log(req.params);
-  res.send(req.query);
-});
-
-app.use(express.static('public'));
 
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on("listening", () => {
-    fs.access(config.data , (err) => {
-        if (err) {
-            if (err.code == 'ENOENT') {
-                fs.mkdir(config.data, (err) => {
+    for (let dir in FSconfig.appDirectory) {
+        fs.access(FSconfig.appDirectory[dir], err => {
+            if (err) {
+                log.error(err);
+                fs.mkdir(FSconfig.appDirectory[dir], (err) => {
                     if (err)
-                    throw err;
-                    fs.mkdir(config.files3D, err => {
-                        if (err)
-                        throw err;
-                    });
-                    fs.mkdir(config.avatar, err => {
-                        if (err)
-                        throw err;
-                    })
-                })
-            }
-            else 
-            throw err;
-        }
-    })
+                        return log.fatal(err);
+                    log.info(`Directory ${dir} ==> ok`);
+                });
+            } else log.info(`Directory ${dir} ==> ok`);
+        });
+    }
 });

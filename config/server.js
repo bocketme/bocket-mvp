@@ -5,6 +5,7 @@ const path =              require('path');
 const data =              path.resolve("./.data");
 const files3D =           path.join(data, "files");
 const avatar =            path.join(data, "avatar");
+const tmp =               path.join(data, "tmp");
 
 module.exports = {
   port: "8080",
@@ -15,6 +16,7 @@ module.exports = {
   data: data,
   files3D: files3D,
   avatar: avatar,
+  tmp: tmp,
   secretSession: "kdjqskdjkqsjdsjqdklqsjdkjziooajdiazjdskjdqklsjdjaziodjsqjdlj",
   secretKey: "Bocket make a new World of Possibilities",
 };

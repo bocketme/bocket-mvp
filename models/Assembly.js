@@ -35,6 +35,7 @@ let AssemblyScheama = mongoose.Schema({
     maturity: {type: String, default: TypeEnum.maturity[0]},
     quality: {type: Number, default:0},
     whereUsed: {type: [String], default: []},
+    creator: {type: NestedUser, require: true},
 
     //Update tags unused for the 1.0
     tags: {type: [], default: []},
