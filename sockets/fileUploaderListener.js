@@ -36,7 +36,7 @@ async function getUploadir(fileName, nodeId, workspaceId) {
     else if (node.type === NodeTypeEnum.assembly)
       content = await Assembly.findById(node.content);
     if (!content) throw new Error('Unknown content');
-    ret = path.join(config.files3D, content.path, fsPart.spec);
+    ret = path.join(config.files3D, content.path, fsPart.spec, fileName);
   } catch (e) {
     throw e;
   }
@@ -52,17 +52,18 @@ async function edit3DFile(fileInfo, data, workspaceId) {
     let p = path.join(config.files3D, content.path, PartFileSytemConfig.data);
     cleanDirectory(p, () => { });
     p = path.join(p, fileInfo.name);
-    mv(fileInfo.uploadDir, p, console.log);
+    mv(fileInfo.uploadDir, p, log.info);
   }
 }
 
 module.exports = (socket, uploader) => {
+  let uploadDir = null;
   uploader.on('start', (fileInfo) => {
-    console.log('Start uploading');
-    console.log(fileInfo);
+    log.info('Start uploading');
+    uploadDir = fileInfo.uploadDir;
   });
   uploader.on('stream', (fileInfo) => {
-    console.log(`${fileInfo.wrote} / ${fileInfo.size} byte(s)`);
+    log.info(`${Math.trunc(fileInfo.wrote/fileInfo.size*100)}% uploaded`);
   });
   uploader.on('complete', (fileInfo) => {
     if (Object.prototype.hasOwnProperty.call(fileInfo.data, 'editPart')) { // Edit 3D file
@@ -72,20 +73,15 @@ module.exports = (socket, uploader) => {
     } else { // Upload specs
       getUploadir(fileInfo.name, fileInfo.data.nodeId, socket.handshake.session.currentWorkspace)
         .then((ret) => {
-          mv(`${appDir}/${fileInfo.uploadDir}`, ret, () => {});
+          if (!uploadDir) return Promise.reject(new Error('Upload not found !'))
+          log.info(uploadDir, ret);
+          mv(uploadDir, ret, (err) => { if(err) log.error(err); });
           socket.emit('addSpec', fileInfo.name);
           fileInfo.uploadDir = ret;
-          console.log('Upload Complete.');
         })
-        .catch((err) => {
-          console.log('Error!', err);
-        });
+        .catch((err) => { log.error(err); });
     }
   });
-  uploader.on('error', (err) => {
-    console.log('Error!', err);
-  });
-  uploader.on('abort', (fileInfo) => {
-    console.log('Aborted: ', fileInfo);
-  });
+  uploader.on('error', (err) => { log.error(err); });
+  uploader.on('abort', (fileInfo) => { console.log('Aborted: ', fileInfo); });
 };
