@@ -1,6 +1,7 @@
 const removeUserFromOW = 'removeUserFromOW';
 const WorkspaceModel = require('../models/Workspace');
 const OrganizationModel = require('../models/Organization');
+const UserModel = require('../models/User')
 const internalErrorEmitter = require('./emitter/internalErrorEmitter');
 
 async function removeUserFromWorkspace(workspaceId, userEmail) {
@@ -13,7 +14,9 @@ async function removeUserFromWorkspace(workspaceId, userEmail) {
 }
 
 async function removeInWorkspace(organization, userEmail) {
+    const user = UserModel.find({ email : userEmail });
     organization.workspaces.forEach(async function (elem) {
+        await UserModel.update({ _id : user.id }, { $pull : { workspaces : { _id : elem.id }}});
         await WorkspaceModel.update({ _id : elem.id }, { $pull : { 'team.members' : { email : userEmail }}});
         await WorkspaceModel.update({ _id : elem.id }, { $pull : { 'users' : { email : userEmail }}});
     });
