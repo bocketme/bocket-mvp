@@ -19,9 +19,10 @@ $(document).ready(function () {
   });
 
   $('.node-tree').on('contextmenu', 'li', function (e) {
+    pointedElem = e.target;
     e.preventDefault();
     toggleMenuContextOff();
-    toggleMenuContextOn('#node-tree-dropdown-menu');
+    toggleMenuContextOn('#node-tree-context-menu');
   });
 });
 
