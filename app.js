@@ -58,7 +58,7 @@ try {
     server.listen(config.port);
 }
 catch (e) {
-    console.log("Unable to bind on port : " + config.port);
+    log.error("Unable to bind on port : " + config.port);
 }
 
 mongoose.Promise = Promise;
@@ -99,7 +99,7 @@ app.use(function (req, res, next) {
 
 // Display body request
 /*app.use(function (req, res, next) {
-    console.log("You posted:\n" + JSON.stringify(req.body, null, 2));
+    log.info("You posted:\n" + JSON.stringify(req.body, null, 2));
     next();
 });*/
 

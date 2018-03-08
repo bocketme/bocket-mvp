@@ -30,7 +30,6 @@ module.exports = {
   indexPOST: (req, res) => { //email, password & workspaceId
     // TODO: CHECK SI L'UTILISATEUR EST CONNECTEE ET A LE DROIT D'AVOIR ACCES A CE WSP
     if (!req.body.email || !req.body.password || !req.body.workspaceId) {
-      console.log("Nice try");
       res.redirect("/");
       return ;
     }
@@ -39,11 +38,11 @@ module.exports = {
         .then(result => {
           result.comparePassword(req.body.password, (err, isMatch) => {
             if (err) {
-              console.log("[projectController.indexPOST] :", err);
+              log.error("[projectController.indexPOST] :", err);
               res.sendStatus(500);
             }
             else if (!isMatch) {
-              console.log("User n'est pas connecté !");
+              log.error("User n'est pas connecté !");
               res.redirect("/signIn");
             }
             else {
@@ -55,11 +54,10 @@ module.exports = {
           });
         })
         .catch(err => {
-          console.log("[projectController.indexPOST] : ", err);
+          log.error("[projectController.indexPOST] : ", err);
         });
     }
     else {
-      console.log("User a une session");
       req.session.currentWorkspace = req.body.workspaceId;
       res.redirect(req.originalUrl + "/" + req.body.workspaceId);
     }
@@ -71,14 +69,13 @@ function getRenderInformation(workspaceId, userMail) {
     Workspace.findById({_id: workspaceId})
       .then(workspace => {
         if (workspace === null) {
-          console.log("[projectController.indexPOST] : ", "Workspace not found");
+          log.warn("[projectController.indexPOST] : - Workspace not found")
           reject(404);
         }
         User.findOne({email: userMail})
           .then(user => {
             if (user === null) {
-              console.log("[projectController.indexPOST] : ", "User not found");
-              //TODO: Why ?
+              log.warn("[projectController.indexPOST] : User not found")
               reject("/signin");
             }
           //  req.session.userId = user._id;
@@ -111,14 +108,12 @@ function getRenderInformation(workspaceId, userMail) {
                 });
               })
               .catch(err => {
-                console.log("[project controller] : error while finding node_master: ", err);
-                reject(500)
+                log.error("[project controller] : error while finding node_master \n", err);
+                reject(500);
               });
-
-
           })
           .catch(err => {
-            console.log("[project controller] : the Workspace while finding node_master: ", err);
+            log.error("[project controller] : the Workspace while finding node_master \n", err);
             reject(500);
           });
       });

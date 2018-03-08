@@ -6,6 +6,8 @@ let Twig = require("twig");
 let serverConfig = require("../config/server");
 
 const mailConfig = require("../config/welcomeEmail");
+const log = require('../utils/log');
+const logValidate = log.child({type: ''})
 
 let nestedPeopleSchema = mongoose.Schema({
     completeName : String,
@@ -35,7 +37,7 @@ InvitationSchema.pre('save', function (next) {
     uid(42)
         .then(uid => {
             invitation.uid = uid;
-            console.log("UID = ", invitation.uid);
+            logInvitation.info("UID = ", invitation.uid);
             next();
         })
         .catch(err => next(err));
@@ -43,13 +45,13 @@ InvitationSchema.pre('save', function (next) {
 
 InvitationSchema.post('save', function (invitation) {
 
-    console.log("ici");
-    console.log("serverConfig url :", serverConfig.url);
+    logInvitation.info("ici");
+    logInvitation.info("serverConfig url :", serverConfig.url);
     
     let httpURL ="";
     //httpURL = serverConfig.protocol+ "://www.bocket.me:" + serverConfig.port;
     httpURL = serverConfig.protocol+ "://localhost:" + serverConfig.port;
-    console.log("http url :", httpURL);
+    logInvitation.info("http url :", httpURL);
     
     let renderVar = {
         completeName: invitation.people.completeName,
@@ -70,13 +72,13 @@ InvitationSchema.post('save', function (invitation) {
             //html: `uid = <a href="google.com">${invitation.uid}</a>`
         };
 
-        console.log("mailOptions = ", mailOptions);
+        logInvitation.info("mailOptions = ", mailOptions);
 
         mailTransporter.sendMail(mailOptions, function(error, info) {
             if (error) {
-                console.log(error);
+                logInvitation.info(error);
             } else {
-                console.log('Email sent: ' + info.response);
+                logInvitation.info('Email sent: ' + info.response);
             }
         })
     });

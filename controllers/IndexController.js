@@ -19,7 +19,6 @@ const indexController = {
   invitation: (req, res) => {
     Invitation.findOne({ uid: req.params.invitationUid })
       .then((i) => {
-        console.log(i);
         if (!i || i === null) res.redirect('/');
         return res.render('index', {
           invitation: true,
@@ -36,14 +35,11 @@ const indexController = {
     getPathToSpec(nodeId, req.session.currentWorkspace)
       .then((p) => {
         p = path.join(path.resolve(p), filename);
-        console.log(p);
         read(p)
           .then(() => res.download(p))
           .catch(() => res.status(405).send('File not found'));
       })
-      .catch((err) => {
-        console.log('Error', err);
-      });
+      .catch((err) => { log.error('Error', new Error(err) ); });
   },
   downloadNode: (req, res) => {
     const { nodeId, filename } = req.params;

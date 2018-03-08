@@ -59,9 +59,6 @@ AssemblyScheama.pre('validate', function(next) {
   if (this.path)
     return next();
 
-  console.log(this);
-  console.log(this.ownerOrganization);
-
   this.path = '/' + this.ownerOrganization.name + '-' + this.ownerOrganization._id + '/' + this.name + ' - ' + this._id;
   let assemblyPath = path.join(configServer.files3D, this.path);
 

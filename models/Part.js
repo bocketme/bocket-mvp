@@ -13,6 +13,8 @@ const NestedUser = require("./nestedSchema/NestedUserSchema");
 const PartFileSystem = require('../config/PartFileSystem');
 const asyncForEach = require('./utils/asyncForeach');
 
+const log = require('../utils/log');
+const logPart = log.child({type: 'part'});
 
 let NestedOrganization = mongoose.Schema({
     _id: { type: mongoose.SchemaTypes.ObjectId, require: true },
@@ -37,7 +39,7 @@ let PartSchema = mongoose.Schema({
 PartSchema.index ({ name: 'text', description: 'text' });
 
 PartSchema.on("indexError", (error) => {
-    console.error(error);
+    logPart.error(error);
 });
 
 function mkdirPromise(path) {
@@ -53,8 +55,6 @@ function mkdirPromise(path) {
 PartSchema.pre('validate', function (next) {
     if (this.path)
         return next();
-
-    console.log(this);
 
     this.path = '/' + this.ownerOrganization.name + '-' + this.ownerOrganization._id + '/' + this.name + ' - ' + this._id;
     let partPath = path.join(configServer.files3D, this.path);
