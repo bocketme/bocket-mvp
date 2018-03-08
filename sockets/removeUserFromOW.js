@@ -36,6 +36,8 @@ async function removeUserFromOrganization(workspaceId, ownerMail, userEmail) {
             throw err;
         });
     await OrganizationModel.update({ _id : organization.id }, { $pull : { 'members' : { email : userEmail }}});
+    const user = await UserModel.find({ email : userEmail });
+    await UserModel.update({ _id : user.id }, { $pull : { organization : { _id : organization.id }}});
     return true;
 }
 
