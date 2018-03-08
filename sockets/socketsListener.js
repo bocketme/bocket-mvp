@@ -21,6 +21,7 @@ const GetSearchCriteria = require("./GetSearchCriteria");
 const GetSelectedItemsToAdd = require("./GetSelectedItemsToAdd");
 const createWorkspaceInSignIn = require('./createWorkspaceInSignIn');
 const createWorkspaceInHub = require('./createWorkspaceInHub');
+const deleteNodeLostener = require('./deleteNodeListener');
 
 const FSconfig = require('../config/FileSystemConfig');
 module.exports = function (io) {
@@ -34,6 +35,7 @@ module.exports = function (io) {
       overwrite: true, // overwrite file if exists, default is true.
     });
 
+    deleteNodeLostener(io, socket);
     createWorkspaceInHub(io, socket);
     createWorkspaceInSignIn(io, socket);
     fileUploaderListener(socket, uploader);
