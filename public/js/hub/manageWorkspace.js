@@ -1,7 +1,7 @@
 $(document).ready(function () {
   const manageWorkspaceBtn = $("#manage-workspace-btn");
-  const manageWorkspaceClose = $("#manage-workspace-close");
   const manageWorkspaceDiv = $("#manage-workspace");
+  const manageWorkspaceClose = manageWorkspaceDiv.find('#close');
   const secondColumn = $("#second_column");
   const thirdColumn = $("#third_column");
   const manageWorkspaceError = $("#manage-workspace-error");
@@ -23,6 +23,12 @@ $(document).ready(function () {
     manageWorkspaceError.css(visibility, hidden);
     manageWorkspaceDiv.toggle();
   }
+
+  manageWorkspaceClose.on('click', () => {
+    secondColumn.toggle();
+    thirdColumn.toggle();
+    manageWorkspaceDiv.toggle();
+  });
 
   //togglemanageWorkspace();
 

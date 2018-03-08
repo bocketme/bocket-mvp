@@ -7,6 +7,10 @@
     background-color: #f9f9f9;
 }
 
+#manage-workspace #close {
+    cursor: pointer;
+}
+
 .manage-workspace-icon-title {
     position: relative;
     bottom: 20px;
