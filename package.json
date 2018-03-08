@@ -8,7 +8,8 @@
     "test": "nodemon app.js -e js,twig, css,json",
     "prod": "webpack && node app.js",
     "dev": "webpack --config ./dev.config.js",
-    "webpack dev": "webpack --config ./dev.config.js",
+    "webpackDev": "webpack --config ./dev.config.js",
+    "debugCode": "node app.js --inspect",
     "debug": "node $NODE_DEBUG_OPTION app.js"
   },
   "nodemonConfig": {
