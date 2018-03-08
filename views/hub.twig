@@ -21,11 +21,12 @@
     <div id="hub" class="row">
         {% include "./hub/invitePeople.twig" %}
 
-        <div id="second_column" class="col row s12 m3 l3 xl3">
-            <div id="side-nav" class="col s2 m3 l3 xl3">
+        <div id="second_column" class="col s12 m12 l4 xl3">
+            <div id="side-nav" class="col s3 m4 l4 xl4">
                 {% include "./hub/listWorkspaces.twig" %}
             </div>
-            <div id='main-panel' class="col s10 m9 l9 xl9">
+            <div class="col s9 m8 l8 xl9">
+
                 <button class="dropdown-button" data-beloworigin="true" data-activates='workspaces-dropdown'>
                     <div>
                         {{ in_use.name }}
@@ -81,7 +82,7 @@
             </div>
         </div>
 
-        <div id="third_column" class="col s12 m9 l9">
+        <div id="third_column" class="col s12 m12 l8 xl9">
             {% include "hub/header.twig" %}
             <div id="third_column_content" class="row">
                     {% include 'hub/viewer.twig' %}

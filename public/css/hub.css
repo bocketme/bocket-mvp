@@ -51,6 +51,12 @@ main {
 .side-nav {
     overflow: hidden;
 }
+
+#side-nav-close {
+    cursor: pointer;
+    width: 91px;
+}
+
 #second_column {
     background-color: #f7f7f7;
     border: none;
@@ -189,6 +195,9 @@ span.badge {
 }
 
 .info-right{
+    cursor: pointer;
+    float: right;
+    padding-top: 10px;
 }
 
 .favorite{

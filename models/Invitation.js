@@ -63,7 +63,7 @@ InvitationSchema.post('save', function (invitation) {
         
     };
     //http://localhost:8080/project/5a4f4a87488d0c0770f8bef0
-    Twig.renderFile('./views/email.twig', renderVar, function (err, html) {
+    Twig.renderFile('./views/invitation.twig', renderVar, function (err, html) {
         let mailOptions = {
             from: mailConfig.email,
             to: invitation.people.email,

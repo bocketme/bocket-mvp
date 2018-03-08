@@ -25,9 +25,7 @@
         edge: 'right', // Choose the horizontal origin
         onOpen: function(el) {
             if($("#comments").css('display') === 'block') {
-              console.log("hello");
               $(".message-area").animate({ scrollTop: $(".message-area").prop("scrollHeight")}, "slow");
-
             }
          }
       }

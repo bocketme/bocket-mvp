@@ -79,3 +79,7 @@
     bottom: 50px;
     left: 50%
 }
+
+.fixed-action-btn.horizontal ul li {
+    margin: 0 10px;
+}
