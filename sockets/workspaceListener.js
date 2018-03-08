@@ -4,8 +4,8 @@ const OrganizationModel = require('../models/Organization');
 const log = require('../utils/log');
 
 async function workspaceListener(workspaceId) {
-  const { team } = await WorkspaceModel.findById(workspaceId);
-  return team;
+  const { users, team } = await WorkspaceModel.findById(workspaceId).exec();
+  return { owner: team.owners[0], members: [...users, ...team.members] };
 }
 
 async function organizationListener(workspaceId) {

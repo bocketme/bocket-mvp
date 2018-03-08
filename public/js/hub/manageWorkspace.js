@@ -25,9 +25,8 @@ $(document).ready(function () {
   }
 
   manageWorkspaceClose.on('click', () => {
-    secondColumn.toggle();
-    thirdColumn.toggle();
-    manageWorkspaceDiv.toggle();
+    togglemanageWorkspace();
+    manageWorkspaceDiv.find('ul').empty();
   });
 
   //togglemanageWorkspace();
@@ -36,9 +35,11 @@ $(document).ready(function () {
     if (data !== null) {
       const { members, owner } = data;
       console.log(members.length);
+      members.sort((a, b) => a.completeName.localeCompare(b.completeName));
       for (let i = 0 ; i < members.length ; i++) {
         const { completeName, email } = members[i];
-        manageWorkspaceDiv.find('#users-list').append(getUserHtml(completeName, email));
+        console.log('owner.email = ', owner.email, 'email =', email);
+        manageWorkspaceDiv.find('#users-list').append(getUserHtml(completeName, email, owner.email === email));
       }
       $('.profile').initial();
       togglemanageWorkspace();
@@ -51,14 +52,16 @@ $(document).ready(function () {
     socket.emit('workspaceManager', { type: workspaceType })
   });
 
-  function getUserHtml(completeName, email, avatar) {
-    let imgHtml = getAvatar(undefined, completeName, 'circle');
-    let html =
+  function getUserHtml(completeName, email, isOwner, avatar) {
+    const imgHtml = getAvatar(avatar, completeName, 'circle');
+    const tag = isOwner ? '<div class="chip secondary-content">Owner</div>' : '<a href="#!" class="secondary-content"><i class="material-icons">clear</i></a>';
+
+    const html =
         '<li class="collection-item avatar">' +
         imgHtml +
         '<span class="title">' + completeName + '</span>' +
         '<p>' + email + '</p>' +
-        '<a href="#!" class="secondary-content"><i class="material-icons">clear</i></a>' +
+        tag +
         '</li>';
     console.log('html:', imgHtml);
     return html;

@@ -10,6 +10,9 @@
 #manage-workspace #close {
     cursor: pointer;
 }
+#manage-workspace #close:hover {
+    color: #9b9b9b;
+}
 
 .manage-workspace-icon-title {
     position: relative;
