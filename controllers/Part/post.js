@@ -178,7 +178,7 @@ const newPart = async (req, res) => {
 }
 
 var controllerPOST = {
-    newPart: newPart
+  newPart: newPart
 };
 
 module.exports = controllerPOST;

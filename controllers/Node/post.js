@@ -8,236 +8,238 @@ const fs = require("fs");
 const path = require("path");
 
 let post = {
-    new_node: createNewNode,
-    insert: {
-        part: insertNewPart,
-        assembly: insertNewAssembly,
-    },
-    verif: {
-        write: {
-            workspace: verificationWriteInWorkspace
-        }
+  new_node: createNewNode,
+  insert: {
+    part: insertNewPart,
+    assembly: insertNewAssembly,
+  },
+  verif: {
+    write: {
+      workspace: verificationWriteInWorkspace
     }
+  }
 }
 
 /**
-* Create a new node inside the database
-*      Used Models [Node, Workspaces]
-*      Required
-*/
+ * Create a new node inside the database
+ *      Used Models [Node, Workspaces]
+ *      Required
+ */
 function createNewNode(req, res){
 
-    // Initialisation des variables
-    let nodeParent =    escape(req.params.nodeParent);
-    let description =   escape(req.body.description);
-    let specFiles =     escape(req.files);
-    let name =          escape(req.body.name);
 
-    // let node;
-    let workspace = res.locals.workspace;
-    let types_mime = [];
-    let createFiles = [];
+  // Initialisation des variables
+  let nodeParent =    escape(req.params.nodeParent);
+  let description =   escape(req.body.description);
+  let specFiles =     escape(req.files);
+  let name =          escape(req.body.name);
 
-    //TODO - Vérifier les droits de l'utilisateur -- Fonction bis
+  // let node;
+  let workspace = res.locals.workspace;
+  let types_mime = [];
+  let createFiles = [];
 
-    //Créer le noeud
-    Node.newDocument({
-        name: name,
-        description: description,
-        Workspaces: {
-            _id : workspace._id,
-            name: workspace.name
-        }
-    })
-        .then((node) => {
-            //Vérifier le type-Mime des fichiers
-            //Ecrire les fichiers de specs -- DRIVE ???
+  //TODO - Vérifier les droits de l'utilisateur -- Fonction bis
 
-            specFiles.forEach(file => {
-                //Initialiser le types - MIME;
-                types_mime.push(verifyTypes(file.mimetype));
-                //Initialiser des fichiers
-                createFiles.push(addSpec(file, node._id));
-            })
+  //Créer le noeud
+  Node.newDocument({
+    name: name,
+    description: description,
+    parent: nodeParent,
+    Workspaces: {
+      _id : workspace._id,
+      name: workspace.name
+    }
+  })
+      .then((node) => {
+        //Vérifier le type-Mime des fichiers
+        //Ecrire les fichiers de specs -- DRIVE ???
 
-            Promise.all(types_mime)
+        specFiles.forEach(file => {
+          //Initialiser le types - MIME;
+          types_mime.push(verifyTypes(file.mimetype));
+          //Initialiser des fichiers
+          createFiles.push(addSpec(file, node._id));
+        })
+
+        Promise.all(types_mime)
             .then(() => {
-                return Promise.all(createFiles)
+              return Promise.all(createFiles)
             })
             .then((paths) => {
-                console.log("chemin des fichiers crées : ", paths);
-                //TODO - Ajouter les chemins aux Node
-                node.specpath = paths;
+              console.log("chemin des fichiers crées : ", paths);
+              //TODO - Ajouter les chemins aux Node
+              node.specpath = paths;
 
-                //TODO - Ajouter le noeud au workspace
-                return addNodetoWorkspace(workspace, nodeParent, { _id: node._id, title: node.name, children: [] })
+              //TODO - Ajouter le noeud au workspace
+              return addNodetoWorkspace(workspace, nodeParent, { _id: node._id, title: node.name, children: [] })
             })
             .then(workspace => {
-                workspace.save().catch((err) => {throw err})
+              workspace.save().catch((err) => {throw err})
             })
             .catch((err) => {
-                node.remove();
-                throw (err)
+              node.remove();
+              throw (err)
             })
-        })
-        .then(() => {
-            res.send();
-
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500);
-        })
-    }
-
-    /**
-    * Create a new node inside an empty Node
-    *      Used Models [Node]
-    *      Required
-    */
-    function insertNewPart(req, res){
-
-        let nom;
-        let description;
-        let file3D;
-        let specfiles;
-        let tags;
-
+      })
+      .then(() => {
         res.send();
-    }
 
-    /**
-    * Create a new assembly inside an empty Node
-    *      Used Models [Node]
-    *      Required
-    */
-    function insertNewAssembly(req, res){
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500);
+      })
+}
 
-        res.send();
-    }
+/**
+ * Create a new node inside an empty Node
+ *      Used Models [Node]
+ *      Required
+ */
+function insertNewPart(req, res){
+
+  let nom;
+  let description;
+  let file3D;
+  let specfiles;
+  let tags;
+
+  res.send();
+}
+
+/**
+ * Create a new assembly inside an empty Node
+ *      Used Models [Node]
+ *      Required
+ */
+function insertNewAssembly(req, res){
+
+  res.send();
+}
 
 
-    /********************************************************/
-    /*                                                      */
-    /*                                                      */
-    /*                      Verification                    */
-    /*                                                      */
-    /*                                                      */
-    /********************************************************/
+/********************************************************/
+/*                                                      */
+/*                                                      */
+/*                      Verification                    */
+/*                                                      */
+/*                                                      */
+/********************************************************/
 
-    function verificationWriteInWorkspace(req, res, next){
-        let userMail = req.session.userMail;
-        let workspaceId = req.body.workspaceId;
+function verificationWriteInWorkspace(req, res, next){
+  let userMail = req.session.userMail;
+  let workspaceId = req.body.workspaceId;
 
-        if (!userMail)
-         next("Error : User Not Found");
+  if (!userMail)
+    next("Error : User Not Found");
 
-        Workspaces.findById({_id: workspaceId})
-        .then((workspace) => {
-            return new Promise((resolve, reject) => {
-                if (workspace.User.email == userMail)
-                resolve();
-                else {
-                    if(workspace.users && workspace.users.length !== 0){
-                        workspace.users.forEach(worker => {
-                            if (worker.email == userMail){
-                                resolve();
-                            }
-                        });
-                    }
-                }
-                reject("No rights");
-            })
-        })
-        //En cas de succès passe à la fonction suivante de la route spécifié.
-        .thne(() => next())
-        //En cas de succès passe à la fonction de gestion d'erreur de la route spécifié.
-        .catch((err) => next(err));
-    }
-
-    /********************************************************/
-    /*                                                      */
-    /*                                                      */
-    /*                      Promises                        */
-    /*                                                      */
-    /*                                                      */
-    /********************************************************/
-
-    function verifyTypes(type){
+  Workspaces.findById({_id: workspaceId})
+      .then((workspace) => {
         return new Promise((resolve, reject) => {
-            if (type !== null)
+          if (workspace.User.email == userMail)
             resolve();
-            else
-            reject("Nous n'acceptons pas ce type de fichier");
-        });
-    }
-
-    function addSpec(file, nodeId){
-        return new Promise((resolve, reject)=> {
-            let relativePath = "./" + nodeId +  "/" + file.originalname;
-            nodeId = "./" + nodeId
-            file.originalname = "./" + file.originalname
-            let chemin = config.specfiles;
-            fs.access(chemin, (err) => {
-                if (err) reject(err);
-                fs.access(path.resolve(chemin, nodeId), (err) => {
-                    if (err){
-                        fs.mkdir(path.resolve(chemin, nodeId), (err) => {
-                            if(err)
-                            reject(err);
-                        })
-                    }
-                    fs.writeFile(path.resolve(chemin, nodeId, file.originalname), file.buffer.toString, (err) => {
-                        if (err)
-                        reject(err);
-                        else
-                        {
-                            console.log(file.originalname + " created in : " + path + nodeId + file.originalname )
-                            resolve();
-                        }
-                    })
-                });
-            })
-        });
-    }
-
-    /********************************************************/
-    /*                                                      */
-    /*                                                      */
-    /*                      Function                        */
-    /*                                                      */
-    /*                                                      */
-    /********************************************************/
-
-    function deleteFiles(paths){
-        paths.forEach((chemin) => {
-            fs.open(path.resolve(chemin), (err) => {
-                if (!err){
-                    fs.unlink(path, (err) => {
-                        if (err){
-                            console.log('IMPOSSIBLE : ', err);
-                        }
-                    });
+          else {
+            if(workspace.users && workspace.users.length !== 0){
+              workspace.users.forEach(worker => {
+                if (worker.email == userMail){
+                  resolve();
                 }
-            });
-        });
-    }
-
-    function addNodetoWorkspace(workspace, cible, data){
-
-        function createNode (node) {
-            node.children.forEach(child => {
-                node.children = createNode(node);
-            })
-            if (node.title == cible) {
-                node.children.push(data);
+              });
             }
-            return node;
+          }
+          reject("No rights");
+        })
+      })
+      //En cas de succès passe à la fonction suivante de la route spécifié.
+      .thne(() => next())
+      //En cas de succès passe à la fonction de gestion d'erreur de la route spécifié.
+      .catch((err) => next(err));
+}
+
+/********************************************************/
+/*                                                      */
+/*                                                      */
+/*                      Promises                        */
+/*                                                      */
+/*                                                      */
+/********************************************************/
+
+function verifyTypes(type){
+  return new Promise((resolve, reject) => {
+    if (type !== null)
+      resolve();
+    else
+      reject("Nous n'acceptons pas ce type de fichier");
+  });
+}
+
+function addSpec(file, nodeId){
+  return new Promise((resolve, reject)=> {
+    let relativePath = "./" + nodeId +  "/" + file.originalname;
+    nodeId = "./" + nodeId
+    file.originalname = "./" + file.originalname
+    let chemin = config.specfiles;
+    fs.access(chemin, (err) => {
+      if (err) reject(err);
+      fs.access(path.resolve(chemin, nodeId), (err) => {
+        if (err){
+          fs.mkdir(path.resolve(chemin, nodeId), (err) => {
+            if(err)
+              reject(err);
+          })
         }
+        fs.writeFile(path.resolve(chemin, nodeId, file.originalname), file.buffer.toString, (err) => {
+          if (err)
+            reject(err);
+          else
+          {
+            console.log(file.originalname + " created in : " + path + nodeId + file.originalname )
+            resolve();
+          }
+        })
+      });
+    })
+  });
+}
 
-        workspace.node_master = createNode(workspace.node_master)
+/********************************************************/
+/*                                                      */
+/*                                                      */
+/*                      Function                        */
+/*                                                      */
+/*                                                      */
+/********************************************************/
 
-        return workspace
+function deleteFiles(paths){
+  paths.forEach((chemin) => {
+    fs.open(path.resolve(chemin), (err) => {
+      if (!err){
+        fs.unlink(path, (err) => {
+          if (err){
+            console.log('IMPOSSIBLE : ', err);
+          }
+        });
+      }
+    });
+  });
+}
+
+function addNodetoWorkspace(workspace, cible, data){
+
+  function createNode (node) {
+    node.children.forEach(child => {
+      node.children = createNode(node);
+    })
+    if (node.title == cible) {
+      node.children.push(data);
     }
+    return node;
+  }
 
-    module.exports = post;
+  workspace.node_master = createNode(workspace.node_master)
+
+  return workspace
+}
+
+module.exports = post;
