@@ -18,6 +18,7 @@ const removeSpecListener = require('./removeSpecListener');
 const renameSpecListener = require('./renameSpecListener');
 const workspaceManagerListener = require('./workspaceListener');
 const removeUserFromWorkspace = require('./removeUserFromWorkspaceListener');
+const removeUserFromOrganization = require('./removeUserFromOrganizationListener');
 let GetSearchCriteria = require("./GetSearchCriteria");
 let GetSelectedItemsToAdd = require("./GetSelectedItemsToAdd");
 let createWorkspaceInSignIn = require('./createWorkspaceInSignIn');
@@ -59,5 +60,6 @@ module.exports = function (io) {
     GetSelectedItemsToAdd(socket);
     workspaceManagerListener(socket);
     removeUserFromWorkspace(socket);
+    removeUserFromOrganization(socket);
   });
 };
