@@ -33,37 +33,40 @@ $(document).ready(function () {
 
   socket.on('workspaceManager', (data) => {
     if (data !== null) {
-      const { members, owner } = data;
+      const { members, owners } = data;
       console.log(members.length);
       members.sort((a, b) => a.completeName.localeCompare(b.completeName));
       for (let i = 0 ; i < members.length ; i++) {
         const { completeName, email } = members[i];
-        console.log('owner.email = ', owner.email, 'email =', email);
-        manageWorkspaceDiv.find('#users-list').append(getUserHtml(completeName, email, owner.email === email));
+        manageWorkspaceDiv.find('ul#users-list').append(getUserHtml(completeName, email, owners.find((elem) => elem.email === email)));
       }
       $('.profile').initial();
-      togglemanageWorkspace();
     }
   });
 
-
-  //togglemanageWorkspace();
   manageWorkspaceBtn.on('click', () => {
-    socket.emit('workspaceManager', { type: workspaceType })
+    socket.emit('workspaceManager', { type: workspaceType });
+    togglemanageWorkspace();
+  });
+
+  manageWorkspaceDiv.on('click', 'a.collection-item', (event) => {
+    manageWorkspaceDiv.find('a.collection-item').removeClass('active');
+    const elem = $(event.target);
+    elem.addClass('active');
+    manageWorkspaceDiv.find('ul#users-list').empty();
+    console.log('elem.text: ', elem.text());
+    socket.emit('workspaceManager', { type: elem.text().toLowerCase() })
   });
 
   function getUserHtml(completeName, email, isOwner, avatar) {
     const imgHtml = getAvatar(avatar, completeName, 'circle');
     const tag = isOwner ? '<div class="chip secondary-content">Owner</div>' : '<a href="#!" class="secondary-content"><i class="material-icons">clear</i></a>';
 
-    const html =
-        '<li class="collection-item avatar">' +
+    return '<li class="collection-item avatar">' +
         imgHtml +
         '<span class="title">' + completeName + '</span>' +
         '<p>' + email + '</p>' +
         tag +
         '</li>';
-    console.log('html:', imgHtml);
-    return html;
   }
 });

@@ -5,13 +5,13 @@ const log = require('../utils/log');
 
 async function workspaceListener(workspaceId) {
   const { users, team } = await WorkspaceModel.findById(workspaceId).exec();
-  return { owner: team.owners[0], members: [...users, ...team.members] };
+  return { owners: team.owners, members: [...users, ...team.members] };
 }
 
 async function organizationListener(workspaceId) {
   const { organization } = await WorkspaceModel.findById(workspaceId);
   const { owner, members } = await OrganizationModel.findById(organization._id);
-  return { owner, members };
+  return { owners: owner, members };
 }
 
 module.exports = (socket) => {
