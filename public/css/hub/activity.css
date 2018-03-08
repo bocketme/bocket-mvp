@@ -151,7 +151,9 @@ li.indicator {
     border-radius: 20px;
     line-height: 29px;
     animation: animateElement linear .3s;
-    animation-iteration-count: 1;    
+    animation-iteration-count: 1;
+    min-width: 61px;
+    text-align: center;    
 }
 
 .message-other {
@@ -167,6 +169,8 @@ li.indicator {
     line-height: 29px;
     animation: animateElement linear .3s;
     animation-iteration-count: 1;
+    min-width: 61px;
+    text-align: center;
 }
 
 
