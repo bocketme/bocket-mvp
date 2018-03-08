@@ -13,15 +13,17 @@ $(document).ready(function () {
   let organizationType = 'organization';
   let listType = workspaceType;
 
+  $("#manage-workspace").find('li').on('click', () => console.log('l'));
+
   /**
    * Toggle the manageWorkspace div
    */
-  function togglemanageWorkspace() {
+  function togglemanageWorkspace(cb) {
     secondColumn.toggle();
     thirdColumn.toggle();
     manageWorkspaceDiv.find('input').val("");
     manageWorkspaceError.css(visibility, hidden);
-    manageWorkspaceDiv.toggle();
+    manageWorkspaceDiv.toggle(1, cb);
   }
 
   manageWorkspaceClose.on('click', () => {
@@ -42,11 +44,20 @@ $(document).ready(function () {
       }
       $('.profile').initial();
     }
+    manageWorkspaceDiv.find('li.collection-item').on('click', 'a', (event) => {
+      const elem = $(event.currentTarget);
+      console.log('REMOVE USER:', elem.prev().text());
+      socket.emit('removeUserFromOW', { userEmail: elem.prev().text(), command: listType });
+      elem.remove();
+    });
   });
 
+  socket.on('removeUserFromOW', (state) => console.log('state : ', state));
+
   manageWorkspaceBtn.on('click', () => {
-    socket.emit('workspaceManager', { type: workspaceType });
-    togglemanageWorkspace();
+    togglemanageWorkspace(() => {
+      socket.emit('workspaceManager', { type: workspaceType });
+    });
   });
 
   manageWorkspaceDiv.on('click', 'a.collection-item', (event) => {
@@ -55,7 +66,8 @@ $(document).ready(function () {
     elem.addClass('active');
     manageWorkspaceDiv.find('ul#users-list').empty();
     console.log('elem.text: ', elem.text());
-    socket.emit('workspaceManager', { type: elem.text().toLowerCase() })
+    listType = elem.text().toLowerCase();
+    socket.emit('workspaceManager', { type: listType })
   });
 
   function getUserHtml(completeName, email, isOwner, avatar) {
