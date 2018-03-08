@@ -17,9 +17,8 @@ module.exports = {
   index: (req, res) => {
     getRenderInformation(req.params.workspaceId, req.session.userMail)
       .then(context => {
-        req.session.currentWorkspace = req.body.workspaceId;
-        log.info(req.session);
-        res.render("hub", context)
+        req.session.currentWorkspace = req.params.workspaceId;
+        res.render("hub", context);
       })
       .catch(err => {
         if (err === 404 || err === 500)
@@ -68,7 +67,6 @@ module.exports = {
 }
 
 function getRenderInformation(workspaceId, userMail) {
-  console.log("getRenderInformation", workspaceId, userMail);
   return new Promise((resolve, reject) => {
     Workspace.findById({_id: workspaceId})
       .then(workspace => {
@@ -86,10 +84,6 @@ function getRenderInformation(workspaceId, userMail) {
           //  req.session.userId = user._id;
             Node.findById(workspace.node_master._id)
               .then(node_master => {
-                console.log(" RENDER INFO NODE_MASTER = ", node_master);
-                let children = node_master.children.length !== 0;
-                console.log(" RENDER INFO children = ", children);
-
                 let node = {name : node_master.name, _id: node_master._id, type: node_master.type, children: []};
                 let i = 0;
                 while (i < node_master.children.length)
@@ -97,8 +91,6 @@ function getRenderInformation(workspaceId, userMail) {
                   node.children.push({title: node_master.children[i].title, _id: node_master.children[i]._id, children: []});
                   i += 1;
                 }
-                console.log("NODES = ", node);
-
                 Organization.find({"owner._id": user._id})
                 .then((ownerOrganization) => {
                   resolve({

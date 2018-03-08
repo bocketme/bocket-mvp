@@ -14,6 +14,7 @@ const Keygrip = require('keygrip');
 const cookies = require('cookies');
 const FSconfig = require('./config/FileSystemConfig');
 const log = require('./utils/log');
+const sharedsession = require('express-socket.io-session');
 
 /* ROUTES */
 const index = require("./routes/index");
@@ -26,23 +27,28 @@ const part = require("./routes/part");
 const assembly = require("./routes/assembly");
 
 /* SESSION */
-let expressSession = require("express-session");
+const expressSession = require("express-session");
 const MongoStore = require('connect-mongo')(expressSession); //session store
-let session = expressSession({
+
+const session = expressSession({
     secret: config.secretSession,
     store: new MongoStore({ url: config.mongoDB }),
-    resave: true,
+    resave: false,
     saveUninitialized: true
 });
-let sharedsession = require("express-socket.io-session");
 
-let app = express();
-let server = require('http').createServer(app);
-let io = require("socket.io")(server);
-let ioListener = require("./sockets/socketsListener")(io);
-// // parse the cookies of the application
-const keys = new Keygrip([config.secretKey, config.secretSession], 'sha256', 'hex');
-app.use(cookies.express(keys));
+/* Start The Express Server */
+const app = express();
+app.use(session);
+
+/* Start The HTTP Server */
+const server = require('http').createServer(app);
+const io = require("socket.io")(server);
+io.use(sharedsession(session, {
+    autoSave: false,
+}));
+
+const ioListener = require("./sockets/socketsListener")(io);
 
 //Initialize the favicon
 app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon-bocket.png')));
@@ -67,11 +73,6 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use(morgan('dev'));
-
-app.use(session);
-io.use(sharedsession(session, {
-    autoSave: true
-}));
 
 module.exports = app;
 
