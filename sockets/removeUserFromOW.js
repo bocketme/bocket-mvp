@@ -4,9 +4,11 @@ const OrganizationModel = require('../models/Organization');
 const UserModel = require('../models/User')
 const internalErrorEmitter = require('./emitter/internalErrorEmitter');
 
-async function removeUserFromWorkspace(workspaceId, userEmail) {
+async function removeUserFromWorkspace(workspaceId, ownerMail, userEmail) {
     const { owner } = await WorkspaceModel.findById(workspaceId);
     if (userEmail === owner.email)
+        return false;
+    if (ownerMail !== owner.email)
         return false;
     await WorkspaceModel.update({ _id : workspaceId }, { $pull : { 'team.members' : { email : userEmail }}});
     await WorkspaceModel.update({ _id : workspaceId }, { $pull : { 'users' : { email : userEmail }}});
@@ -22,10 +24,12 @@ async function removeInWorkspace(organization, userEmail) {
     });
 }
 
-async function removeUserFromOrganization(workspaceId, userEmail) {
+async function removeUserFromOrganization(workspaceId, ownerMail, userEmail) {
     const { owner, organization } = await WorkspaceModel.findById(workspaceId);
     const workspaceOrganization = await OrganizationModel.findById(organization.id);
     if (userEmail === owner.email)
+        return false;
+    if (ownerMail !== owner.email)
         return false;
     removeInWorkspace(workspaceOrganization, userEmail)
         .catch((err) => {
@@ -38,7 +42,7 @@ async function removeUserFromOrganization(workspaceId, userEmail) {
 module.exports = (socket) => {
     socket.on(removeUserFromOW, ({ command, userEmail }) => {
         if (command === 'workspace') {
-            removeUserFromWorkspace(socket.handshake.session.currentWorkspace, userEmail)
+            removeUserFromWorkspace(socket.handshake.session.currentWorkspace, socket.handshake.session.email, userEmail)
                 .then((state) => {
                     socket.emit(removeUserFromOW, state);
                 })
@@ -47,7 +51,7 @@ module.exports = (socket) => {
                 });
         }
         if (command === 'organization') {
-            removeUserFromOrganization(socket.handshake.session.currentWorkspace, userEmail)
+            removeUserFromOrganization(socket.handshake.session.currentWorkspace, socket.handshake.session.email, userEmail)
                 .then((state) => {
                     socket.emit(removeUserFromOW, state);
                 })
