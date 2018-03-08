@@ -1,10 +1,10 @@
 const removeUserFromWorkspaceName = 'removeUserFromWorkspace';
 const WorkspaceModel = require('../models/Workspace');
-const internalErrorEmiter = require('./emitter/internalErrorEmitter');
+const internalErrorEmitter = require('./emitter/internalErrorEmitter');
 
-async function removeUserFromWorkspace(workspaceId, email) {
+async function removeUserFromWorkspace(workspaceId, userEmail) {
     const workspace = await WorkspaceModel.findById(workspaceId);
-    await WorkspaceModel.update({ _id : workspaceId }, { $pull : { 'team.members' : { email : email }}});
+    await WorkspaceModel.update({ _id : workspaceId }, { $pull : { 'team.members' : { email : userEmail }}});
     return workspace;
 }
 
