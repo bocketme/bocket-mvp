@@ -25,12 +25,12 @@
             <div id="side-nav" class="col s3 m4 l4 xl4">
                 {% include "./hub/listWorkspaces.twig" %}
             </div>
-            <div class="col s9 m8 l8 xl9">
+            <div class="col s9 m8 l8 xl9" id="structure">
 
                 <button class="dropdown-button" data-beloworigin="true" data-activates='workspaces-dropdown'>
-                    <div>
-                        {{ in_use.name }}
-                        <i class="tiny material-icons">arrow_drop_down</i>
+                    <div class="workspaces-title">
+                      {{ in_use.name }}
+                        <i class="material-icons arrow_drop_down">arrow_drop_down</i>
                     </div>
                     <div class="username-dropdown">
                         {{ user }}

@@ -63,6 +63,7 @@ main {
     border: none;
     padding: 0 !important;
     height: 100%;
+    width: 20%;
 }
 
 #third_column {
@@ -70,10 +71,12 @@ main {
     border: none;    
     background-color: #f7f7f7;
     height: 100%;
+    width: 80%;
 }
 
 #second_column_content {
     height: 94%;
+    margin-left: 5px;
 }
 
 #third_column_content{
@@ -100,6 +103,7 @@ main {
 #node-content {
     height: 50%;
 }
+
 
 /*
 *
@@ -190,7 +194,7 @@ span.badge {
 
 .data-header-third-column{
     color: #4a4a4a;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 14px;
     height: 6%;
 }
@@ -231,9 +235,10 @@ span.badge {
 }
 
 .username-dropdown{
-    font-size: 11px;
+    font-size: 10px;
     color: #9b9b9b;
-    font-weight: 400;
+    font-weight: 600;
+    margin-left: 10px;
 }
 
 div#search-and-branch{
@@ -546,11 +551,33 @@ div.collapsible-body  ul {
     height: 10px;
 }
 
+.workspaces-title {
+    font-weight: 800;
+    white-space:nowrap;
+}
+
+.arrow_drop_down {
+    font-size: 29px;
+    vertical-align: middle;
+    margin-bottom: 4px;
+}
+
+.add-content-icon {
+    height: 17px;
+    vertical-align: middle;
+}
+
 @media screen and (max-width: 600px) {
     #second_column {
         min-height: 227px;
         height: auto;
+        width: 100%;
     }
+    
+    #third_column {
+        width: 100%;
+    }
+
     #list-workspace {
         overflow-y: auto;
         max-height: 500px;
@@ -562,5 +589,41 @@ div.collapsible-body  ul {
     .modal{
         width: 80%;
         max-height: 100%;
+    }
+}
+
+@media screen and (min-width: 600px) and (max-width: 992px){
+    #second_column {
+        width: 100%;
+    }
+    
+    #third_column {
+        width: 100%;
+    }
+
+    #list-workspace {
+        overflow-y: auto;
+        max-height: 500px;
+    }
+    #side-nav {
+        width:75px;
+        height: 100%;
+    }
+    .modal{
+        width: 80%;
+        max-height: 100%;
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1200px){
+    #second_column {
+        width: 27%;
+    }
+    
+    #third_column {
+        width: 73%;
+    }
+    #structure {
+        padding-right: 0px;
     }
 }

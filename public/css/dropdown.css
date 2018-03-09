@@ -2,14 +2,14 @@
     background-color: inherit;
     border: none;
     color: #262626;
-    width: 100%;
     text-align: left;
     text-decoration: none;
     display: block;
     font-size: 16px;
     font-weight: 700;
-    padding-bottom: 10px;
-    padding-top: 20px;
+    padding-bottom: 30px;
+    padding-top: 10px;
+    line-height: 0px;
 }
 
 .dropdown-button:hover, .dropdown-button:focus, .dropdown-button:active{
