@@ -19,6 +19,9 @@
         $(".collapsible").collapsible();
         $(".collapsible").collapsible('open', 1);
         $('ul.tabs').tabs();
+        $('.circle-responsive-active').addClass('tooltipped');
+        $('.circle-responsive').addClass('tooltipped');
+        $('.tooltipped').tooltip();
 
     $('.button-collapse').sideNav({
         menuWidth: 400, // Default is 300

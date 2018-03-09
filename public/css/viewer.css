@@ -11,6 +11,7 @@
     height: 99%;
     position: relative;
     background-color: #ffffff;
+    border-top: 3px solid #FAFAFA;
 }
 
 #move-icon
