@@ -3,6 +3,9 @@ const http = require('http');
 const util = require('util');
 const fs = require('fs');
 const emailRegex = require('./regex').email;
+const mailTransporter = require('../utils/mailTransporter');
+const mailConfig = require('../config/welcomeEmail');
+const Twig = require('twig');
 
 const pathname = 'users.txt';
 const uid = util.promisify(require('uid-safe'));
@@ -32,13 +35,17 @@ function httpRequest(data, postOption) {
 }
 
 async function generateAccountInformations(email, completeName) {
-  return querystring.stringify({
-    workspaceName: await uid(8),
-    password: await uid(8),
-    organizationName: await uid(8),
-    email,
-    completeName,
-  });
+  const password = await uid(8);
+  return {
+    accInfo: querystring.stringify({
+          workspaceName: await uid(8),
+          organizationName: await uid(8),
+          password,
+          email,
+          completeName,
+        }),
+      password
+  };
 }
 
 async function sendData(accInfo) {
@@ -64,10 +71,37 @@ async function createUsersWithFile(line) {
   } else if (!email.match(emailRegex)) {
     throw Error('Invalid Email');
   }
-  const accInfo = await generateAccountInformations(email, completeName);
-  await sendData(accInfo);
-}
+  const { accInfo, password } = await generateAccountInformations(email, completeName);
 
+  const mailOptions = {
+    from: mailConfig.email,
+    to: email,
+    subject: 'Compte Bocket.me',
+    html: `email: ${email} <br>Mot de passe: ${password}`
+  };
+
+  console.log('avant send data');
+  await sendData(accInfo);
+
+  console.log('apres send data');
+
+  const renderVar = {
+    "email de l'utilisateur": email,
+    password: password,
+    completeName
+  };
+  console.log('apres render var');
+  Twig.renderFile('../views/inscriptionbatch.twig', renderVar, (err, html) => {
+    console.log("TWIG ALLO", err);
+    mailTransporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log('error while sending mail:', error);
+      } else {
+        console.log('email sent');
+      }
+    })
+  });
+}
 lineReader.on('line', (line) => {
   createUsersWithFile(line)
     .then(() => console.log(`${line} ${GREEN}OK${NC}`))
