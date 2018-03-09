@@ -364,6 +364,8 @@ p{
 }
 .node-selector{
     padding-top: 1%;
+    font-size: 16px;
+    font-weight: 800;
 }
 
 .breadcrumb:hover {
@@ -373,7 +375,7 @@ p{
 
 .breadcrumb:last-child{
     color:#9b9b9b;
-    font-size: 10px;
+    font-size: 11px;
 }
 
 .disabled-link {
@@ -572,7 +574,7 @@ div.collapsible-body  ul {
 }
 
 #file-name {
-    vertical-align: middle;
+    vertical-align: text-top;
     margin-right: 10px;
 }
 
@@ -585,6 +587,29 @@ div.collapsible-body  ul {
 .format {
     font-size: 12px;
     color:#C2C2C2;
+}
+
+.title-modal {
+    font-size: 20px;
+}
+
+li.collection-item.information-detail {
+    border: none;
+    font-weight: 600;
+    color: #A1A1A1;
+}
+
+#info-name, #info-description,
+#info-creation, #info-creation,
+#info-creator, #info-owner {
+    color:#000000;
+    font-weight: 600;
+} 
+
+.title-side {
+    font-size: 16px;
+    font-weight: 800;
+    text-transform: capitalize;
 }
 
 @media screen and (max-width: 600px) {
@@ -609,6 +634,10 @@ div.collapsible-body  ul {
         width: 80%;
         max-height: 100%;
     }
+}
+
+#details {
+    padding: 30px 70px 0 20px;
 }
 
 @media screen and (min-width: 600px) and (max-width: 992px){
