@@ -57,6 +57,6 @@ module.exports = function (io) {
     renameSpecListener(io, socket);
     GetSearchCriteria(socket);
     GetSelectedItemsToAdd(socket);
-    editPartListener(socket);
+    //editPartListener(socket);
   });
 };

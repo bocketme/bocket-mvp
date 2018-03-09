@@ -93,7 +93,7 @@ $(document).ready(function() {
       icon.hide();      
       elem.remove();
       nameSpan.show();
-      socket.emit('renameSpec', {nodeId: idOfchoosenNode, lastName, currentName: nameSpan.text() + '.' + formatSpan.text().toLowerCase()});
+      socket.emit('renameSpec', {nodeId: idOfchoosenNode, lastName, currentName: nameSpan.text().trim() + '.' + formatSpan.text().toLowerCase().trim()});
     };
 
     input.keydown(function (e) {
@@ -111,7 +111,6 @@ $(document).ready(function() {
     icon.show();
     $(pointedElem).after(input);
     input.select();
-    console.log("Rename");
   });
 
   specContextMenu.on("click", "#download", function (){
@@ -144,10 +143,11 @@ function addSpec(ul, file, native) {
     native_icon = "<img src='/img/native-3d-file.png' class='native_icon'>";
     buttonNativeDownload.attr('href', `/download/${idOfchoosenNode}/native/${file.name}.${file.format}`);
   }
+  console.log(`${file.name}.${file.format}`);
   ul.append(`<li class="collection-item-files" ${native?'id="native"':''}" filename="${file.name}.${file.format}">` +
     `<p class="truncate">`+
-    `<i id="file-name" class="material-icons tiny">insert_drive_file</i>`+
-    `<span>${file.name}</span>`+
+    `<span><i id="file-name" class="material-icons tiny">insert_drive_file</i>`+
+    `${file.name}</span>`+
     `<span class="secondary-content format">${native_icon} ${file.format.toUpperCase()}</span></p>` +
     `</li>`);
 }

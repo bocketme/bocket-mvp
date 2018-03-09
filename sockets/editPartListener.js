@@ -5,6 +5,33 @@ const NodeTypeEnum = require('../enum/NodeTypeEnum');
 const actionSucceeded = require('./emitter/actionSucceeded');
 const actionFailed = require('./emitter/actionFailed');
 
+/**
+ * Check if the user can delete the node
+ * @param userMail {string}
+ * @param nodeId {string}
+ * @return {Promise<void>}
+ */
+async function doesHeHaveRights(userMail, nodeId) {
+  const user = await User.findOne({ email: userMail });
+  const node = await Node.findById(nodeId);
+
+  if (!user || !node) return null;
+
+  /*
+  * console.log("User's mail:", user.email);
+  * console.log("Node's name:", node.name);
+  */
+
+  const [members, owners] = [node.team.members, node.team.owners];
+
+  if (members.find(member => member.email === userMail) ||
+      owners.find(member => member.email === userMail)) {
+    return node;
+  }
+  return null;
+}
+
+
 async function editPart(newName, newDescription, nodeId) {
   const { node, content, type } = await getContentOfNode(nodeId);
 
