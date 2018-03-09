@@ -7,7 +7,7 @@ const internalErrorEmitter = require('./emitter/internalErrorEmitter');
 async function removeUserFromWorkspace(workspaceId, ownerMail, userEmail) {
   const { owner } = await WorkspaceModel.findById(workspaceId);
   const user = await UserModel.find({ email: userEmail });
-  console.log(user);
+
   if (userEmail === owner.email) { return false; }
   if (ownerMail !== owner.email) { return false; }
   await WorkspaceModel.update({ _id: workspaceId }, { $pull: { 'team.members': { email: userEmail } } });
@@ -36,9 +36,6 @@ async function removeUserFromOrganization(workspaceId, ownerMail, userEmail) {
     });
   await OrganizationModel.update({ _id: organization.id }, { $pull: { members: { email: userEmail } } });
   const user = await UserModel.findOne({ email: userEmail });
-  console.log('[REMOVE JA] user:', user);
-  console.log('[REMOVE JA] user._id:', user._id);
-  console.log('[REMOVE JA] organization.id:', organization._id, organization.id);
   await UserModel.update({ _id: user._id }, { $pull: { organizations: { _id: organization._id } } });
   return true;
 }
