@@ -219,7 +219,7 @@ const defaultNodeValue = "Select a node";
         $("#form-report-issue").submit(e => {
             e.preventDefault();
             const title = $('#title-issue').val();
-            const description = $('description-issue').val();
+            const description = $('#description-issue').val();
             socket.emit('reportIssue', {title, description})
         });
 
