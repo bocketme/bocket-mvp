@@ -46,6 +46,9 @@
                     <li class="option-node" id="invite-people-btn">
                         <a class="dropdown-menu">Invite people</a>
                     </li>
+                    <li class="option-node" id="change-pwd-btn">
+                        <a class="dropdown-menu">Change password</a>
+                    </li>
                     <li class="option-node">
                         <a class="dropdown-menu" href="/signOut">Sign Out</a>
                     </li>
@@ -67,6 +70,7 @@
                 {% include "modals/upload_files3d.twig" %}
                 {% include "modals/createWorkspace.twig" %}
                 {% include "modals/edit_part.twig" %}
+                {% include "modals/changePassword.twig" %}
                 {# {% include "modals/import_specfiles.twig"%} #}
 
                 <div id="second_column_content" class="clear">
@@ -133,6 +137,7 @@
     <script src="/js/initial.js"></script>
     <script src="/js/hub/createWorkspace.js"></script>
     <script src="/js/hub/actions.js"></script>
+    <script src="/js/hub/changePassword.js"></script>
     <script type="application/javascript">
       $('.profile').initial();
     </script>

@@ -6,6 +6,10 @@ var pointedElem = null;
 
 $(document).ready(function () {
 
+  $("#form-change-pwd").submit(function(e) {
+    e.preventDefault();
+  });
+
   $('#header-specs').on("contextmenu", function (e) {
     e.preventDefault();
     toggleMenuContextOff();
