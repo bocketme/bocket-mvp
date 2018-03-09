@@ -25,6 +25,7 @@ const createWorkspaceInHub = require('./createWorkspaceInHub');
 const deleteNodeListener = require('./deleteNodeListener');
 const duplicateNodeListener = require('./duplicateNodeListener');
 const changePassword = require('./changePasswordListener');
+const reportIssueListener = require('./reportIssueListener');
 
 const FSconfig = require('../config/FileSystemConfig');
 module.exports = function (io) {
@@ -64,5 +65,6 @@ module.exports = function (io) {
     changePassword(socket);
     workspaceManagerListener(socket);
     removeUserFromOW(socket);
+    reportIssueListener(socket);
   });
 };
