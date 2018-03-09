@@ -21,9 +21,7 @@ const defaultNodeValue = "Select a node";
 
                     if (postRequest.status === 200) {
                         $('#' + nodeId + ' > .p-node').contents().last()[0].textContent = postRequest.response;
-                        const updateNodeEvent = new CustomEvent('[Viewer], update', {
-                            nodeId
-                        });
+                        const updateNodeEvent = new CustomEvent('[Viewer] - update', {nodeId});
                         document.dispatchEvent(updateNodeEvent);
                     } else if (postRequest.status === 404) Materialize.toast("Not Found", 1000);
                     else if (postRequest.status === 401) Materialize.toast("The selected node is not a part", 1000);

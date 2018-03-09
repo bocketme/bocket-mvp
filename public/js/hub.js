@@ -1,35 +1,36 @@
 (function ($) {
-    $(function () {
-        //initialize all modals
-        $('.modal').modal({
-            dismissible: true, // Modal can be dismissed by clicking outside of the modal
-            opacity: .7, // Opacity of modal background
-            inDuration: 300, // Transition in duration
-            outDuration: 200, // Transition out duration
-            startingTop: '2%', // Starting top style attribute
-            endingTop: '10%', // Ending top style attribute
-            ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-                let context = "#" + modal.context.id;
-                let form = $(context).find('form')
-                if (form[0] && modal.context.id !== "edit-part")
-                   // console.log("form :", form);
-                    form[0].reset();
-              }
-        });
-        $(".collapsible").collapsible();
-        $(".collapsible").collapsible('open', 1);
-        $('ul.tabs').tabs();
+  $(function () {
+    //initialize all modals
+    $('.modal').modal({
+      dismissible: true, // Modal can be dismissed by clicking outside of the modal
+      opacity: .7, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '2%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function (modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+        let context = "#" + modal.context.id;
+        let form = $(context).find('form')
+        if (form[0] && modal.context.id !== "edit-part")
+          // console.log("form :", form);
+          form[0].reset();
+      }
+    });
+    $(".collapsible").collapsible();
+    $(".collapsible").collapsible('open', 1);
+    $('ul.tabs').tabs();
 
     $('.button-collapse').sideNav({
-        menuWidth: 500, // Default is 300
-        edge: 'right', // Choose the horizontal origin
-        onOpen: function(el) {
-            if($("#comments").css('display') === 'block') {
-              $(".message-area").animate({ scrollTop: $(".message-area").prop("scrollHeight")}, "slow");
-            }
-         }
+      menuWidth: 500, // Default is 300
+      edge: 'right', // Choose the horizontal origin
+      onOpen: function (el) {
+        if ($("#comments").css('display') === 'block') {
+          $(".message-area").animate({
+            scrollTop: $(".message-area").prop("scrollHeight")
+          }, "slow");
+        }
       }
-    );
+    });
 
     $('.dropdown-image').dropdown({
       inDuration: 300,
@@ -99,7 +100,7 @@
     $('#dropdown-trigger-file-spec-menu').on('click', (event) => {
       event.preventDefault();
       console.log($('#specs-context-menu'))
-      $('#specs-context-menu').dropdown('open');      
+      $('#specs-context-menu').dropdown('open');
     })
 
     $('#side-nav-close').click(event => {
@@ -118,6 +119,12 @@
       listWorkspace.empty();
       listWorkspace.append(html);
       $('#trigger-creation-workspace').modal();
+    });
+
+    socket.on("duplicateNode", (data) => {
+      $('#' + data.nodeId + '-body').html(data.html);
+      var element = document.querySelectorAll('.three-node');
+      $(element).click(loadNodeInformation);
     });
 
     socket.on('nodeChild', (html, nodeId, force) => {
@@ -184,8 +191,8 @@ function collapseOwners(owners) {
  *
  * @type {Detail}
  */
-const detail = new (class Detail{
-  constructor(){
+const detail = new(class Detail {
+  constructor() {
     this.title = $('#info-name');
     this.description = $('#info-description');
     this.creator = $('#info-creator');
@@ -215,4 +222,3 @@ const detail = new (class Detail{
 socket.on("[Node] - Details", (info) => {
   detail.update(info);
 });
-

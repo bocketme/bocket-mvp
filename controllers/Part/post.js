@@ -124,7 +124,7 @@ const newPart = async (req, res) => {
     
     
     try {
-        newParentNode = await parentNode.save()
+        newParentNode = await parentNode.save();
     } catch (err) {
         part.remove();
         subNode.remove();
