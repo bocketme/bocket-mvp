@@ -16,7 +16,8 @@
     <link rel="stylesheet" href="/css/hub/manageWorkspace.css">
 {% endblock %}
 
-{% block title %}{{ title }}{% endblock title %}
+{% block title %}{{ title }}
+{% endblock title %}
 
 {% block body %}
     <div id="hub" class="row">
@@ -31,7 +32,7 @@
 
                 <button class="dropdown-button" data-beloworigin="true" data-activates='workspaces-dropdown'>
                     <div class="workspaces-title">
-                      {{ in_use.name }}
+                        {{ in_use.name }}
                         <i class="material-icons arrow_drop_down">arrow_drop_down</i>
                     </div>
                     <div class="username-dropdown">
@@ -52,7 +53,10 @@
                     <li class="option-node">
                         <a class="dropdown-menu" href="/signOut">Sign Out</a>
                     </li>
-
+                    <li class="divider"></li>
+                    <li class="option-node">
+                        <a class="dropdown-menu modal-trigger" href="#report-issue-dropdown">Report an issue</a>
+                    </li>
                     <!-- display panel create new assemby US2 -->
                     {# <li class="divider"></li>
                     <li class="option-node">
@@ -65,6 +69,7 @@
                 {# {% include "modals/new_node.twig" %} #}
                 {# {% include "modals/import_specfiles.twig"%} #}
 
+                {% include "modals/reportIssue.twig" %}
                 {% include "modals/import_part.twig"%}
                 {% include "modals/import_assembly.twig" %}
                 {% include "modals/upload_files3d.twig" %}
@@ -89,8 +94,8 @@
         <div id="third_column" class="col s12 m8 l8 xl9 ">
             {% include "hub/header.twig" %}
             <div id="third_column_content" class="row">
-                    {% include 'hub/viewer.twig' %}
-                    {% include "hub/sideNav.twig" %}
+                {% include 'hub/viewer.twig' %}
+                {% include "hub/sideNav.twig" %}
                 {#
                 {% include "hub/tabs.twig" %}
                 <input id="activity-uploader" style="display: none" type="file">
@@ -102,19 +107,18 @@
     </div>
 {% endblock %}
 
-
 {% block js %}
     <script>
-      var workspaceId = "{{ in_use.id }}";
-      var idOfchoosenNode = undefined;
-      var NodeTypeEnum = {{ NodeTypeEnum }};
-      var ViewTypeEnum = {{ ViewTypeEnum }};
-      var view = ViewTypeEnum.location;
-      socket.emit("joinWorkspace", workspaceId);
-      $(".workspace-change").on("click", function () {
-        socket.emit("leaveWorkspace", workspaceId);
-      });
-      var l = 42;
+        var workspaceId = "{{ in_use.id }}";
+        var idOfchoosenNode = undefined;
+        var NodeTypeEnum = {{ NodeTypeEnum }};
+        var ViewTypeEnum = {{ ViewTypeEnum }};
+        var view = ViewTypeEnum.location;
+        socket.emit("joinWorkspace", workspaceId);
+        $(".workspace-change").on("click", function () {
+            socket.emit("leaveWorkspace", workspaceId);
+        });
+        var l = 42;
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
@@ -138,7 +142,7 @@
     <script src="/js/hub/actions.js"></script>
     <script src="/js/hub/changePassword.js"></script>
     <script type="application/javascript">
-      $('.profile').initial();
+        $('.profile').initial();
     </script>
     {% include "require_viewer.twig" %}
 {% endblock %}
