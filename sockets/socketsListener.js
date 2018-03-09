@@ -16,12 +16,15 @@ const SocketIOFile = require('socket.io-file');
 const getAllSpecListener = require('./getAllSpecListener');
 const removeSpecListener = require('./removeSpecListener');
 const renameSpecListener = require('./renameSpecListener');
+const workspaceManagerListener = require('./workspaceListener');
+const removeUserFromOW = require('./removeUserFromOW');
 const GetSearchCriteria = require("./GetSearchCriteria");
 const GetSelectedItemsToAdd = require("./GetSelectedItemsToAdd");
 const createWorkspaceInSignIn = require('./createWorkspaceInSignIn');
 const createWorkspaceInHub = require('./createWorkspaceInHub');
 const deleteNodeListener = require('./deleteNodeListener');
 const duplicateNodeListener = require('./duplicateNodeListener');
+const changePassword = require('./changePasswordListener');
 
 const FSconfig = require('../config/FileSystemConfig');
 module.exports = function (io) {
@@ -58,5 +61,8 @@ module.exports = function (io) {
     renameSpecListener(io, socket);
     GetSearchCriteria(socket);
     GetSelectedItemsToAdd(socket);
+    changePassword(socket);
+    workspaceManagerListener(socket);
+    removeUserFromOW(socket);
   });
 };

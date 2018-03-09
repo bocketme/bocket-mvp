@@ -1,5 +1,14 @@
 .indicator{
-    background-color: #000000 !important;
+    background-color: #00FFC8 !important;
+    margin-left: 40px;
+    margin-right: 40px;
+    height: 5px !important;
+}
+
+.indicator:hover{
+    background-color: #00FFC8 !important;
+    margin-left: 40px;
+    margin-right: 40px;
 }
 
 li.tab>a{
@@ -10,9 +19,9 @@ li.tab>a{
     font-size: 12px !important;
 }
 
-li.tab>a:hover{
-    border-bottom: 2px solid grey
-}
+/* li.tab>a:hover{
+     border-bottom: 2px solid #00FFC8;
+} */
 
 li.tab>a.active{
     color: #000000 !important;
@@ -20,13 +29,17 @@ li.tab>a.active{
 }
 
 .breadcrumb{
-    color: black;
+    color: #9C9C9C;
     font-size: 11px;    
 }
 
 .breadcrumb:before {
     color: black !important;
     margin: 0 !important;
-    vertical-align: unset !important;
+    vertical-align: middle;
     font-size: 11px !important;
+}
+
+.tabs .tab a:hover {
+	background-color: #e9e8e9;
 }
