@@ -18,7 +18,6 @@ const headerTitle = new class HeaderTitle {
       let link = document.createElement('a');
       link.className = "breadcrumb";
       link.innerHTML = breadcrumb;
-      console.log(link);
       this.breadcrumb.appendChild(link);
     })
   }

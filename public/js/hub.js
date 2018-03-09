@@ -121,7 +121,6 @@
     });
 
     socket.on('nodeChild', (html, nodeId, force) => {
-      console.log("Find Node Child");
       var collapsible_body = $('#' + nodeId + '-body');
       if (collapsible_body.hasClass("container") || force) {
         if (!force)

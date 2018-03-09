@@ -21,6 +21,7 @@ $(document).ready(function () {
   $('.node-tree').on('contextmenu', 'li', function (e) {
     pointedElem = e.target;
     e.preventDefault();
+    $(pointedElem).trigger('click');
     toggleMenuContextOff();
     toggleMenuContextOn('#node-tree-context-menu');
   });

@@ -1,8 +1,18 @@
 $(document).ready(function () {
-    var nodeTreeContextMenu = $("#node-tree-context-menu");
+    const nodeTreeContextMenu = $("#node-tree-context-menu");
+    const contextMenu = $("#node-tree-context-menu");
 
     nodeTreeContextMenu.on("click", '#duplicate-node', duplicateNode);
+    contextMenu.on("click", "#remove", removeNode);
 });
+
+function removeNode() {
+    var node = $(pointedElem);
+    if (!node.attr('id'))
+        node = node.parent('div.three-node');
+    Materialize.toast('Deletion In Process', 1000);
+    socket.emit("deleteNode", node.attr("id"));
+}
 
 /**
  * Called when users want to duplicate a node
@@ -11,6 +21,6 @@ function duplicateNode() {
     var elem = $(pointedElem);
     if (!elem.is('div'))
         elem = elem.parent('div');
-    console.log("DUPLICATE NODE", {id: elem.attr("id")});
+    Materialize.toast('Duplication Under Treatment', 1000);
     socket.emit("duplicateNode", {nodeId: elem.attr("id")});
 }

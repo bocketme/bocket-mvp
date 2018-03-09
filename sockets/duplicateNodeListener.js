@@ -11,23 +11,38 @@ let mongoose = require('mongoose');
  */
 function duplicateNodeListener(userEmail, data) {
     return new Promise((res, rej) => {
-        console.log(data);
-        let query = Node.findById(data.nodeId);
-        query.elemMatch("Users", {email: userEmail})
+
+        const query = Node.findById(data.nodeId)
+            .or([{
+                'team.members.email': userEmail,
+                'team.owners.email': userEmail
+            }])
             .then(node => {
                 if (!node) res(null);
                 node._id = undefined;
                 node.name += " - copy";
                 node.isNew = true;
+                //node.path = null;
                 console.log("NODE ", node);
                 node.save()
                     .then(node => {
-                        Workspace.findById(node.Workspace)
-                            .then(w => {
-                                w.node
+                        const parentNode = Node.findOne({ "children._id" : data.nodeId})
+                        .then((parent) => {
+                            parent.children.push({
+                                _id: node._id,
+                                type: node.type,
+                                name: node.name, 
+                            });
+                            parent.save()
+                            .then(() => {
+                                Workspace.findById(node.Workspace)
+                                .then(w => {
+                                    w.node
+                                })
+                                .catch(err => rej(err));
+                                res(node);    
                             })
-                            .catch(err => rej(err));
-                        res(node)
+                        })
                     })
                     .catch(err => rej(err));
             })
