@@ -13,7 +13,7 @@ module.exports = (socket) => {
       from: mailConfig.email,
       to: mailConfig.email,
       subject: 'ISSUE BOCKET.ME',
-      html: `Issue créée par ${socket.handshake.userMail}<br>TITLE: ${title}<br><br>DESCRIPTION: ${description}`,
+      html: `Issue créée par ${socket.handshake.session.userMail}<br><br><br><br>WORKSPACE ID:${socket.handshake.session.currentWorkspace}<br><br><br><br>TITLE: ${title}<br><br><br><br>DESCRIPTION: ${description}`,
     };
     mailTransporter.sendMail(mailOptions, (error, info) => {
       if (error) {
