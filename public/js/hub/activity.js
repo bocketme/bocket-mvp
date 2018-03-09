@@ -80,7 +80,7 @@ function addCommentActivity(lastComment, comment, view) {
     socket.emit(newComment, {nodeId: idOfchoosenNode, comment: comment, viewType: view});
 }
 
-function getAvatar(avatarSrc, author) {
+function getAvatarForActivity(avatarSrc, author) {
     let avatar;
     if (!avatarSrc)
         avatar = '<img data-name="' + author + '" class="avatar col s2 profile tooltipped" data-tooltip="'+ author +'" data-position="left" data-delay="50"/>';
@@ -97,7 +97,7 @@ function getAvatar(avatarSrc, author) {
  */
 function printActivityComment(lastComment, comment, when, username) {
 
-    let avatar = getAvatar(comment.avatar, comment.author);
+    let avatar = getAvatarForActivity(comment.avatar, comment.author, );
     if (username === comment.author)    {
        $('.message-area')
        .append( `<div class='col s12'>
@@ -125,7 +125,7 @@ function printActivityComment(lastComment, comment, when, username) {
 function printCommentOfActivity(comment, index) {
 
     var ulId = (view === ViewTypeEnum.location) ? ("#activity-comments") : ("#activity-comments-content");
-    let avatar = getAvatar(comment.avatar, comment.author);
+    let avatar = getAvatarForActivity(comment.avatar, comment.author);
     $(`${ulId} .comment-input[data-index=${index}]`).parent().prev().append(`
         <li class="commentOfActivity">
         <div class="row">
