@@ -31,7 +31,6 @@
               $(".message-area").animate({ scrollTop: $(".message-area").prop("scrollHeight")}, "slow");
             }
          }
-      }
     });
 
     $('.dropdown-image').dropdown({
