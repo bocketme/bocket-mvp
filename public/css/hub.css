@@ -58,7 +58,7 @@ main {
 }
 
 #second_column {
-    background-color: #f7f7f7;
+    background-color: #FAFAFA;
     border: none;
     padding: 0 !important;
     height: 100%;
@@ -684,7 +684,7 @@ ul#details-tab {
 }
 
 .header-background {
-    background-color: #ffffff;
+    background-color: #FAFAFA;
 }
 
 @media screen and (min-width: 600px) and (max-width: 992px){

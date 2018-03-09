@@ -1,0 +1,189 @@
+<head>
+<!-- If you delete this tag, the sky will fall on your head -->
+<meta name="viewport" content="width=device-width" />
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Bocket</title>
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">	
+<style>
+/* ------------------------------------- 
+		GLOBAL 
+------------------------------------- */
+* { 
+	margin:0;
+	padding:0;
+}
+* { font-family: "Montserrat", "Verdana", "sans-serif", "Arial"; }
+
+img { 
+	max-width: 100%; 
+}
+.collapse {
+	margin:0;
+	padding:0;
+}
+body {
+	-webkit-font-smoothing:antialiased; 
+	-webkit-text-size-adjust:none; 
+	width: 100%!important; 
+	height: 100%;
+	
+}
+
+
+/* ------------------------------------- 
+		ELEMENTS 
+------------------------------------- */
+
+table.condition {
+	padding: 30px 100px;
+	background-color: #F3F3F3;
+	color:grey;
+}
+
+.btn-workspace {
+	background-color: #FF2E63;
+	text-decoration: none;
+	cursor: pointer;
+	color:#ffffff;
+	padding: 10px 80px;
+	border-radius: 4px;
+}
+
+.social {
+	text-align: center;
+}
+/* ------------------------------------- 
+		BODY 
+------------------------------------- */
+table.body-wrap { width: 100%;}
+
+/* ------------------------------------- 
+		TYPOGRAPHY 
+------------------------------------- */
+
+h3 { 
+	font-weight:bold; 
+	font-size: 23px;
+}
+
+.paragraph {
+	margin-bottom: 10px; 
+	font-weight: normal; 
+	font-size:14px; 
+	line-height:1.4;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.footer { 
+	margin-bottom: 10px; 
+	font-weight: normal; 
+	font-size:13px; 
+	line-height:1.4;
+}
+/* --------------------------------------------------- 
+		RESPONSIVENESS
+		Nuke it from orbit. It's the only way to be sure. 
+------------------------------------------------------ */
+
+/* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+.container {
+	display:block!important;
+	max-width:750px!important;
+	margin:0 auto!important; /* makes it centered */
+	clear:both!important;
+	background-color: #ffffff;
+}
+
+/* This should also be a block element, so that it will fill 100% of the .container */
+.content {
+	padding: 10px 100px;
+	max-width:600px;
+	margin:0 auto;
+	display:block;
+}
+
+/* Let's make sure tables in the content area are 100% wide */
+.content table { width: 100%; }
+
+/* ------------------------------------------- 
+		PHONE
+		For clients that support media queries.
+		Nothing fancy. 
+-------------------------------------------- */
+@media only screen and (max-width: 600px) {
+	
+
+}
+</style>
+</head>
+ 
+<body>
+	<table class="body-wrap" bgcolor="#EEEEEE">
+		<tr>
+		<td class="container">
+			<div class="content">
+				<table>
+					<tr>
+						<td>
+							<br><br><br><br>
+							<center>
+								<img 
+									src="/img/logo.png" 
+									alt="bocketme" 
+									class="logo" 
+									height="50"
+								>
+							<br><br><br><br>
+							<h2>Bienvenue chez Bocket !<img src="/img/rocket.png" style="margin-left:10px" alt="rocket" height="20"></h2>
+							</center>	
+							<br><br><br>
+							<p class="paragraph">
+Bonjour {{ completeName }},<br> 
+Merci pour votre inscription sur notre plateforme. 
+Vous allez aimer créer des projets 3D plus rapidement.
+Pour commencer à collaborer, connectez vous avvotre adresse email 
+en cliquant sur le bouton ci-dessous.
+<br><br><br>
+<center>
+	<a class="btn-workspace" href="{{ url }}"><b>Reset your password!</b></a>
+</center>
+<br><br>
+Informations relatives à votre compte<br>
+Email: {email de l'utilisateur}<br>
+Password: {password}<br><br>
+Merci,
+<br><br>
+<span style="color:grey">L'équipe Bocket</span>
+</p>									
+						<br/>
+					</td>
+				</tr>
+			</table>
+			</div>
+			<div>							
+				<table class="condition" width="100%">
+						<tr>
+							<td>
+								<p class="footer">
+Des questions ? Besoin d'aide ? N'attendez pas, contactez-nous en<br>
+répondant à cet email ou <a href="#">hello@bocket.me</a><br><br>
+Bocket, société PLUM - Tous droits réservés.<br>
+11 rue Torricelli • 75017 Paris<br><br>
+<span style="display: block;text-align:center;">Follow us</span>
+<div class="social">
+    <a href="https://www.facebook.com/bocketme/"><img src="/img/facebook-icon.png" alt="facebook" height="50"></a>
+    <a href="https://fr.linkedin.com/company/bocket"><img src="/img/linkedin-icon.png" alt="linkedin" height="50"></a>
+    <a href="https://twitter.com/hellobocket"><img src="/img/twitter-icon.png" alt="twitter" height="50"></a>
+</div>
+								</p>
+								
+							</td>
+						</tr>
+					</table>
+				</div>	
+	</tr>
+</table>
+</body>
+
