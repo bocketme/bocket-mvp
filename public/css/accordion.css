@@ -53,7 +53,7 @@
     color: #000000 !important;
     font-family: 'Montserrat' !important;
     font-weight: 800 !important;  
-    background-color: #e9e8e9 !important;
+    background-color: #C2C2C2 !important;
 }
 
 .collapsible-header.node:hover{
@@ -73,6 +73,10 @@
 	font-size: 12px; 
 	padding-top: 7px;
 	padding-bottom: 7px;  
+}
+
+.collapsible-header:hover{
+	background-color: #e9e8e9; 
 }
 
 ul.collapsible{
@@ -99,4 +103,17 @@ img.node.no-child{
 
 div.collapsible-body{
 	padding: 0;
+}
+
+.collection-item-files {
+	margin-top: 5px;
+	padding: 5px 10px;
+}
+
+.collection-item-files:hover {
+	background-color: #e9e8e9;
+	cursor: pointer;
+}
+.collection-item-files:hover .format {
+	color: #000000;
 }
