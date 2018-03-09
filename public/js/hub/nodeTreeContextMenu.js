@@ -1,9 +1,8 @@
 $(document).ready(function () {
     const nodeTreeContextMenu = $("#node-tree-context-menu");
-    const contextMenu = $("#node-tree-context-menu");
 
     nodeTreeContextMenu.on("click", '#duplicate-node', duplicateNode);
-    contextMenu.on("click", "#remove", removeNode);
+    nodeTreeContextMenu.on("click", "#remove", removeNode);
 });
 
 function removeNode() {
@@ -22,5 +21,9 @@ function duplicateNode() {
     if (!elem.is('div'))
         elem = elem.parent('div');
     Materialize.toast('Duplication Under Treatment', 1000);
-    socket.emit("duplicateNode", {nodeId: elem.attr("id")});
+    socket.emit("duplicateNode", {
+        nodeId: elem.attr("id"),
+        sub_level: elem.contents().filter("span.p-node").attr("data-sublevel"),
+        breadcrumb: elem.contents().filter("span.p-node").attr("data-breadcrumbs"),
+    });
 }

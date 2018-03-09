@@ -1,3 +1,10 @@
 module.exports = {
-  "extends": "airbnb"
-}
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "extends": "airbnb",  
+};

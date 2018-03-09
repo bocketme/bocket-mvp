@@ -32,7 +32,7 @@
             }
          }
       }
-    );
+    });
 
     $('.dropdown-image').dropdown({
       inDuration: 300,
@@ -102,7 +102,7 @@
     $('#dropdown-trigger-file-spec-menu').on('click', (event) => {
       event.preventDefault();
       console.log($('#specs-context-menu'))
-      $('#specs-context-menu').dropdown('open');      
+      $('#specs-context-menu').dropdown('open');
     })
 
     $('#side-nav-close').click(event => {
@@ -121,6 +121,12 @@
       listWorkspace.empty();
       listWorkspace.append(html);
       $('#trigger-creation-workspace').modal();
+    });
+
+    socket.on("duplicateNode", (data) => {
+      $('#' + data.nodeId + '-body').html(data.html);
+      var element = document.querySelectorAll('.three-node');
+      $(element).click(loadNodeInformation);
     });
 
     socket.on('nodeChild', (html, nodeId, force) => {
@@ -187,8 +193,8 @@ function collapseOwners(owners) {
  *
  * @type {Detail}
  */
-const detail = new (class Detail{
-  constructor(){
+const detail = new(class Detail {
+  constructor() {
     this.title = $('#info-name');
     this.description = $('#info-description');
     this.creator = $('#info-creator');
@@ -218,4 +224,3 @@ const detail = new (class Detail{
 socket.on("[Node] - Details", (info) => {
   detail.update(info);
 });
-

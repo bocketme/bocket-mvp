@@ -4,7 +4,6 @@ $(function () {
   $('body').on('click', '.search_child', nodeChildrenChargement);
 });
 
-
 const headerTitle = new class HeaderTitle {
   constructor() {
     this.title = $('#node-title');
@@ -86,6 +85,8 @@ function loadNodeInformation(event) {
 
 socket.on("deleteNode", function (nodeId) {
   deleteNode(nodeId);
+  const updateNodeEvent = new CustomEvent('[Viewer] - remove', {nodeId});
+  document.dispatchEvent(updateNodeEvent);
 });
 
 function deleteNode(nodeId) {
