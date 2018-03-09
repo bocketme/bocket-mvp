@@ -1,0 +1,81 @@
+<div id='specs'>
+    <p id='header-specs' data-activates="specs-context-menu">
+        <b>Files</b>
+        <a href="#!" data-activates="specs-context-menu" class="dropdown-image secondary-content"><img class="add-content-icon" src="/img/add-content-icon.png" alt="New Specs"></a>
+    </p>
+</div>
+
+<ul id="specs-collection" class="collection">
+</ul>
+
+<input id="specs-uploader" style="display: none" type="file" multiple="multiple">
+
+<ul id="specs-context-menu" class="dropdown-content">
+    <li class="option-node">
+        <a id="new_file" class="dropdown-menu" href="#!">New File</a>
+    </li>
+</ul>
+
+<ul id='native-files' class='dropdown-content'>
+    <li class="option-node">
+        <a id="download-native" class="dropdown-menu" href="#!" download>Download</a>
+    </li>
+</ul>
+
+<ul id='spec-context-menu' class='dropdown-content'>
+    <li class="option-node">
+        <a id="remove" class="dropdown-menu" href="#!">Remove</a>
+    </li>
+    <li class="option-node">
+        <a id="rename" class="dropdown-menu" href="#!">Rename</a>
+    </li>
+    <li class="divider"></li>
+    <li class="option-node">
+        <a id="download" class="dropdown-menu" href="#!" download>Download</a>
+    </li>
+</ul>
+
+{#
+<div id="specs" class="col s12">
+    <div id="files-spec-header" class="collection with-header">
+        <h5 id="files-spec-title">
+            Files
+            <a id="context-menu-trigger" class="secondary-content dropdown-image" data-activates='specs-context-menu'><img src="/img/add-content-icon.png"></a>
+        </h5>
+    </div>
+    <ul id="specs-collection" class="collection">
+        <li></li>
+    </ul>
+    
+    <input id="specs-uploader" style="display: none" type="file" multiple="multiple">
+
+    <ul id='specs-context-menu' class='dropdown-content'>
+        <li class="option-node">
+            <a id="new_file" class="dropdown-menu" href="#!">New file</a>
+        </li>
+        /*
+        <li class="option-node"><a id="remove" class="dropdown-menu" href="#!">Remove</a></li>
+        <li class="divider"></li>
+        <li class="option-node"><a id="preview" class="dropdown-menu" href="#!">Preview</a></li>
+        <li class="option-node"><a id="rename" class="dropdown-menu" href="#!">Rename</a></li>
+        <li class="divider"></li>
+        <li class="option-node"><a id="download" class="dropdown-menu" href="#!">Download</a></li>
+        */
+    </ul>
+
+    <ul id='spec-context-menu' class='dropdown-content'>
+        <li class="option-node">
+            <a id="remove" class="dropdown-menu" href="#!">Remove</a>
+        </li>
+        <li class="option-node">
+            <a id="rename" class="dropdown-menu" href="#!">Rename</a>
+        </li>
+        //<li class="divider"></li>
+        //<li class="option-node"><a id="preview" class="dropdown-menu" href="#!">Preview</a></li>
+        <li class="divider"></li>
+        <li class="option-node">
+            <a id="download" class="dropdown-menu" href="#!">Download</a>
+        </li>
+    </ul>
+</div>
+#}

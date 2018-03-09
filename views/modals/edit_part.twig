@@ -1,0 +1,34 @@
+<!-- Modal Structure -->
+<div id="edit-part" class="modal" style="height: auto; !important;">
+    <div class="modal-header">
+        <h4 style="font-weight: bolder !important;">Edit your Part</h4>
+
+    </div>
+    <div class="modal-content container">
+        <div class="modal-body">
+            <form id="form-edit-part">
+                <div class="input-field col s12">
+                    <input type="text" placeholder="Part Name" id="part-name" name="name" class="validate">
+                    <label for="name">Part Name</label>
+                </div>
+
+                <div class="input-field col s12">
+                    <input type="text" placeholder="Description" id="part-description" name="description" class="validate">
+                    <label for="description">Description</label>
+                </div>
+
+                <div class="file-field input-field col s12">
+                    <div class="files-button btn upload_button">
+                        <span>...</span>
+                        <input type="file" id="edit-part-file3D" name="file3D">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="Edit your 3D Model">
+                    </div>
+                </div>
+                <br>
+                <button id="submit-edit-part" class="btn button-form-validate" type="submit">Edit</button>
+            </form>
+        </div>
+    </div>
+</div>

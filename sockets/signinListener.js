@@ -5,45 +5,53 @@ const Workspaces = require('../models/Workspace');
 const Organization = require('../models/Organization');
 const acceptInvitation = require('../utils/Invitations/acceptInvitation');
 
+const log = require('../utils/log');
+
 module.exports = function (socket) {
-  socket.on('signin', (accountInformation) => { // accountInformation.email & accountInformation.password && invitationUid (optional)
-    console.log('AccountInformation = ', accountInformation);
+    socket.on("signin", (accountInformation) => { // accountInformation.email & accountInformation.password && invitationUid (optional)
+        log.info("AccountInformation = ", accountInformation);
 
     /* accountInformation.email = escape(accountInformation.email);
         accountInformation.password = escape(accountInformation.password); */
 
-    User.findOne({ email: `${accountInformation.email}` })
-      .then((user) => {
-        // console.log("Signin listner : ", user);
-        if (user !== null) {
-          user.comparePassword(accountInformation.password, (err, isMatch) => {
-            if (err) throw err;
-            if (isMatch) {
-              findAllWorkspaces(user.workspaces)
-                .then((workspaces) => {
-                  findOwnerOrganization(user.id)
-                    .then((organization) => {
-                      if (!accountInformation.invitationUid) { socket.emit('signinSucced', { workspaces, user, organization }); } else { emitWithInvitation(accountInformation, user, socket); }
-                    })
-                    .catch((err) => {
-                      socket.emit('signinFailed');
+        User.findOne({email: "" + accountInformation.email})
+            .then(user => {
+                //log.info("Signin listner : ", user);
+                if (user !== null)
+                {
+                    user.comparePassword(accountInformation.password, (err, isMatch) => {
+                        if (err) throw err;
+                        if (isMatch)
+                        {
+                            findAllWorkspaces(user.workspaces)
+                                .then(workspaces => {
+                                    findOwnerOrganization(user.id)
+                                        .then((organization) => {
+                                            if (!accountInformation.invitationUid)
+                                                socket.emit("signinSucced", {workspaces : workspaces, user: user, organization: organization});
+                                            else
+                                                emitWithInvitation(accountInformation, user, socket);
+                                        })
+                                        .catch(err => {
+                                            socket.emit("signinFailed");
+                                        });
+                                })
+                                .catch(err => {
+                                    socket.emit("signinFailed");
+                                });
+                        }
+                        else
+                            socket.emit("signinFailed");
                     });
-                })
-                .catch((err) => {
-                  socket.emit('signinFailed');
-                });
-            } else {
-              socket.emit('signinFailed');
-            }
-          });
-        } else {
-          socket.emit('signinFailed');
-        }
-      })
-      .catch((err) => {
-        internalErrorEmitter(socket);
-      });
-  });
+                }
+                else
+                    socket.emit("signinFailed");
+            })
+            .catch(err => {
+                log.error(err);
+                internalErrorEmitter(socket);
+            });
+    });
 };
 
 function findAllWorkspaces(nestedWorkspaces) {

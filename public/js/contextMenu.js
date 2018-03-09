@@ -4,20 +4,27 @@ var gSelector;
 var gSelectorId;
 var pointedElem = null;
 
-$(document).ready(function() {
-    $("#specs").on("contextmenu", function (e) {
-        console.log(e);
-        pointedElem = e.target;
-        toggleMenuContextOn("#specs-context-menu");
-        return false;
-    });
+$(document).ready(function () {
 
-    $("#node-tree .collapsible-body").on("contextmenu", "li", function (e) {
-        e.preventDefault();
-        pointedElem = e.target;
-        $(pointedElem).click();
-        toggleMenuContextOn("#node-tree-context-menu");
-    })
+  $('#header-specs').on("contextmenu", function (e) {
+    e.preventDefault();
+    toggleMenuContextOff();
+    toggleMenuContextOn('#specs-context-menu');
+  });
+
+  $('#native').on('contextmenu', function (e) {
+    e.preventDefault();
+    toggleMenuContextOff();
+    toggleMenuContextOn('#native-files');
+  });
+
+  $('.node-tree').on('contextmenu', 'li', function (e) {
+    pointedElem = e.target;
+    e.preventDefault();
+    $(pointedElem).trigger('click');
+    toggleMenuContextOff();
+    toggleMenuContextOn('#node-tree-context-menu');
+  });
 });
 
 /**
@@ -68,25 +75,25 @@ $(document).ready(function(e) {
  * @returns {{x: number, y: number}}
  */
 function getPosition(e) {
-    var posx = 0;
-    var posy = 0;
+  var posx = 0;
+  var posy = 0;
 
-    if (!e) var e = window.event;
+  if (!e) var e = window.event;
 
-    if (e.pageX || e.pageY) {
-        posx = e.pageX;
-        posy = e.pageY;
-        console.log("e.pageX:", posx, " e.pageY:", posy);
-    } else if (e.clientX || e.clientY) {
-        posx = e.clientX + document.body.scrollLeft +
-            document.documentElement.scrollLeft;
-        posy = e.clientY + document.body.scrollTop +
-            document.documentElement.scrollTop;
-        console.log("e.clientX:", posx, " e.clientY:", posy);
-    }
+  if (e.pageX || e.pageY) {
+    posx = e.pageX;
+    posy = e.pageY;
+    console.log("e.pageX:", posx, " e.pageY:", posy);
+  } else if (e.clientX || e.clientY) {
+    posx = e.clientX + document.body.scrollLeft +
+      document.documentElement.scrollLeft;
+    posy = e.clientY + document.body.scrollTop +
+      document.documentElement.scrollTop;
+    console.log("e.clientX:", posx, " e.clientY:", posy);
+  }
 
-    return {
-        x: posx,
-        y: posy
-    }
+  return {
+    x: posx,
+    y: posy
+  }
 }

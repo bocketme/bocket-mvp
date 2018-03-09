@@ -1,0 +1,87 @@
+<ul id="side-info" class="side-nav">
+    <li>
+        <a id="side-nav-close">
+            <i class="material-icons">close</i>
+        </a>
+    </li>
+    <li>
+        <div>
+            <ul id="details-tab" class="tabs tabs-fixed-width">
+                <li class="tab col s6">
+                    <a href="#details">Details</a>
+                </li>
+                <li class="tab col s6">
+                    <a href="#comments" class="com">Comments</a>
+                </li>
+            </ul>
+
+            <div id="details" class="col s12">
+                <ul class="collection with-header">
+                    <li class="collection-header">
+                        <div>
+                            <h5>
+                                Content
+                                <span class="secondary-content" id="info-name">No node selected</span>
+                            </h5>
+                        </div>
+                    </li>
+                    <li class="collection-item">
+                        <div>
+                            <p>Description<span class="secondary-content" id="info-description">No node selected</span></p>
+                        </div>
+                    </li>
+                    <li class="collection-item">
+                        <div>
+                            <p>Creation Date :<span class="secondary-content" id="info-creation">No node selected</span></p>
+                        </div>
+                    </li>
+                    <li class="collection-item">
+                        <div>
+                            <p>Creator :<span class="secondary-content" id="info-creator">No node selected</span>
+                            </p>
+                        </div>
+                    </li>
+                    <li class="collection-item">
+                        <div>
+                            <p>Owner Organization :<span class="secondary-content" id="info-owner">No node selected</span></p>
+                        </div>
+                    </li>
+                </ul>
+
+                {# the Value of the detail is defined in details.js #}
+                {#
+                <div class="row">
+                    <div class="col s3"><h5>Content</h5></div>
+                    <div class="col s4 offset-s3"> <img id="content-img-title" alt=""> <span >No node Selected.</span></div>
+                </div>
+                <div class="row">
+                    <div class="col s5"><p>Description :</p></div>
+                    <div class="col s4 offset-s2"> <p id="info-description"> <p> </div>
+                </div>
+                <div class="row">
+                    <div class="col s5 "><p>Creation Date :</p></div>
+                    <div class="col s4 offset-s2"> <p id="info-creation"> </p> </div>
+                </div>
+                <div class="row">
+                    <div class="col s5"><p>Creator :</p></div>
+                    <div class="col s4 offset-s2"> <p id="info-creator"> <p> </div>
+                </div>
+                <div class="row">
+                    <div class="col s5"><p>Owner Organization :</p></div>
+                    <div class="col s4 offset-s2"> <p id="owner-organization"> {{  }} <p> </div>
+                </div>
+                #}
+
+            </div>
+
+                <div id="comments" class="col s12">
+                    <div id="activity">
+                        <div id="message-area" class="message-area bocket-scrollbar"></div>        
+                    </div>
+                    <div class="row">
+                            <input id="add-comment-input" class="col s11 add-comment add-comment-input" type="text" placeholder="Share an idea or a file...">
+                    </div> 
+                </div>
+        </div>
+    </li>
+</ul>

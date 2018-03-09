@@ -17,6 +17,7 @@ module.exports = (socket, io) => {
      */
     socket.on(addCommentToActivity, (data) => {
         //TODO: check if the user has rights
+        console.log("hello");
         if (!data.nodeId || !data.activityIndex || !data.comment || !data.comment.content || !data.comment.date || !data.viewType)
             return console.log(`[${addCommentToActivity}0]: parameters error :\n`, data);
         let email = socket.handshake.session.userMail;
@@ -27,7 +28,8 @@ module.exports = (socket, io) => {
                     .then(node => {
                         if (data.viewType === TypeViewEnum.location)
                             addComment(node, data.activityIndex, data.comment, user.completeName)
-                                .then((m) => NewActivityCommentEmitter(io, data.nodeId, m, socket.handshake.session.currentWorkspace))
+                                .then((m) => NewActivityCommentEmitter(io,  
+                                     data.nodeId, m, socket.handshake.session.currentWorkspace))
                                 .catch(err => console.log(`[${addCommentToActivity}1]: ${err}`));
                         else if (data.viewType === TypeViewEnum.content) {
                             let modelFindeur = (node.type === TypeNodeEnum.assembly) ? (Assembly) : (Part);

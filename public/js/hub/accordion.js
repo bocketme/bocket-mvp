@@ -1,8 +1,32 @@
 $(function () {
-    $('i.material-icons.assembly').click();
-    $('body').on('click', '.three-node', loadNodeInformation);
-    $('body').on('click', '.search_child', nodeChildrenChargement);
+  $('i.material-icons.assembly').click();
+  $('body').on('click', '.three-node', loadNodeInformation);
+  $('body').on('click', '.search_child', nodeChildrenChargement);
 });
+
+
+const headerTitle = new class HeaderTitle {
+  constructor() {
+    this.title = $('#node-title');
+    this.breadcrumb = document.getElementById("node-breadcrumb");
+  }
+
+  breadcrumbConstructor(bread) {
+      while(this.breadcrumb.firstChild)
+        this.breadcrumb.removeChild(this.breadcrumb.firstChild);
+    bread.forEach(breadcrumb => {
+      let link = document.createElement('a');
+      link.className = "breadcrumb";
+      link.innerHTML = breadcrumb;
+      this.breadcrumb.appendChild(link);
+    })
+  }
+
+  update(nodeInfo) {
+    this.title.text(nodeInfo.title);
+    this.breadcrumbConstructor(nodeInfo.breadcrumb.split("/"));
+  }
+};
 
 function nodeChildrenChargement(event){
     let element = $(event.currentTarget);
@@ -25,18 +49,26 @@ function loadNodeInformation(event) {
     let sub_level = element.contents().filter("span.p-node").attr("data-sublevel");
     let node_type = element.contents().filter("span.p-node").attr("data-node");
 
-    if (!nodeId)
-        Materialize.toast('Error, The node selected has no ID', 2000);
+  if (!nodeId)
+    Materialize.toast('Error, The node selected has no ID', 2000);
 
     //CSS EFFECT
-    if (!element.hasClass("selected-accordion"))
-        socket.emit("nodeInformation", nodeId);
-        
+    if (!element.hasClass("selected-accordion")) {
+      $("#specs-collection").empty();
+      socket.emit("nodeInformation", nodeId);
+    }
+
     $('.collapsible-header.three-node').removeClass('selected-accordion');
     element.addClass('selected-accordion');
 
     // Value to change - VUE.JS
-    third_column.selectNode(fill_value, breadcrumbs_value);
+    headerTitle.update({
+      title: fill_value,
+      breadcrumb:breadcrumbs_value
+    });
+
+    let buttonNativeDownload = $('#download-native');
+    buttonNativeDownload.attr('href', '#!');
     /*
     TODO: Location...
     clearComments($("#activity-comments-location"));
@@ -50,4 +82,12 @@ function loadNodeInformation(event) {
         nodeId: idOfchoosenNode,
         viewType: ViewTypeEnum.content
     });
+}
+
+socket.on("deleteNode", function (nodeId) {
+  deleteNode(nodeId);
+});
+
+function deleteNode(nodeId) {
+  $("#" + nodeId + ".collapsible-header").parent().remove();
 }

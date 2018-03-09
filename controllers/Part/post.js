@@ -166,21 +166,19 @@ const newPart = async (req, res) => {
         node: newParentNode,
         TypeEnum: NodeTypeEnum,
         sub_level: sub_level,
-        breadcrumb: breadcrumb
+        breadcrumb: breadcrumb,
+        sockets: [{
+            message: 'Update File 3D',
+            order: "[Viewer] - Update",
+            dataToSend: [subNode._id],
+        }]
     }, (err, html) => {
-        if (err) {
-            log.error(err);
-            newParentNode.children.pop();
-            newParentNode.save();
-            newPart.remove();
-            subNode.remove();
-            return res.status(500).send('Intern Error');
-        } else return res.send(html);
+        res.send(html);
     });
 }
 
 var controllerPOST = {
-    newPart: newPart
+  newPart: newPart
 };
 
 module.exports = controllerPOST;

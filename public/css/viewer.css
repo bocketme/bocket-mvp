@@ -1,20 +1,16 @@
-.viewer-div
-{
-    position:   relative;
-}
-
-#renderDiv
-{
-    height: 50%;
-    padding-top: 5px;
-}
-
 .axis-canvas
 {
     position:   absolute;
     right:      20px;
     top:        20px;
     z-index:    10;
+}
+
+#renderDiv{
+    padding: 0px;
+    height: 99%;
+    position: relative;
+    background-color: #ffffff;
 }
 
 #move-icon
@@ -50,7 +46,7 @@
     width: 100%;
 }
 
-..btn-floating.btn-large{
+.btn-floating.btn-large{
     height: 38px !important;
     width: 38px !important;
 }
@@ -83,4 +79,8 @@
     position: absolute;
     bottom: 50px;
     left: 50%
+}
+
+.fixed-action-btn.horizontal ul li {
+    margin: 0 10px;
 }

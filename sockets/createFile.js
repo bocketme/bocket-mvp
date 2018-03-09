@@ -7,5 +7,5 @@ module.exports = socket => {
 let createFile = () => {
     return new Promise((resolve, reject) => {
 
-    })
+    });
 };

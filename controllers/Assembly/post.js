@@ -4,7 +4,8 @@ const path = require('path'),
     type_mime = require('../../utils/type-mime'),
     NodeTypeEnum = require('../../enum/NodeTypeEnum'),
     createFile = require('../utils/createFile'),
-    twig = require('twig');
+    twig = require('twig'),
+    UserSchema = require('../../models/User');
 
 
 const pino = require('pino');
@@ -31,7 +32,9 @@ const asyncForeach = require('../utils/asyncForeach');
 /**
  * Create a new Part for the specified node
  */
-const newAssembly = async  (req, res) => {
+const newAssembly = async (req, res) => {
+
+
 
     let nodeId = escape(req.params.nodeId),
         name = escape(req.body.name),
@@ -41,6 +44,17 @@ const newAssembly = async  (req, res) => {
         specFiles = req.files['specFiles'];
 
     sub_level++;
+
+    userEmail = req.session.userMail;
+    let creator;
+    try {
+        creator = await UserSchema.findOne({ email: userEmail });
+    } catch (err) {
+        let message = err.message ? err.message : "Error intern";
+        let status = err.status ? err.status : "500";
+        log.error("[ Post Part Controller ] creator  :" + message + "\n" + new Error(err));
+        return res.status(status).send(message);
+    }
 
     let parentNode;
     try {
@@ -70,8 +84,13 @@ const newAssembly = async  (req, res) => {
     let assembly;
     try {
         assembly = await assemblySchema.create({
-        name: name,
-        description: description,
+            name: name,
+            creator: {
+                _id: creator._id,
+                completeName: creator.completeName,
+                email: creator.email
+            },
+            description: description,
             ownerOrganization: parentAssembly.ownerOrganization,
         });
 
@@ -80,13 +99,13 @@ const newAssembly = async  (req, res) => {
         let message = "Error intern";
         let status = "500";
         log.error("[ Post Assembly Controller ] " + message + "\n" + new Error(err));
-       if (assembly)
-           assembly.remove();
+        if (assembly)
+            assembly.remove();
         return res.status(status).send(message);
     }
 
     let subNode;
-    try {
+    try {
         subNode = await nodeSchema.create({
             name: name,
             description: description,
@@ -120,17 +139,21 @@ const newAssembly = async  (req, res) => {
             subNode.remove();
     }
 
+    let fileNotcreated;
+
     //TODO: Affichage d'erreur specFiles
     let chemin = path.join(config.files3D, assembly.path);
     if (specFiles) {
-        asyncForeach(specFiles, async function (spec) {
+        for (let specFile in specFiles) {
             try {
-                await type_mime(1, spec.mimetype);
+                await type_mime(1, spec.type_mime);
                 await createFile(chemin, spec);
-            } catch (err) {
+            }
+            catch (err) {
+                fileNotcreated.push(spec.originalName);
                 log.error("[ Post Assembly Controller ] \n" + new Error(err));
             }
-        });
+        }
     }
 
     twig.renderFile('./views/socket/three_child.twig', {
@@ -141,10 +164,6 @@ const newAssembly = async  (req, res) => {
     }, (err, html) => {
         if (err) {
             log.error("[ Post Assembly Controller ] \n" + new Error(err));
-            parentNode.children.pop();
-            parentNode.save();
-            assembly.remove();
-            subNode.remove();
             return res.status(500).send('Intern Error');
         }
         return res.send(html);

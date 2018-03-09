@@ -1,17 +1,28 @@
+<div class='add-workspace'></div>
 {% for workspace in workspaces %}
-    <a class="collection-item collection-item-workspace {% if workspace.id == in_use.id %} {{ "active" }} {% endif %}" style="min-height: auto !important; padding: 0px !important;" href="/project/{{workspace._id}}">
-    {% if (workspace.image) %}
-    {% else %}
-        <div>
-            <div class="icon-list-workspace" style="background-color: ;">
-                <p class="first-letter-workspace">{{ workspace.name|first |capitalize }}</p>
+    <a class="collection-item collection-item-workspace " href="/project/{{workspace._id}}">
+        {% if (workspace.image) %}
+        {% else %}
+            <div class="container">
+                <div class={% if workspace.id == in_use.id %} {{ "circle-responsive-active" }} {% else %} {{ "circle-responsive" }} {% endif %}>
+                    <div class="circle-content">
+                        {{ workspace.name|first |capitalize }}
+                    </div>
+                </div>
             </div>
-        </div>
-    {% endif %}
-    <p style="font-size: 50%; color: white; text-align: center;">{{ workspace.name }}</p>
+        {% endif %}
+        <p style="font-size: 50%; color: white; text-align: center;" class='truncate'>{{ workspace.name }}</p>
     </a>
 {% endfor %}
-<a id="trigger-creation-workspace" class="collection-item avatar collection-item-workspace modal-trigger" href="#workspace-creation" style="min-height: auto !important; padding: 0px !important;">
-    <i class="tiny material-icons" style="font-size: 1rem !important;">add</i>
-    <p style="font-size: 70%; color: white; ">Add Workspace</p>
-</a>
+<div class="icon-list-workspace">
+    <a id="trigger-creation-workspace" class=" modal-trigger" href="#workspace-creation" style="min-height: auto !important; padding: 0px !important;" alt="Add Workspace">
+        <div class="container">
+            <div class="circle-responsive">
+                <div class="circle-content">
+                    +
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
+<div class='add-workspace'></div>

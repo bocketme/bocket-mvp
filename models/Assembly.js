@@ -35,6 +35,7 @@ let AssemblyScheama = mongoose.Schema({
     maturity: {type: String, default: TypeEnum.maturity[0]},
     quality: {type: Number, default:0},
     whereUsed: {type: [String], default: []},
+    creator: {type: NestedUser, require: true},
 
     //Update tags unused for the 1.0
     tags: {type: [], default: []},
@@ -57,9 +58,6 @@ function mkdirPromise(path) {
 AssemblyScheama.pre('validate', function(next) {
   if (this.path)
     return next();
-
-  console.log(this);
-  console.log(this.ownerOrganization);
 
   this.path = '/' + this.ownerOrganization.name + '-' + this.ownerOrganization._id + '/' + this.name + ' - ' + this._id;
   let assemblyPath = path.join(configServer.files3D, this.path);
