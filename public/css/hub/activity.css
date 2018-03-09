@@ -166,12 +166,13 @@ li.indicator {
     background-color: #e9e8e9;
     word-wrap: break-word; /*retour à la ligne*/
     float: left;
-    border-radius: 20px;
+    border-radius: 18px;
     line-height: 29px;
     animation: animateElement linear .3s;
     animation-iteration-count: 1;
     min-width: 61px;
     text-align: center;
+    font-size: 12px; 
 }
 
 
