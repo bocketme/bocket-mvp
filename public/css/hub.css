@@ -46,7 +46,6 @@ main {
     height: 100%;
     overflow-x: hidden;
     overflow-y: hidden;
-    width: 75px;
 }
 
 .side-nav {
@@ -506,8 +505,10 @@ div.collapsible-body  ul {
 #list-workspace{
     max-height: 100%;
     overflow-x: hidden;
-    overflow-y: auto;
     margin: 0;
+    overflow-y: scroll;
+    height: 100%;
+    width: 100%;
 }
 
 .circle-responsive-active {
@@ -530,7 +531,7 @@ div.collapsible-body  ul {
     color: black;
     float: left;
     line-height: 1;
-    font-size: 1vw;
+    font-size: 14px;
     margin-top: -0.5em;
     padding-top: 50%;
     text-align: center;
@@ -567,6 +568,11 @@ div.collapsible-body  ul {
     vertical-align: middle;
 }
 
+#main-panel{
+    max-height: 100%;
+    padding-left: 0.25rem;
+}
+
 @media screen and (max-width: 600px) {
     #second_column {
         min-height: 227px;
@@ -583,7 +589,6 @@ div.collapsible-body  ul {
         max-height: 500px;
     }
     #side-nav {
-        width:75px;
         height: 100%;
     }
     .modal{

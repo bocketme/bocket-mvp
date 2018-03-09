@@ -5,16 +5,18 @@ let Workspaces = require("../models/Workspace");
 let Organization = require("../models/Organization");
 let acceptInvitation = require("../utils/Invitations/acceptInvitation");
 
+const log = require('../utils/log');
+
 module.exports = function (socket) {
     socket.on("signin", (accountInformation) => { // accountInformation.email & accountInformation.password && invitationUid (optional)
-        console.log("AccountInformation = ", accountInformation);
+        log.info("AccountInformation = ", accountInformation);
 
         /*accountInformation.email = escape(accountInformation.email);
         accountInformation.password = escape(accountInformation.password);*/
 
         User.findOne({email: "" + accountInformation.email})
             .then(user => {
-                //console.log("Signin listner : ", user);
+                //log.info("Signin listner : ", user);
                 if (user !== null)
                 {
                     user.comparePassword(accountInformation.password, (err, isMatch) => {
@@ -46,7 +48,7 @@ module.exports = function (socket) {
                     socket.emit("signinFailed");
             })
             .catch(err => {
-                console.log(err);
+                log.error(err);
                 internalErrorEmitter(socket);
             });
     });

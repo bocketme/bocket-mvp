@@ -158,6 +158,34 @@
               
         });
 
+        $(".edit-part-btn").on("click", () => {
+          let editPart = $("#edit-part");
+          let content = $("#content");
+
+          editPart.find("#part-name").val(content.find("#content-title").text());
+          editPart.find("#part-description").val(content.find("#content-description").text());
+        });
+
+        $("#submit-edit-part").on("click", (e) => {
+          e.preventDefault();
+          const editPart = $("#edit-part");
+          const name = editPart.find("#part-name").val();
+          const description = editPart.find("#part-description").val();
+
+          socket.emit("editPart", { name, description, nodeId: idOfchoosenNode });
+          let uploadIds = fileUploader.upload(document.getElementById('edit-part-file3D'), {
+            data: {
+              nodeId: idOfchoosenNode,
+              editPart: 'yes',
+            }
+          });
+          editPart.modal('close');
+        });
+
+        socket.on('editPart', ({ nodeId, newName }) => {
+          $('#node-tree').find('div#' + nodeId).find('span.p-node').text(newName);
+        });
+
         //////////////////////////////////////////////////////////////////////
         $('.modal-node-selector').click((event) => {
             if (headerTitle.title == "Select a node") {
@@ -166,5 +194,5 @@
             } else $('.button-form-validate').removeClass("disabled");
         });
 
-    });
+    })
 })(jQuery); // end of jQuery name space

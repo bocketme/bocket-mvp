@@ -4,7 +4,8 @@ const path = require('path'),
     type_mime = require('../../utils/type-mime'),
     NodeTypeEnum = require('../../enum/NodeTypeEnum'),
     createFile = require('../utils/createFile'),
-    twig = require('twig');
+    twig = require('twig'),
+    UserSchema = require('../../models/User');
 
 
 const pino = require('pino');

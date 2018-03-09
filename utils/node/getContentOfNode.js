@@ -24,7 +24,8 @@ async function getContentOfNode(nodeId, workspaceId = null) {
   } else {
     throw Error('[getContentNode] Unknown type node');
   }
-  return { content, type: node.type };
+  if (!content) { throw Error(`[getContentNode] Unknown content: ${node.content}`); }
+  return { content, type: node.type, node };
 }
 
 module.exports = getContentOfNode;

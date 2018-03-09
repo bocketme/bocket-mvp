@@ -8,7 +8,8 @@
     "test": "nodemon app.js -e js,twig, css,json",
     "prod": "webpack && node app.js",
     "dev": "webpack --config ./dev.config.js",
-    "webpack dev": "webpack --config ./dev.config.js",
+    "webpackDev": "webpack --config ./dev.config.js",
+    "debugCode": "node app.js --inspect",
     "debug": "node $NODE_DEBUG_OPTION app.js"
   },
   "nodemonConfig": {
@@ -35,6 +36,7 @@
     "body-parser": "^1.18.2",
     "connect-mongo": "^2.0.1",
     "cookie-parser": "^1.4.3",
+    "cookies": "^0.7.1",
     "csrf": "^3.0.6",
     "csurf": "^1.9.0",
     "escape-html": "^1.0.3",
@@ -44,6 +46,7 @@
     "helmet": "^3.11.0",
     "isemail": "^3.1.0",
     "jsonwebtoken": "^8.1.0",
+    "keygrip": "^1.0.2",
     "mocha": "^4.1.0",
     "mongodb": "^2.2.34",
     "mongoose": "^5.0.0",

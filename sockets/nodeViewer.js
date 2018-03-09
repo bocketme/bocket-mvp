@@ -64,7 +64,7 @@ class File3DManager {
         let content;
 
         if (node.type === nodeTypeEnum.assembly) {
-            this.socket.emit("addAssembly", nodeId, node.matrix, parent._id);
+            this.socket.emit(loading.emit.assembly, nodeId, node.matrix, parent._id);
             let promises = [];
             node.children.forEach(child => {
                 promises.push(this.loadNode(child._id, {
@@ -76,7 +76,6 @@ class File3DManager {
             await Promise.all(promises).then(this.socket.emit(() => loading.emit.end, node._id)).catch(errLog);
 
         } else if (node.type === nodeTypeEnum.part) {
-            this.socket.emit(loading.emit.start, node._id);
             await this.loadPart(node, parent).catch(errLog);
         }
     }
@@ -111,7 +110,7 @@ class File3DManager {
      * @memberof File3DManager
      */
     save(workspaceId, nodeId, matrix) {
-        Node.findById(nodeId)
+        nodeSchema.findById(nodeId)
             .then(node => {
                 node.matrix = matrix;
                 node.save();
@@ -128,13 +127,15 @@ class File3DManager {
     streamFile(node, parent, file) {
         fs.stat(file, (err, stat) => {
             let total = stat.size;
-            let progress = 0;
+            let chunkNumber = 0;
+
+            this.socket.emit(loading.emit.start, node._id, stat.size);
 
             let read = fs.createReadStream(file, {autoClose: true, encoding: 'utf8' });
-
+                        
             read.on('data', chunk => {
-
-                this.socket.emit(loading.emit.pending, node._id, chunk);
+                this.socket.emit(loading.emit.pending, node._id, chunkNumber, chunk);
+                chunkNumber++
             });
 
             read.on('end', () => this.socket.emit(loading.emit.end, node._id, node.matrix, parent._id));
@@ -161,82 +162,11 @@ module.exports = (io, socket)=> {
         file3DManager.update(nodeId);
 
         file3DManager.socket = socket;
-    })
-
-    /*
-    socket.on("start viewer", (workspaceId) => {
-        Workspace.findById(workspaceId)
-            .then((workspace) => {
-                return promiseNode(workspace.node_master._id, workspace._id);
-            })
-            .catch(err => {
-                console.error(err)
-            });
     });
 
-
-    socket.on("[OBJECT 3D] - save", (workspaceId, nodeId, matrix) => {
-        //Verificate the rights of the user for this workspace
-        console.log("sauvegarde du node ", nodeId, matrix);
-        Node.findById(nodeId)
-            .then(node => {
-                node.matrix = matrix;
-                node.save()
-            })
+    socket.on(loading.on.save, (workspaceId, nodeId, matrix) => {
+        file3DManager.save(workspaceId, nodeId, matrix);
     });
-
-    function promiseNode(nodeId, parent) {
-        return new Promise((resolve, reject) => {
-            Node.findById(nodeId)
-                .then(node => {
-                    socket.emit('[viewer] -> start chargement', node._id, node.name);
-                    if (TypeEnum.assembly == node.type) {
-                        socket.emit("addAssembly", nodeId, node.matrix, parent._id);
-                        let promises = [];
-                        node.children.forEach(child => {
-                            promises.push(promiseNode(child._id, {
-                                name: node.name,
-                                _id: node._id
-                            }))
-                        });
-                        Promise.all(promises)
-                            .then(() => {
-                                socket.emit('[viewer] -> end chargement', node._id, node.name);
-                                resolve();
-                            });
-                    } else {
-                        Part.findById(node.content)
-                            .then((part) => {
-                                let chemin = path.join(config.files3D, part.path, PartFileSystem.data);
-                                promisifyReaddir(chemin)
-                                    .then(files => {
-                                        log.info(files);
-                                        for (let i = 0; i < files.length; i++) {
-                                            //TODO: EXTERNALIZE FOR A VARIABLE
-                                            if (path.extname(files[i]) == '.json')
-                                                return promisifyReadFile(path.join(chemin, files[i]));
-                                        }
-                                        return Promise.reject("There is no 3D files");
-                                    })
-                                    .then((data) => {
-                                        socket.emit("addPart", data, node._id, node.matrix, parent._id);
-                                        socket.emit('[viewer] -> end chargement', node._id, node.name);
-                                        resolve();
-                                    })
-                                    .catch((err) => {
-                                        socket.emit('[viewer] -> error chargement', node._id, node.name, err);
-                                        resolve();
-                                    })
-                            });
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    reject();
-                });
-        })
-    }
-    */
 };
 
 function promisifyReadFile(chemin) {

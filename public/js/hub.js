@@ -1,22 +1,24 @@
 (function ($) {
-  $(function () {
-    //initialize all modals
-    $('.modal').modal({
-      dismissible: true, // Modal can be dismissed by clicking outside of the modal
-      opacity: .7, // Opacity of modal background
-      inDuration: 300, // Transition in duration
-      outDuration: 200, // Transition out duration
-      startingTop: '2%', // Starting top style attribute
-      endingTop: '10%', // Ending top style attribute
-      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-        let context = "#" + modal.context.id;
-        let form = $(context).find('form')
-        if (form[0])
-          form[0].reset();
-      }
-    });
-    $(".collapsible").collapsible();
-    $(".collapsible").collapsible('open', 1);
+    $(function () {
+        //initialize all modals
+        $('.modal').modal({
+            dismissible: true, // Modal can be dismissed by clicking outside of the modal
+            opacity: .7, // Opacity of modal background
+            inDuration: 300, // Transition in duration
+            outDuration: 200, // Transition out duration
+            startingTop: '2%', // Starting top style attribute
+            endingTop: '10%', // Ending top style attribute
+            ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+                let context = "#" + modal.context.id;
+                let form = $(context).find('form')
+                if (form[0] && modal.context.id !== "edit-part")
+                   // console.log("form :", form);
+                    form[0].reset();
+              }
+        });
+        $(".collapsible").collapsible();
+        $(".collapsible").collapsible('open', 1);
+        $('ul.tabs').tabs();
 
     $('.button-collapse').sideNav({
         menuWidth: 500, // Default is 300

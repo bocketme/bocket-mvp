@@ -1,10 +1,10 @@
-const fs = require('fs'),
-    path = require('path'),
-    file_accepted = require('../../utils/extension_file'),
-    converter = require("../../converter/converter"),
-    partFileSystem = require("../../config/PartFileSystem"),
-    util = require('util'),
-    pino = require('pino')();
+const fs = require('fs');
+const path = require('path');
+const file_accepted = require('../../utils/extension_file');
+const converter = require("../../converter/converter");
+const partFileSystem = require("../../config/PartFileSystem");
+const util = require('util');
+const log = require('../../utils/log');
 
 const optionStream = {
     flags: 'w',
@@ -14,7 +14,7 @@ const optionStream = {
     autoClose: true
 }
 
-let converterInfo = pino.child({type: converter});
+let converterInfo = log.child({type: converter});
 
 async function create3DFile(chemin, file) {
     let filePath = path.join(chemin, partFileSystem.data, file.originalname);
@@ -24,9 +24,7 @@ async function create3DFile(chemin, file) {
 
     file3D.on("close", () => {
         let resultImport = converter.JSimport(filePath);
-        pino.info("The result of the import \n ${resultImport}");
         converterInfo.info(resultImport);
-        console.log("Import : " + resultImport);
     });
 }
 

@@ -68,7 +68,7 @@ converter/lib/
 
 module/
 
-public/js/viewer/bocket
+public/js/viewer/bocket/
 
 ### Code ###
 # Visual Studio Code - https://code.visualstudio.com/

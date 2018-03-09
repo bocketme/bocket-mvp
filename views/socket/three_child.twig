@@ -5,7 +5,7 @@
                 {% if child.type == TypeEnum.assembly %}
                     <li>
                         <div id="{{ child._id }}" class="collapsible-header three-node search_child valign-wrapper">
-                            <span style="padding-left:{{ sub_level * 20 }}px"></span>
+                            <span style="padding-left:{{ sub_level * 40 }}px"></span>
                             <i class="material-icons">keyboard_arrow_right</i>
                             <img class="pad-right" src="/img/07-Assembly icon.svg">
                             <span class="p-node" data-node="{{ TypeEnum.assembly }}" data-breadcrumbs="{{ child.breadcrumb }}" data-sublevel="{{ sub_level }}">{{ child.name }}</span>
@@ -16,7 +16,7 @@
                 {% else %}
                     <li>
                         <div id="{{ child._id }}" class="collapsible-header three-node valign-wrapper">
-                            <span style="padding-left:{{ sub_level * 30 }}px"></span>
+                            <span style="padding-left:{{ sub_level * 50 }}px"></span>
                             <img class="pad-right" src="/img/07-Part icon.svg">
                             <span class="p-node" data-node="{{ TypeEnum.part }}" data-breadcrumbs="{{ child.breadcrumb }}" data-sublevel="{{ sub_level }}">{{ child.name }}</span>
                         </div>

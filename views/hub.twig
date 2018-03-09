@@ -21,8 +21,8 @@
     <div id="hub" class="row">
         {% include "./hub/invitePeople.twig" %}
 
-        <div id="second_column" class="col s12 m12 l4 xl3">
-            <div id="side-nav" class="col s3 m4 l4 xl4">
+        <div id="second_column" class="col s12 m4 l4 xl3">
+            <div id="side-nav" class="col s3 m2 l2 xl2">
                 {% include "./hub/listWorkspaces.twig" %}
             </div>
             <div class="col s9 m8 l8 xl9" id="structure">
@@ -47,6 +47,14 @@
                     <li class="option-node">
                         <a class="dropdown-menu" href="/signOut">Sign Out</a>
                     </li>
+                    <li class="option-node">
+                        <a class="dropdown-menu modal-trigger modal-node-selector" href="#upload-file3d"> Duplicate Part/Assembly </a>
+                    </li>
+                    <!-- display panel create new assemby US2 -->
+                    <li class="divider"></li>
+                    <li class="option-node">
+                        <a class="dropdown-menu modal-trigger modal-node-selector edit-part-btn" href="#edit-part">Edit Part</a>
+                    </li>
                 </ul>
 
                 {# Modals #}
@@ -58,6 +66,8 @@
                 {% include "modals/import_assembly.twig" %}
                 {% include "modals/upload_files3d.twig" %}
                 {% include "modals/createWorkspace.twig" %}
+                {% include "modals/edit_part.twig" %}
+                {# {% include "modals/import_specfiles.twig"%} #}
 
                 <div id="second_column_content" class="clear">
                     {# 
@@ -72,7 +82,7 @@
             </div>
         </div>
 
-        <div id="third_column" class="col s12 m12 l8 xl9">
+        <div id="third_column" class="col s12 m8 l8 xl9">
             {% include "hub/header.twig" %}
             <div id="third_column_content" class="row">
                     {% include 'hub/viewer.twig' %}
@@ -119,5 +129,6 @@
     <script src="/js/hub/nodeTreeContextMenuEvents.js"></script>
     <script src="/js/initial.js"></script>
     <script src="/js/hub/createWorkspace.js"></script>
-    {% include "require_viewer.twig" %}    
+    <script src="/js/hub/actions.js"></script>
+    {% include "require_viewer.twig" %}
 {% endblock %}

@@ -61,6 +61,7 @@ $(document).ready(function() {
 
   specContextMenu.on("click", "#remove", function (){
     console.log('Remove');
+    console.log($(pointedElem).closest('li').attr('filename'));
     socket.emit("removeSpec", { nodeId: idOfchoosenNode, filename: $(pointedElem).closest('li').attr('filename') });
     toggleMenuContextOff("#spec-context-menu");
   });
@@ -73,11 +74,13 @@ $(document).ready(function() {
 
   specContextMenu.on("click", "#rename", function (){
     toggleMenuContextOff("#spec-context-menu");
+    let icon = li.find('#file-name');
     let nameSpan = li.find('span').first();
     let formatSpan = li.find('span').last();
     let lastName = nameSpan.text() + '.' + formatSpan.text().toLowerCase();
 
-    console.log(nameSpan, nameSpan.value, nameSpan.text());
+    console.log(icon);
+    icon.hide();
 
     let input = $('<input/>', {
       type: 'text',
@@ -87,6 +90,7 @@ $(document).ready(function() {
 
     let renameIt = (elem) => {
       nameSpan.text(elem.val());
+      icon.hide();      
       elem.remove();
       nameSpan.show();
       socket.emit('renameSpec', {nodeId: idOfchoosenNode, lastName, currentName: nameSpan.text() + '.' + formatSpan.text().toLowerCase()});
@@ -100,9 +104,11 @@ $(document).ready(function() {
     });
 
     input.on('blur', function () {
+      icon.hide();
       renameIt($(this));
     });
     nameSpan.hide();
+    icon.show();
     $(pointedElem).after(input);
     input.select();
     console.log("Rename");
@@ -114,8 +120,7 @@ $(document).ready(function() {
 
   socket.on("removeSpec", function (data) {
     if (idOfchoosenNode === data.nodeId) {
-      console.log("removeSpec = ", data);
-      $("#specs").find("li.collection-item[filename='" + data.filename + "']").remove();
+      $('#specs-collection').find("[filename*='"+data.filename+"']").remove();
     }
   });
 
@@ -141,8 +146,8 @@ function addSpec(ul, file, native) {
   }
   ul.append(`<li class="collection-item-files" ${native?'id="native"':''}" filename="${file.name}.${file.format}">` +
     `<p class="truncate">`+
-    `<i class="material-icons tiny">insert_drive_file</i>`+
-    `${file.name}`+
+    `<i id="file-name" class="material-icons tiny">insert_drive_file</i>`+
+    `<span>${file.name}</span>`+
     `<span class="secondary-content format">${native_icon} ${file.format.toUpperCase()}</span></p>` +
     `</li>`);
 }
