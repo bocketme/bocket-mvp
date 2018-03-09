@@ -80,24 +80,17 @@ async function createUsersWithFile(line) {
     html: `email: ${email} <br>Mot de passe: ${password}`
   };
 
-  console.log('avant send data');
   await sendData(accInfo);
-
-  console.log('apres send data');
 
   const renderVar = {
     "email de l'utilisateur": email,
     password: password,
     completeName
   };
-  console.log('apres render var');
   Twig.renderFile('../views/inscriptionbatch.twig', renderVar, (err, html) => {
-    console.log("TWIG ALLO", err);
     mailTransporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log('error while sending mail:', error);
-      } else {
-        console.log('email sent');
       }
     })
   });
