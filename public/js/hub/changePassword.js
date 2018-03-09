@@ -14,7 +14,10 @@ $(document).ready(() => {
 
   socket.on('changePassword', (data) => {
     if (has.call(data, 'error'))
-      $('#change-password').find('#error').text(error);
+      $('#change-password').find('#error').text(data.error);
+    else
+      $('#change-password').modal('close');
+
     console.log('CHANGE PASSWORD RECEIVED:', data)
   });
 

@@ -58,7 +58,7 @@ main {
 }
 
 #second_column {
-    background-color: #f7f7f7;
+    background-color: #FAFAFA;
     border: none;
     padding: 0 !important;
     height: 100%;
@@ -193,7 +193,7 @@ span.badge {
     color: #4a4a4a;
     font-weight: 700;
     font-size: 14px;
-    height: 6%;
+    /* height: 6%; */
 }
 
 .info-right{
@@ -495,7 +495,7 @@ div.collapsible-body  ul {
 }
 
 .collection-item-workspace:hover {
-    background-color: #535151 !important; 
+    /* background-color: #535151 !important;  */
 }
 
 .collection {
@@ -512,23 +512,32 @@ div.collapsible-body  ul {
 }
 
 .circle-responsive-active {
-    background: #73AD21;
+    background: #00FFC8;
     border-radius: 50%;
     padding-bottom: 100%;
     width: 100%;
     height: 0;
+    box-shadow: 0 0 0 3px #1E987E;
 }
 
 .circle-responsive {
-    background: #ddd;
+    background: #9B9B9B;
     border-radius: 50%;
     height: 0;
     padding-bottom: 100%;
     width: 100%;
 }
 
+.circle-responsive:hover {
+    background: #8EDACA;
+}
+
+.circle-responsive-active:hover {
+    box-shadow: 0 0 0 3px #1E987E;
+}
+
 .circle-content {
-    color: black;
+    color: #ffffff;
     float: left;
     line-height: 1;
     font-size: 14px;
@@ -536,6 +545,23 @@ div.collapsible-body  ul {
     padding-top: 50%;
     text-align: center;
     width: 100%;
+    font-weight: 600;
+}
+
+.circle-responsive-add {
+    background: #9B9B9B;
+    border-radius: 50%;
+    height: 0;
+    padding-bottom: 100%;
+    width: 100%;
+}
+
+.circle-responsive-add:hover {
+    background: #F0F0F0;
+}
+
+.circle-responsive-add:hover .circle-content{
+    color: #000000;
 }
 
 .collection-manager{
@@ -600,16 +626,25 @@ li.collection-item.information-detail {
 }
 
 #info-name, #info-description,
-#info-creation, #info-creation,
+#info-creation,
 #info-creator, #info-owner {
+    float: none;
     color:#616161;
     font-weight: 600;
 } 
 
 .title-side {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 800;
     text-transform: capitalize;
+}
+
+#side-info {
+    background-color: #FAFAFA;
+}
+
+ul#details-tab {
+    background-color: #FAFAFA;
 }
 
 @media screen and (max-width: 600px) {
@@ -637,7 +672,19 @@ li.collection-item.information-detail {
 }
 
 #details {
-    padding: 30px 70px 0 20px;
+    margin: 36px;
+    font-size: 13px;
+}
+
+#details tr td {
+    padding: 0px;
+    line-height: 37px;
+    font-weight: 700;
+    color: #A3A3A3;
+}
+
+.header-background {
+    background-color: #FAFAFA;
 }
 
 @media screen and (min-width: 600px) and (max-width: 992px){
