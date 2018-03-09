@@ -73,21 +73,20 @@ async function createUsersWithFile(line) {
   }
   const { accInfo, password } = await generateAccountInformations(email, completeName);
 
-  const mailOptions = {
-    from: mailConfig.email,
-    to: email,
-    subject: 'Compte Bocket.me',
-    html: `email: ${email} <br>Mot de passe: ${password}`
-  };
-
   await sendData(accInfo);
 
   const renderVar = {
-    "email de l'utilisateur": email,
-    password: password,
+    email,
+    password,
     completeName
   };
   Twig.renderFile('../views/inscriptionbatch.twig', renderVar, (err, html) => {
+    const mailOptions = {
+      from: mailConfig.email,
+      to: email,
+      subject: 'Compte Bocket.me',
+      html
+    };
     mailTransporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log('error while sending mail:', error);
