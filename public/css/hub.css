@@ -616,7 +616,8 @@ div.collapsible-body  ul {
 }
 
 .title-modal {
-    font-size: 20px;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 li.collection-item.information-detail {
