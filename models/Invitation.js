@@ -38,20 +38,20 @@ InvitationSchema.pre('save', function (next) {
   uid(42)
     .then((uid) => {
       invitation.uid = uid;
-      logInvitation.info('UID = ', invitation.uid);
+      log.info('UID = ', invitation.uid);
       next();
     })
     .catch(err => next(err));
 });
 
 InvitationSchema.post('save', (invitation) => {
-  logInvitation.info('ici');
-  logInvitation.info('serverConfig url :', serverConfig.url);
+  log.info('ici');
+  log.info('serverConfig url :', serverConfig.url);
 
   let httpURL = '';
   // httpURL = serverConfig.protocol+ "://www.bocket.me:" + serverConfig.port;
   httpURL = `${serverConfig.protocol}://localhost:${serverConfig.port}`;
-  logInvitation.info('http url :', httpURL);
+  log.info('http url :', httpURL);
 
   const renderVar = {
     completeName: invitation.people.completeName,
@@ -72,13 +72,13 @@ InvitationSchema.post('save', (invitation) => {
       // html: `uid = <a href="google.com">${invitation.uid}</a>`
     };
 
-    logInvitation.info('mailOptions = ', mailOptions);
+    log.info('mailOptions = ', mailOptions);
 
     mailTransporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        logInvitation.info(error);
+        log.info(error);
       } else {
-        logInvitation.info(`Email sent: ${info.response}`);
+        log.info(`Email sent: ${info.response}`);
       }
     });
   });
