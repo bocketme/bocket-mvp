@@ -19,9 +19,12 @@
         $(".collapsible").collapsible();
         $(".collapsible").collapsible('open', 1);
         $('ul.tabs').tabs();
+        $('.circle-responsive-active').addClass('tooltipped');
+        $('.circle-responsive').addClass('tooltipped');
+        $('.tooltipped').tooltip();
 
     $('.button-collapse').sideNav({
-        menuWidth: 500, // Default is 300
+        menuWidth: 400, // Default is 300
         edge: 'right', // Choose the horizontal origin
         onOpen: function(el) {
             if($("#comments").css('display') === 'block') {

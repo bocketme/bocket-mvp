@@ -15,13 +15,11 @@
                 </li>
             </ul>
 
-            <div id="details" class="col s12">
+            {# <div id="details" class="col s12">
                 <ul class="collection with-header">
                     <li class="collection-item information-detail">
-                        <div>
-                            <p>Content
-                                <span class="secondary-content" id="info-name">No node selected</span></p>
-                        </div>
+                            Content
+                                <span class="secondary-content" id="info-name">No node selected</span>
                     </li>
                     <li class="collection-item information-detail">
                         <div>
@@ -41,11 +39,34 @@
                     </li>
                     <li class="collection-item information-detail">
                         <div>
-                            <p>Owner Organization :<span class="secondary-content" id="info-owner">No node selected</span></p>
+                            <p>Owner Organization :</p>
                         </div>
                     </li>
-                </ul>
-
+                </ul> #}
+    <table  id="details">
+        <tbody>
+          <tr>
+            <td>Type</td>
+            <td><span class="secondary-content" id="info-name">No node selected</span></td>
+          </tr>
+          <tr>
+            <td>Creator</td>
+            <td><span class="secondary-content" id="info-creator">No node selected</span></td>
+          </tr>
+          <tr>
+            <td>Creation Date</td>
+            <td><span class="secondary-content" id="info-creation">No node selected</span></td>
+          </tr>
+          <tr>
+            <td>Organization</td>
+            <td><span class="secondary-content"></span></td>
+          </tr>
+          <tr>
+            <td>Description</td>
+            <td><span class="secondary-content" id="info-description">No node selected</span></td>
+          </tr>
+        </tbody>
+      </table
                 {# the Value of the detail is defined in details.js #}
                 {#
                 <div class="row">
