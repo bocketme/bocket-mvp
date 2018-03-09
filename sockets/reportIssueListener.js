@@ -7,7 +7,8 @@ const listenerName = 'reportIssue';
 
 module.exports = (socket) => {
   socket.on(listenerName, ({ title, description }) => {
-    console.log(title, description);
+    if (!title || title === '' || !description || description === '') { return; }
+
     const mailOptions = {
       from: mailConfig.email,
       to: mailConfig.email,
@@ -16,10 +17,10 @@ module.exports = (socket) => {
     };
     mailTransporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log('[ReportIssue] error:', info);
+        //console.log('[ReportIssue] error:', info);
         actionFailed(socket, { title: 'Report Issue', description: 'An error occured, please try again' });
       } else {
-        console.log('[ReportIssue] success:', info);
+        //console.log('[ReportIssue] success:', info);
         actionSucceeded(socket, { title: 'Report Issue', description: 'The issue has been reported' });
       }
     });
