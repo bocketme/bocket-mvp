@@ -35,12 +35,12 @@ $(document).ready(function () {
 
     socket.on('workspaceManager', (data) => {
         if (data !== null) {
-            const { members, owners } = data;
+            const { members, owners, isOwner } = data;
             console.log(members.length);
             members.sort((a, b) => a.completeName.localeCompare(b.completeName));
             for (let i = 0 ; i < members.length ; i++) {
                 const { completeName, email } = members[i];
-                manageWorkspaceDiv.find('ul#users-list').append(getUserHtml(completeName, email, owners.find((elem) => elem.email === email)));
+                manageWorkspaceDiv.find('ul#users-list').append(getUserHtml(completeName, email, isOwner, owners.find((elem) => elem.email === email)));
             }
             $('.profile').initial();
         }
@@ -70,9 +70,10 @@ $(document).ready(function () {
         socket.emit('workspaceManager', { type: listType })
     });
 
-    function getUserHtml(completeName, email, isOwner, avatar) {
+    function getUserHtml(completeName, email, currentIsOwner, isOwner, avatar) {
         const imgHtml = getAvatar(avatar, completeName, 'circle');
-        const tag = isOwner ? '<div class="chip secondary-content">Owner</div>' : '<a href="#!" class="secondary-content"><i class="material-icons">clear</i></a>';
+        const croix = currentIsOwner ? '<a href="#!" class="secondary-content"><i class="material-icons">clear</i></a>' : '';
+        const tag = isOwner ? '<div class="chip secondary-content">Owner</div>' : croix;
 
         return '<li class="collection-item avatar">' +
             imgHtml +

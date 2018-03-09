@@ -10,7 +10,7 @@ const tmp =               path.join(data, "tmp");
 module.exports = {
   port: "8080",
   protocol: "http",
-  url: "localhost:" + this.port,
+  url: "bocket.me" + this.port,
   mongoDB: "mongodb://localhost/bocketmemvp",
   saltRounds: 10,
   data: data,
@@ -19,4 +19,5 @@ module.exports = {
   tmp: tmp,
   secretSession: "kdjqskdjkqsjdsjqdklqsjdkjziooajdiazjdskjdqklsjdjaziodjsqjdlj",
   secretKey: "Bocket make a new World of Possibilities",
+  fullUrl: 'http://bocket.me:8080',
 };

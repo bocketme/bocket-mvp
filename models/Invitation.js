@@ -48,18 +48,17 @@ InvitationSchema.post('save', (invitation) => {
   log.info('ici');
   log.info('serverConfig url :', serverConfig.url);
 
-  let httpURL = '';
   // httpURL = serverConfig.protocol+ "://www.bocket.me:" + serverConfig.port;
-  httpURL = `${serverConfig.protocol}://localhost:${serverConfig.port}`;
-  log.info('http url :', httpURL);
+  //const httpURL = `${serverConfig.protocol}://localhost:${serverConfig.port}`;
+  //log.info('http url :', httpURL);
 
   const renderVar = {
     completeName: invitation.people.completeName,
     workspace: invitation.workspace,
     author: invitation.author,
-
+    bocketUrl: serverConfig.fullUrl,
     // url: serverConfig.url + "/" + invitation.uid
-    url: `${httpURL}/${invitation.uid}`,
+    url: `${serverConfig.fullUrl}/${invitation.uid}`,
 
   };
     // http://localhost:8080/project/5a4f4a87488d0c0770f8bef0
