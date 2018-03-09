@@ -56,7 +56,7 @@ InvitationSchema.post('save', (invitation) => {
     completeName: invitation.people.completeName,
     workspace: invitation.workspace,
     author: invitation.author,
-
+    bocketUrl: serverConfig.fullUrl,
     // url: serverConfig.url + "/" + invitation.uid
     url: `${serverConfig.fullUrl}/${invitation.uid}`,
 
