@@ -21,7 +21,7 @@
         $('ul.tabs').tabs();
 
     $('.button-collapse').sideNav({
-        menuWidth: 500, // Default is 300
+        menuWidth: 400, // Default is 300
         edge: 'right', // Choose the horizontal origin
         onOpen: function(el) {
             if($("#comments").css('display') === 'block') {

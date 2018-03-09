@@ -600,8 +600,9 @@ li.collection-item.information-detail {
 }
 
 #info-name, #info-description,
-#info-creation, #info-creation,
+#info-creation,
 #info-creator, #info-owner {
+    float: none;
     color:#616161;
     font-weight: 600;
 } 
@@ -637,9 +638,13 @@ li.collection-item.information-detail {
 }
 
 #details {
-    padding: 30px 70px 0 20px;
+    margin: 36px;
+    font-size: 13px;
 }
 
+#details tr td {
+    padding: 0px;
+}
 @media screen and (min-width: 600px) and (max-width: 992px){
     #second_column {
         width: 100%;
