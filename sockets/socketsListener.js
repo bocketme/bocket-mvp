@@ -16,12 +16,12 @@ const SocketIOFile = require('socket.io-file');
 const getAllSpecListener = require('./getAllSpecListener');
 const removeSpecListener = require('./removeSpecListener');
 const renameSpecListener = require('./renameSpecListener');
-const editPartListener = require('./editPartListener');
 const GetSearchCriteria = require("./GetSearchCriteria");
 const GetSelectedItemsToAdd = require("./GetSelectedItemsToAdd");
 const createWorkspaceInSignIn = require('./createWorkspaceInSignIn');
 const createWorkspaceInHub = require('./createWorkspaceInHub');
-const deleteNodeLostener = require('./deleteNodeListener');
+const deleteNodeListener = require('./deleteNodeListener');
+const duplicateNodeListener = require('./duplicateNodeListener');
 
 const FSconfig = require('../config/FileSystemConfig');
 module.exports = function (io) {
@@ -35,7 +35,8 @@ module.exports = function (io) {
       overwrite: true, // overwrite file if exists, default is true.
     });
 
-    deleteNodeLostener(io, socket);
+    duplicateNodeListener(socket);
+    deleteNodeListener(io, socket);
     createWorkspaceInHub(io, socket);
     createWorkspaceInSignIn(io, socket);
     fileUploaderListener(socket, uploader);
@@ -57,6 +58,5 @@ module.exports = function (io) {
     renameSpecListener(io, socket);
     GetSearchCriteria(socket);
     GetSelectedItemsToAdd(socket);
-    editPartListener(socket);
   });
 };

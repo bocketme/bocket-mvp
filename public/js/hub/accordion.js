@@ -1,7 +1,7 @@
 $(function () {
-    $('i.material-icons.assembly').click();
-    $('body').on('click', '.three-node', loadNodeInformation);
-    $('body').on('click', '.search_child', nodeChildrenChargement);
+  $('i.material-icons.assembly').click();
+  $('body').on('click', '.three-node', loadNodeInformation);
+  $('body').on('click', '.search_child', nodeChildrenChargement);
 });
 
 
@@ -18,7 +18,6 @@ const headerTitle = new class HeaderTitle {
       let link = document.createElement('a');
       link.className = "breadcrumb";
       link.innerHTML = breadcrumb;
-      console.log(link);
       this.breadcrumb.appendChild(link);
     })
   }
@@ -50,8 +49,8 @@ function loadNodeInformation(event) {
     let sub_level = element.contents().filter("span.p-node").attr("data-sublevel");
     let node_type = element.contents().filter("span.p-node").attr("data-node");
 
-    if (!nodeId)
-        Materialize.toast('Error, The node selected has no ID', 2000);
+  if (!nodeId)
+    Materialize.toast('Error, The node selected has no ID', 2000);
 
     //CSS EFFECT
     if (!element.hasClass("selected-accordion")) {
@@ -83,4 +82,12 @@ function loadNodeInformation(event) {
         nodeId: idOfchoosenNode,
         viewType: ViewTypeEnum.content
     });
+}
+
+socket.on("deleteNode", function (nodeId) {
+  deleteNode(nodeId);
+});
+
+function deleteNode(nodeId) {
+  $("#" + nodeId + ".collapsible-header").parent().remove();
 }

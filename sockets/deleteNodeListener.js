@@ -5,6 +5,10 @@ const Workspace = require('../models/Workspace');
 const Organization = require('../models/Organization');
 const rimraf = require('rimraf');
 const path = require('path');
+const Part = require('../models/Part');
+const Assembly = require('../models/Assembly');
+const NodeTypeEnum = require('../enum/NodeTypeEnum');
+const Fsconfig = require('../config/FileSystemConfig');
 
 const log = require('../utils/log');
 const appDir = path.dirname(require.main.filename);
@@ -35,13 +39,14 @@ async function doesHeHaveRights(userMail, nodeId) {
   return null;
 }
 
-async function deleteData(workspaceId, node) {
+async function deleteData(type, contentId) {
+  let content;
   try {
-    const workspace = await Workspace.findById(workspaceId);
-    if (!workspace) throw Error('Unknown workspace.');
-    const organization = await Organization.findById(workspace.organization);
-    if (!organization) throw Error('Unknown organization.');
-    rimraf(`${appDir}/data/files3D/${organization.name}/${node.name} - ${node.content}`, () => {});
+    if (type === NodeTypeEnum.part) content = await Part.findById(contentId);
+    else if (type === NodeTypeEnum.assembly) content = await Assembly.findById(contentId);
+    else throw Error('The node is nor an Assembly nor a part');
+
+    rimraf(path.join(Fsconfig.appDirectory.files3D, content.path), (err)=> { if(err) throw err; });
   } catch (err) {
     throw err;
   }
@@ -50,15 +55,16 @@ async function deleteData(workspaceId, node) {
 async function deleteNodeListener(io, session, nodeId) {
   try {
     const node = await doesHeHaveRights(session.userMail, nodeId);
-    if (!node) return;
-    const nodeParent = await Node.findById(node.parent);
-    if (!nodeParent) return;
+    if (!node) throw Error('Node not Found');
+    log.info(nodeId, node.name)
+    const nodeParent = await Node.findOne({"children._id": nodeId});
+    if (!nodeParent) throw Error('Node parent not found');
 
     const indexOfNodeId = nodeParent.children.map((child => child._id)).indexOf(node._id);
     nodeParent.children.splice(indexOfNodeId, 1);
 
     if (node) {
-      await deleteData(session.currentWorkspace, node);
+      await deleteData(node.type, node.content);
       await node.remove();
       await nodeParent.save();
       io.to(session.currentWorkspace).emit(socketName, nodeId);

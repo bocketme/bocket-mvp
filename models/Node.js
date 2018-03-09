@@ -57,6 +57,7 @@ NodeSchema.plugin(uniqueValidator);
  * @param nodeInformation.description - The description of the node
  * @param nodeInformation.specFiles - The specFiles of the node
  * @param nodeInformation.tags - The tags of the node
+ * @param nodeInformation.parent - The parent of the node
  * @param nodeInformation.children - The children of the node
  * @param nodeInformation.Users - The Users of the node
  * @param nodeInformation.owners - The owners of the node
