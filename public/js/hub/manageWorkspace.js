@@ -48,7 +48,7 @@ $(document).ready(function () {
       const elem = $(event.currentTarget);
       console.log('REMOVE USER:', elem.prev().text());
       socket.emit('removeUserFromOW', { userEmail: elem.prev().text(), command: listType });
-      elem.remove();
+      elem.parent().remove();
     });
   });
 
