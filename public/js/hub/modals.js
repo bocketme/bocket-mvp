@@ -8,9 +8,6 @@ const defaultNodeValue = "Select a node";
             if (cible == defaultNodeValue)
                 return Materialize.toast("You must select a node", 1000);
 
-            if (!document.getElementById('edit-part-file3D').files[0])
-                return Materialize.toast("You must add a 3d File", 1000);
-
             const nodeId = idOfchoosenNode;
             const node = $("#" + nodeId);
 

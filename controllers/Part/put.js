@@ -15,6 +15,7 @@ const asyncForeach = require('../utils/asyncForeach');
 const log = require('../../utils/log');
 const fs = require('fs');
 const util = require('util');
+const partFileSystem = require("../../config/PartFileSystem");
 
 /**
  * Check if the user can delete the node
@@ -106,10 +107,12 @@ const readDir = util.promisify(fs.readdir);
 
 const deleteDirFiles = async (chemin) => {
 
+    chemin = path.join(chemin, partFileSystem.data)
+
     let dir = await readDir(chemin).catch(err => {throw err});
 
     for (let file in dir) {
-        await deleteFiles(dir[file]).catch(err => {throw err});
+        await deleteFiles(path.join(chemin, dir[file])).catch(err => {throw err});
     }
 
     return;
