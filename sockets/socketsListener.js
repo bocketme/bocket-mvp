@@ -22,6 +22,7 @@ const createWorkspaceInSignIn = require('./createWorkspaceInSignIn');
 const createWorkspaceInHub = require('./createWorkspaceInHub');
 const deleteNodeListener = require('./deleteNodeListener');
 const duplicateNodeListener = require('./duplicateNodeListener');
+const changePassword = require('./changePasswordListener');
 
 const FSconfig = require('../config/FileSystemConfig');
 module.exports = function (io) {
@@ -58,5 +59,6 @@ module.exports = function (io) {
     renameSpecListener(io, socket);
     GetSearchCriteria(socket);
     GetSelectedItemsToAdd(socket);
+    changePassword(socket);
   });
 };

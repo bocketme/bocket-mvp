@@ -202,6 +202,12 @@ const defaultNodeValue = "Select a node";
             editPart.find("#part-description").val(content.find("#content-description").text());
         });
 
+        $('#change-pwd-btn').on('click', (e) => {
+            const changePassword = $('#change-password');
+            changePassword.find('input').val('');
+            changePassword.modal('open');
+        });
+
         //////////////////////////////////////////////////////////////////////
         $('.modal-node-selector').click((event) => {
             if (headerTitle.title == "Select a node") {

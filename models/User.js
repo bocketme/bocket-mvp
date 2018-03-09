@@ -2,10 +2,13 @@ const serverConfiguration = require("../config/server");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const uniqueValidator = require('mongoose-unique-validator');
+const util = require('util');
 
 let NestedUserSchema = require('./nestedSchema/NestedUserSchema');
 let NestedWorkspaceSchema = require('./nestedSchema/NestedWorkspaceSchema');
 let NestedOrganizationSchema = require('./nestedSchema/NestedOrganizationSchema');
+
+const compare = util.promisify(bcrypt.compare);
 
 let UserSchema = new mongoose.Schema({
     completeName: {type: String, required: true},
@@ -31,7 +34,8 @@ UserSchema.pre('save', function(next) {
     let user = this;
 
     user.active = true;
-    user.createDate = new Date();
+    if (!user.createDate)
+        user.createDate = new Date();
     // only hash the password if it has been modified (or is new)
     if (!user.isModified('password')) return next();
 
@@ -57,6 +61,17 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
             console.log("isMatch = ", isMatch);
             cb(null, isMatch);
         });
+};
+
+UserSchema.methods.comparePassword.promise = async (candidatePassword, currentPassword) => {
+    // why this.password is undefined ?????????????????
+  if (candidatePassword === null)
+    throw Error('need candidatePassword');
+  else {
+      const b = await compare(candidatePassword, currentPassword);
+      console.log(b);
+    return b;
+  }
 };
 
 UserSchema.plugin(uniqueValidator);
