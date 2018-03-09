@@ -7,6 +7,7 @@ const listenerName = 'reportIssue';
 
 module.exports = (socket) => {
   socket.on(listenerName, ({ title, description }) => {
+    console.log(title, description);
     const mailOptions = {
       from: mailConfig.email,
       to: mailConfig.email,
