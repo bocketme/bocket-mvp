@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/hub/activity.css">
     <link rel="stylesheet" href="/css/hub/specs.css">
     <link rel="stylesheet" href="/css/hub/invitePeople.css">
+    <link rel="stylesheet" href="/css/hub/manageWorkspace.css">
 {% endblock %}
 
 {% block title %}{{ title }}{% endblock title %}
@@ -20,6 +21,7 @@
 {% block body %}
     <div id="hub" class="row">
         {% include "./hub/invitePeople.twig" %}
+        {% include "./hub/manageWorkspace/manageWorkspace.twig" %}
 
         <div id="second_column" class="col s12 m4 l4 xl3">
             <div id="side-nav" class="col s2 m2 l2 xl2">
@@ -38,7 +40,7 @@
                 </button>
 
                 <ul id="workspaces-dropdown" class="dropdown-content">
-                    <li class="option-node" id="manage-user">
+                    <li class="option-node" id="manage-workspace-btn">
                         <a class="dropdown-menu">Manage User</a>
                     </li>
                     <li class="option-node" id="invite-people-btn">
@@ -68,14 +70,14 @@
                 {# {% include "modals/import_specfiles.twig"%} #}
 
                 <div id="second_column_content" class="clear">
-                    {# 
-                    {% include "hub/search.twig" %} 
+                    {#
+                    {% include "hub/search.twig" %}
                     {% include "hub/location.twig" %}
                     {% include "hub/content.twig" %}
                     #}
                     {% include "hub/nodeThree.twig" %}
                     {% include "hub/fileThree.twig" %}
-                    
+
                 </div>
             </div>
         </div>
@@ -87,7 +89,7 @@
                     {% include "hub/sideNav.twig" %}
                 {#
                 {% include "hub/tabs.twig" %}
-                <input id="activity-uploader" style="display: none" type="file">                
+                <input id="activity-uploader" style="display: none" type="file">
                 #}
             </div>
 
@@ -114,6 +116,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script src="/js/socket.io-file-client.js"></script>
     <script src="/js/fileUploader.js"></script>
+    <script src="/js/getAvatar.js"></script>
     <script src="/js/hub.js"></script>
     <script src="/js/hub/accordion.js"></script>
     <script src="/js/hub/tabs.js"></script>
@@ -123,11 +126,15 @@
     <script src="/js/hub/activity.js"></script>
     <script src="/js/hub/specs.js"></script>
     <script src="/js/hub/invitePeople.js"></script>
+    <script src="/js/hub/manageWorkspace.js"></script>
     <script src="/js/contextMenu.js"></script>
     <script src="/js/hub/nodeTreeContextMenuEvents.js"></script>
     <script src="/js/hub/nodeTreeContextMenu.js"></script>
     <script src="/js/initial.js"></script>
     <script src="/js/hub/createWorkspace.js"></script>
     <script src="/js/hub/actions.js"></script>
+    <script type="application/javascript">
+      $('.profile').initial();
+    </script>
     {% include "require_viewer.twig" %}
 {% endblock %}
