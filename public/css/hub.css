@@ -62,7 +62,6 @@ main {
     border: none;
     padding: 0 !important;
     height: 100%;
-    width: 20%;
 }
 
 #third_column {
@@ -70,7 +69,6 @@ main {
     border: none;    
     background-color: #f7f7f7;
     height: 100%;
-    width: 80%;
 }
 
 #second_column_content {
@@ -573,6 +571,22 @@ div.collapsible-body  ul {
     padding-left: 0.25rem;
 }
 
+#file-name {
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.native_icon {
+    vertical-align: middle;
+    margin-right: 10px;
+    height: 10px;
+}
+
+.format {
+    font-size: 12px;
+    color:#C2C2C2;
+}
+
 @media screen and (max-width: 600px) {
     #second_column {
         min-height: 227px;
@@ -628,7 +642,5 @@ div.collapsible-body  ul {
     #third_column {
         width: 73%;
     }
-    #structure {
-        padding-right: 0px;
-    }
+   
 }
