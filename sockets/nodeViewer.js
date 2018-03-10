@@ -22,6 +22,7 @@ const loading = {
         save: "[Viewer] - Save",
         cancel: "[Viewer] - Cancel",
         update: "[Viewer] - Update",
+        updateMatrix: "[Viewer] - Update Matrix",
     },
     emit: {
         assembly: "[Viewer] - Add Assmbly",
@@ -41,8 +42,19 @@ class File3DManager {
         this.socket = socket;
     }
 
+    async cancel(workspaceId) {
+        let nodes = Node.find({
+            'Workspaces._id': workspaceId
+        });
+        nodes.forEach(node => {
+            this.socket.emit(loading.emit.updateMatrix, node._id, node.matrix);
+        });
+    }
+
     async update(nodeId) {
-        let node = await nodeSchema.findOne({"children._id": nodeId});
+        let node = await nodeSchema.findOne({
+            "children._id": nodeId
+        });
         this.loadNode(nodeId, node);
     }
 
@@ -131,11 +143,14 @@ class File3DManager {
 
             this.socket.emit(loading.emit.start, node._id, stat.size);
 
-            let read = fs.createReadStream(file, {autoClose: true, encoding: 'utf8' });
-                        
+            let read = fs.createReadStream(file, {
+                autoClose: true,
+                encoding: 'utf8'
+            });
+
             read.on('data', chunk => {
                 this.socket.emit(loading.emit.pending, node._id, chunkNumber, chunk);
-                chunkNumber++
+                chunkNumber++;
             });
 
             read.on('end', () => this.socket.emit(loading.emit.end, node._id, node.matrix, parent._id));
@@ -148,7 +163,7 @@ class File3DManager {
     }
 };
 
-module.exports = (io, socket)=> {
+module.exports = (io, socket) => {
 
     const file3DManager = new File3DManager(socket);
 
@@ -158,15 +173,17 @@ module.exports = (io, socket)=> {
 
     socket.on(loading.on.update, (nodeId, token) => {
         file3DManager.socket = io.to(socket.handshake.session.currentWorkspace);
-
-        file3DManager.update(nodeId);
-
-        file3DManager.socket = socket;
+        file3DManager.update(nodeId).then(() => file3DManager.socket = socket);
     });
 
     socket.on(loading.on.save, (workspaceId, nodeId, matrix) => {
         file3DManager.save(workspaceId, nodeId, matrix);
     });
+
+    socket.on(loading.on.cancel, () => {
+        file3DManager.cancel(socket.handshake.session.currentWorkspace);
+    });
+
 };
 
 function promisifyReadFile(chemin) {

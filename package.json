@@ -65,7 +65,7 @@
     "socket.io-file": "^2.0.2",
     "socket.io-file-client": "^2.0.2",
     "stats.js": "^0.17.0",
-    "three": "^0.88.0",
+    "three": "^0.89.0",
     "twig": "^1.10.5",
     "uid-safe": "^2.1.5",
     "webpack-merge": "^4.1.1"

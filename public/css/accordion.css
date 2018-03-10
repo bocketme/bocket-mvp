@@ -8,7 +8,13 @@
 }
 
 .collapsible-first{
-	max-height: 40%;
+	max-height: 300px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#specs-collection{
+	max-height: 300px;
 	overflow-y: auto;
 	overflow-x: hidden;
 }

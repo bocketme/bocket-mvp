@@ -691,8 +691,17 @@ ul#details-tab {
 @media screen and (min-width: 600px) and (max-width: 992px){
     #second_column {
         width: 100%;
+        height: 500px;
+    }
+
+    .collapsible-first{
+        max-height: 200px !important;
     }
     
+    #specs-collection{
+        max-height: 100px !important;        
+    }
+
     #third_column {
         width: 100%;
     }
@@ -701,6 +710,12 @@ ul#details-tab {
         overflow-y: auto;
         max-height: 500px;
     }
+
+    #side-nav {
+        overflow: hidden;
+        max-height: 500px;
+    }
+
     #side-nav {
         width:75px;
         height: 100%;

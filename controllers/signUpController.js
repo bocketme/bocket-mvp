@@ -64,7 +64,10 @@ const signUpController = {
         console.log('new Organization is created', newOrga);
         Documents.organization = newOrga;
         console.log('Orga a ecrire dans user', `${Documents.organization._id}-${Documents.organization.name}`);
-        Documents.user.organizations.push({ _id: Documents.organization._id, name: Documents.organization.name });
+        Documents.user.organizations.push({
+          _id: Documents.organization._id,
+          name: Documents.organization.name
+        });
         return Documents.user.save();
       })
       .then((UserUpdate) => {
@@ -113,7 +116,9 @@ const signUpController = {
           console.log('INVITATION');
           acceptInvitation(req.body.invitationUid, Documents.user)
             .then((invitationInfo) => {
-              req.session = signInUserSession(req.session, { email: user.email });
+              req.session = signInUserSession(req.session, {
+                email: user.email
+              });
               req.session.completeName = Documents.user.completeName;
               req.session.currentWorkspace = invitationInfo.workspaceId;
               res.redirect(`/project/${invitationInfo.workspaceId}`);
@@ -124,12 +129,16 @@ const signUpController = {
               newUser.remove();
             });
           return Promise.reject('Invitation');
-        } return workspace.save();
+        }
+        return workspace.save();
       })
       .then((newWorkspace) => {
         console.log('\n\nnew workspace has been add \n', newWorkspace);
         Documents.workspace = newWorkspace;
-        Documents.user.workspaces.push({ _id: Documents.workspace._id, name: Documents.workspace.name });
+        Documents.user.workspaces.push({
+          _id: Documents.workspace._id,
+          name: Documents.workspace.name
+        });
         // TODO: Documents.user.organizations
         return Documents.user.save();
       })
@@ -151,7 +160,8 @@ const signUpController = {
         return assembly.save();
       })
       .then((newAssembly) => {
-        Documents.assembly = newAssembly; console.log('\n\nnew assembly has been add \n', Documents.assembly);
+        Documents.assembly = newAssembly;
+        console.log('\n\nnew assembly has been add \n', Documents.assembly);
         const node = NodeSchema.newDocument({
           name: req.body.workspaceName,
           description: nodeMasterConfig.description,
@@ -173,8 +183,10 @@ const signUpController = {
             members: Documents.team.members,
             consults: Documents.team.consults,
           },
-          Workspaces: [Documents.workspace._id],
-          //    Workspaces: [Documents.workspace._id, Documents.workspace.name]
+          Workspaces: [{
+            "_id": Documents.workspace._id,
+            "name": Documents.workspace.name
+          }],
         });
         return node.save();
       })
@@ -195,16 +207,10 @@ const signUpController = {
         Documents.assembly.whereUsed.push(Documents.node._id);
         return Documents.assembly.save();
       })
-    /*      .then(()=>{
-                      Documents.workspace=newWorkspace;
-                      Documents.node.workspaces.push({
-                          "_id": Documents.workspace._id,
-                          "name": Documents.workspace.name});
-                      return Documents.node.save();
-                  })
-             */
       .then(() => {
-        req.session = signInUserSession(req.session, { email: Documents.user.email });
+        req.session = signInUserSession(req.session, {
+          email: Documents.user.email
+        });
         req.session.completeName = Documents.user.completeName;
         req.session.currentWorkspace = Documents.workspace._id;
         res.redirect(`/project/${Documents.workspace._id}`);
@@ -213,7 +219,9 @@ const signUpController = {
         if (err === 'Invitation') return;
         console.error(new Error(`[Sign up Controller] -  erreur \n${err}`));
         Object.values(Documents).forEach((Documents) => {
-          if (Documents) { Documents.remove(); }
+          if (Documents) {
+            Documents.remove();
+          }
         });
         res.status(400).send('Bad request');
       });

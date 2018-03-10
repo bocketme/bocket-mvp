@@ -90,6 +90,7 @@ const newAssembly = async (req, res) => {
                 completeName: creator.completeName,
                 email: creator.email
             },
+            Workspaces: parentAssembly.Workspaces,
             description: description,
             ownerOrganization: parentAssembly.ownerOrganization,
         });

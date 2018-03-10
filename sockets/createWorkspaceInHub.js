@@ -159,6 +159,12 @@ module.exports = (io, socket) => {
 
         await workspace.save();
 
+        nodeMaster.Workspaces.push({
+          "_id": workspace._id,
+          "name": workspace.name
+        });
+        await nodeMaster.save();
+
         user.workspaces.push(workspace);
         await user.save();
 
