@@ -6,6 +6,7 @@ const emailRegex = require('./regex').email;
 const mailTransporter = require('../utils/mailTransporter');
 const mailConfig = require('../config/welcomeEmail');
 const Twig = require('twig');
+const serverConfig = require('../config/server');
 
 const pathname = 'users.txt';
 const uid = util.promisify(require('uid-safe'));
@@ -76,6 +77,7 @@ async function createUsersWithFile(line) {
   await sendData(accInfo);
 
   const renderVar = {
+    bocketUrl: serverConfig.fullUrl,
     email,
     password,
     completeName

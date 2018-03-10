@@ -112,7 +112,6 @@ div.collapsible-body{
 }
 
 .collection-item-files {
-	margin-top: 5px;
 	padding: 5px 10px;
 }
 
@@ -122,4 +121,7 @@ div.collapsible-body{
 }
 .collection-item-files:hover .format {
 	color: #000000;
+}
+li.collection-item-files.active {
+	background-color: #C2C2C2;
 }
