@@ -1,12 +1,22 @@
 $(function () {
+
+  $(document).on('click', (e) => {
+    const target = $(e.target);
+     if (target.is('.specs') || target.is('.specs-span')) {
+     } else {
+      $('.collection-item-files').removeClass('active');
+     }    
+  });
+
   $('i.material-icons.assembly').click();
   $('body').on('click', '.three-node', loadNodeInformation);
   $('body').on('click', '.search_child', nodeChildrenChargement);
   $('body').on('click','.collection-item-files', function () {
-    console.log("hello");
     $(this).siblings('li').removeClass('active');
     $(this).addClass('active');
   });
+
+  
 });
 
 const headerTitle = new class HeaderTitle {
