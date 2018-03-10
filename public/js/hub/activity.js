@@ -101,13 +101,13 @@ function printActivityComment(lastComment, comment, when, username) {
     if (username === comment.author)    {
        $('.message-area')
        .append( `<div class='col s12'>
-                    <div class='message-display'>
+                    <div class='message-display tooltipped' data-tooltip=${when} data-position="left" data-delay="50"'>
                         ${comment.content}
                     </div>
                 </div>`);
     }
     else {
-       $('.message-area').append(`<div class='col s12'> <div class="row message-other">
+       $('.message-area').append(`<div class='col s12'<div class="row message-other tooltipped' data-tooltip=${when} data-position="right" data-delay="50"'>
         ${avatar}
         ${comment.content}
        </div> </div>`);
