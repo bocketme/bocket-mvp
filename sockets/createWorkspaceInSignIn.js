@@ -11,7 +11,7 @@ const nodeMasterConfig = require('../config/nodeMaster');
 module.exports = (io, socket) => {
     socket.on("signInNewWorkspace", (userId, orga, workspaceName) => {
         (async () => {
-            
+
             log.info("search the user");
             let user;
             try {
@@ -19,7 +19,7 @@ module.exports = (io, socket) => {
             } catch (e) {
                 throw new Error(e)
             }
-            
+
             log.info("search / create organization");
             let organization;
             console.log(orga);
@@ -52,7 +52,7 @@ module.exports = (io, socket) => {
                 throw new Error("Type of orga false or inexisting : " + orga.type);
                 socket.emit("newOrgaFailed");
             }
-            
+
             log.info("create assembly");
             let newassembly;
             try {
@@ -69,15 +69,15 @@ module.exports = (io, socket) => {
                         email: user.email,
                     },
                 });
-                
+
                 await newassembly.save();
             } catch (e) {
                 throw new Error(e);
             }
-            
+
             log.info("create team");
             let team;
-            
+
             try {
                 team = await teamSchema.create({
                     owners: [{
@@ -86,15 +86,15 @@ module.exports = (io, socket) => {
                         email: user.email,
                     }],
                 });
-                
+
                 await team.save();
             } catch (e) {
                 throw new Error(e)
             }
-            
+
             log.info("create nodemaster");
             let nodeMaster;
-            
+
             try {
                 nodeMaster = await nodeSchema.create({
                     name: workspaceName,
@@ -106,7 +106,7 @@ module.exports = (io, socket) => {
             } catch (e) {
                 throw new Error(e);
             }
-            
+
             log.info("create workspace");
             let workspace;
             try {
@@ -124,56 +124,67 @@ module.exports = (io, socket) => {
                     },
                     team: team,
                 });
-                
+
                 await workspace.save();
             } catch (e) {
                 throw new Error(e)
             }
-            
+
             log.info("last changements");
             try {
-                nodeMaster.Workspaces.push(workspace);
+                nodeMaster.Workspaces.push({
+                    "_id": workspace._id,
+                    "name": workspace.name
+                });
                 await nodeMaster.save();
-                
+
                 newassembly.whereUsed.push(nodeMaster._id);
                 await newassembly.save();
-                
+
                 user.workspaces.push(workspace);
                 await user.save();
             } catch (e) {
                 throw new Eroor(e);
             }
-            
+
             let workspaces = [];
             try {
-                let owners = await workspaceSchema.find({ "team.owners._id": user._id });
+                let owners = await workspaceSchema.find({
+                    "team.owners._id": user._id
+                });
                 workspaces.push(...owners);
-                let members = await workspaceSchema.find({ "team.members._id": user._id });
+                let members = await workspaceSchema.find({
+                    "team.members._id": user._id
+                });
                 workspaces.push(...members);
-                let consults = await workspaceSchema.find({ "team.consults._id": user._id });
+                let consults = await workspaceSchema.find({
+                    "team.consults._id": user._id
+                });
                 workspaces.push(...consults);
             } catch (e) {
                 throw new Error(e);
             }
-            
+
             let ownerOrganization;
-            
+
             try {
-                ownerOrganization = await organizationSchema.find({ "owner._id": user._id })
+                ownerOrganization = await organizationSchema.find({
+                    "owner._id": user._id
+                })
             } catch (e) {
                 throw new Error(e);
             }
-            
+
             return {
                 user: user,
                 workspaces: workspaces,
                 organization: ownerOrganization,
             }
         })().then((res) => {
-            socket.emit("signinSucced", res)
-        })
-        .catch(err => log.error(err));
+                socket.emit("signinSucced", res)
+            })
+            .catch(err => log.error(err));
     });
-    
-    
+
+
 };
