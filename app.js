@@ -117,7 +117,7 @@ app.use("/signOut", signOut);
 app.use("/", index);
 app.use("/user", user);
 app.use("/signin", signin);
-app.use("/signup", signup);
+//app.use("/signup", signup);
 app.use("/project", project);
 app.use("/part", part);
 app.use("/assembly", assembly);
