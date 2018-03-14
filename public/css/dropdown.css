@@ -10,10 +10,11 @@
     padding-bottom: 30px;
     padding-top: 10px;
     line-height: 0px;
+    width: 100%;
 }
 
 .dropdown-button:hover, .dropdown-button:focus, .dropdown-button:active{
-    background-color: #f9f9f9;
+    background-color: #e9e8e9;
 }
 
 .dropdown-content li>a, .dropdown-content li>span{
@@ -21,7 +22,7 @@
 }
 
 .dropdown-content li>a:hover, .dropdown-content li>span:hover{
-    background-color: #262626
+    background-color: #e9e8e9;
 }
 
 .dropdown {

@@ -20,6 +20,7 @@ $(document).ready(function() {
     li = $(this);
     downloadButton.attr('href', '/download/'+ idOfchoosenNode + '/' + li.attr("filename"));
     toggleMenuContextOff("#specs-context-menu");
+    $(e.currentTarget).trigger( 'click' );
     if(li.is('#native'))
       toggleMenuContextOn("#native-files");
     else
