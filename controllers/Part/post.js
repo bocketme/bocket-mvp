@@ -1,184 +1,209 @@
-const Part = require("../../models/Part");
-const NodeSchema = require("../../models/Node");
-const UserSchema = require("../../models/User");
+const Part = require('../../models/Part');
+const NodeSchema = require('../../models/Node');
+const UserSchema = require('../../models/User');
 const config = require('../../config/server');
 const escape = require('escape-html');
 const path = require('path');
-const type_mime = require('../../utils/type-mime');
+const typeMime = require('../../utils/type-mime');
 const NodeTypeEnum = require('../../enum/NodeTypeEnum');
 const createFile = require('../utils/createFile');
 const create3DFile = require('../utils/create3DFile');
 const twig = require('twig');
 const Assembly = require('../../models/Assembly');
-const createArchive = require('../utils/createArchive');
+const createTextureFile = require('../utils/createTextureFile');
+// const createArchive = require('../utils/createArchive');
 const asyncForeach = require('../utils/asyncForeach');
 const log = require('../../utils/log');
-/**
-* Create a new Part for the specified node
-*/
-const newPart = async (req, res) => {
-    
-    let nodeId = escape(req.params.nodeId),
-    name = escape(req.body.name),
-    description = escape(req.body.description),
-    sub_level = Number(req.body.sub_level),
-    breadcrumb = escape(req.body.breadcrumb),
-    specFiles = req.files['specFiles'],
-    files_3d = req.files['file3D'];
-    
-    sub_level++;
-    
-    userEmail = req.session.userMail;
-    let creator;
-    try {
-        creator = await UserSchema.findOne({ email: userEmail });
-    } catch (err) {
-        let message = err.message ? err.message : "Error intern";
-        let status = err.status ? err.status : "500";
-        log.error("[ Post Part Controller ] creator  :" + message + "\n" + new Error(err));
-        return res.status(status).send(message);
-    }
-    
-    let parentNode;
-    try {
-        parentNode = await NodeSchema.findById(nodeId);
-        
-        if (!parentNode)
-        throw { status: 404, message: "Not Found" };
-        else if (parentNode.type !== NodeTypeEnum.assembly)
-        throw { status: 401, message: "The node is a " + parentNode.type + ", it should not be an " + NodeTypeEnum.assembly };
-    } catch (err) {
-        let message = err.message ? err.message : "Error intern";
-        let status = err.status ? err.status : "500";
-        log.error("[ Post Part Controller ] " + message + "\n" + new Error(err));
-        return res.status(status).send(message);
-    }
-    
-    let parentAssembly;
-    try {
-        parentAssembly = await Assembly.findById(parentNode.content);
-    } catch (err) {
-        message = err.message ? err.message : "Error intern";
-        status = err.status ? err.status : 500;
-        log.error("[ Post Part Controller ] " + message + "\n" + new Error(err));
-        return res.status(status).send(message); 
-    }
-    
-    
-    let part;
-    try {
-        part = Part.newDocument({
-            name: name,
-            description: description,
-            ownerOrganization: parentAssembly.ownerOrganization,
-            ParentAssemblies: [
-                {
-                    _id: parentAssembly._id,
-                    name: parentAssembly.name
-                }
-            ],
-            creator: {
-                _id: creator._id,
-                completeName: creator.completeName,
-                email: creator.email
-            },
-        });
-        
-        part = await part.save();
-    } catch (err) {
-        message = 'Intern Error';
-        status = 500;
-        if (part)
-        part.remove();
-        log.error("[ Post Part Controller ] \n" + new Error(err))
-    }
-    
-    let subNode;
-    try {
-        subNode = NodeSchema.newDocument({
-            name: name,
-            description: description,
-            type: NodeTypeEnum.part,
-            content: part._id,
-            Workspaces: parentNode.Workspaces,
-            team: parentNode.team,
-        });
-        
-        subNode = await subNode.save();
-    } catch (err) {
-        message = 'Intern Error';
-        status = 500;
-        if (part)
-        part.remove();
-        subNode.remove();
-        log.error("[ Post Part Controller ] \n" + new Error(err));
-    }
-    
-    parentNode.children.push({
-        _id: subNode._id,
-        type: subNode.type,
-        name: subNode.name,
+const AppError = require('../../utils/error/customAppError');
+
+function asyncTwigRenderFile(chemin, options) {
+  return new Promise((resolve, reject) => {
+    twig.renderFile(chemin, options, (err, html) => {
+      if (err) reject(err);
+      resolve(html);
     });
-    
-    let newParentNode;
-    
-    
-    try {
-        newParentNode = await parentNode.save();
-    } catch (err) {
-        part.remove();
-        subNode.remove();
-        message = "Intern Error";
-        status = 500;
-        return res.status(status).send(message); 
-    }
-    
-    let sendError = [];
-    let chemin = path.join(config.files3D, part.path);
-    if (specFiles) {
-        asyncForeach(specFiles, async function (spec, i, specFiles) {
-            try {
-                await type_mime(1, spec.mimetype);
-                await createFile(chemin, spec);
-            } catch (err) {
-                sendError.push("Could'nt import the file : " + spec.originalname);
-                log.error(err);
-            }
-        });
-    }
-    
-    if (files_3d) {
-        asyncForeach(files_3d, async function (file, i, files_3d) {
-            try {
-                await create3DFile(chemin, file);
-            } catch (err) {
-                sendError.push("Could'nt import the file : " + file.originalname);
-                log.error(err);
-            }
-        });
-    }
-    
-    sendError.forEach(err => {
-        log.error(err);
-    });
-    
-    twig.renderFile('./views/socket/three_child.twig', {
-        node: newParentNode,
-        TypeEnum: NodeTypeEnum,
-        sub_level: sub_level,
-        breadcrumb: breadcrumb,
-        sockets: [{
-            message: 'Update File 3D',
-            order: "[Viewer] - Update",
-            dataToSend: [subNode._id],
-        }]
-    }, (err, html) => {
-        res.send(html);
-    });
+  });
 }
 
-var controllerPOST = {
-  newPart: newPart
+function throwError(err) {
+  throw err;
+}
+
+/**
+ * Create a new Part for the specified node
+ */
+const newPart = async (req, res) => {
+  const nodeId = escape(req.params.nodeId);
+  const name = escape(req.body.name);
+  const description = escape(req.body.description);
+  let sub_level = Number(req.body.sub_level);
+  const breadcrumb = escape(req.body.breadcrumb);
+  const {
+    specFiles,
+    file3D,
+    textureFiles,
+  } = req.files;
+  const email = req.session.userMail;
+
+  sub_level++;
+
+  let creator;
+  try {
+    creator = await UserSchema.findOne({
+      email
+    });
+  } catch (err) {
+    const message = err.message ? err.message : 'Error intern';
+    const status = err.status ? err.status : '500';
+    log.error(`[ Post Part Controller ] creator : ${message}  \n`, new Error(err));
+    return res.status(status).send(message);
+  }
+
+  let parentNode;
+  try {
+    parentNode = await NodeSchema.findById(nodeId);
+
+    if (!parentNode) throw new AppError('Not Found', 404);
+    else if (parentNode.type !== NodeTypeEnum.assembly)
+      throw new AppError(`The node is a ${parentNode.type}, it should be an ${NodeTypeEnum.assembly}`, 401);
+  } catch (err) {
+    const message = err.message ? err.message : 'Error intern';
+    const status = err.status ? err.status : '500';
+    log.error(`[ Post Part Controller ] - ${message} \n`, err);
+    return res.status(status).send(message);
+  }
+
+  let parentAssembly;
+  try {
+    parentAssembly = await Assembly.findById(parentNode.content);
+  } catch (err) {
+    const message = "Couldn't find the parent Node";
+    const status = 500;
+    log.error(`[ Post Part Controller ] - ${message} \n`, err);
+    return res.status(status).send(message);
+  }
+
+  let part;
+  try {
+    part = Part.newDocument({
+      name,
+      description,
+      ownerOrganization: parentAssembly.ownerOrganization,
+      ParentAssemblies: [{
+        _id: parentAssembly._id,
+        name: parentAssembly.name,
+      }],
+      creator: {
+        _id: creator._id,
+        completeName: creator.completeName,
+        email: creator.email,
+      },
+    });
+
+    part = await part.save();
+  } catch (err) {
+    const message = 'Intern Error';
+    const status = 500;
+    await part.remove().catch(error => log.fatal(error));
+    log.error('[ Post Part Controller ] - Cannot create the Part \n', new Error(err));
+    return res.status(status).send(message);
+  }
+
+  let subNode;
+  try {
+    subNode = NodeSchema.newDocument({
+      name,
+      description,
+      type: NodeTypeEnum.part,
+      content: part._id,
+      Workspaces: parentNode.Workspaces,
+      team: parentNode.team,
+    });
+
+    subNode = await subNode.save();
+  } catch (err) {
+    const message = 'Intern Error';
+    const status = 500;
+
+    await part.remove().catch(error => log.fatal(error));
+    await subNode.remove().catch(error => log.fatal(error));
+    log.error('[ Post Part Controller ] - Cannot create the sub Node \n', new Error(err));
+    return res.send(status).send(message);
+  }
+
+  parentNode.children.push({
+    _id: subNode._id,
+    type: subNode.type,
+    name: subNode.name,
+  });
+
+  try {
+    await parentNode.save();
+  } catch (err) {
+    const message = 'Intern Error';
+    const status = 500;
+    part.remove();
+    subNode.remove();
+    return res.status(status).send(message);
+  }
+
+  const sendError = [];
+  // Create specification file.
+  const chemin = path.join(config.files3D, part.path);
+  if (specFiles) {
+    await asyncForeach(specFiles, async (spec) => {
+      try {
+        await typeMime(1, spec.mimetype);
+        await createFile(chemin, spec);
+      } catch (err) {
+        sendError.push(`Could'nt import the file : ${spec.originalname}`);
+        log.warn(err);
+      }
+    });
+  }
+
+  if (textureFiles) {
+    await asyncForeach(textureFiles, async (texture) => {
+      try {
+        await createTextureFile(chemin, texture);
+      } catch (err) {
+        sendError.push(`Could'nt import the file : ${texture.originalname}`);
+        log.warn(err);
+      }
+    });
+  }
+
+  if (file3D) {
+    await asyncForeach(file3D, async (file) => {
+      try {
+        await create3DFile(chemin, file);
+      } catch (err) {
+        sendError.push(`Could'nt import the 3DFile : ${file.originalname}`)
+        log.warn(err);
+      }
+    });
+  }
+
+  sendError.forEach(err => log.error(err));
+
+  const options = {
+    node: parentNode,
+    TypeEnum: NodeTypeEnum,
+    sub_level,
+    breadcrumb,
+    sockets: [{
+      message: 'Update File 3D',
+      order: '[Viewer] - Update',
+      dataToSend: [subNode._id],
+    }],
+  };
+
+  const html = await asyncTwigRenderFile('./views/socket/three_child.twig', options).catch(error => throwError(error));
+  return res.send(html);
+};
+
+const controllerPOST = {
+  newPart,
 };
 
 module.exports = controllerPOST;
