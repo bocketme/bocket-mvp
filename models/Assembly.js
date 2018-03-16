@@ -42,9 +42,9 @@ const AssemblyScheama = mongoose.Schema({
   activities: { type: [NestedComment], default: [] },
 });
 
-function mkdirPromise(path) {
+function mkdirPromise(chemin) {
   return new Promise((resolve, reject) => {
-    fs.mkdir(path, (err) => {
+    fs.mkdir(chemin, (err) => {
       if (err) { reject(err); } else resolve();
     });
   });
