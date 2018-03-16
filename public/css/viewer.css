@@ -21,20 +21,6 @@
     width: 40px;
 }
 
-.viewer-options-1
-{
-    position: absolute;
-    right: 20px;
-    bottom: 200px;
-}
-
-.viewer-options-2
- {
-    position: absolute;
-    right: 20px;
-    bottom: 140px;
- }
-
 .viewer-options-3
 {
     position: absolute;
@@ -45,11 +31,6 @@
 .button-viewer
 {
     width: 100%;
-}
-
-.btn-floating.btn-large{
-    height: 38px !important;
-    width: 38px !important;
 }
 
 .btn-large.button-viewer{
@@ -84,4 +65,14 @@
 
 .fixed-action-btn.horizontal ul li {
     margin: 0 10px;
+}
+
+.viewer-div-option {
+    position: absolute;
+    right: 20px;
+    top: 30%;
+}
+
+.viewer-option {
+    padding: 10px;
 }

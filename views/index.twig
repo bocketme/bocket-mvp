@@ -31,8 +31,8 @@
                         </p>
                     {% else %}
                         <p style="margin-left: -0.5em !important;" class="col s12">
-                            {#<span class="subtitle">Want to create an account ?</span>
-                        <span id="signUp">Sign up here</span>#}
+                            {#<span class="subtitle">Want to create an account ?</span>#}
+                        <span id="signUp" style="display: none">{#Sign up here#}</span>
                             <br>
                             <span class="subtitle">Already a member ?</span>
                             <a id="signIn">Sign in here</a>
@@ -75,6 +75,7 @@
     {% if invitation %}
         <script type="application/javascript">
             var invitationUid = "{{ invitationUid }}";
+            console.log('me');
         </script>
     {% endif %}
     <script type="application/javascript" src="/js/betaRegistration.js"></script>

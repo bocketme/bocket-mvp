@@ -1,34 +1,32 @@
 <div id="renderDiv" class="viewer-div col s12">
     <canvas id="axisCanvas" class="viewer-div axis-canvas"></canvas>
     <canvas id="renderSurface" class="viewer-div viewer-canvas"></canvas>
-    
-    <div class="fixed-action-btn horizontal viewer-options-1">
-        <a class="btn-floating btn-large blue">
-            <img class="button-viewer" src="/img/viewer/01-BasicParameters.svg" alt="">
-        </a>
-        <ul>
-            <li><a id="button-fit-to-screen" class="btn-floating grey"> <img class="button-viewer" src="/img/viewer/01a-FitToScreen.svg" alt="Fit To Screen"></a></li> <!--Fit To Screen-->
-            {#
-            <li><a id="button-fullscreen" class="btn-floating grey">    <img class="button-viewer" src="/img/viewer/01b-FullScreen.svg" alt="FullScreen"></a></li> <!--Full screen-->
-            #}
-        </ul>
-    </div>
 
-    <div class="fixed-action-btn horizontal viewer-options-2">
-        <a class="btn-floating btn-large brown">
-            <img class="button-viewer" src="/img/viewer/02-3DInformation.svg" alt="">
-        </a>
-        <ul>
-            <li><a id="button-move-object" class="btn-floating grey">  <img class="button-viewer" src="/img/viewer/02a-ShowMark.svg" alt="Repère Pièce"></a></li> <!--repère pièce-->
-            <li><a id="button-bounding-box" class="btn-floating grey">  <img class="button-viewer" src="/img/viewer/02b-ShowBoundingBox.svg" alt="Bounding Box"></a></li> <!--bounding box-->
-            <li><a id="button-wireframe" class="btn-floating grey">     <img class="button-viewer" src="/img/viewer/02c-Wireframe.svg" alt="Wireframe"> </a></li> <!--wireframe-->
-           {#
-            <li><a id="button-passport-3d" class="btn-floating grey">   <img class="button-viewer" src="/img/viewer/02d-3DPassport.svg" alt="3D Passport"></a></li> <!--passport 3D-->
-           #}
-            <li><a id="button-rotate-object" class="btn-floating grey"> <img class="button-viewer" src="/img/viewer/02e-ShowRotate.svg" alt="Rotate"></a></li> <!--rotate-->
-        </ul>
-    </div>
-{#
+    <ul class="viewer-div-option">
+        <li class="viewer-option">
+            <a id="button-move-object" class="btn-floating grey">
+                <img class="button-viewer" src="/img/viewer/02a-ShowMark.svg" alt="Repère Pièce"></a>
+        </li>
+        <li class="viewer-option">
+            <a id="button-rotate-object" class="btn-floating grey">
+                <img class="button-viewer" src="/img/viewer/02e-ShowRotate.svg" alt="Rotate"></a>
+        </li>
+        <li class="viewer-option">
+            <a id="button-fit-to-screen" class="btn-floating grey">
+                <img class="button-viewer" src="/img/viewer/01a-FitToScreen.svg" alt="Fit To Screen"></a>
+        </li>
+        <li class="viewer-option">
+            <a id="button-bounding-box" class="btn-floating grey">
+                <img class="button-viewer" src="/img/viewer/02b-ShowBoundingBox.svg" alt="Bounding Box"></a>
+        </li>
+        <li class="viewer-option">
+            <a id="button-wireframe" class="btn-floating grey">
+                <img class="button-viewer" src="/img/viewer/02c-Wireframe.svg" alt="Wireframe">
+            </a>
+        </li>
+    </ul>
+
+    {#
     <div class="fixed-action-btn horizontal viewer-options-3">
         <a class="btn-floating btn-large green">
             <img class="button-viewer" src="/img/viewer/03-Annotations.svg" alt="">
@@ -39,20 +37,9 @@
             <li><a id="button-add-annotation" class="btn-floating grey">    <img class="button-viewer" src="/img/viewer/03c-RemoveAnnote.svg" alt=""></a></li>
         </ul>
     </div>
-#}
+    #}
     <div id="buttons-saveandcancel">
         <a id="button-save" class="waves-effect waves-light btn">Save</a>
         <a id="button-cancel" class="waves-effect waves-light btn">Cancel</a>
     </div>
 </div>
-<!--
-<div id="renderDivButton">
-        <a id="visual-button" class="waves-effect waves-light btn">visual-button</a>
-        <a id="annot-button" class="waves-effect waves-light btn">annot-button</a>
-        <a id="ruler-button" class="waves-effect waves-light btn">ruler-button</a>
-        <a id="resize-button" class="waves-effect waves-light btn">resize-button</a>
-        <a id="translate" class="waves-effect waves-light btn">translate</a>
-        <a id="rotate" class="waves-effect waves-light btn">rotate</a>
-        <a id="scale" class="waves-effect waves-light btn">scale</a>
-        <a id="space" class="waves-effect waves-light btn">space</a>
-</div> -->
