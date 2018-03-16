@@ -1,5 +1,10 @@
-const serverConfiguration = require('../config/server');
 const mongoose = require('mongoose');
+const util = require('util');
+const rimraf = require('rimraf');
+const Fsconfig = require('../config/FileSystemConfig');
+const path = require('path');
+const THREE = require('three');
+
 const NestedNode = require('./nestedSchema/NestedNodeSchema');
 const uniqueValidator = require('mongoose-unique-validator');
 const NestedUser = require('./nestedSchema/NestedUserSchema');
@@ -8,8 +13,8 @@ const NodeTypeEnum = require('../enum/NodeTypeEnum');
 const NestedTeam = require('./nestedSchema/NestedTeamSchema');
 const PartSchema = require('./Part');
 const AssemblySchema = require('./Assembly');
-const THREE = require('three');
-
+const asyncForEach = require('../utils/asyncForeach');
+const log = require('../utils/log');
 
 const NestedWorkspace = mongoose.Schema({
   _id: { type: mongoose.SchemaTypes.ObjectId, require: true },
@@ -44,6 +49,11 @@ const NodeSchema = mongoose.Schema({
   owners: { type: [NestedUser], default: [] },
 });
 
+let Node = mongoose.model('Node', NodeSchema, 'Nodes');
+
+module.exports = Node;
+
+
 NodeSchema.plugin(uniqueValidator);
 
 /**
@@ -72,25 +82,53 @@ NodeSchema.statics.newDocument = (nodeInformation) => {
   return new Node(nodeInformation);
 };
 
+const deleteNode = util.promisify(rimraf);
+
+async function deleteContent(id, type) {
+  let content;
+  if (type === NodeTypeEnum.part) {
+    content = await PartSchema.findById(id).catch((err) => { throw err; });
+  } else if (type === NodeTypeEnum.assembly) {
+    content = await AssemblySchema.findById(id).catch((err) => { throw err; });
+  } else throw new Error('The type of the node is not specified');
+
+  await deleteNode(path.join(Fsconfig.appDirectory.files3D, content.path)).catch((err) => { throw err; });
+
+  if (!content) throw new Error('There is no content');
+  content.remove();
+}
+
+async function findNodeByIdAndRemove(id) {
+  const node = await Node.findById(id);
+
+  const parentNodes = await Node.find({ 'children._id': id });
+
+  if (parentNodes.length > 0) {
+    await asyncForEach(parentNodes, async (parentNode) => {
+      const indexOfNodeId = parentNode.children.map((child => child._id)).indexOf(node._id);
+      parentNode.children.splice(indexOfNodeId, 1);
+      await parentNode.save().catch((err) => { throw err; });
+    });
+  }
+
+  if (!node) throw new Error('Node not Found');
+
+  if (node.children > 0) {
+    await asyncForEach(node.children, async (child) => {
+      const nodeChild = await node.findById(child._id).catch((err) => { throw err; });
+      await nodeChild.remove().catch((err) => { throw err; });
+    });
+  }
+  return null;
+}
+
 NodeSchema.pre('remove', function (next) {
   const promises = [];
-  this.children.forEach((child) => {
-    promises.push(NodeSchema.findByIdAndRemove(child._id));
-  });
-  if (this.type === NodeTypeEnum.part) {
-    promises.push(PartSchema.findByIdAndRemove(this.content));
-  } else if (this.type === NodeTypeEnum.assembly) {
-    promises.push(AssemblySchema.findByIdAndRemove(this.content));
-  }
+
+  promises.push(findNodeByIdAndRemove(this._id));
+  promises.push(deleteContent(this.content, this.type));
+
   Promise.all(promises)
     .then(() => next())
     .catch(err => next(err));
 });
-
-const deleteChildren = async () => {
-
-};
-
-let Node = mongoose.model('Node', NodeSchema, 'Nodes');
-
-module.exports = Node;
