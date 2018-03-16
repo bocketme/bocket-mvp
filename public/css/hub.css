@@ -221,16 +221,6 @@ span.badge {
     color: white !important;
 }
 
-.triple-dots{
-    content:url("/img/01-dots icon.svg");
-    height: 22px;
-    margin-top: -2px;
-    padding-top: 2px;
-    padding-right: 14px;
-    float: right;
-    opacity: 0.3;
-}
-
 .username-dropdown{
     font-size: 10px;
     color: #9b9b9b;
@@ -688,10 +678,15 @@ ul#details-tab {
     background-color: #FAFAFA;
 }
 
-@media screen and (min-width: 600px) and (max-width: 992px){
+@media screen and (min-width: 0px) and (max-width: 600px){
     #second_column {
         width: 100%;
-        height: 500px;
+        height: 40%;
+    }
+
+    #third_column {
+        height: 60%;
+        width: 100%;
     }
 
     .collapsible-first{
@@ -700,10 +695,6 @@ ul#details-tab {
     
     #specs-collection{
         max-height: 100px !important;        
-    }
-
-    #third_column {
-        width: 100%;
     }
 
     #list-workspace {

@@ -11,6 +11,9 @@
                             <span class="p-node" data-node="{{ TypeEnum.assembly }}" data-breadcrumbs="{{ child.breadcrumb }}" data-sublevel="{{ sub_level }}">{{ child.name }}</span>
                         </div>
                         <div id="{{ child._id }}-body" class="collapsible-body container valign-wrapper">
+                            <div class="progress">
+                                <div class="indeterminate"></div>
+                            </div>
                         </div>
                     </li>
                 {% else %}
@@ -30,7 +33,7 @@
     {% for socket in sockets %}
         <script>
             console.log("{{ socket.message }}");
-            socket.emit("{{ socket.order }}" {% for data in socket.dataToSend %} ,"{{ data }}" {% endfor %});
+            socket.emit("{{ socket.order }}"{% for data in socket.dataToSend %}, "{{ data }}"{% endfor %});
         </script>
     {% endfor %}
 {% endif %}

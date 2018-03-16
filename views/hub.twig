@@ -108,17 +108,18 @@
 {% endblock %}
 
 {% block js %}
+    <!--suppress JSAnnotator -->
     <script>
-        var workspaceId = "{{ in_use.id }}";
-        var idOfchoosenNode = undefined;
-        var NodeTypeEnum = {{ NodeTypeEnum }};
+        const workspaceId = "{{ in_use.id }}";
+        let idOfchoosenNode = undefined;
+        const NodeTypeEnum = {{ NodeTypeEnum }};
         var ViewTypeEnum = {{ ViewTypeEnum }};
         var view = ViewTypeEnum.location;
         socket.emit("joinWorkspace", workspaceId);
         $(".workspace-change").on("click", function () {
             socket.emit("leaveWorkspace", workspaceId);
         });
-        var l = 42;
+        const l = 42;
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>

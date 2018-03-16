@@ -1,7 +1,7 @@
 <div>
     <p>
         <span style="font-weight:700">Structure</span>
-        <a class="dropdown-image secondary-content" href="#" data-activates='node-tree-dropdown-menu'><img  class="add-content-icon" src="/img/add-content-icon.png"></a>
+        <a class="dropdown-image secondary-content" href="#" data-activates='node-tree-dropdown-menu'><img class="add-content-icon" src="/img/add-content-icon.png"></a>
     </p>
 </div>
 <ul class="node-tree collapsible collapsible-first bocket-scrollbar" data-collapsible="accordion">
@@ -11,7 +11,11 @@
             <img class="pad-right" src="/img/07-Assembly icon.svg">
             <span class="p-node node-name" data-node="part" data-breadcrumbs="{{ node.name }}" data-sublevel="0">{{ node.name }}</span>
         </div>
-        <div id="{{ node._id }}-body" class="collapsible-body container valign-wrapper"></div>
+        <div id="{{ node._id }}-body" class="collapsible-body container valign-wrapper">
+            <div class="progress">
+                <div class="indeterminate"></div>
+            </div>
+        </div>
     </li>
 </ul>
 
