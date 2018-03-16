@@ -34,10 +34,7 @@ const signUpController = {
       }
     }
     createAccount(req, res)
-      .catch((err) => {
-        log.error(err)
-        res.status(404).send('Bad Request');
-      });
+      .catch(() => {return res.status(404).send('Bad Request')});
   }
 };
 
@@ -164,8 +161,9 @@ async function createAccount(req, res) {
       return res.redirect(`/project/${invitationInfo.workspaceId}`);
     }
     // Normal Signin desactivated.
-    throw new Error('Sign In - Desactivated');
-    /*
+    if (!req.body.admin)
+      throw new Error('Sign In - Desactivated');
+
     user.workspaces.push({
       _id: workspace._id,
       name: workspace.name,
@@ -224,9 +222,9 @@ async function createAccount(req, res) {
     req.session.completeName = user.completeName;
     req.session.currentWorkspace = workspace._id;
     return res.redirect(`/project/${workspace._id}`);
-    */
   } catch (err) {
     errorIncreationAccount(err, documents);
+    throw err;
   }
 }
 
