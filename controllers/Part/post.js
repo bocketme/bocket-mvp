@@ -67,7 +67,7 @@ const newPart = async (req, res) => {
     
     let part;
     try {
-        part = Part.newDocument({
+        part = await Part.create({
             name: name,
             description: description,
             ownerOrganization: parentAssembly.ownerOrganization,
@@ -95,7 +95,7 @@ const newPart = async (req, res) => {
     
     let subNode;
     try {
-        subNode = NodeSchema.newDocument({
+        subNode = await NodeSchema.create({
             name: name,
             description: description,
             type: NodeTypeEnum.part,
@@ -175,7 +175,7 @@ const newPart = async (req, res) => {
     }, (err, html) => {
         res.send(html);
     });
-}
+};
 
 var controllerPOST = {
   newPart: newPart
