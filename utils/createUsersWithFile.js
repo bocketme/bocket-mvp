@@ -44,6 +44,7 @@ async function generateAccountInformations(email, completeName) {
           password,
           email,
           completeName,
+          admin: true,
         }),
       password
   };
