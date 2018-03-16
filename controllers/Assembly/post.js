@@ -18,7 +18,7 @@ const log = pino({
 
 const nodeSchema = require("../../models/Node");
 const assemblySchema = require('../../models/Assembly');
-const asyncForeach = require('../utils/asyncForeach');
+const asyncForeach = require('../../utils/asyncForeach');
 
 /********************************************************/
 /*                                                      */

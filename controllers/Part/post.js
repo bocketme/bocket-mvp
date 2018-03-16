@@ -11,7 +11,7 @@ const create3DFile = require('../utils/create3DFile');
 const twig = require('twig');
 const Assembly = require('../../models/Assembly');
 const createArchive = require('../utils/createArchive');
-const asyncForeach = require('../utils/asyncForeach');
+const asyncForeach = require('../../utils/asyncForeach');
 const log = require('../../utils/log');
 /**
 * Create a new Part for the specified node
