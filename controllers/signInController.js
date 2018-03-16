@@ -1,7 +1,7 @@
-let signInController = {
-    index: function (req, res) {
-        res.send(req.body);
-    }
+const signInController = {
+  index(req, res) {
+    res.send(req.body);
+  },
 };
 
 module.exports = signInController;
