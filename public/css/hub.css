@@ -678,6 +678,16 @@ ul#details-tab {
     background-color: #FAFAFA;
 }
 
+.text-file-style {
+    font-weight: 600;
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 207px;
+    display: inline-block;
+}
+
 @media screen and (min-width: 0px) and (max-width: 600px){
     #second_column {
         width: 100%;
