@@ -12,7 +12,7 @@ const twig = require('twig');
 const Assembly = require('../../models/Assembly');
 const createTextureFile = require('../utils/createTextureFile');
 // const createArchive = require('../utils/createArchive');
-const asyncForeach = require('../utils/asyncForeach');
+const asyncForeach = require('../../utils/asyncForeach');
 const log = require('../../utils/log');
 const AppError = require('../../utils/error/customAppError');
 
@@ -85,7 +85,7 @@ const newPart = async (req, res) => {
 
   let part;
   try {
-    part = Part.newDocument({
+    part = await Part.newDocument({
       name,
       description,
       ownerOrganization: parentAssembly.ownerOrganization,
@@ -111,7 +111,7 @@ const newPart = async (req, res) => {
 
   let subNode;
   try {
-    subNode = NodeSchema.newDocument({
+    subNode = await NodeSchema.create({
       name,
       description,
       type: NodeTypeEnum.part,
