@@ -107,7 +107,7 @@ function printActivityComment(lastComment, comment, when, username) {
                 </div>`);
     }
     else {
-       $('.message-area').append(`<div class='col s12'<div class="row message-other tooltipped' data-tooltip=${when} data-position="right" data-delay="50"'>
+       $('.message-area').append(`<div class='col s12'><div class='row message-other tooltipped' data-tooltip=${when} data-position="right" data-delay="50"'>
         ${avatar}
         ${comment.content}
        </div> </div>`);

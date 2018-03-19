@@ -147,7 +147,7 @@ function addSpec(ul, file, native) {
   console.log(`${file.name}.${file.format}`);
   ul.append(`<li class="collection-item-files specs" ${native?'id="native"':''}" filename="${file.name}.${file.format}">` +
     `<p class="truncate specs">`+
-    `<span class="specs-span" style="font-weight:600;font-size:12px"><i id="file-name" class="specs material-icons tiny">insert_drive_file</i>`+
+    `<span class="specs-span text-file-style"><i id="file-name" class="specs material-icons tiny">insert_drive_file</i>`+
     `${file.name}</span>`+
     `<span class="specs secondary-content format">${native_icon} ${file.format.toUpperCase()}</span></p>` +
     `</li>`);
