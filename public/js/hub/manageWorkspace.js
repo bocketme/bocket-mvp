@@ -5,7 +5,9 @@ $(document).ready(function () {
     const secondColumn = $("#second_column");
     const thirdColumn = $("#third_column");
     const manageWorkspaceError = $("#manage-workspace-error");
-
+    const managerPreferences = $('#preferences-options');
+    const managerPreferencesInput = managerPreferences.find('input');
+    const managerPreferencesLabel = managerPreferences.find('label');
     const visibility = "visibility";
     const hidden = "hidden";
 
@@ -32,6 +34,10 @@ $(document).ready(function () {
     });
 
     //togglemanageWorkspace();
+
+    socket.on('preferences-manager-name', () => {
+        
+    });
 
     socket.on('workspaceManager', (data) => {
         if (data !== null) {
@@ -64,8 +70,16 @@ $(document).ready(function () {
         manageWorkspaceDiv.find('a.collection-item').removeClass('active');
         const elem = $(event.target);
         elem.addClass('active');
+        manageWorkspaceDiv.hide();
         manageWorkspaceDiv.find('ul#users-list').empty();
+        manageWorkspaceDiv.show();        
         console.log('elem.text: ', elem.text());
+        const OptionName = elem.text() + ' Name';
+
+        managerPreferencesInput.attr('placeholder', '');
+        managerPreferencesInput.val('');
+        managerPreferencesLabel.text(OptionName);
+
         listType = elem.text().toLowerCase();
         socket.emit('workspaceManager', { type: listType })
     });
