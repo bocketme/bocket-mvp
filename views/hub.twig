@@ -65,9 +65,11 @@
                 </ul>
 
                 {# Modals #}
-                {# {% include "modals/create_part.twig" %} #}
-                {# {% include "modals/new_node.twig" %} #}
-                {# {% include "modals/import_specfiles.twig"%} #}
+                {# 
+                    {% include "modals/create_part.twig" %}
+                    {% include "modals/new_node.twig" %}
+                    {% include "modals/import_specfiles.twig"%}
+                #}
 
                 {% include "modals/reportIssue.twig" %}
                 {% include "modals/import_part.twig"%}
@@ -76,13 +78,12 @@
                 {% include "modals/createWorkspace.twig" %}
                 {% include "modals/edit_part.twig" %}
                 {% include "modals/changePassword.twig" %}
-                {# {% include "modals/import_specfiles.twig"%} #}
 
                 <div id="second_column_content" class="clear">
                     {#
-                    {% include "hub/search.twig" %}
-                    {% include "hub/location.twig" %}
-                    {% include "hub/content.twig" %}
+                        {% include "hub/search.twig" %}
+                        {% include "hub/location.twig" %}
+                        {% include "hub/content.twig" %}
                     #}
                     {% include "hub/nodeThree.twig" %}
                     {% include "hub/fileThree.twig" %}
@@ -97,8 +98,8 @@
                 {% include 'hub/viewer.twig' %}
                 {% include "hub/sideNav.twig" %}
                 {#
-                {% include "hub/tabs.twig" %}
-                <input id="activity-uploader" style="display: none" type="file">
+                    {% include "hub/tabs.twig" %}
+                    <input id="activity-uploader" style="display: none" type="file">
                 #}
             </div>
 
