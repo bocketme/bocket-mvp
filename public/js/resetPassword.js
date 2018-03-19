@@ -12,13 +12,10 @@ $(document).ready(() => {
     if (error !== '') {
       socket.emit('changePassword', { lastPassword, newPassword, confirmPassword });
     }
-  })
-
-  $('#submit-change-pwd').on('click', (event) => {
-    event.preventDefault();
   });
 
   socket.on('changePassword', (data) => {
+    console.log(data);
     if (has.call(data, 'error'))
       $('#change-password').find('#error').text(data.error);
     else
@@ -27,9 +24,6 @@ $(document).ready(() => {
             showBox($(workspacesPicker));
         });
     }
-      $('#change-password').modal('close');
-
-    console.log('CHANGE PASSWORD RECEIVED:', data)
   });
 
   function checkInputs(lastPassword, newPassword, confirmPassword) {

@@ -9,6 +9,7 @@ var workspacesPicker = "#workspacesPickerBox";
 var disabledNameId = "#disabledName";
 var disabledOrganizationName = "#disabledOrganizationName";
 var organizationSelect = "#organizationSelect";
+var changePassword = "#change-password";
 /* !ID */
 
 /* CLASS NAME */
