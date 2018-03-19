@@ -68,6 +68,7 @@
     {% include "signinAccountBox.twig" %}
     {% include "workplacesPickerBox.twig" %}
     {% include "createWorkspace.twig" %}
+    {% include "changePassword.twig" %}
 {% endblock %}
 
 {% block js %}
@@ -83,6 +84,7 @@
     <script type="application/javascript" src="/js/logbox.js"></script>
     <script type="application/javascript" src="/js/signup.js"></script>
     <script type="application/javascript" src="/js/signin.js"></script>
+    <script type="application/javascript" src="/js/resetPassword.js"></script>
     {% if not invitation %}
         <script type="application/javascript" src="/js/signInEvents.js"></script>
     {% else %}

@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $('#newOrgnanizationName').hide();
 
     socket.on(signInSucceed, function (signinInfo) {
@@ -11,26 +11,26 @@ $(document).ready(function() {
         ul.append("<li></li>"); // Add one <li> in order toh add the next <li> after it
         workspaces.forEach((workspace) => {
             //console.log("je rajoute un W : ", workspace);
-            $("#workspacesPicker ul li:last").after('                    <li class="collection-item avatar workspace">' +
-                '                        <i class="material-icons circle">folder</i>' +
-                '                        <span class="workspace-id">' + workspace._id + '</span>' +
-                '                        <span class="title">' + workspace.name + '</span>' +
-                '                        <p style="color: lightslategray">' + workspace.organization.name +
-                '                        </p>' +
-                '                    </li>');
+            $("#workspacesPicker ul li:last").after('<li class="collection-item avatar workspace">' +
+                '<i class="material-icons circle">folder</i>' +
+                '<span class="workspace-id">' + workspace._id + '</span>' +
+                '<span class="title">' + workspace.name + '</span>' +
+                '<p style="color: lightslategray">' + workspace.organization.name +
+                '</p>' +
+                '</li>');
         });
         $(".workspace").on("click", chosenWorkspace);
         $("#emailWorkspace").val($("#emailSignIn").val());
         $("#passwordlWorkspace").val($("#passwordSignIn").val());
         hideBox($(boxId), function () {
-            hideBox($("#workspaceCreationBox"), function(){
+            hideBox($("#workspaceCreationBox"), function () {
                 showBox($(workspacesPicker));
             });
         });
 
     });
 
-// Change color when a workspace is choose
+    // Change color when a workspace is choose
     function chosenWorkspace(e) {
         var currentTarget = $(e.currentTarget);
 
@@ -39,11 +39,13 @@ $(document).ready(function() {
         $(chosenWorkspaceId).val($("span:first", currentTarget).text());
     }
 
-    $("#userSignIn").on("submit", function(e) {
+    $("#userSignIn").on("submit", function (e) {
         e.preventDefault();
-        if ($( "#userSignUp" ).valid())
-        {
-            socket.emit("signin", {email: $("#emailSignIn").val(), password: $("#passwordSignIn").val()});
+        if ($("#userSignUp").valid()) {
+            socket.emit("signin", {
+                email: $("#emailSignIn").val(),
+                password: $("#passwordSignIn").val()
+            });
         }
     });
 
@@ -52,8 +54,7 @@ $(document).ready(function() {
             $(disabledNameId).val(user.completeName);
             $(".organizationOption").remove();
             let selector = document.getElementById('organizationSelect');
-            for (var i = 0 ; i < orga.length ; i++)
-            {
+            for (var i = 0; i < orga.length; i++) {
                 let option = document.createElement("option");
                 option.innerHTML = orga[i].name;
                 option.setAttribute("class", "organizationOption");
@@ -66,7 +67,7 @@ $(document).ready(function() {
         });
     });
 
-    $('#workspaceCreation').submit(function(){
+    $('#workspaceCreation').submit(function () {
         $("#hiddenOrganizationNameWorkspace").val($(organizationSelect).text());
         return true;
     });
@@ -76,9 +77,18 @@ $(document).ready(function() {
 
         let userId = user._id;
 
-        let organization = ($('#workspaceCreation :checkbox').is(':checked')) ?
-            {type: "new", name: $('#newOrgnanizationName').val()}  :
-            {type: "search", _id: $('#organizationSelect').val(), name: $('#organizationSelect option:selected').text()};
+        if ($('#workspaceCreation :checkbox').is(':checked')) {
+            organization = {
+                type: "new",
+                name: $('#newOrgnanizationName').val()
+            };
+        } else {
+            organization = {
+                type: "search",
+                _id: $('#organizationSelect').val(),
+                name: $('#organizationSelect option:selected').text()
+            }
+        }
 
         let workspace = $('#newWorkspaceName').val();
 
@@ -86,20 +96,31 @@ $(document).ready(function() {
     });
 
 
-    $('#workspaceCreation :checkbox').change(function() {
-        $('#organizationSelect').attr('value',null);
+    $('#workspaceCreation :checkbox').change(function () {
+        $('#organizationSelect').attr('value', null);
         if (this.checked) {
             $('#organizationSelect').hide();
-            $('#organizationSelect').attr('disabled',true).removeClass('disabled');
+            $('#organizationSelect').attr('disabled', true).removeClass('disabled');
 
             $('#newOrgnanizationName').show();
-            $('#newOrgnanizationName').attr('disabled',false).toggleClass('disabled');
+            $('#newOrgnanizationName').attr('disabled', false).toggleClass('disabled');
         } else {
             $('#organizationSelect').show();
-            $('#organizationSelect').attr('disabled',false).toggleClass('disabled');
+            $('#organizationSelect').attr('disabled', false).toggleClass('disabled');
 
             $('#newOrgnanizationName').hide();
-            $('#newOrgnanizationName').attr('disabled',true).removeClass('disabled');
+            $('#newOrgnanizationName').attr('disabled', true).removeClass('disabled');
         }
     });
+
+    $('#reset-password').click(() => {
+        hideBox($(workspacesPicker), function () {
+            showBox($('#change-password'));
+        });
+    });
+
+    $('#submit-change-pwd'.click((event) => {
+        event.preventDefault();
+    }));
+
 });
