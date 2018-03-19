@@ -31,6 +31,7 @@
   "homepage": "https://github.com/bocketme/bocket-mvp#readme",
   "dependencies": {
     "archiver": "^2.1.1",
+    "babel-loader": "^7.1.4",
     "babylonjs": "^3.2.0-alpha0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
@@ -67,6 +68,7 @@
     "stats.js": "^0.17.0",
     "three": "^0.90.0",
     "twig": "^1.10.5",
+    "uglifyjs-webpack-plugin": "^1.2.4",
     "uid-safe": "^2.1.5",
     "webpack-merge": "^4.1.1"
   },
