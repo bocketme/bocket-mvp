@@ -638,30 +638,6 @@ ul#details-tab {
     background-color: #FAFAFA;
 }
 
-@media screen and (max-width: 600px) {
-    #second_column {
-        min-height: 227px;
-        height: auto;
-        width: 100%;
-    }
-    
-    #third_column {
-        width: 100%;
-    }
-
-    #list-workspace {
-        overflow-y: auto;
-        max-height: 500px;
-    }
-    #side-nav {
-        height: 100%;
-    }
-    .modal{
-        width: 80%;
-        max-height: 100%;
-    }
-}
-
 #details {
     margin: 36px;
     font-size: 13px;
@@ -684,14 +660,52 @@ ul#details-tab {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    width: 76%;
+    max-width: 74%;
     display: inline-block;
+    
 }
 
 @media screen and (min-width: 0px) and (max-width: 600px){ 
     #second_column {
         width: 100%;
-        height: 40%;
+        /* height: 40%; */
+    }
+    #side-nav {
+        max-height: auto;
+    }
+}
+
+
+@media screen and (min-width: 600px) {
+    /* #second_column {
+        min-height: 227px;
+        width: 100%;
+    }
+    
+    #third_column {
+        width: 100%;
+    }
+
+    #list-workspace {
+        overflow-y: auto;
+        max-height: 500px;
+    }
+    #side-nav {
+        height: 100%;
+    }
+    .modal{
+        width: 80%;
+        max-height: 100%;
+    } */
+    .text-file-style {
+        width: 50px;
+    }
+}
+
+@media screen and (min-width: 992px){ 
+    #second_column {
+        width: 100%;
+        /* height: 40%; */
     }
 
     #third_column {
@@ -715,19 +729,30 @@ ul#details-tab {
     #side-nav {
         overflow: hidden;
         max-height: 500px;
-    }
-
-    #side-nav {
-        width:75px;
         height: 100%;
     }
+    
     .modal{
         width: 80%;
         max-height: 100%;
     }
+
+    .text-file-style {
+        width: 50%
+    };
+    
+    .circle-responsive-add {
+        padding-bottom: 100%;
+        width: 100%;
+    }
+
+    .circle-responsive-active {
+        padding-bottom: 100%;
+        width: 100%;
+    }
 }
 
-@media screen and (min-width: 992px) and (max-width: 1200px){
+@media screen and (min-width: 992px){
     #second_column {
         width: 27%;
     }
@@ -735,5 +760,5 @@ ul#details-tab {
     #third_column {
         width: 73%;
     }
-   
+
 }
