@@ -35,6 +35,7 @@ $(document).ready(function() {
         hideBlur($(blurId));
         hideBox($(boxId));
         hideBox($(workspacesPicker));
+        hideBox($(changePassword));
     });
 
     $(userSignIn).validate({
