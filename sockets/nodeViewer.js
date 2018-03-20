@@ -22,16 +22,22 @@ const loading = {
     save: "[Viewer] - Save",
     cancel: "[Viewer] - Cancel",
     update: "[Viewer] - Update",
-    updateMatrix: "[Viewer] - Update Matrix",
+    part: {
+      get: "[Viewer] - Get Part",
+      post: "[Viewer] - Post Part",
+    }
   },
   emit: {
+    updateMatrix: '[Viewer] - Update Matrix',    
+    cancel: "[Viewer] - Cancel",
     assembly: "[Viewer] - Add Assmbly",
     start: "[Viewer] - Start Loading",
     pending: "[Viewer] - Stream",
     end: "[Viewer] - End Loading",
+    use: "[Viewer] - Add Existing",
     error: "[Viewer] - Error Loading"
   }
-}
+};
 
 function errLog(err) {
   log.error(err)
@@ -42,6 +48,11 @@ class File3DManager {
     this.socket = socket;
   }
 
+  /**
+   * cancel a File
+   * @param {any} workspaceId 
+   * @memberof File3DManager
+   */
   async cancel(workspaceId) {
     let nodes = await nodeSchema.find({
       'Workspaces._id': workspaceId
@@ -64,8 +75,7 @@ class File3DManager {
   }
 
   /**
-   * 
-   * 
+   * load a Node
    * @param {Number} nodeId 
    * @param {Object} parent 
    * @memberof File3DManager
@@ -94,8 +104,7 @@ class File3DManager {
   }
 
   /**
-   * 
-   * 
+   * Load a file
    * @param {Object} node 
    * @memberof File3DManager
    */
@@ -115,8 +124,7 @@ class File3DManager {
   }
 
   /**
-   * 
-   * 
+   * Save a file
    * @param {String} workspaceId 
    * @param {String} nodeId 
    * @param {Array} matrix 
@@ -131,8 +139,7 @@ class File3DManager {
   }
 
   /**
-   * 
-   * 
+   * Stream a file
    * @param {any} node 
    * @param {any} file 
    * @memberof File3DManager
@@ -164,8 +171,8 @@ class File3DManager {
       });
 
       read.on('error', (err) => {
-          log.error(err);
-          this.socket.emit(loading.emit.error, node._id);
+        log.error(err);
+        this.socket.emit(loading.emit.error, node._id);
       });
     });
   }
@@ -191,7 +198,6 @@ module.exports = (io, socket) => {
   socket.on(loading.on.cancel, () => {
     file3DManager.cancel(socket.handshake.session.currentWorkspace);
   });
-
 };
 
 function promisifyReadFile(chemin) {
