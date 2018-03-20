@@ -4,7 +4,7 @@ const OrganizationModel = require('../models/Organization');
 const log = require('../utils/log');
 
 async function workspaceListener(workspaceId, userMail) {
-  const { owner, users, team, name } = await WorkspaceModel.findById(workspaceId).exec().catch(err => console.error(err));
+  const { owner, users, team, name } = await WorkspaceModel.findById(workspaceId).catch(err => console.error(err));
   return { isOwner: owner.email === userMail, owners: team.owners, members: [...users, ...team.members], name: name };
 }
 
@@ -20,7 +20,7 @@ module.exports = (socket) => {
       case 'workspace':
         workspaceListener(socket.handshake.session.currentWorkspace, socket.handshake.session.userMail)
           .then((data) => {
-            console.log('data:', data);
+            console.log('data : ', data);
             socket.emit(workspaceListenerName, data);
           })
           .catch(err => log.error(err));
