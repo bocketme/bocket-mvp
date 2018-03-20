@@ -5,8 +5,8 @@ $(document).ready(function () {
         var workspaces = signinInfo.workspaces;
         user = signinInfo.user;
         orga = signinInfo.organization;
-        //console.log("workspaces : ", workspaces);
-        var ul = $("ul");
+        console.log("workspaces : ", workspaces);
+        var ul = $('#workspacesList');
         ul.empty(); // delete all <ul>
         ul.append("<li></li>"); // Add one <li> in order toh add the next <li> after it
         workspaces.forEach((workspace) => {
@@ -119,8 +119,8 @@ $(document).ready(function () {
         });
     });
 
-    $('#submit-change-pwd'.click((event) => {
+    $('#submit-change-pwd').click((event) => {
         event.preventDefault();
-    }));
+    });
 
 });
