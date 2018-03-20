@@ -684,7 +684,11 @@ ul#details-tab {
 
 @media screen and (min-width: 600px) {
     .text-file-style {
-        width: 50px;
+        width: 61%;
+    }
+
+    .viewer-div-option {
+        top:0;
     }
 }
 
@@ -698,7 +702,7 @@ ul#details-tab {
     }
     
     #specs-collection{
-        max-height: 100px !important;        
+        /* max-height: 100px !important;         */
     }
 
     #list-workspace {
@@ -712,12 +716,11 @@ ul#details-tab {
     }
     
     .modal{
-        width: 80%;
         max-height: 100%;
     }
 
     .text-file-style {
-        width: 50%
+        width: 70%
     }
     
     .circle-responsive-add {
