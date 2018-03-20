@@ -32,6 +32,7 @@ const loading = {
     cancel: "[Viewer] - Cancel",
     assembly: "[Viewer] - Add Assmbly",
     start: "[Viewer] - Start Loading",
+    delete: '[Viewer] - Delete',
     pending: "[Viewer] - Stream",
     end: "[Viewer] - End Loading",
     use: "[Viewer] - Add Existing",

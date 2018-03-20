@@ -46,6 +46,7 @@ async function deleteNodeListener(io, session, nodeId) {
       await node.remove();
       log.info(`the node ${name} is deleted.`);
       io.to(session.currentWorkspace).emit(socketName, nodeId);
+      io.to(session.currentWorkspace).emit('[Viewer] - Delete', nodeId);
     }
   } catch (e) {
     throw e;
