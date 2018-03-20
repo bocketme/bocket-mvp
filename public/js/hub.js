@@ -178,7 +178,6 @@ function collapseOwners(owners) {
   var zIndex = owners.length;
   var move = 0;
 
-  console.log("zIndex = ", zIndex);
   while (i < owners.length) {
     $(owners[i]).css("right", move + "%");
     $(owners[i]).css("z-index", zIndex--);

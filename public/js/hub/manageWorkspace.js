@@ -63,7 +63,6 @@ $(document).ready(function () {
         if (data !== null) {
             const { members, owners, isOwner, name } = data;
             managerPreferencesInput.attr('placeholder', name);
-            console.log(members.length);
             members.sort((a, b) => a.completeName.localeCompare(b.completeName));
             for (let i = 0; i < members.length; i++) {
                 const { completeName, email } = members[i];
@@ -94,7 +93,6 @@ $(document).ready(function () {
         manageWorkspaceDiv.hide();
         manageWorkspaceDiv.find('ul#users-list').empty();
         manageWorkspaceDiv.show();
-        console.log('elem.text: ', elem.text());
         const OptionName = elem.text() + ' Name';
 
         managerPreferencesInput.attr('placeholder', '');

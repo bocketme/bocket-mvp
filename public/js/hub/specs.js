@@ -138,13 +138,11 @@ $(document).ready(function() {
  */
 function addSpec(ul, file, native) {
   let native_icon = '';
-  console.log(file);
   if (native) {
     let buttonNativeDownload = $('#download-native');
     native_icon = "<img src='/img/native-3d-file.png' class='native_icon specs'>";
     buttonNativeDownload.attr('href', `/download/${idOfchoosenNode}/native/${file.name}.${file.format}`);
   }
-  console.log(`${file.name}.${file.format}`);
   ul.append(`<li class="collection-item-files specs" ${native?'id="native"':''}" filename="${file.name}.${file.format}">` +
     `<p class="truncate specs">`+
     `<span class="specs-span text-file-style"><i id="file-name" class="specs material-icons tiny">insert_drive_file</i>`+
