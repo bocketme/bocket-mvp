@@ -5,7 +5,7 @@
         {% else %}
             <div class="container">
                 <div class={% if workspace.id == in_use.id %} {{ "circle-responsive-active" }} {% else %} {{ "circle-responsive" }} {% endif %}>
-                    <div class="circle-content">
+                    <div id="{{ workspace.id }}" class="circle-content">
                         {{ workspace.name|first |capitalize }}
                     </div>
                 </div>
