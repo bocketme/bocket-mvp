@@ -4,7 +4,8 @@ $(document).ready(function () {
     const manageWorkspaceClose = manageWorkspaceDiv.find('#close');
     const secondColumn = $("#second_column");
     const thirdColumn = $("#third_column");
-    const thingsChange = $('#modifier-trigger');
+    const formWorkspaceOrganization = $('#workspace-organization-name');
+    const buttonWorkspaceOrganization = $('#modifier-trigger');
     const dataToChange = $('#modifier');
     const manageWorkspaceError = $("#manage-workspace-error");
     const managerPreferences = $('#preferences-options');
@@ -46,10 +47,16 @@ $(document).ready(function () {
         }
     });
 
-    thingsChange.click((event) => {
+    buttonWorkspaceOrganization.click(event => {
         event.preventDefault();
         Materialize.toast('Changement en cours', 1000);
-        socket.emit('preferences-manager-name');
+        socket.emit('preferences-manager-name', {type: workspaceType, name: dataToChange.val() });
+    });
+
+    formWorkspaceOrganization.on('submit', (event) => {
+        event.preventDefault();
+        Materialize.toast('Changement en cours', 1000);
+        socket.emit('preferences-manager-name', {type: workspaceType, name: dataToChange.val() });
     })
 
     socket.on('workspaceManager', (data) => {

@@ -17,14 +17,14 @@
         <div class="col s10 offset-s1" id="panel">
             <ul id='users-list' class="collection"></ul>
             <div class="row">
-                <form class="col s12">
+                <form id='workspace-organization-name' class="col s12">
                     <div id='preferences-block' class="row">
                         <div id='preferences-options' class="input-field col s9">
                             <input placeholder="{{ title }}" id="modifier" type="text" class="validate">
                             <label for="preferences-name">Workspace Name</label>
                         </div>
                         <div class="col s2 offset-s1">
-                            <a href="#" id="modifier-trigger" class="waves-effect waves-light btn-large">Change</a>
+                            <a href="#" id="modifier-trigger" type='submit' form='workspace-organization-name' class="waves-effect waves-light btn-large">Change</a>
                         </div>
                     </div>
                 </form>

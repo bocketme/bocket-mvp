@@ -1,32 +1,36 @@
-const listenerName = 'changeWorkspaceOrOrganizationName';
+const listenerName = 'preferences-manager-name';
 const User = require('../models/User');
-const Organization = require('../modals/Organization');
-const Workspace = require('../modals/Workspace');
+const Organization = require('../models/Organization');
+const Workspace = require('../models/Workspace');
 const twig = require('twig');
 const log = require('../utils/log');
 
-async function changeInformation(session, { type, id = null, newName }) {
+async function changeInformation(session, { type, id = null, name }) {
   const user = await User.findOne({ email: session.userMail });
 
   if (!user) return { error: 'Unknown user' };
 
-  let dataToCHange;
+  console.log(type, name);
+
   switch(type) {
     case 'workspace':
-      const dataToCHange = await Organization.findOne({'workspaces._id': session.currentWorkspace});
-      dataToCHange.name = newName;
-      socket.emit('workspaceModifier', dataToCHange.name);
+      const orga = await Organization.findOne({'workspaces._id': session.currentWorkspace});
+      orga.name = name;
+      socket.emit('workspaceModifier', orga.name);
       socket.emit('info', 'The workspace has been renamed');
-      await dataToCHange.save();
+      await orga.save();
       break;
 
     case 'organization':
-      const dataToCHange = await Workspace.findById(session.currentWorkspace);
-      dataToCHange.name = newName;
-      await dataToCHange.save();
-      socket.emit('organizationModifier', dataToCHange.name);
+      const workspace = await Workspace.findById(session.currentWorkspace);
+      workspace.name = name;
+      await workspace.save();
+      socket.emit('organizationModifier', workspace.name);
       socket.emit('info', 'The organization has been renamed');
       break;
+
+    default:
+      throw new Error('No type');
   }
 }
 

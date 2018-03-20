@@ -26,6 +26,7 @@ const deleteNodeListener = require('./deleteNodeListener');
 const duplicateNodeListener = require('./duplicateNodeListener');
 const changePassword = require('./changePasswordListener');
 const reportIssueListener = require('./reportIssueListener');
+const changeWorkspaceorOrganizationName = require('./changeWorkspaceorOrganizationName.js');
 
 const FSconfig = require('../config/FileSystemConfig');
 module.exports = function (io) {
@@ -39,6 +40,7 @@ module.exports = function (io) {
       overwrite: true, // overwrite file if exists, default is true.
     });
 
+    changeWorkspaceorOrganizationName(socket);
     duplicateNodeListener(socket);
     deleteNodeListener(io, socket);
     createWorkspaceInHub(io, socket);
