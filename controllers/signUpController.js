@@ -34,7 +34,7 @@ const signUpController = {
       }
     }
     createAccount(req, res)
-      .catch(() => {return res.status(404).send('Bad Request')});
+      .catch(() => {return res.status(400).send('Bad Request')});
   }
 };
 
