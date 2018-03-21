@@ -6,9 +6,9 @@
   "scripts": {
     "start": "node app.js",
     "test": "nodemon app.js -e js,twig, css,json",
-    "prod": "webpack && node app.js",
-    "dev": "webpack --config ./dev.config.js",
-    "webpackDev": "webpack --config ./dev.config.js",
+    "prod": "NODE_ENV=prod webpack && node app.js",
+    "dev": "NODE_ENV=dev webpack",
+    "webpackDev": "NODE_ENV=dev webpack",
     "debugCode": "node app.js --inspect",
     "debug": "node $NODE_DEBUG_OPTION app.js"
   },
