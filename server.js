@@ -6,9 +6,15 @@ const letsencryptPath = '/etc/letsencrypt/live/bocket.me';
 /* Redirection of http request to http + tls */
 
 const appRedirect = express();
-appRedirect.get('/', (res, req) => {
+/*
+appRedirect.get('/', (req, res) => {
    res.redirect(httpsUrl);
 });
+*/
+appRedirect.all('/', (req, res) => {
+    res.redirect(httpsUrl);
+});
+
 const redirectServer = require('http').createServer(appRedirect);
 redirectServer.listen(80);
 
