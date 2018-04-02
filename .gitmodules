@@ -4,3 +4,6 @@
 [submodule "converter/SharedObjectLoader"]
 	path = converter/SharedObjectLoader
 	url = https://github.com/bocketme/SharedObjectLoader.git
+[submodule "bocket-view"]
+	path = bocket-view
+	url = https://github.com/bocketme/bocket-view.git
