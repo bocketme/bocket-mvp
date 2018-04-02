@@ -1,6 +1,7 @@
 const express = require("express");
 let router = express.Router();
-const controller = require("../controllers/User/usersInformation");
+const getController = require("../controllers/User/usersInformation");
 
-router.get('/photo/:userId', controller.userImage);
+router.get('/photo/:userId', getController.userImage);
+router.post('/photo/:userId', )
 module.exports = router;

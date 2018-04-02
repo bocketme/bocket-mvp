@@ -47,8 +47,11 @@ const io = require("socket.io")(server);
 io.use(sharedsession(session, {
     autoSave: false,
 }));
-
 const ioListener = require("./sockets/socketsListener")(io);
+
+const ioFileManager = require("socket.io")(server, {
+  path: '/file'
+});
 
 //Initialize the favicon
 app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon-bocket.png')));
