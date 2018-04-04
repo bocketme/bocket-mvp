@@ -21,6 +21,7 @@ const loading = {
     start: "[Viewer] - Start Workspace",
     save: "[Viewer] - Save",
     cancel: "[Viewer] - Cancel",
+    next: "[Viewer] - Next",
     update: "[Viewer] - Update",
     part: {
       get: "[Viewer] - Get Part",
@@ -47,8 +48,14 @@ function errLog (err) {
 class File3DManager {
   constructor (socket) {
     this.socket = socket;
+    socket.on(loading.on.next, () => {
+      if (this.read instanceof fs.ReadStream)
+        this.read.resume()
+    })
     this.pending = [];
     this.lock = false;
+    this.read = null
+    
   }
 
   /**
@@ -152,7 +159,7 @@ class File3DManager {
       this.pending.push(data)
 
     log.info(this.lock === true, !primary)
-    
+
     if (this.lock === true && !primary || !this.pending[0]) return
 
     this.lock = true
@@ -163,29 +170,25 @@ class File3DManager {
 
       this.socket.emit(loading.emit.start, node._id, stat.size, node.name);
 
-      let read = fs.createReadStream(file, {
+      this.read = fs.createReadStream(file, {
         autoClose: true,
         encoding: 'utf8'
       });
 
-      read.on('data', chunk => {
-        setTimeout(() => {
-          chunkNumber++;
-          this.socket.emit(loading.emit.pending, node._id, chunkNumber, chunk);
-        }, 1000);
-      });
-
-      read.on('end', () => {
+      this.read.on('data', chunk => {
         chunkNumber++;
-        setTimeout(() => {
-          this.socket.emit(loading.emit.end, node._id, node.matrix, parent._id);
-          this.pending.shift();
-          this.lock = this.pending[0] ? true : false
-          this.streamFile(null, true)
-        }, chunkNumber * 1000);
+        this.socket.emit(loading.emit.pending, node._id, chunkNumber, chunk);
+        this.read.pause();
       });
 
-      read.on('error', (err) => {
+      this.read.on('end', () => {
+        this.socket.emit(loading.emit.end, node._id, node.matrix, parent._id);
+        this.pending.shift();
+        this.lock = this.pending[0] ? true : false
+        this.streamFile(null, true)
+      });
+
+      this.read.on('error', (err) => {
         log.error(err);
         this.socket.emit(loading.emit.error, node._id);
       });
