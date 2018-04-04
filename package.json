@@ -8,9 +8,8 @@
     "test": "nodemon app.js -e js,twig, css,json",
     "prod": "NODE_ENV=prod webpack && node app.js",
     "dev": "NODE_ENV=dev webpack",
-    "webpackDev": "NODE_ENV=dev webpack",
-    "debugCode": "node app.js --inspect",
-    "debug": "node $NODE_DEBUG_OPTION app.js"
+    "webpackDev": "cross-env NODE_ENV=development webpack",
+    "webpackProd": "cross-env NODE_ENV=production webpack"
   },
   "nodemonConfig": {
     "ignore": [
@@ -34,10 +33,12 @@
     "babel-loader": "^7.1.4",
     "babylonjs": "^3.2.0-alpha0",
     "bcrypt": "^1.0.3",
+    "bocket-view": "file:bocket-view",
     "body-parser": "^1.18.2",
     "connect-mongo": "^2.0.1",
     "cookie-parser": "^1.4.3",
     "cookies": "^0.7.1",
+    "cross-env": "^5.1.4",
     "csrf": "^3.0.6",
     "csurf": "^1.9.0",
     "escape-html": "^1.0.3",
@@ -67,10 +68,10 @@
     "socket.io-file-client": "^2.0.2",
     "stats.js": "^0.17.0",
     "three": "^0.89.0",
+    "ts-loader": "^4.1.0",
     "twig": "^1.10.5",
     "uglifyjs-webpack-plugin": "^1.2.4",
-    "uid-safe": "^2.1.5",
-    "webpack-merge": "^4.1.1"
+    "uid-safe": "^2.1.5"
   },
   "devDependencies": {
     "chai": "^4.1.2",
@@ -85,7 +86,8 @@
     "jquery": "^3.2.1",
     "jquery-validation": "^1.17.0",
     "snyk": "^1.69.10",
-    "webpack": "^3.10.0",
+    "webpack": "^4.4.1",
+    "webpack-cli": "^2.0.13",
     "worker-loader": "^1.1.0"
   }
 }
