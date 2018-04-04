@@ -28,7 +28,7 @@ const loading = {
     }
   },
   emit: {
-    updateMatrix: '[Viewer] - Update Matrix',    
+    updateMatrix: '[Viewer] - Update Matrix',
     cancel: "[Viewer] - Cancel",
     assembly: "[Viewer] - Add Assmbly",
     start: "[Viewer] - Start Loading",
@@ -40,13 +40,15 @@ const loading = {
   }
 };
 
-function errLog(err) {
+function errLog (err) {
   log.error(err)
 }
 
 class File3DManager {
-  constructor(socket) {
+  constructor (socket) {
     this.socket = socket;
+    this.pending = [];
+    this.lock = false;
   }
 
   /**
@@ -54,7 +56,7 @@ class File3DManager {
    * @param {any} workspaceId 
    * @memberof File3DManager
    */
-  async cancel(workspaceId) {
+  async cancel (workspaceId) {
     let nodes = await nodeSchema.find({
       'Workspaces._id': workspaceId
     });
@@ -63,14 +65,14 @@ class File3DManager {
     });
   }
 
-  async update(nodeId) {
+  async update (nodeId) {
     let node = await nodeSchema.findOne({
       "children._id": nodeId
     });
     this.loadNode(nodeId, node);
   }
 
-  async loadWorkspace(workspaceId) {
+  async loadWorkspace (workspaceId) {
     let workspace = await workspaceSchema.findById(workspaceId).catch(errLog);
     let start = await this.loadNode(workspace.node_master._id, workspace).catch(errLog);
   }
@@ -81,7 +83,7 @@ class File3DManager {
    * @param {Object} parent 
    * @memberof File3DManager
    */
-  async loadNode(nodeId, parent) {
+  async loadNode (nodeId, parent) {
     const node = await nodeSchema.findById(nodeId);
     log.info("Chargement : " + nodeId);
     console.log(node);
@@ -109,7 +111,7 @@ class File3DManager {
    * @param {Object} node 
    * @memberof File3DManager
    */
-  async loadPart(node, parent) {
+  async loadPart (node, parent) {
     let part = await partSchema.findById(node.content).catch(errLog);
 
     let chemin = path.join(config.files3D, part.path, PartFileSystem.data);
@@ -118,7 +120,7 @@ class File3DManager {
 
     for (let i = 0; i < files.length; i++) {
       if (path.extname(files[i]) == '.json') {
-        this.streamFile(node, parent, path.join(chemin, files[i]));
+        this.streamFile({ node: node, parent: parent, file: path.join(chemin, files[i]) });
         break;
       }
     }
@@ -131,7 +133,7 @@ class File3DManager {
    * @param {Array} matrix 
    * @memberof File3DManager
    */
-  save(workspaceId, nodeId, matrix) {
+  save (workspaceId, nodeId, matrix) {
     nodeSchema.findById(nodeId)
       .then(node => {
         node.matrix = matrix;
@@ -145,12 +147,21 @@ class File3DManager {
    * @param {any} file 
    * @memberof File3DManager
    */
-  streamFile(node, parent, file) {
+  streamFile (data = null, primary = false) {
+    if (data)
+      this.pending.push(data)
+
+    log.info(this.lock === true, !primary)
+    
+    if (this.lock === true && !primary || !this.pending[0]) return
+
+    this.lock = true
+    const { node, parent, file } = this.pending[0]
+
     fs.stat(file, (err, stat) => {
-      let total = stat.size;
       let chunkNumber = 0;
 
-      this.socket.emit(loading.emit.start, node._id, stat.size);
+      this.socket.emit(loading.emit.start, node._id, stat.size, node.name);
 
       let read = fs.createReadStream(file, {
         autoClose: true,
@@ -168,6 +179,9 @@ class File3DManager {
         chunkNumber++;
         setTimeout(() => {
           this.socket.emit(loading.emit.end, node._id, node.matrix, parent._id);
+          this.pending.shift();
+          this.lock = this.pending[0] ? true : false
+          this.streamFile(null, true)
         }, chunkNumber * 1000);
       });
 
@@ -201,7 +215,7 @@ module.exports = (io, socket) => {
   });
 };
 
-function promisifyReadFile(chemin) {
+function promisifyReadFile (chemin) {
   return (new Promise((resolve, reject) => {
     fs.readFile(chemin, 'utf8', (err, data) => {
       if (err)
@@ -212,7 +226,7 @@ function promisifyReadFile(chemin) {
   }));
 }
 
-function promisifyReaddir(chemin) {
+function promisifyReaddir (chemin) {
   return (new Promise((resolve, reject) => {
     fs.readdir(chemin, (err, files) => {
       if (err)

@@ -24,6 +24,7 @@ async function create3DFile(chemin, file) {
 
     file3D.on("close", () => {
         let resultImport = converter.JSimport(filePath);
+        console.log("Import File 3D : ", resultImport);
         converterInfo.info(resultImport);
     });
 }
