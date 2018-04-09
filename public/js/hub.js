@@ -9,11 +9,17 @@
             startingTop: '2%', // Starting top style attribute
             endingTop: '10%', // Ending top style attribute
             ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-                let context = "#" + modal.context.id;
-                let form = $(context).find('form')
-                if (form[0] && modal.context.id !== "edit-part")
-                   // console.log("form :", form);
+                console.log(idOfchoosenNode);
+                if (idOfchoosenNode ===  undefined) {
+                    Materialize.toast('Please select an Assembly to add a Node', 3000);
+                    this.close();
+                } else {
+                    let context = "#" + modal.context.id;
+                    let form = $(context).find('form')
+                    if (form[0] && modal.context.id !== "edit-part")
+                    // console.log("form :", form);
                     form[0].reset();
+                }
               }
         });
         $(".collapsible").collapsible();
@@ -41,7 +47,7 @@
       gutter: 0, // Spacing from edge
       belowOrigin: true, // Displays dropdown below the button
       alignment: 'left', // Displays dropdown with edge aligned to the left of button
-      stopPropagation: false // Stops event propagation
+      stopPropagation: false, // Stops event propagation
     });
 
     $('.dropdown-button').dropdown({
