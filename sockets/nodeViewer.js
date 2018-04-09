@@ -93,13 +93,13 @@ class File3DManager {
   async loadNode (nodeId, parent) {
     const node = await nodeSchema.findById(nodeId);
     log.info("Chargement : " + nodeId);
-    console.log(node);
+    console.log( node );
     let content;
 
     if (node.type === nodeTypeEnum.assembly) {
       this.socket.emit(loading.emit.assembly, nodeId, node.matrix, parent._id);
       let promises = [];
-      node.children.forEach(child => {
+      node.children.forEach((child)=> {
         promises.push(this.loadNode(child._id, {
           name: node.name,
           _id: node._id

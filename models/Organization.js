@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 let Node = new mongoose.Schema({
-    name: {type: String, required: true}
+    name: { type: String, required: true }
 });
 
 let OrganizationSchema = new mongoose.Schema({

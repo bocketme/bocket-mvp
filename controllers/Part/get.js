@@ -9,25 +9,25 @@ let modeler = (req, res) => {
     let nodeId = req.params.nodeId;
     Node.findById(nodeId)
         .then((node) => {
-            if (TypeEnum.part = node.type){
+            if (TypeEnum.part = node.type) {
                 Part.findById(node.content)
-                    .then(part => {
-                            res.render("part-modeler", {title: part.name});
+                    .then((part) => {
+                            res.render('part-modeler', { title: part.name });
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         console.error(err);
                         res.status(500);
-                        res.send("Intern Error");
+                        res.send('Intern Error');
                     })
             } else {
                 res.status(404);
-                res.send("Not Found");
+                res.send('Not Found');
             }
         })
-        .catch(err => {
+        .catch((err) => {
             console.error(err);
             res.status(500);
-            res.send("Intern Error");
+            res.send('Intern Error');
         });
 };
 
