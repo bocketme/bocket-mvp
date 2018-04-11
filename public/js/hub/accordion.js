@@ -51,7 +51,6 @@ function loadNodeInformation(event) {
   $('#activity-tab').tabs('select_tab', 'activity');
   // Initialisation
   const element = $(event.currentTarget);
-  console.log(element);
   const nodeId = element.attr('id');
   idOfchoosenNode = nodeId;
 

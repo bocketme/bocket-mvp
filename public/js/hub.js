@@ -9,7 +9,6 @@
       startingTop: '2%', // Starting top style attribute
       endingTop: '10%', // Ending top style attribute
       ready(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-        console.log(`${idOfchoosenNode} : ${workspaceId}`);
         if (idOfchoosenNode === undefined) {
           Materialize.toast('Please select an Assembly to add a Node', 3000);
           this.close();
