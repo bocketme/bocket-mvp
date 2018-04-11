@@ -40,8 +40,9 @@ const defaultNodeValue = "Select a node";
         // Submit the insertion of a new part
         $('#submit-import-part').click((event) => {
             event.preventDefault();
+            console.log('Choosen Module: ' + idOfchoosenNode);
             const cible = headerTitle.title;
-            if (cible !== defaultNodeValue) {
+            if (cible !== defaultNodeValue.title) {
                 const nodeId = idOfchoosenNode;
                 if (document.getElementById('import-part-file3D').files[0]) {
                     var form = document.getElementById("form-import-part");
@@ -53,17 +54,20 @@ const defaultNodeValue = "Select a node";
 
                     formdata.append("sub_level", sub_level);
                     formdata.append("breadcrumb", breadcrumb);
-
+                    Materialize.toast("Loading File... Please Wait", 2000);
                     postRequest.addEventListener("load", (reqEvent) => {
                         if (postRequest.readyState === postRequest.DONE) {
                             if (postRequest.status === 200) {
                                 $('#' + nodeId + '-body').html(postRequest.response)
                                 var element = document.querySelectorAll('.three-node');
                                 $(element).click(loadNodeInformation);
+                                Materialize.toast("File Uploaded Successfully", 1000);
                             } else if (postRequest.status === 404) {
                                 Materialize.toast("Not Found", 1000);
                             } else if (postRequest.status === 401) {
                                 Materialize.toast("The selected node is not an assembly", 1000);
+                            } else if (postRequest.status === 500) {
+                                Materialize.toast("Internal Server Error", 1000);
                             }
                         }
                     }, false);
