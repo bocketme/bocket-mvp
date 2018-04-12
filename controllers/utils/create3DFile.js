@@ -5,7 +5,7 @@ const converter = require("../../converter/converter");
 const partFileSystem = require("../../config/PartFileSystem");
 const util = require('util');
 const log = require('../../utils/log');
-
+const exclude = require('./excludeConverter')
 const optionStream = {
     flags: 'w',
     encoding: 'utf8',
@@ -23,6 +23,9 @@ async function create3DFile(chemin, file) {
     file3D.end(file.buffer);
 
     file3D.on("close", () => {
+        if (exclude.find((ext) => {
+          return ext === path.extname(file.originalname);
+        }))
         let resultImport = converter.JSimport(filePath);
         console.log("Import File 3D : ", resultImport);
         converterInfo.info(resultImport);
