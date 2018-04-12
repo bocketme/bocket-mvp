@@ -1,61 +1,59 @@
-var newComment = "newActivityComment";
+const newComment = 'newActivityComment';
 
-$(document).ready(function() {
-    $('.profile').initial();
-    var empty = "";
-    const $msgArea = $(".message-area");
+$(document).ready(() => {
+  $('.profile').initial();
+  const empty = '';
+  const $msgArea = $('.message-area');
 
-    $(".activity-upload").on("click", uploadFile);
-    $(".comment").on("click", slideInputComment);
+  $('.activity-upload').on('click', uploadFile);
+  $('.comment').on('click', slideInputComment);
 
 
-    $("a[href='#comments']").on("click", function() {   //when click on comments, scrolldown to the input tchat
-        $("#comments").css({
-            'display':'block',
-            'visibility':'visible'
-        });
-        $msgArea.animate({ scrollTop: $msgArea.prop("scrollHeight")}, "slow");
+  $("a[href='#comments']").on('click', () => { // when click on comments, scrolldown to the input tchat
+    $('#comments').css({
+      display: 'block',
+      visibility: 'visible',
     });
-    $("a[href='#comments']").trigger("click");
+    $msgArea.animate({ scrollTop: $msgArea.prop('scrollHeight') }, 'slow');
+  });
+  $("a[href='#comments']").trigger('click');
 
 
-    $(".add-comment-input").keydown(function (e) {
-        if (e.which === 13 && $(this).val() !== empty) {
-            var ul = (view === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
-            addCommentActivity($(ul + " li:first"), {content: $(this).val(), date: new Date}, view);
-            $(this).val(empty);
-            $msgArea.animate({ scrollTop: $msgArea.prop("scrollHeight")}, "slow");
+  $('.add-comment-input').keydown(function (e) {
+    if (e.which === 13 && $(this).val() !== empty) {
+      const ul = (view === ViewTypeEnum.location) ? ('#activity-comments-location') : ('#activity-comments-content');
+      addCommentActivity($(`${ul} li:first`), { content: $(this).val(), date: new Date() }, view);
+      $(this).val(empty);
+      $msgArea.animate({ scrollTop: $msgArea.prop('scrollHeight') }, 'slow');
+    }
+  });
 
-        }
-    });
-
-    /**
+  /**
      * Get the last activity
      * @param context : {{ viewType : String, activities : [String] }}
      */
-    socket.on("getActivities", function (context) {
-        console.log("aaaaaaa : ", context);
-        var activities = context.activities;
-        var ul = "#activity-comments";
-        clearComments($(ul));
-        for (var i = activities.length - 1; i >= 0 ; i--) {
-            let comment = activities[i];
-            printActivityComment($(ul + " li:first"), comment, comment.formatDate, context.username);
-            if (comment.comments.length !== 0)
-                for (var y = 0 ; y < comment.comments.length ; y++ ) {
-                    printCommentOfActivity(comment.comments[y], comment.index);
-                }
+  socket.on('getActivities', (context) => {
+    console.log('aaaaaaa : ', context);
+    const activities = context.activities;
+    const ul = '#activity-comments';
+    clearComments($(ul));
+    for (let i = activities.length - 1; i >= 0; i--) {
+      const comment = activities[i];
+      printActivityComment($(`${ul} li:first`), comment, comment.formatDate, context.username);
+      if (comment.comments.length !== 0) {
+        for (let y = 0; y < comment.comments.length; y++) {
+          printCommentOfActivity(comment.comments[y], comment.index);
         }
-    });
+      }
+    }
+  });
 
-    socket.on("newActivity", function (context) {
-        var ul = "#activity-comments";
-        console.log("Nouveau commentaire", context);
-        printActivityComment($(ul + " li:first"), context.activity, context.activity.formatDate, context.username);
-      //  $msgArea.animate({ scrollTop: $msgArea.prop("scrollHeight")}, "slow");
-
-    });
-
+  socket.on('newActivity', (context) => {
+    const ul = '#activity-comments';
+    console.log('Nouveau commentaire', context);
+    printActivityComment($(`${ul} li:first`), context.activity, context.activity.formatDate, context.username);
+    //  $msgArea.animate({ scrollTop: $msgArea.prop("scrollHeight")}, "slow");
+  });
 });
 
 /**
@@ -63,11 +61,11 @@ $(document).ready(function() {
  * @Param ulCollection : JqueryElement
  */
 function clearComments(ulCollection) {
-    let liArray = ulCollection.children();
+  const liArray = ulCollection.children();
 
-    for (var i = 1 ; i < liArray.length ; i++) {
-        liArray[i].remove();
-    }
+  for (let i = 1; i < liArray.length; i++) {
+    liArray[i].remove();
+  }
 }
 
 /**
@@ -76,17 +74,14 @@ function clearComments(ulCollection) {
  * @Param comment = { author : string, content : string, date: Date }
  */
 function addCommentActivity(lastComment, comment, view) {
-    // TODO: Send comment to the Back-End (WORK IN PROGRESS)
-    socket.emit(newComment, {nodeId: idOfchoosenNode, comment: comment, viewType: view});
+  // TODO: Send comment to the Back-End (WORK IN PROGRESS)
+  socket.emit(newComment, { nodeId: idOfchoosenNode, comment, viewType: view });
 }
 
 function getAvatarForActivity(avatarSrc, author) {
-    let avatar;
-    if (!avatarSrc)
-        avatar = '<img data-name="' + author + '" class="avatar col s2 profile tooltipped" data-tooltip="'+ author +'" data-position="left" data-delay="50"/>';
-    else
-        avatar = '<img class=\"avatar col s2 tooltipped\" src=\"'+ avatarSrc +'">';
-    return avatar
+  let avatar;
+  if (!avatarSrc) { avatar = `<img data-name="${author}" class="avatar col s2 profile tooltipped" data-tooltip="${author}" data-position="left" data-delay="50"/>`; } else { avatar = `<img class=\"avatar col s2 tooltipped\" src=\"${avatarSrc}">`; }
+  return avatar;
 }
 
 /**
@@ -96,25 +91,22 @@ function getAvatarForActivity(avatarSrc, author) {
  * @param when Date
  */
 function printActivityComment(lastComment, comment, when, username) {
-
-    let avatar = getAvatarForActivity(comment.avatar, comment.author, );
-    if (username === comment.author)    {
-       $('.message-area')
-       .append( `<div class='col s12'>
+  const avatar = getAvatarForActivity(comment.avatar, comment.author);
+  if (username === comment.author) {
+    $('.message-area')
+      .append(`<div class='col s12'>
                     <div class='message-display tooltipped' data-tooltip=${when} data-position="left" data-delay="50"'>
                         ${comment.content}
                     </div>
                 </div>`);
-    }
-    else {
-       $('.message-area').append(`<div class='col s12'><div class='row message-other tooltipped' data-tooltip=${when} data-position="right" data-delay="50"'>
+  } else {
+    $('.message-area').append(`<div class='col s12'><div class='row message-other tooltipped' data-tooltip=${when} data-position="right" data-delay="50"'>
         ${avatar}
         ${comment.content}
        </div> </div>`);
-    }
-     $('.tooltipped').tooltip();
-     $('.profile').initial();
-
+  }
+  $('.tooltipped').tooltip();
+  $('.profile').initial();
 }
 
 /**
@@ -123,10 +115,9 @@ function printActivityComment(lastComment, comment, when, username) {
  * @param index : String (index of the comment)
  */
 function printCommentOfActivity(comment, index) {
-
-    var ulId = (view === ViewTypeEnum.location) ? ("#activity-comments") : ("#activity-comments-content");
-    let avatar = getAvatarForActivity(comment.avatar, comment.author);
-    $(`${ulId} .comment-input[data-index=${index}]`).parent().prev().append(`
+  const ulId = (view === ViewTypeEnum.location) ? ('#activity-comments') : ('#activity-comments-content');
+  const avatar = getAvatarForActivity(comment.avatar, comment.author);
+  $(`${ulId} .comment-input[data-index=${index}]`).parent().prev().append(`
         <li class="commentOfActivity">
         <div class="row">
                 ${avatar}
@@ -135,61 +126,63 @@ function printCommentOfActivity(comment, index) {
             </div>
         </div>
         </li>`);
-    $('.profile').initial();
+  $('.profile').initial();
 }
 
 /**
  * Upload a file
  */
 function uploadFile() {
-    $("#activity-uploader").click();
+  $('#activity-uploader').click();
 }
 
 /**
  * Slide input comment
  */
 function slideInputComment(e) {
-    element = $(e);
-    console.log("[.comment] onClick", $(element.prev().children()[0]));
-    element.prev().slideToggle(function() {
-        element.children().trigger("select");
-    });
-    element.prev().prev().slideToggle(function() {
-        element.children().trigger("select");
-    });
-};
+  element = $(e);
+  console.log('[.comment] onClick', $(element.prev().children()[0]));
+  element.prev().slideToggle(() => {
+    element.children().trigger('select');
+  });
+  element.prev().prev().slideToggle(() => {
+    element.children().trigger('select');
+  });
+}
 
 /**
  *
  */
 function addCommentToActivity(event, elem) {
-    if (event.key !== "Enter") return ;
-    console.log("AddCommentToActivity");
-    var element = $(elem);
-    var content = element.val();
-    var ul = (view === ViewTypeEnum.location) ? ("#activity-comments-location") : ("#activity-comments-content");
-    //console.log("index = ", $(ul).index($(elem)));
-   // console.log(content);
-    socket.emit('addCommentToActivity', { nodeId: idOfchoosenNode,  activityIndex: element.attr('data-index'), comment: {content: content, date: new Date()}, viewType: view});
+  if (event.key !== 'Enter') return;
+  console.log('AddCommentToActivity');
+  const element = $(elem);
+  const content = element.val();
+  const ul = (view === ViewTypeEnum.location) ? ('#activity-comments-location') : ('#activity-comments-content');
+  // console.log("index = ", $(ul).index($(elem)));
+  // console.log(content);
+  socket.emit('addCommentToActivity', {
+    nodeId: idOfchoosenNode, activityIndex: element.attr('data-index'), comment: { content, date: new Date() }, viewType: view,
+  });
 }
 
 
-/*.prepend("<div>\n" +
+/* .prepend("<div>\n" +
     "avatar" + '\n' +
     "<span class=\"card-title s10\"> <span class=\"who\">" + comment.author + "</span>, <span class=\"when\">" + comment.date + "<br></span></span>\n" +
     "</div>\n" +
-)*/
+) */
 
 /**
  * Add a new comment of the context activity
  */
-socket.on("newActivityComment", function (data) {
-    var nodeId = data.nodeId;
-    var comment = data.comment;
-    if (nodeId && comment) {
-        console.log("newActivityComment = ", data, nodeId, comment)
-        printCommentOfActivity(comment, comment.index);
-    } else {
-        console.log("Error on newAcivityComment");
-    }
+socket.on('newActivityComment', (data) => {
+  const nodeId = data.nodeId;
+  const comment = data.comment;
+  if (nodeId && comment) {
+    console.log('newActivityComment = ', data, nodeId, comment);
+    printCommentOfActivity(comment, comment.index);
+  } else {
+    console.log('Error on newAcivityComment');
+  }
 });

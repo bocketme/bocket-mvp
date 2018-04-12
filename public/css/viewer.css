@@ -76,3 +76,12 @@
 .viewer-option {
     padding: 10px;
 }
+
+.card {
+    margin-top: 50%;
+    margin-left: 10px;
+    position: absolute;
+    z-index:10;
+    width: 35%;
+
+}
