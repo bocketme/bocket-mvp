@@ -77,11 +77,18 @@
     padding: 10px;
 }
 
-.card {
-    margin-top: 50%;
-    margin-left: 10px;
+#side-info {
+    background-color: #FAFAFA;
+    z-index: 10;
+    right: 0;
     position: absolute;
-    z-index:10;
-    width: 35%;
+    width: 350px;
+    height: 100%;
+    border-color: #00FFC8;
+    display: none;
+}
 
+#note-card-form {
+    width: 350px;
+    right: 360px;
 }

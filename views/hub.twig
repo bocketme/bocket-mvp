@@ -87,7 +87,7 @@
                     #}
                     {% include "hub/nodeThree.twig" %}
                     {% include "hub/fileThree.twig" %}
-                    {% include "hub/notesThree.twig" %}
+                    {#{% include "hub/notesThree.twig" %}#}
 
                 </div>
             </div>
@@ -95,9 +95,25 @@
 
         <div id="third_column" class="col s12 m8 l8 xl9 ">
             {% include "hub/header.twig" %}
-            <div id="third_column_content" class="row">
+            <div id="third_column_content" class="row" >
                 {% include 'hub/viewer.twig' %}
-                {% include "hub/sideNav.twig" %}
+
+                <div id="note-card-form" class="row" style="display: none;position: absolute">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="input-field">
+                                <input placeholder="Insert title here..." id="note-title" type="text" class="validate">
+                            </div>
+                            <div class="input-field">
+                                <input placeholder="Put your comments there.." id="note-content" type="text" class="validate">
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <a href="#" class="waves-effect waves-teal btn-flat green">Save</a>
+                            <a href="#" id="cancelNoteButton" class="waves-effect waves-teal btn-flat red">Cancel</a>
+                        </div>
+                    </div>
+                </div>
                 {#
                     {% include "hub/tabs.twig" %}
                     <input id="activity-uploader" style="display: none" type="file">
