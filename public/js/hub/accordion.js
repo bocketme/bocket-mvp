@@ -64,6 +64,7 @@ function loadNodeInformation(event) {
   // CSS EFFECT
   if (!element.hasClass('selected-accordion')) {
     $('#specs-collection').empty();
+    $('#notes-collection').empty();
     socket.emit('nodeInformation', nodeId);
   }
 

@@ -13,6 +13,7 @@ const NodeTypeEnum = require('../enum/NodeTypeEnum');
 const NestedTeam = require('./nestedSchema/NestedTeamSchema');
 const PartSchema = require('./Part');
 const AssemblySchema = require('./Assembly');
+const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const asyncForEach = require('../utils/asyncForeach');
 const log = require('../utils/log');
 
@@ -43,6 +44,7 @@ const NodeSchema = mongoose.Schema({
   // The
   tags: { type: [String], default: [] },
   children: { type: [NestedNode], default: [] },
+  notes: { type: [NestedAnnotation], default: [] },
   whereUsed: { type: [NestedNode], default: [] },
 
   team: { type: NestedTeam, required: true },

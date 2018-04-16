@@ -1,7 +1,8 @@
 {% extends 'layout_nonavbar.twig' %}
 
 {% block css %}
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet"
+      xmlns="http://www.w3.org/1999/html">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/css/hub.css">
     <link rel="stylesheet" href="/css/accordion.css">
@@ -87,6 +88,7 @@
                     #}
                     {% include "hub/nodeThree.twig" %}
                     {% include "hub/fileThree.twig" %}
+                    {#{% include "hub/notesThree.twig" %}#}
 
                 </div>
             </div>
@@ -94,9 +96,30 @@
 
         <div id="third_column" class="col s12 m8 l8 xl9 ">
             {% include "hub/header.twig" %}
-            <div id="third_column_content" class="row">
+            <div id="third_column_content" class="row" >
                 {% include 'hub/viewer.twig' %}
-                {% include "hub/sideNav.twig" %}
+
+                <div id="note-card-form" class="row scale-transition scale-in" style="display: none;position: absolute">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="input-field">
+                                <input placeholder="Insert title here..." id="note-title-input" type="text" class="validate">
+                            </div>
+                            <div class="input-field">
+{#                                <input placeholder="Put your comments there.." id="note-content-input" type="text" class="validate">#}
+                                <textarea maxlength="600" placeholder="Write your note (600 char. max)  " id="note-content-input" class="materialize-textarea"></textarea>
+                            </div>
+                            <div>
+                                <input type="checkbox" class="check-with-label checkbox-blue" id="check-if-important" />
+                                <label class="label-for-check" for="check-if-important">Important</label>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <a href="#" id="post-note-button" class="waves-effect waves-teal btn-flat" >Post</a>
+                            <a href="#" id="cancel-note-button" class="waves-effect waves-teal btn-flat">Cancel</a>
+                        </div>
+                    </div>
+                </div>
                 {#
                     {% include "hub/tabs.twig" %}
                     <input id="activity-uploader" style="display: none" type="file">
@@ -135,6 +158,7 @@
     <script src="/js/hub/modals.js"></script>
     <script src="/js/hub/activity.js"></script>
     <script src="/js/hub/specs.js"></script>
+    <script src="/js/hub/notes.js"></script>
     <script src="/js/hub/invitePeople.js"></script>
     <script src="/js/hub/manageWorkspace.js"></script>
     <script src="/js/contextMenu.js"></script>

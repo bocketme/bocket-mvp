@@ -1,106 +1,47 @@
-<ul id="side-info" class="side-nav">
+{#<ul id="side-info" class="side-nav">
     <li>
         <a id="side-nav-close">
             <i class="material-icons">close</i>
         </a>
     </li>
-    <li>
-        <div>
-            <ul id="details-tab" class="tabs tabs-fixed-width">
-                <li class="tab col s6">
-                    <a href="#details" ><span class="title-side">Details</span></a>
-                </li>
-                <li class="tab col s6">
-                    <a href="#comments" class="com"><span class="title-side">Comments</span></a>
-                </li>
-            </ul>
-
-            {# <div id="details" class="col s12">
-                <ul class="collection with-header">
-                    <li class="collection-item information-detail">
-                            Content
-                                <span class="secondary-content" id="info-name">No node selected</span>
-                    </li>
-                    <li class="collection-item information-detail">
-                        <div>
-                            <p>Description<span class="secondary-content" id="info-description">No node selected</span></p>
-                        </div>
-                    </li>
-                    <li class="collection-item information-detail">
-                        <div>
-                            <p>Creation Date :<span class="secondary-content" id="info-creation">No node selected</span></p>
-                        </div>
-                    </li>
-                    <li class="collection-item information-detail">
-                        <div>
-                            <p>Creator :<span class="secondary-content" id="info-creator">No node selected</span>
-                            </p>
-                        </div>
-                    </li>
-                    <li class="collection-item information-detail">
-                        <div>
-                            <p>Owner Organization :</p>
-                        </div>
-                    </li>
-                </ul> #}
-    <table  id="details">
-        <tbody>
-          <tr>
-            <td>Type</td>
-            <td><span class="secondary-content" id="info-name">No node selected</span></td>
-          </tr>
-          <tr>
-            <td>Creator</td>
-            <td><span class="secondary-content" id="info-creator">No node selected</span></td>
-          </tr>
-          <tr>
-            <td>Creation Date</td>
-            <td><span class="secondary-content" id="info-creation">No node selected</span></td>
-          </tr>
-          <tr>
-            <td>Organization</td>
-            <td><span class="secondary-content" id="info-owner"></span></td>
-          </tr>
-          <tr>
-            <td>Description</td>
-            <td><span class="secondary-content" id="info-description">No node selected</span></td>
-          </tr>
-        </tbody>
-      </table
-                {# the Value of the detail is defined in details.js #}
-                {#
-                <div class="row">
-                    <div class="col s3"><h5>Content</h5></div>
-                    <div class="col s4 offset-s3"> <img id="content-img-title" alt=""> <span >No node Selected.</span></div>
-                </div>
-                <div class="row">
-                    <div class="col s5"><p>Description :</p></div>
-                    <div class="col s4 offset-s2"> <p id="info-description"> <p> </div>
-                </div>
-                <div class="row">
-                    <div class="col s5 "><p>Creation Date :</p></div>
-                    <div class="col s4 offset-s2"> <p id="info-creation"> </p> </div>
-                </div>
-                <div class="row">
-                    <div class="col s5"><p>Creator :</p></div>
-                    <div class="col s4 offset-s2"> <p id="info-creator"> <p> </div>
-                </div>
-                <div class="row">
-                    <div class="col s5"><p>Owner Organization :</p></div>
-                    <div class="col s4 offset-s2"> <p id="owner-organization"> {{  }} <p> </div>
-                </div>
-                #}
-
-            </div>
-
-                <div id="comments" class="col s12">
-                    <div id="activity">
-                        <div id="message-area" class="message-area bocket-scrollbar"></div>        
-                    </div>
-                    <div class="row">
-                            <input id="add-comment-input" class="col s11 add-comment add-comment-input" type="text" placeholder="Share an idea ...">
-                    </div> 
-                </div>
+    <li id="note-list">
+        <div class="card-panel teal">
+        <span class="white-text">I am a very simple card. I am good at containing small bits of information.
+        I am convenient because I require little markup to use effectively. I am similar to what is called a panel in other frameworks.
+        </span>
         </div>
     </li>
-</ul>
+    <li>
+        <div>
+            <div id="addAnnotationCard" class="card panel">
+                <div class="card-title">
+                    <div class="input-field">
+                        <input placeholder="Placeholder" id="title-note-input" type="text">
+                        <label for="title-note-input">Title</label>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="input-field">
+                        <input placeholder="Placeholder" id="text-area-note" type="text">
+                        <label for="text-area-note">Add Note...</label>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <a id="addNoteButton" class="btn-flat waves-effect waves-light green">Post</a>
+                    <a id="cancelNoteButton" class="btn-flat waves-effect waves-light red">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </li>
+</ul>#}
+<div id="side-info" class="containerBox">
+    <a id="addNoteButton" class="waves-effect waves-light btn-large" style="background-color: #4A90E2;position: sticky"><i class="material-icons center-align">add</i></a>
+    <ul id="note-list" class="collection">
+        <li class="collection-header">
+{#            <h5 style="margin-left: 10px;margin-bottom: 10px;">Annotations</h5>
+            <div id="addNoteButton" class="left-align" style="margin-left: 10px">
+                <a href="#!"><img class="add-content-icon" src="/img/add-content-icon.png" alt="New Note"></a>
+            </div>#}
+        </li>
+    </ul>
+</div>

@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-const nestedAnnotation = mongoose.Schema({
+const NestedAnnotation = mongoose.Schema({
   title: String,
   data: String,
+  creator: { type: Schema.Types.ObjectId, ref: 'User' },
+  date: Date,
   position: [],
 });
 
-module.exports = nestedAnnotation;
+module.exports = NestedAnnotation;

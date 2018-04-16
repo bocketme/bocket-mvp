@@ -76,3 +76,92 @@
 .viewer-option {
     padding: 10px;
 }
+
+#side-info {
+    background-color: #FAFAFA;
+    z-index: 10;
+    right: 0;
+    position: absolute;
+    width: 350px;
+    height: 100%;
+    border-color: #00FFC8;
+    display: none;
+}
+
+#note-card-form {
+    width: 350px;
+    right: 360px;
+}
+
+#post-note-button {
+    background-color: #4A90E2 !important;
+    color: #ffffff !important;
+    width: 41% !important;
+    text-align: center !important;
+}
+
+#cancel-note-button {
+    background-color: #ffffff !important;
+    color: #4A90E2 !important;
+    border: 1px solid #4A90E2 !important;
+    width: 41% !important;
+    text-align: center !important;
+}
+.note-important {
+    background-color: rgba(255, 46, 99, 0.07);
+    border-left: 6px solid #f44336;
+    padding: 3%;
+}
+
+.note {
+/*    background-color: #4A90E2;*/
+    border-left: 6px solid #296BB3;
+    padding: 3%;
+}
+
+.collection-item-note {
+    background-color: inherit !important;
+/*    border: none !important;*/
+    padding-top: 5% !important;
+}
+
+.note-content {
+    overflow: hidden;
+    position: relative;
+    line-height: 1.2em;
+    /* max-height: 3.6em; */
+    text-align: justify;
+    margin-right: -1em;
+    padding-top: 4px;
+    padding-right: 1em;
+    word-wrap: break-word;
+}
+
+#addNoteButton {
+    width: 100%;
+    position: sticky !important;
+    top: 20px;
+}
+
+#note-list {
+    max-height: 100%;
+    overflow-y: scroll !important;
+    list-style-position: inside !important;
+    display: block !important;
+}
+
+#check-if-important:checked {
+    background-color: #f44336 !important;
+}
+
+#check-lever:checked {
+    background-color: #f44336 !important;
+}
+
+.check-with-label:checked + .label-for-check {
+    font-weight: bold;
+}
+
+.note-title {
+    font-size: 17px;
+}
