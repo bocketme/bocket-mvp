@@ -36,14 +36,14 @@ $(document).ready(() => {
     if (isImportant) {
       $('#note-list').append(`${'<li class="collection-item-note">\n' +
           '            <div class="note-important">\n' +
-          '                <p class="note-title"><strong>'}${title}</strong></p>\n` +
+          '                <p class="note-title"><strong>'}${title}</strong><a href=# onclick="removeNote()" style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n` +
           `                <p class="note-content">${content}</p>\n` +
           '            </div>\n' +
           '        </li>');
     } else {
       $('#note-list').append(`${'<li class="collection-item-note">\n' +
             '            <div class="note">\n' +
-            '                <p class="note-title"><strong>'}${title}</strong></p>\n` +
+            '                <p class="note-title"><strong>'}${title}</strong><a href=# onclick="removeNote()" style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n` +
             `                <p class="note-content">${content}</p>\n` +
             '            </div>\n' +
             '        </li>');
@@ -61,3 +61,11 @@ $(document).ready(() => {
     console.log('show-notes');
   });
 });
+
+function clickedList()  {
+  console.log('JAI CLIQUE');
+}
+
+function removeNote() {
+  console.log('Jai suppr la note');
+}
