@@ -7,13 +7,11 @@ const path = require('path');
 const PartFileSystem = require('../config/PartFileSystem')
 const config = require('../config/server');
 const log = require('../utils/log');
-const defaults = {
+const streamOptions = {
   flags: 'r',
   encoding: null,
-  fd: null,
   mode: 0o666,
   autoClose: true,
-  highWaterMark: 64 * 1024
 };
 
 const loading = {
@@ -21,7 +19,7 @@ const loading = {
     start: "[Viewer] - Start Workspace",
     save: "[Viewer] - Save",
     cancel: "[Viewer] - Cancel",
-    next: "[Viewer] - Next",
+    file: "[Viewer] - File",
     update: "[Viewer] - Update",
     part: {
       get: "[Viewer] - Get Part",
@@ -41,21 +39,16 @@ const loading = {
   }
 };
 
-function errLog (err) {
+function errLog(err) {
   log.error(err)
 }
 
 class File3DManager {
-  constructor (socket) {
+  constructor(socket) {
     this.socket = socket;
-    socket.on(loading.on.next, () => {
-      if (this.read instanceof fs.ReadStream)
-        this.read.resume()
-    })
-    this.pending = [];
+    this.callbacks = [];
     this.lock = false;
     this.read = null
-    
   }
 
   /**
@@ -63,7 +56,7 @@ class File3DManager {
    * @param {any} workspaceId 
    * @memberof File3DManager
    */
-  async cancel (workspaceId) {
+  async cancel(workspaceId) {
     let nodes = await nodeSchema.find({
       'Workspaces._id': workspaceId
     });
@@ -72,14 +65,14 @@ class File3DManager {
     });
   }
 
-  async update (nodeId) {
+  async update(nodeId) {
     let node = await nodeSchema.findOne({
       "children._id": nodeId
     });
     this.loadNode(nodeId, node);
   }
 
-  async loadWorkspace (workspaceId) {
+  async loadWorkspace(workspaceId) {
     let workspace = await workspaceSchema.findById(workspaceId).catch(errLog);
     let start = await this.loadNode(workspace.node_master._id, workspace).catch(errLog);
   }
@@ -90,11 +83,11 @@ class File3DManager {
    * @param {Object} parent 
    * @memberof File3DManager
    */
-  async loadNode (nodeId, parent) {
+  async loadNode(nodeId, parent) {
     const node = await nodeSchema.findById(nodeId);
     log.info("Chargement : " + nodeId);
-    console.log( node );
     let content;
+    console.log(node._id)
 
     if (node.type === nodeTypeEnum.assembly) {
       this.socket.emit(loading.emit.assembly, nodeId, node.matrix, parent._id);
@@ -106,10 +99,12 @@ class File3DManager {
         }));
       });
 
-      await Promise.all(promises).then(this.socket.emit(() => loading.emit.end, node._id)).catch(errLog);
+      await Promise.all(promises)
+        .then(this.socket.emit(() => loading.emit.end, node._id))
+        .catch(errLog);
 
     } else if (node.type === nodeTypeEnum.part) {
-      await this.loadPart(node, parent).catch(errLog);
+      this.askFiles(node._id, node.name, node.matrix, parent._id)
     }
   }
 
@@ -118,19 +113,8 @@ class File3DManager {
    * @param {Object} node 
    * @memberof File3DManager
    */
-  async loadPart (node, parent) {
+  async loadPart(node, parent) {
     let part = await partSchema.findById(node.content).catch(errLog);
-
-    let chemin = path.join(config.files3D, part.path, PartFileSystem.data);
-
-    let files = await promisifyReaddir(chemin).catch(errLog);
-
-    for (let i = 0; i < files.length; i++) {
-      if (path.extname(files[i]) == '.json') {
-        this.streamFile({ node: node, parent: parent, file: path.join(chemin, files[i]) });
-        break;
-      }
-    }
   }
 
   /**
@@ -140,7 +124,7 @@ class File3DManager {
    * @param {Array} matrix 
    * @memberof File3DManager
    */
-  save (workspaceId, nodeId, matrix) {
+  save(workspaceId, nodeId, matrix) {
     nodeSchema.findById(nodeId)
       .then(node => {
         node.matrix = matrix;
@@ -154,50 +138,14 @@ class File3DManager {
    * @param {any} file 
    * @memberof File3DManager
    */
-  streamFile (data = null, primary = false) {
-    if (data)
-      this.pending.push(data)
-
-    log.info(this.lock === true, !primary)
-
-    if (this.lock === true && !primary || !this.pending[0]) return
-
-    this.lock = true
-    const { node, parent, file } = this.pending[0]
-
-    fs.stat(file, (err, stat) => {
-      let chunkNumber = 0;
-
-      this.socket.emit(loading.emit.start, node._id, stat.size, node.name);
-
-      this.read = fs.createReadStream(file, {
-        autoClose: true,
-        encoding: 'utf8'
-      });
-
-      this.read.on('data', chunk => {
-        chunkNumber++;
-        this.socket.emit(loading.emit.pending, node._id, chunkNumber, chunk);
-        this.read.pause();
-      });
-
-      this.read.on('end', () => {
-        this.socket.emit(loading.emit.end, node._id, node.matrix, parent._id);
-        this.pending.shift();
-        this.lock = this.pending[0] ? true : false
-        this.streamFile(null, true)
-      });
-
-      this.read.on('error', (err) => {
-        log.error(err);
-        this.socket.emit(loading.emit.error, node._id);
-      });
-    });
+  askFiles(nodeId, ...args) {
+    log.info('askfiles')
+    this.socket.emit(loading.emit.start, nodeId, ...args);
   }
 }
 
 module.exports = (io, socket) => {
-
+  // Fonction de requête pour le chargement des fichiers
   const file3DManager = new File3DManager(socket);
 
   socket.on(loading.on.start, (workspaceId) => file3DManager.loadWorkspace(workspaceId))
@@ -218,7 +166,7 @@ module.exports = (io, socket) => {
   });
 };
 
-function promisifyReadFile (chemin) {
+function promisifyReadFile(chemin) {
   return (new Promise((resolve, reject) => {
     fs.readFile(chemin, 'utf8', (err, data) => {
       if (err)
@@ -229,7 +177,7 @@ function promisifyReadFile (chemin) {
   }));
 }
 
-function promisifyReaddir (chemin) {
+function promisifyReaddir(chemin) {
   return (new Promise((resolve, reject) => {
     fs.readdir(chemin, (err, files) => {
       if (err)

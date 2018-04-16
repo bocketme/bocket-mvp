@@ -10,6 +10,9 @@ const config = {
     //babylon: './viewer/src/babylon.js - viewer/main.js',
   },
   watch: dev,
+  node: {
+    fs: 'empty'
+  },
   devtool: dev ? 'cheap-module-eval-source-map' : false,
   target: 'web',
   output: {

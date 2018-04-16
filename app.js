@@ -18,6 +18,7 @@ const sharedsession = require('express-socket.io-session');
 
 /* ROUTES */
 const index = require("./routes/index");
+const node = require('./routes/node')
 const signin = require("./routes/signin");
 const signup = require("./routes/signup");
 const signOut = require("./routes/signOut");
@@ -120,6 +121,7 @@ app.use("/signin", signin);
 app.use("/signup", signup);
 app.use("/project", project);
 app.use("/part", part);
+app.use("/node", node)
 app.use("/assembly", assembly);
 
 // TODO: Bouton "connectez vous" ne fonctionne pas
