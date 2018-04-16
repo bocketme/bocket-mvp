@@ -1,6 +1,7 @@
 const betaRegistrationListener = require('./betaRegistrationSListener');
 const checkUniqueField = require('./checkUniqueField');
 const signinListener = require('./signinListener');
+const Annotation = require('./Annotation/main');
 const newNodeListener = require('./newNodeListener');
 const NodeInformationListener = require('./nodeInformationListener');
 const searchNodeChildren = require('./searchNodeChildren');
@@ -68,5 +69,6 @@ module.exports = function (io) {
     workspaceManagerListener(socket);
     removeUserFromOW(socket);
     reportIssueListener(socket);
+    Annotation(io, socket);
   });
 };
