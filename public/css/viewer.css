@@ -138,9 +138,15 @@
 }
 
 #addNoteButton {
-    width: 100%;
+    width: 49%;
     position: sticky !important;
     top: 20px;
+}
+
+#hideNoteButton {
+  width: 49%;
+  position: sticky !important;
+  top: 20px;
 }
 
 #note-list {

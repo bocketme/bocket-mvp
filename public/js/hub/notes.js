@@ -1,3 +1,7 @@
+var isAnnotationMode = false;
+var isHidden = false;
+var HasClicked = false;
+
 $(document).ready(() => {
   /*
   $('#notes-context-menu').on('click', '#new_note', () => {
@@ -7,11 +11,40 @@ $(document).ready(() => {
 */
 
   $('#addNoteButton').on('click', () => {
-    console.log('Note well added');
-    // Insérer fct de Nadhir
-    const displayValue = document.getElementById('note-card-form').style.getPropertyValue('display');
-    console.log(displayValue);
-    document.getElementById('note-card-form').style.display = (displayValue === 'block' ? 'none' : 'block');
+    console.log('isAnnotationMode Before : ' + isAnnotationMode);
+    isAnnotationMode = (isAnnotationMode === true ? false : true);
+    console.log('isAnnotationMode After : ' + isAnnotationMode);
+    if (isAnnotationMode === true) {
+      console.log("ICI");
+      document.getElementById('addNoteButton').style.backgroundColor = 'red';
+      document.getElementById('add-note-icon').innerHTML = 'clear';
+      var evt = new Event("add-annotation");
+      document.dispatchEvent(evt);
+    } else {
+      console.log("LA");
+      document.getElementById('cancel-note-button').click();
+    }
+    // document.getElementById('note-card-form').style.display = (displayValue === 'block' ? 'none' : 'block');
+    // Ferme la note et l'ajoute dans la db
+    // A mixer avec la fct de Nadhir
+  });
+
+  $('#hideNoteButton').on('click', () => {
+    console.log('isHidden Before : ' + isHidden);
+    isHidden = (isHidden === true ? false : true);
+    console.log('isHidden After : ' + isHidden);
+    if (isHidden === true) {
+      document.getElementById('hideNoteButton').style.backgroundColor = 'red';
+      document.getElementById('hide-note-icon').innerHTML = 'visibility_off';
+      var evt = new Event("hide-annotations");
+      document.dispatchEvent(evt);
+    } else {
+      document.getElementById('hideNoteButton').style.backgroundColor = '#4A90E2';
+      document.getElementById('hide-note-icon').innerHTML = 'visibility';
+      var evt = new Event("show-annotations");
+      document.dispatchEvent(evt);
+    }
+    // document.getElementById('note-card-form').style.display = (displayValue === 'block' ? 'none' : 'block');
     // Ferme la note et l'ajoute dans la db
     // A mixer avec la fct de Nadhir
   });
@@ -22,6 +55,18 @@ $(document).ready(() => {
     document.getElementById('note-title-input').value = '';
     document.getElementById('check-if-important').checked = false;
     document.getElementById('note-card-form').style.display = 'none';
+    document.getElementById('addNoteButton').style.backgroundColor = '#4A90E2';
+    document.getElementById('add-note-icon').innerHTML = 'add';
+    if (HasClicked === true) {
+      // Call l'event Pour supprimer l'annotation coté viewer 
+      var evt = new Event("del-last-annotation");
+      document.dispatchEvent(evt);
+    } else {
+      var evt = new Event("close-annotation-mode");
+      document.dispatchEvent(evt);
+    }
+    isAnnotationMode = false;
+    HasClicked = false;
     // Ferme la note et ne l'ajoute pas dans la db
   });
 
@@ -51,6 +96,9 @@ $(document).ready(() => {
     document.getElementById('note-content-input').value = '';
     document.getElementById('note-title-input').value = '';
     document.getElementById('check-if-important').checked = false;
+    document.getElementById('addNoteButton').style.backgroundColor = '#4A90E2';
+    isAnnotationMode = false;
+    HasClicked = false;
     // Doit call la fonction d'ajouts dans le back
   });
 
@@ -69,3 +117,16 @@ function clickedList()  {
 function removeNote() {
   console.log('Jai suppr la note');
 }
+
+document.addEventListener('annotation3D-added', (e) => {
+  if (e.detail !== null) {
+    let annotation = e.detail;
+    console.log("JAI RECU LEVENT d'ajout d'annotation : " + e.detail.name);
+    document.getElementById('note-card-form').style.display = 'block';
+    HasClicked = true;
+  } else {
+    var evt = new Event("add-annotation");
+    document.dispatchEvent(evt);
+    console.log('e.detail == null');
+  }
+}, false)
