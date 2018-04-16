@@ -107,14 +107,11 @@
                             </div>
                             <div class="input-field">
 {#                                <input placeholder="Put your comments there.." id="note-content-input" type="text" class="validate">#}
-                                <textarea placeholder="Write a comment" id="note-content-input" class="materialize-textarea"></textarea>
+                                <textarea maxlength="600" placeholder="Write your note (600 char. max)  " id="note-content-input" class="materialize-textarea"></textarea>
                             </div>
-                            <div class="switch">
-                                <label>
-                                    <input id="check-if-important" type="checkbox">
-                                    <span id="check-lever" class="lever"></span>
-                                    Important
-                                </label>
+                            <div>
+                                <input type="checkbox" class="check-with-label checkbox-blue" id="check-if-important" />
+                                <label class="label-for-check" for="check-if-important">Important</label>
                             </div>
                         </div>
                         <div class="card-action">

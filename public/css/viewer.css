@@ -138,7 +138,9 @@
 }
 
 #addNoteButton {
-    width: 100%
+    width: 100%;
+    position: sticky !important;
+    top: 20px;
 }
 
 #note-list {
@@ -154,4 +156,12 @@
 
 #check-lever:checked {
     background-color: #f44336 !important;
+}
+
+.check-with-label:checked + .label-for-check {
+    font-weight: bold;
+}
+
+.note-title {
+    font-size: 17px;
 }
