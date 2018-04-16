@@ -19,6 +19,7 @@ const streamOptions = {
 }
 
 async function getFile3D(nodeId, workspaceId) {
+  console.log(nodeId)
   const node = await nodeSchema.findById(nodeId)
     .catch(err => {
       throw (err)
@@ -36,7 +37,6 @@ async function getFile3D(nodeId, workspaceId) {
     .catch(err => {
       throw (err)
     });
-console.log(files)
   for (let i = 0; i < files.length; i++) {
     if (path.extname(files[i]) == '.json') {
       return path.join(file3Ddirectory, files[i])
@@ -47,11 +47,10 @@ console.log(files)
 }
 
 async function getTextureFile(nodeId, workspaceId, textureName) {
-  const node = await nodeSchema.find({
-      '_id': mongoose.Types.ObjectId(nodeId),
-      'Workspaces._id': workspaceId
-    })
+  console.log(nodeId)
+  const node = await nodeSchema.findById(nodeId)
     .catch(err => {
+      console.error(err)
       throw (err)
     })
   if (!node) return null;
@@ -61,8 +60,8 @@ async function getTextureFile(nodeId, workspaceId, textureName) {
       throw (err)
     });
   if (!part) return null;
-
   const file3Ddirectory = path.join(config.files3D, part.path, PartFileSystem.data, path.basename(textureName))
+  return file3Ddirectory
 }
 
 module.exports = {
@@ -76,6 +75,9 @@ module.exports = {
         if (file3D) res.sendFile(file3D)
         else res.status(403).send('Bad Request')
       })
+      .catch(err => {
+        res.status(404).send('Not Found');
+      })
   },
   getFileTexture: (req, res) => {
     const {
@@ -83,10 +85,13 @@ module.exports = {
       texture
     } = req.params
     const workspaceId = req.session.currentWorkspace;
-    Promise.resolve(getFile3D(nodeId, workspaceId, texture))
+    Promise.resolve(getTextureFile(nodeId, workspaceId, texture))
       .then((textureFile) => {
         if (textureFile) res.sendFile(textureFile)
         else res.status(403).send('Bad Request')
+      })
+      .catch(err => {
+        res.status(404).send('Not Found');
       })
   }
 }
