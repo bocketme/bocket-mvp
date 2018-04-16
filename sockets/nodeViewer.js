@@ -3,7 +3,6 @@ const partSchema = require('../models/Part');
 const workspaceSchema = require('../models/Workspace');
 const nodeTypeEnum = require('../enum/NodeTypeEnum');
 const fs = require('fs');
-const ss = require('socket.io-stream');
 const path = require('path');
 const PartFileSystem = require('../config/PartFileSystem')
 const config = require('../config/server');
