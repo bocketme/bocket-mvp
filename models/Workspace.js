@@ -7,6 +7,7 @@ let NestedNode = require("./nestedSchema/NestedNodeSchema");
 let NestedTeam = require("./nestedSchema/NestedTeamSchema");
 let Node = require("./Node");
 
+const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 let Stripe = new mongoose.Schema({
   name: String
 });
@@ -19,7 +20,8 @@ let WorkspaceSchema = new mongoose.Schema({
   creation: { type: Date, default: new Date() },
   users: { type: [User], required: false, default: [] },
   team: { type: NestedTeam, required: true },
-  organization: { type: Organization, required: true } // /!\ WITHOUT END VARIABLE /!\
+  organization: { type: Organization, required: true }, // /!\ WITHOUT END VARIABLE /!\
+  Annotations: {type: [NestedAnnotation], required: true, default: [] }
 });
 
 // TODO: DELETE ALL users attribute (workspace.users)

@@ -5,17 +5,20 @@ module.exports = (io, socket) => {
     Workspace
       .findById(socket.handshake.session.currentWorkspace)
       .then(workspaces => {
-        workspaces.Annotations = 
-        workspaces
-        .Annotations
-        .filter(nestedAnnotation => nestedAnnotation._id !== anntation._id) 
+        console.log(annotation)
+        console.log(workspaces.Annotations.length);
+        workspaces.Annotations =
+          workspaces
+          .Annotations
+          .filter(nestedAnnotation => String(nestedAnnotation._id) !== annotation._id);
+        console.log(workspaces.Annotations.length);
         return workspaces.save();
       })
       .then(() => {
         socket.emit('Info', 'The Annotation was deleted');
         io
-        .to(socket.handshake.session.currentWorkspace)
-        .emit('[Annotation] - fetch', nestedAnnotation);
+          .to(socket.handshake.session.currentWorkspace)
+          .emit('[Annotation] - fetch', nestedAnnotation);
       })
   });
 }

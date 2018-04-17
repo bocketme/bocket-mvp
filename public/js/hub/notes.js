@@ -1,6 +1,8 @@
 var isAnnotationMode = false;
 var isHidden = false;
 var HasClicked = false;
+var savedAnnotation = undefined;
+var allAnnotations = [];
 
 $(document).ready(() => {
   /*
@@ -10,18 +12,27 @@ $(document).ready(() => {
   });
 */
 
+  getAllAnnotations();
+
+  function getAllAnnotations() {
+    console.log('Je get les annotations');
+    socket.emit('[Annotation] - fetch')
+    socket.on('[Annotation] - fetch', (annotations) => {
+      if (annotations !== null && annotations !== undefined) {
+        allAnnotations = [];
+        sortAnnotations(annotations)
+      }
+    })
+  }
+
   $('#addNoteButton').on('click', () => {
-    console.log('isAnnotationMode Before : ' + isAnnotationMode);
     isAnnotationMode = (isAnnotationMode === true ? false : true);
-    console.log('isAnnotationMode After : ' + isAnnotationMode);
     if (isAnnotationMode === true) {
-      console.log("ICI");
       document.getElementById('addNoteButton').style.backgroundColor = 'red';
       document.getElementById('add-note-icon').innerHTML = 'clear';
       var evt = new Event("add-annotation");
       document.dispatchEvent(evt);
     } else {
-      console.log("LA");
       document.getElementById('cancel-note-button').click();
     }
     // document.getElementById('note-card-form').style.display = (displayValue === 'block' ? 'none' : 'block');
@@ -54,6 +65,7 @@ $(document).ready(() => {
     }
     isAnnotationMode = false;
     HasClicked = false;
+    savedAnnotation = undefined;
     // Ferme la note et ne l'ajoute pas dans la db
   });
 
@@ -61,32 +73,43 @@ $(document).ready(() => {
     const title = document.getElementById('note-title-input').value;
     const content = document.getElementById('note-content-input').value;
     const isImportant = document.getElementById('check-if-important').checked;
-    console.log(title);
-    console.log(content);
-    console.log(isImportant);
+
+    savedAnnotation.title = title;
+    savedAnnotation.content = content;
+    savedAnnotation.isImportant = isImportant;
+    console.log(savedAnnotation.title);
+    console.log(savedAnnotation.content);
+    console.log(savedAnnotation.isImportant);
     document.getElementById('note-card-form').style.display = 'none';
-    if (isImportant) {
-      $('#note-list').append(`${'<li class="collection-item-note">\n' +
+/*     if (isImportant) {
+      $('#note-list').prepend(`${'<li class="collection-item-note">\n' +
           '            <div class="note-important">\n' +
-          '                <p class="note-title"><strong>'}${title}</strong><a href=# onclick="removeNote()" style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n` +
-          `                <p class="note-content">${content}</p>\n` +
+          '                <p class="note-title"><strong>'}${savedAnnotation.title}</strong><a id="${savedAnnotation.title}" href=# style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n` +
+          `                <p class="note-content">${savedAnnotation.content}</p>\n` +
           '            </div>\n' +
           '        </li>');
     } else {
       $('#note-list').append(`${'<li class="collection-item-note">\n' +
             '            <div class="note">\n' +
-            '                <p class="note-title"><strong>'}${title}</strong><a href=# onclick="removeNote()" style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n` +
-            `                <p class="note-content">${content}</p>\n` +
+            '                <p class="note-title"><strong>'}${savedAnnotation.title}</strong><a id="${savedAnnotation.title}" href=# style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n` +
+            `                <p class="note-content">${savedAnnotation.content}</p>\n` +
             '            </div>\n' +
             '        </li>');
     }
+    $('#' + savedAnnotation.title).on('click', () => {
+      console.log(savedAnnotation.title);
+      var evt = new CustomEvent("delete-annotation", { 'detail' : savedAnnotation });
+      document.dispatchEvent(evt);
+    }); */
     document.getElementById('note-content-input').value = '';
     document.getElementById('note-title-input').value = '';
     document.getElementById('check-if-important').checked = false;
     document.getElementById('addNoteButton').style.backgroundColor = '#4A90E2';
+    document.getElementById('add-note-icon').innerHTML = 'add';
     isAnnotationMode = false;
     HasClicked = false;
-    // Doit call la fonction d'ajouts dans le back
+    socket.emit('[Annotation] - add', savedAnnotation);
+    socket.emit('[Annotation] - fetch', savedAnnotation);
   });
 
   $('#show-notes').on('click', () => {
@@ -96,8 +119,7 @@ $(document).ready(() => {
     console.log('show-notes');
     isHidden = (isHidden === true ? false : true);
     if (isHidden === true) {
-      var evt = new Event("hide-annotations");
-      document.dispatchEvent(evt);
+
     } else {
       var evt = new Event("show-annotations");
       document.dispatchEvent(evt);
@@ -109,9 +131,6 @@ function clickedList()  {
   console.log('JAI CLIQUE');
 }
 
-function removeNote() {
-  console.log('Jai suppr la note');
-}
 
 document.addEventListener('annotation3D-added', (e) => {
   if (e.detail !== null) {
@@ -119,9 +138,44 @@ document.addEventListener('annotation3D-added', (e) => {
     console.log("JAI RECU LEVENT d'ajout d'annotation : " + e.detail.name);
     document.getElementById('note-card-form').style.display = 'block';
     HasClicked = true;
+    savedAnnotation = annotation;
   } else {
     var evt = new Event("add-annotation");
     document.dispatchEvent(evt);
     console.log('e.detail == null');
   }
 }, false)
+
+function sortAnnotations(annotations) {
+  $('#note-list').empty();
+  annotations.sort(function(a, b) {
+    if (a.isImportant && b.isImportant === false) { return -1; }
+    if (b.isImportant && a.isImportant === false ){ return 1; }
+    return 0;
+  });
+  allAnnotations = annotations.slice();
+  for (let i = 0; i < allAnnotations.length; i++) {
+    if (allAnnotations[i] !== undefined && allAnnotations[i].isImportant) {
+      $('#note-list').append(`${'<li class="collection-item-note">\n' +
+      '            <div class="note-important">\n' +
+      '                <p class="note-title"><strong>'}${allAnnotations[i].title}</strong><a id="${allAnnotations[i]._id}" href=#  style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n` +
+      `                <p class="note-content">${allAnnotations[i].content}</p>\n` +
+      '            </div>\n' +
+      '        </li>');
+    } else {
+      $('#note-list').append(`${'<li class="collection-item-note">\n' +
+      '            <div class="note">\n' +
+      '                <p class="note-title"><strong>'}${allAnnotations[i].title}</strong><a id="${allAnnotations[i]._id}" href=#  style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n` +
+      `                <p class="note-content">${allAnnotations[i].content}</p>\n` +
+      '            </div>\n' +
+      '        </li>');
+    }
+    $('#' + allAnnotations[i]._id).on('click', () => {
+      console.log(allAnnotations[i]._id);
+      socket.emit('[Annotation] - remove', allAnnotations[i]);
+      socket.emit('[Annotation] - fetch', allAnnotations[i]);
+      var evt = new CustomEvent("delete-annotation", { 'detail' : allAnnotations[i] });
+      document.dispatchEvent(evt);
+    });
+  }
+}

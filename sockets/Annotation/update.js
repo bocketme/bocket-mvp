@@ -8,7 +8,7 @@ module.exports = (io, socket) => {
         workspaces.Annotations =
           workspaces
             .Annotations
-            .map(nestedAnnotation => nestedAnnotation._id !== anntation._id ?
+            .map(nestedAnnotation => String(nestedAnnotation._id) !== anntation._id ?
               {
                 ...nestedAnnotation, annotation
               } : nestedAnnotation
