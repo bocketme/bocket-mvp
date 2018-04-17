@@ -39,14 +39,7 @@ $(document).ready(() => {
     // Ferme la note et l'ajoute dans la db
     // A mixer avec la fct de Nadhir
   });
-
-  $('#hideNoteButton').on('click', () => {
-
-    // document.getElementById('note-card-form').style.display = (displayValue === 'block' ? 'none' : 'block');
-    // Ferme la note et l'ajoute dans la db
-    // A mixer avec la fct de Nadhir
-  });
-
+  
   $('#cancel-note-button').on('click', () => {
     console.log('Node canceled');
     document.getElementById('note-content-input').value = '';
@@ -66,6 +59,7 @@ $(document).ready(() => {
     isAnnotationMode = false;
     HasClicked = false;
     savedAnnotation = undefined;
+    deselectAll();
     // Ferme la note et ne l'ajoute pas dans la db
   });
 
@@ -81,28 +75,6 @@ $(document).ready(() => {
     console.log(savedAnnotation.content);
     console.log(savedAnnotation.isImportant);
     document.getElementById('note-card-form').style.display = 'none';
-/*     if (isImportant) {
-      $('#note-list').prepend(`${'<li class="collection-item-note">\n' +
-          '            <div class="note-important">\n' +
-          '                <p class="note-title"><strong>'}${savedAnnotation.title}</strong><a id="${savedAnnotation.title}" href=# style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n` +
-          `                <p class="note-content">${savedAnnotation.content}</p>\n` +
-          '            </div>\n' +
-          '        </li>');
-          var evt = new CustomEvent('change-material', { 'detail': 'I' });
-          document.dispatchEvent(evt);
-    } else {
-      $('#note-list').append(`${'<li class="collection-item-note">\n' +
-            '            <div class="note">\n' +
-            '                <p class="note-title"><strong>'}${savedAnnotation.title}</strong><a id="${savedAnnotation.title}" href=# style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n` +
-            `                <p class="note-content">${savedAnnotation.content}</p>\n` +
-            '            </div>\n' +
-            '        </li>');
-    }
-    $('#' + savedAnnotation.title).on('click', () => {
-      console.log(savedAnnotation.title);
-      var evt = new CustomEvent("delete-annotation", { 'detail' : savedAnnotation });
-      document.dispatchEvent(evt);
-    }); */
     document.getElementById('note-content-input').value = '';
     document.getElementById('note-title-input').value = '';
     document.getElementById('check-if-important').checked = false;
@@ -112,6 +84,10 @@ $(document).ready(() => {
     HasClicked = false;
     socket.emit('[Annotation] - add', savedAnnotation);
     socket.emit('[Annotation] - fetch', savedAnnotation);
+    if (isImportant) {
+      var evt = new CustomEvent("change-material", { 'detail' : 'I'});
+      document.dispatchEvent(evt);
+    }
   });
 
   $('#show-notes').on('click', () => {
@@ -120,12 +96,9 @@ $(document).ready(() => {
     document.getElementById('side-info').style.display = (displayValue === 'block' ? 'none' : 'block');
     console.log('show-notes');
     isHidden = (isHidden === true ? false : true);
-    if (isHidden === true) {
-
-    } else {
-      var evt = new Event("show-annotations");
-      document.dispatchEvent(evt);
-    }
+    if (isHidden === true)
+      $('#cancel-note-button').click();
+    hideOrShowAnnotations();
   });
 });
 
@@ -157,21 +130,23 @@ function sortAnnotations(annotations) {
   });
   allAnnotations = annotations.slice();
   for (let i = 0; i < allAnnotations.length; i++) {
+    allAnnotations[i].isSelected = false;
     if (allAnnotations[i] !== undefined && allAnnotations[i].isImportant) {
-      $('#note-list').append(`${'<li class="collection-item-note">\n' +
-      '            <div class="note-important">\n' +
-      '                <p class="note-title"><strong>'}${allAnnotations[i].title}</strong><a id="${allAnnotations[i]._id}" href=#  style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n` +
-      `                <p class="note-content">${allAnnotations[i].content}</p>\n` +
+      $('#note-list').append('<li class="collection-item-note">\n' +
+      '            <div id="' + allAnnotations[i].name + '" class="note-important">\n' +
+      '                <p class="note-title"><strong>' + allAnnotations[i].title + '</strong><a id="' + allAnnotations[i]._id+ '" href=#  style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n' +
+      '                <p class="note-content">' + allAnnotations[i].content+ '</p>\n' +
       '            </div>\n' +
       '        </li>');
     } else {
-      $('#note-list').append(`${'<li class="collection-item-note">\n' +
-      '            <div class="note">\n' +
-      '                <p class="note-title"><strong>'}${allAnnotations[i].title}</strong><a id="${allAnnotations[i]._id}" href=#  style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n` +
-      `                <p class="note-content">${allAnnotations[i].content}</p>\n` +
+      $('#note-list').append('<li class="collection-item-note">\n' +
+      '            <div id="' + allAnnotations[i].name + '" class="note">\n' +
+      '                <p class="note-title"><strong>' + allAnnotations[i].title + '</strong><a id="' + allAnnotations[i]._id+ '" href=#  style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n' +
+      '                <p class="note-content">' + allAnnotations[i].content+ '</p>\n' +
       '            </div>\n' +
       '        </li>');
     }
+    retrieve3dAnnotation(allAnnotations[i]);
     $('#' + allAnnotations[i]._id).on('click', () => {
       console.log(allAnnotations[i]._id);
       socket.emit('[Annotation] - remove', allAnnotations[i]);
@@ -179,5 +154,45 @@ function sortAnnotations(annotations) {
       var evt = new CustomEvent("delete-annotation", { 'detail' : allAnnotations[i] });
       document.dispatchEvent(evt);
     });
+    $('#' + allAnnotations[i].name).on('click', () => {
+      deselectAll();
+      allAnnotations[i].isSelected = (allAnnotations[i].isSelected ? false : true);
+      if (allAnnotations[i].isSelected) {
+        document.getElementById(allAnnotations[i].name).style.borderLeft = '6px solid #0DFFC8'; 
+        console.log('Selected annotation: ' + allAnnotations[i].name);
+        var evt = new CustomEvent("select-annotation", { 'detail' : allAnnotations[i] });
+        document.dispatchEvent(evt);
+      }
+    });
+  }
+  hideOrShowAnnotations();
+}
+
+function retrieve3dAnnotation(annotation) {
+  var evt = new CustomEvent("retrieve-annotation", { 'detail' : annotation });
+  document.dispatchEvent(evt);
+}
+
+function hideOrShowAnnotations() {
+  if (isHidden === true) {
+    var evt = new Event("hide-annotations");
+    document.dispatchEvent(evt);
+  } else {
+    var evt = new Event("show-annotations");
+    document.dispatchEvent(evt);
+  }
+}
+
+function deselectAll() {
+  for (annotation of allAnnotations) {
+    if (annotation.isImportant) {
+      document.getElementById(annotation.name).style.borderLeft = '6px solid #f44336';
+/*       var evt = new CustomEvent("change-material", { 'detail' : 'I'});
+      document.dispatchEvent(evt); */
+    } else {
+      document.getElementById(annotation.name).style.borderLeft = '6px solid #296BB3';
+/*       var evt = new CustomEvent("change-material", { 'detail' : 'N'});
+      document.dispatchEvent(evt); */
+    }
   }
 }

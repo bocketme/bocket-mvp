@@ -9,7 +9,7 @@ const NestedAnnotation = mongoose.Schema({
   creator: { type: Schema.Types.ObjectId, ref: 'User' },
   date: Date,
   posLocalAnnotObject: [],
-  relatedObjectId: Number,
+  relatedObjectId: String,
   isImportant: Boolean
 });
 

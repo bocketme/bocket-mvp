@@ -83,7 +83,7 @@
     right: 0;
     position: absolute;
     width: 350px;
-    height: 80%;
+    height: 100%;
     border-color: #00FFC8 !important;
     display: none;
 }
@@ -144,7 +144,7 @@
 }
 
 #note-list {
-    max-height: 90%;
+    max-height: 80%;
     overflow-y: scroll !important;
     list-style-position: inside !important;
     display: block !important;
