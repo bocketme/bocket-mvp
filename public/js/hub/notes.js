@@ -185,6 +185,7 @@ function hideOrShowAnnotations() {
 
 function deselectAll() {
   for (annotation of allAnnotations) {
+    annotation.isSelected = false;
     if (annotation.isImportant) {
       document.getElementById(annotation.name).style.borderLeft = '6px solid #f44336';
 /*       var evt = new CustomEvent("change-material", { 'detail' : 'I'});
