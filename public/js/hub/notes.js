@@ -1,5 +1,5 @@
 var isAnnotationMode = false;
-var isHidden = false;
+var isHidden = true;
 var HasClicked = false;
 var savedAnnotation = undefined;
 var allAnnotations = [];
@@ -88,6 +88,8 @@ $(document).ready(() => {
           `                <p class="note-content">${savedAnnotation.content}</p>\n` +
           '            </div>\n' +
           '        </li>');
+          var evt = new CustomEvent('change-material', { 'detail': 'I' });
+          document.dispatchEvent(evt);
     } else {
       $('#note-list').append(`${'<li class="collection-item-note">\n' +
             '            <div class="note">\n' +
