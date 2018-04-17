@@ -3,13 +3,13 @@ var Schema = mongoose.Schema;
 
 const NestedAnnotation = mongoose.Schema({
   worldPosition: [],
-  name: String,
-  title: String,
-  content: String,
+  name: { type: String, require: true },
+  title: { type: String, require: true },
+  content: { type: String, require: true },
   creator: { type: Schema.Types.ObjectId, ref: 'User' },
   date: Date,
   posLocalAnnotObject: [],
-  relatedObjectId: String,
+  relatedObjectid: { type: String, require: true },
   isImportant: Boolean
 });
 
