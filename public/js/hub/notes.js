@@ -188,12 +188,12 @@ function deselectAll() {
     annotation.isSelected = false;
     if (annotation.isImportant) {
       document.getElementById(annotation.name).style.borderLeft = '6px solid #f44336';
-/*       var evt = new CustomEvent("change-material", { 'detail' : 'I'});
-      document.dispatchEvent(evt); */
+      var evt = new CustomEvent("change-material", { 'detail' : annotation});
+      document.dispatchEvent(evt);
     } else {
       document.getElementById(annotation.name).style.borderLeft = '6px solid #296BB3';
-/*       var evt = new CustomEvent("change-material", { 'detail' : 'N'});
-      document.dispatchEvent(evt); */
+      var evt = new CustomEvent("change-material", { 'detail' : annotation});
+      document.dispatchEvent(evt);
     }
   }
 }
