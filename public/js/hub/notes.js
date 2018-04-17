@@ -30,20 +30,7 @@ $(document).ready(() => {
   });
 
   $('#hideNoteButton').on('click', () => {
-    console.log('isHidden Before : ' + isHidden);
-    isHidden = (isHidden === true ? false : true);
-    console.log('isHidden After : ' + isHidden);
-    if (isHidden === true) {
-      document.getElementById('hideNoteButton').style.backgroundColor = 'red';
-      document.getElementById('hide-note-icon').innerHTML = 'visibility_off';
-      var evt = new Event("hide-annotations");
-      document.dispatchEvent(evt);
-    } else {
-      document.getElementById('hideNoteButton').style.backgroundColor = '#4A90E2';
-      document.getElementById('hide-note-icon').innerHTML = 'visibility';
-      var evt = new Event("show-annotations");
-      document.dispatchEvent(evt);
-    }
+
     // document.getElementById('note-card-form').style.display = (displayValue === 'block' ? 'none' : 'block');
     // Ferme la note et l'ajoute dans la db
     // A mixer avec la fct de Nadhir
@@ -107,6 +94,14 @@ $(document).ready(() => {
     console.log(displayValue);
     document.getElementById('side-info').style.display = (displayValue === 'block' ? 'none' : 'block');
     console.log('show-notes');
+    isHidden = (isHidden === true ? false : true);
+    if (isHidden === true) {
+      var evt = new Event("hide-annotations");
+      document.dispatchEvent(evt);
+    } else {
+      var evt = new Event("show-annotations");
+      document.dispatchEvent(evt);
+    }
   });
 });
 
