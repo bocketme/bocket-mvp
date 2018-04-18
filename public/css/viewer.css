@@ -49,9 +49,9 @@
     padding:  0px 15px;
 }
 
-#partLoader{
-  background-color: transparent;
-  z-index: 8;
+.progress{
+  background-color: #acece6;
+  z-index: 1;
 }
 
 #button-cancel
@@ -63,6 +63,7 @@
     position: absolute;
     padding: 0px 15px;
 }
+
 #buttons-saveandcancel
 {
     color: white;
