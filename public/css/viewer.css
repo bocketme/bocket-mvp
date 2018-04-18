@@ -179,3 +179,10 @@
 .note-title {
     font-size: 17px;
 }
+
+#toast-container {
+    top: 10% !important;
+    right: auto !important;
+    bottom: auto;
+    left: 50%;
+}

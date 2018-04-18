@@ -29,6 +29,7 @@ $(document).ready(() => {
   $('#addNoteButton').on('click', () => {
     isAnnotationMode = !isAnnotationMode;
     if (isAnnotationMode === true) {
+      Materialize.toast('Click to add a Note !', 2500, 'rounded teal accent-3');
       deselectAll();
       document.getElementById('addNoteButton').style.backgroundColor = '#00CCA0';
       document.getElementById('add-note-icon').innerHTML = 'clear';
