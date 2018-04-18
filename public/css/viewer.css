@@ -6,6 +6,12 @@
     z-index:    10;
 }
 
+#renderSurface 
+{
+  position: absolute;
+  top: 0;
+}
+
 #renderDiv{
     padding: 0px;
     height: 99%;
@@ -33,10 +39,6 @@
     width: 100%;
 }
 
-.btn-large.button-viewer{
-
-}
-
 #button-save
 {
     background-color: #296bb3 !important;
@@ -46,6 +48,12 @@
     font-size: 10px;
     padding:  0px 15px;
 }
+
+#partLoader{
+  background-color: transparent;
+  z-index: 8;
+}
+
 #button-cancel
 {
     background-color: #296bb3 !important;
