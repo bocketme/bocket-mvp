@@ -75,10 +75,8 @@ $(document).ready(() => {
     isAnnotationMode = false;
     HasClicked = false;
     socket.emit('[Annotation] - add', savedAnnotation);
-    socket.emit('[Annotation] - fetchByName', savedAnnotation);
-    socket.on('[Annotation] - fetchByName', (annotation) => {
+    socket.on('[Annotation] - getTheLastAnnotation', (savedAnnotation) => {
       if (annotation !== null && annotation !== undefined) {
-        savedAnnotation = annotation[0];
         if (!allAnnotations.find(function(element) {
           return savedAnnotation.name === element.name;
         })) {

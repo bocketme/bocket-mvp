@@ -8,7 +8,7 @@ module.exports = (io, socket) => {
         workspace.Annotations.push(annotation);
         return workspace.save();
       })
-      .then(socket.emit('Info', 'Annotation Created'))
+      .then(({ Annotations }) => socket.emit('[Annotation] - getTheLastAnnotation', Annotations[Annotations.length - 1]))
       .catch(err => {
         console.error(err);
         socket.emit('Error', 'The annotation was not created');
