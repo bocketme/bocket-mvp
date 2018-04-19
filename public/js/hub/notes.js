@@ -29,7 +29,7 @@ $(document).ready(() => {
   $('#addNoteButton').on('click', () => {
     isAnnotationMode = !isAnnotationMode;
     if (isAnnotationMode === true) {
-      Materialize.toast('Click to add a Note !', 1000, 'rounded teal accent-3');
+      Materialize.toast('Click to add a Note !', 3000, 'rounded blue');
       deselectAll();
       document.getElementById('addNoteButton').style.backgroundColor = '#00CCA0';
       document.getElementById('add-note-icon').innerHTML = 'clear';
@@ -103,7 +103,18 @@ $(document).ready(() => {
     if (isHidden === true)
       $('#cancel-note-button').click();
     hideOrShowAnnotations();
+    document.getElementById('side-details').style.display = 'none';
   });
+
+  $('#show-info').on('click', () => {
+    const displayValue = document.getElementById('side-details').style.getPropertyValue('display');
+    document.getElementById('side-details').style.display = (displayValue === 'block' ? 'none' : 'block');
+    document.getElementById('side-info').style.display = 'none';
+    $('#cancel-note-button').click();
+    isHidden = true;
+    hideOrShowAnnotations();
+  });
+
 });
 
 document.addEventListener('annotation3D-added', (e) => {

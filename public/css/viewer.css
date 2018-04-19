@@ -88,12 +88,23 @@
 
 #side-info {
     background-color: #FAFAFA !important;
+    z-index: 11;
+    right: 0;
+    position: absolute;
+    width: 350px;
+    height: 94%;
+    border-color: #00CCA0 !important;
+    display: none;
+}
+
+#side-details {
+    background-color: #FAFAFA !important;
     z-index: 10;
     right: 0;
     position: absolute;
     width: 350px;
-    height: 95%;
-    border-color: #00CCA0 !important;
+    height: 94%;
+    border-top: 1px solid #00CCA0 !important;
     display: none;
 }
 
@@ -194,4 +205,15 @@
     right: auto !important;
     bottom: auto;
     left: 50%;
+}
+
+.details-title {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    font-weight: 700;
+}
+
+.details-table {
+    margin-left: 10px !important;
 }
