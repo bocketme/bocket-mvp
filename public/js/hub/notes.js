@@ -13,9 +13,37 @@ $(document).ready(() => {
   });
 */
 
+  socket.on('[Annotation] - confirmAnnotation', (gettedAnnotation) => {
+    if (gettedAnnotation !== null && gettedAnnotation !== undefined) {
+      if (!allAnnotations.find(function (element) {
+        return gettedAnnotation.name === element.name;
+      })) {
+        savedAnnotation = gettedAnnotation;
+        if (savedAnnotation.isImportant) {
+          var evt = new CustomEvent("change-material", { 'detail': savedAnnotation });
+          allAnnotations.unshift(savedAnnotation);
+          addAnnotationCard(savedAnnotation);
+          document.dispatchEvent(evt);
+        } else {
+          allAnnotations.push(savedAnnotation);
+          addAnnotationCard(savedAnnotation);
+        }
+      }
+    }
+  });
+  
+  socket.on('[Annotation] - fetchNewAnnotation', newAnnotation => {
+    console.log(newAnnotation.title)
+    if (newAnnotation) {
+      (newAnnotation.isImportant ? allAnnotations.unshift(newAnnotation) : allAnnotations.push(newAnnotation));
+      addAnnotationCard(newAnnotation);
+      retrieve3dAnnotation(newAnnotation);
+    }
+  });
+
   getAllAnnotations();
 
-  function getAllAnnotations () {
+  function getAllAnnotations() {
     reinitCardFormContent();
     socket.emit('[Annotation] - fetch')
     socket.on('[Annotation] - fetch', (annotations, loadAnnotation) => {
@@ -75,23 +103,6 @@ $(document).ready(() => {
     isAnnotationMode = false;
     HasClicked = false;
     socket.emit('[Annotation] - add', savedAnnotation);
-    socket.on('[Annotation] - getTheLastAnnotation', (savedAnnotation) => {
-      if (savedAnnotation !== null && savedAnnotation !== undefined) {
-        if (!allAnnotations.find(function(element) {
-          return savedAnnotation.name === element.name;
-        })) {
-          if (savedAnnotation.isImportant) {
-            var evt = new CustomEvent("change-material", { 'detail': savedAnnotation });
-            allAnnotations.unshift(savedAnnotation);
-            addAnnotationCard(savedAnnotation);
-            document.dispatchEvent(evt);
-          } else {
-            allAnnotations.push(savedAnnotation);
-            addAnnotationCard(savedAnnotation);
-          }
-        }
-      }
-    });
   });
 
   $('#show-notes').on('click', () => {
@@ -144,7 +155,7 @@ function retrieve3dAnnotation(annotation) {
   document.dispatchEvent(evt);
 }
 
-function hideOrShowAnnotations () {
+function hideOrShowAnnotations() {
   if (isHidden === true) {
     var evt = new Event("hide-annotations");
     document.dispatchEvent(evt);
@@ -188,26 +199,31 @@ function deselectAllExceptClicked(id) {
 
 function addAnnotationCard(annotation) {
   if (annotation !== undefined && annotation.isImportant) {
-    $('#note-list').prepend('<li class="collection-item-note">\n' +
-            '            <div id="' + annotation.name + '" class="note-important">\n' +
-            '                <p class="note-title"><strong>' + annotation.title + '</strong><a id="' + annotation._id + '" href=#  style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n' +
-            '                <p class="note-content">' + annotation.content + '</p>\n' +
-            '            </div>\n' +
-            '        </li>');
+    $('#note-list').prepend('<li id='+ annotation.name +'-header class="collection-item-note">\n' +
+      '            <div id="' + annotation.name + '" class="note-important">\n' +
+      '                <p class="note-title"><strong>' + annotation.title + '</strong><a id="' + annotation._id + '" href=#  style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n' +
+      '                <p class="note-content">' + annotation.content + '</p>\n' +
+      '            </div>\n' +
+      '        </li>');
   } else {
-    $('#note-list').append('<li class="collection-item-note">\n' +
-            '            <div id="' + annotation.name + '" class="note">\n' +
-            '                <p class="note-title"><strong>' + annotation.title + '</strong><a id="' + annotation._id + '" href=#  style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n' +
-            '                <p class="note-content">' + annotation.content + '</p>\n' +
-            '            </div>\n' +
-            '        </li>');
+    $('#note-list').append('<li id='+ annotation.name +'-header class="collection-item-note">\n' +
+      '            <div id="' + annotation.name + '" class="note">\n' +
+      '                <p class="note-title"><strong>' + annotation.title + '</strong><a id="' + annotation._id + '" href=#  style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n' +
+      '                <p class="note-content">' + annotation.content + '</p>\n' +
+      '            </div>\n' +
+      '        </li>');
   }
   $('#' + annotation._id).on('click', () => {
     socket.emit('[Annotation] - remove', annotation);
-    socket.emit('[Annotation] - fetch', annotation);
-    var evt = new CustomEvent("delete-annotation", { 'detail': annotation });
+  });
+
+  socket.on('[Annotation] - remove', deletedAnnotation => {
+    allAnnotations = allAnnotations.filter(annot => annot.name !== deletedAnnotation.name)
+    $(`#${deletedAnnotation.name}-header`).remove();
+    var evt = new CustomEvent("delete-annotation", { 'detail': deletedAnnotation });
     document.dispatchEvent(evt);
   });
+
   $('#' + annotation.name).on('click', () => {
     deselectAllExceptClicked(annotation._id);
     annotation.isSelected = !annotation.isSelected;

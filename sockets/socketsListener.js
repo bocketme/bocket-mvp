@@ -41,34 +41,42 @@ module.exports = function (io) {
       overwrite: true, // overwrite file if exists, default is true.
     });
 
-    changeWorkspaceorOrganizationName(socket);
-    duplicateNodeListener(socket);
-    deleteNodeListener(io, socket);
-    createWorkspaceInHub(io, socket);
-    createWorkspaceInSignIn(io, socket);
-    fileUploaderListener(socket, uploader);
-    betaRegistrationListener(socket);
-    checkUniqueField(socket);
-    signinListener(socket);
-    newNodeListener(socket);
-    NodeInformationListener(socket);
-    searchNodeChildren(socket);
-    nodeViewer(io, socket);
-    newActivityComment(socket, io);
-    getActivities(socket);
-    addCommentListener(socket, io);
-    invitePeopleListener(socket);
-    joinWorkspaceListener(io, socket);
-    leaveWorkspaceListener(io, socket);
-    getAllSpecListener(socket);
-    removeSpecListener(io, socket);
-    renameSpecListener(io, socket);
-    GetSearchCriteria(socket);
-    GetSelectedItemsToAdd(socket);
-    changePassword(socket);
-    workspaceManagerListener(socket);
-    removeUserFromOW(socket);
-    reportIssueListener(socket);
-    Annotation(io, socket);
+    const { userMail, currentWorkspace } = socket.handshake.session;
+
+    socket.join(currentWorkspace, () => {
+
+      let rooms = Object.keys(socket.rooms);
+      console.log(userMail, "join", rooms.find(room => room === socket.handshake.session.currentWorkspace));
+
+      Annotation(io, socket);
+      changeWorkspaceorOrganizationName(socket);
+      duplicateNodeListener(socket);
+      deleteNodeListener(io, socket);
+      createWorkspaceInHub(io, socket);
+      createWorkspaceInSignIn(io, socket);
+      fileUploaderListener(socket, uploader);
+      betaRegistrationListener(socket);
+      checkUniqueField(socket);
+      signinListener(socket);
+      newNodeListener(socket);
+      NodeInformationListener(socket);
+      searchNodeChildren(socket);
+      nodeViewer(io, socket);
+      newActivityComment(socket, io);
+      getActivities(socket);
+      addCommentListener(socket, io);
+      invitePeopleListener(socket);
+      joinWorkspaceListener(io, socket);
+      leaveWorkspaceListener(io, socket);
+      getAllSpecListener(socket);
+      removeSpecListener(io, socket);
+      renameSpecListener(io, socket);
+      GetSearchCriteria(socket);
+      GetSelectedItemsToAdd(socket);
+      changePassword(socket);
+      workspaceManagerListener(socket);
+      removeUserFromOW(socket);
+      reportIssueListener(socket);
+    });
   });
 };
