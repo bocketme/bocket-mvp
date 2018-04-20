@@ -166,7 +166,7 @@
     /* max-height: 3.6em; */
     text-align: justify;
     margin-right: -1em;
-    padding-top: 4px;
+    padding-top: 9px;
     padding-right: 1em;
     word-wrap: break-word;
 }
@@ -179,7 +179,7 @@
 
 #note-list {
     max-height: 92% !important;
-    overflow-y: scroll !important;
+    overflow-y: auto !important;
     list-style-position: inside !important;
     display: block !important;
 }
@@ -216,4 +216,12 @@
 
 .details-table {
     margin-left: 10px !important;
+}
+
+.note-creation-details {
+    font-size: 9px !important;
+}
+
+.note-span {
+    padding-right: 5px;
 }
