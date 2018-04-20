@@ -198,6 +198,10 @@ function deselectAllExceptClicked(id) {
 
 function addAnnotationCard(annotation) {
   var date = new Date(annotation.date);
+  if (annotation.creator === null || annotation.creator === undefined)
+    annotation.creator = 'undefined';
+  if (annotation.date === null || annotation.date === undefined)
+    annotation.date = 'undefined';
   if (annotation !== undefined && annotation.isImportant) {
     $('#note-list').prepend('<li id='+ annotation.name +'-header class="collection-item-note">\n' +
       '            <div id="' + annotation.name + '" class="note-important">\n' +
