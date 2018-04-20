@@ -1,8 +1,7 @@
 {% extends 'layout_nonavbar.twig' %}
 
 {% block css %}
-<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet"
-      xmlns="http://www.w3.org/1999/html">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet" xmlns="http://www.w3.org/1999/html">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/css/hub.css">
     <link rel="stylesheet" href="/css/accordion.css">
@@ -96,7 +95,7 @@
 
         <div id="third_column" class="col s12 m8 l8 xl9 ">
             {% include "hub/header.twig" %}
-            <div id="third_column_content" class="row" >
+            <div id="third_column_content" class="row">
                 {% include 'hub/viewer.twig' %}
                 {% include 'hub/sideNav.twig' %}
                 {% include 'hub/details.twig' %}
@@ -108,16 +107,16 @@
                                 <input maxlength="25" placeholder="Insert title here..." id="note-title-input" type="text" class="validate">
                             </div>
                             <div class="input-field">
-{#                                <input placeholder="Put your comments there.." id="note-content-input" type="text" class="validate">#}
+                                {#                                <input placeholder="Put your comments there.." id="note-content-input" type="text" class="validate">#}
                                 <textarea maxlength="600" placeholder="Write your note (600 char. max)  " id="note-content-input" class="materialize-textarea"></textarea>
                             </div>
                             <div>
-                                <input type="checkbox" class="check-with-label" id="check-if-important" />
+                                <input type="checkbox" class="check-with-label" id="check-if-important"/>
                                 <label class="label-for-check" for="check-if-important">Important</label>
                             </div>
                         </div>
                         <div class="card-action">
-                            <a href="#" id="post-note-button" class="waves-effect waves-teal btn-flat" >Post</a>
+                            <a href="#" id="post-note-button" class="waves-effect waves-teal btn-flat">Post</a>
                             <a href="#" id="cancel-note-button" class="waves-effect waves-teal btn-flat">Cancel</a>
                         </div>
                     </div>
