@@ -6,8 +6,8 @@ const NestedAnnotation = mongoose.Schema({
   name: { type: String, require: true },
   title: { type: String, require: true },
   content: { type: String, require: true },
-  creator: { type: Schema.Types.ObjectId, ref: 'User' },
-  date: Date,
+  creator: { type: String, ref: 'User.email' },
+  date: { type: Date, default: new Date() },
   posLocalAnnotObject: [],
   relatedObjectid: { type: String, require: true },
   isImportant: Boolean

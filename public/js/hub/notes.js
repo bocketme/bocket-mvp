@@ -76,6 +76,7 @@ $(document).ready(() => {
     HasClicked = false;
     socket.emit('[Annotation] - add', savedAnnotation);
     socket.on('[Annotation] - getTheLastAnnotation', (savedAnnotation) => {
+      console.log(savedAnnotation);
       if (annotation !== null && annotation !== undefined) {
         if (!allAnnotations.find(function(element) {
           return savedAnnotation.name === element.name;
