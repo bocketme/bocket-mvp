@@ -9,8 +9,40 @@
       startingTop: '2%', // Starting top style attribute
       endingTop: '10%', // Ending top style attribute
       ready(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+        const context = `#${modal.context.id}`;
+        const form = $(context).find('form');
+        if (form[0] && modal.context.id !== 'edit-part')
+        // console.log("form :", form);
+        { form[0].reset(); }
+      },
+    });
+    $('.collapsible').collapsible();
+    $('.collapsible').collapsible('open', 1);
+    $('ul.tabs').tabs();
+    $('.circle-responsive-active').addClass('tooltipped');
+    $('.circle-responsive').addClass('tooltipped');
+    $('.tooltipped').tooltip();
+
+    $('.button-collapse').sideNav({
+      menuWidth: 400, // Default is 300
+      edge: 'right', // Choose the horizontal origin
+      onOpen(el) {
+        if ($('#comments').css('display') === 'block') {
+          $('.message-area').animate({ scrollTop: $('.message-area').prop('scrollHeight') }, 'slow');
+        }
+      },
+    });
+
+    $('#import-part, #import-assembly').modal({
+      dismissible: true, // Modal can be dismissed by clicking outside of the modal
+      opacity: 0.7, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '2%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
         if (idOfchoosenNode === undefined) {
-          Materialize.toast('Please select an Assembly to add a Node', 3000);
+          Materialize.toast('Please select a Node first', 3000);
           this.close();
         } else {
           const context = `#${modal.context.id}`;
