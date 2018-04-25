@@ -5,7 +5,7 @@ const Annotation = require('./Annotation/main');
 const newNodeListener = require('./newNodeListener');
 const NodeInformationListener = require('./nodeInformationListener');
 const searchNodeChildren = require('./searchNodeChildren');
-const nodeViewer = require('./nodeViewer');
+const NodeManager = require('./NodeManager/main');
 const newActivityComment = require('./newActivityCommentListener');
 const getActivities = require('./getActivitiesListener');
 const addCommentListener = require('./addCommentToActivityListener');
@@ -61,7 +61,7 @@ module.exports = function (io) {
       newNodeListener(socket);
       NodeInformationListener(socket);
       searchNodeChildren(socket);
-      nodeViewer(io, socket);
+      NodeManager(io, socket);
       newActivityComment(socket, io);
       getActivities(socket);
       addCommentListener(socket, io);
