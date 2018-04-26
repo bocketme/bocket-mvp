@@ -1,6 +1,12 @@
 (function ($) {
   $(function () {
     // initialize all modals
+    $('#show-social-space').on('click', () => {
+      let displayValue = document.getElementById('frame').style.getPropertyValue('display');
+      console.log('Im here');
+      document.getElementById('frame').style.display = (displayValue === 'none' ? 'flex': 'none');
+    });
+
     $('.modal').modal({
       dismissible: true, // Modal can be dismissed by clicking outside of the modal
       opacity: 0.7, // Opacity of modal background

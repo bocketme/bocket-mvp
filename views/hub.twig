@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="/css/hub/specs.css">
     <link rel="stylesheet" href="/css/hub/invitePeople.css">
     <link rel="stylesheet" href="/css/hub/manageWorkspace.css">
+    <link rel="stylesheet" href="/css/hub/tchat.css">
+    <link rel="stylesheet" href="/css/hub/tchat.css">
 {% endblock %}
 
 {% block title %}{{ title }}
@@ -80,6 +82,9 @@
                 {% include "modals/changePassword.twig" %}
 
                 <div id="second_column_content" class="clear">
+                    <button id="show-social-space" class="waves-effect waves-light btn" style="z-index: inherit">
+                        Social Space<i class="material-icons ">chat_bubble</i>
+                    </button>
                     {#
                         {% include "hub/search.twig" %}
                         {% include "hub/location.twig" %}
@@ -94,11 +99,14 @@
         </div>
 
         <div id="third_column" class="col s12 m8 l8 xl9 ">
+            {% include "hub/tchat.twig" %}
             {% include "hub/header.twig" %}
+            {% include "hub/tchat.twig" %}
             <div id="third_column_content" class="row">
                 {% include 'hub/viewer.twig' %}
                 {% include 'hub/sideNav.twig' %}
                 {% include 'hub/details.twig' %}
+
 
                 <div id="note-card-form" class="row scale-transition scale-in" style="display: none;position: absolute">
                     <div class="card">
@@ -168,6 +176,7 @@
     <script src="/js/hub/createWorkspace.js"></script>
     <script src="/js/hub/actions.js"></script>
     <script src="/js/hub/changePassword.js"></script>
+    <script src="/js/hub/tchat.js"></script>
     <script type="application/javascript">
         $('.profile').initial();
     </script>
