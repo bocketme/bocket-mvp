@@ -20,6 +20,8 @@ let WorkspaceSchema = new mongoose.Schema({
   nodeMaster: { type: Schema.Types.ObjectId, ref: 'Node' },
   node_master: { type: NestedNode },
   creation: { type: Date, default: new Date() },
+  users: { type: [User], default: [] },
+  team: { type: NestedTeam, required: true },
   organization: { type: Organization, required: true }, // /!\ WITHOUT END VARIABLE /!\
   Annotations: { type: [NestedAnnotation], required: true, default: [] },
 });
