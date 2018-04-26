@@ -72,7 +72,7 @@ module.exports = class NodeManager {
     const emitPart = everyone ? 'emitPartForEveryOne' : loading.emit.part 
     const emitAssembly = everyone ? 'emitAssemblyForEveryOne' : loading.emit.assembly 
 
-    const { _id, type, children, name, matrix } = await nodeSchema.findById(nodeId);
+    const { _id, type, children, name, matrix } = await nodeSchema.findById(nodeId).catch(errLog);
 
     if (type === nodeTypeEnum.part)
       return this.nodeEmitter.emit(emitPart, _id, name, matrix, parent._id)
