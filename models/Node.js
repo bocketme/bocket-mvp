@@ -45,7 +45,6 @@ const NodeSchema = mongoose.Schema({
   tags: { type: [String], default: [] },
   children: { type: [NestedNode], default: [] },
   notes: { type: [NestedAnnotation], default: [] },
-  whereUsed: { type: [NestedNode], default: [] },
 
   team: { type: NestedTeam, required: true },
   owners: { type: [NestedUser], default: [] },
@@ -105,21 +104,17 @@ async function findNodeByIdAndRemove(id) {
 
   const parentNodes = await Node.find({ 'children._id': id });
 
-  if (parentNodes.length > 0) {
-    await asyncForEach(parentNodes, async (parentNode) => {
-      const indexOfNodeId = parentNode.children.map((child => child._id)).indexOf(node._id);
-      parentNode.children.splice(indexOfNodeId, 1);
-      await parentNode.save().catch((err) => { throw err; });
-    });
+  for (let i = 0; i < parentNodes.length; i++) {
+    const parentNode = parentNodes[i];
+    parentNode.children = parentNode.children.filter(({ _id }) => _id !== id);
+    await parentNode.save().catch(err => { throw err });
   }
 
   if (!node) throw new Error('Node not Found');
 
-  if (node.children > 0) {
-    await asyncForEach(node.children, async (child) => {
-      const nodeChild = await node.findById(child._id).catch((err) => { throw err; });
-      await nodeChild.remove().catch((err) => { throw err; });
-    });
+  for (let i = 0; i < node.children.length; i++) {
+    const child = await node.findById(child._id).catch((err) => { throw err; });
+    await child.remove().catch((err) => { throw err; });
   }
   return null;
 }
