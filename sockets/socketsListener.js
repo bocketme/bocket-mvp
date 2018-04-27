@@ -30,6 +30,7 @@ const reportIssueListener = require('./reportIssueListener');
 const changeWorkspaceorOrganizationName = require('./changeWorkspaceorOrganizationName.js');
 const Tchat = require('./Tchat/main');
 const getCurrentUser = require('./getCurrentUser');
+const getUsers = require('./getUsers');
 
 const Workspace = require('../models/Workspace');
 const User = require('../models/User');
@@ -84,6 +85,7 @@ module.exports = function (io) {
       removeUserFromOW(socket);
       reportIssueListener(socket);
       getCurrentUser(io, socket);
+      getUsers(io, socket);
     });
   });
 };

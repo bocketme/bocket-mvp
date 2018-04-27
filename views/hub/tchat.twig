@@ -138,6 +138,33 @@
     </div>
     <div id="journal-log" class="content" style="display: block; z-index: 14">
     </div>
+    <div id="new-tchat-form" class="content" style="display: none; z-index: 15">
+        <div class="row">
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input value="Titre de la conversation" id="tchat-title-form" type="text" class="validate">
+                        <label for="tchat-title-form">Titre</label>
+                    </div>
+                </div>
+                {#<div class="row">
+                    <div class="input-field col s12">
+                        <select multiple>
+                            <option value="" disabled selected>Choose your option</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                        </select>
+                        <label>Materialize Multiple Select</label>
+                    </div>
+                </div>#}
+                <div>
+                    <ul id="social-users-list">
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
     <div id="tchat-content" class="content" style="display: none">
         <div class="contact-profile">
             <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />

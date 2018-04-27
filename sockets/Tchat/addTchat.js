@@ -32,6 +32,7 @@ module.exports = (io, socket) => {
       .then(workspace => saveandpopulate(workspace, tchat, userMail))
       .then(({ Tchats }) => {
         const newTchat = Tchats[Tchats.length - 1];
+        socket.broadcast.to(currentWorkspace).emit('[Tchat] - confirmAdd', newTchat);
         socket.emit('[Tchat] - confirmAdd', newTchat);
       })
       .catch(err => {
