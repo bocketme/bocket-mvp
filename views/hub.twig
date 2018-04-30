@@ -30,7 +30,7 @@
             </div>
             <div class="col s10 m10 l10 xl10" id="structure">
 
-                <button class="dropdown-button" data-beloworigin="true" data-activates='workspaces-dropdown'>
+                <button class="dropdown-button" href='#' data-beloworigin="true" data-activates='workspaces-dropdown'>
                     <div class="workspaces-title">
                         {{ in_use.name }}
                         <i class="material-icons arrow_drop_down">arrow_drop_down</i>
@@ -40,7 +40,13 @@
                     </div>
                 </button>
 
-                <ul id="workspaces-dropdown" class="dropdown-content">
+                <ul id="workspaces-dropdown" class="dropdown-content dropdown-nested">
+                    <li class="option-node">
+                        <a class="dropdown-menu dropdown-button" href='#' data-activates='dropdown-settings-viewer' data-hover="hover" data-alignment="left">
+                            Viewer Settings <i class='material-icons' style="float: right; margin: 0;">keyboard_arrow_right</i>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
                     <li class="option-node" id="manage-workspace-btn">
                         <a class="dropdown-menu">Settings</a>
                     </li>
@@ -62,6 +68,17 @@
                     <li class="option-node">
                         <a class="dropdown-menu modal-trigger modal-node-selector edit-part-btn" href="#edit-part">Edit Part</a>
                     </li> #}
+                </ul>
+
+                <ul id="dropdown-settings-viewer" class="dropdown-content">
+                    <li class="option-node" id="cell-shading-button">
+                        <a class="dropdown-menu" href='?celShading={{optionViewer.celShading ? false : true}}'>Cel Shading{% if optionViewer.celShading == true %} <i class='material-icons' style="margin: 0;">check</i> {% endif %}</a>
+                    </li>
+                    {#
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu disabled">Background color</a>
+                    </li>
+                    #}
                 </ul>
 
                 {# Modals #}
@@ -139,8 +156,7 @@
         let idOfchoosenNode = undefined;
         const NodeTypeEnum = {{ NodeTypeEnum }};
         var ViewTypeEnum = {{ ViewTypeEnum }};
-        const optionViewer = {{ optionViewer }}
-        global.optionViewer = optionViewer;
+        const optionViewer = {{ optionViewer }};
         var view = ViewTypeEnum.location;
         socket.emit("joinWorkspace", workspaceId);
         $(".workspace-change").on("click", function () {

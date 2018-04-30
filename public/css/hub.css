@@ -402,7 +402,6 @@ a.dropdown-menu{
 
 a.dropdown-menu:hover{
     background-color: #4885ed;
-    color: white !important;
     cursor: pointer;
 }
 
@@ -729,4 +728,13 @@ ul#details-tab {
         padding-bottom: 100%;
         width: 100%;
     }
+}
+
+.dropdown-nested {
+    overflow: visible !important;
+    max-width: none !important;
+}
+.dropdown-content .dropdown-content {
+    margin-left: 100%;
+    z-index: 200;
 }

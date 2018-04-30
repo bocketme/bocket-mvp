@@ -4,5 +4,5 @@ controllers = require('../controllers/projectController.js');
 
 // router.get('/jwt', controllers.usejwt);
 router.post('/', controllers.indexPOST);
-router.get('/:workspaceId/', controllers.index);
+router.get('/:workspaceId/', controllers.changeOption, controllers.index);
 module.exports = router;
