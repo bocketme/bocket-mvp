@@ -106,7 +106,10 @@ async function findNodeByIdAndRemove(id) {
 
   for (let i = 0; i < parentNodes.length; i++) {
     const parentNode = parentNodes[i];
-    parentNode.children = parentNode.children.filter(({ _id }) => _id !== id);
+    parentNode.children = parentNode
+      .children
+      // DO NOT TOUCH THE CONSOLE.LOG !!! ELSE IT WONT SAVE THE CHANGEMENT
+      .filter(child => child._id !== node._id && console.log(child._id !== node._id));
     await parentNode.save().catch(err => { throw err });
   }
 
