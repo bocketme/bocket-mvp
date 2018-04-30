@@ -21,11 +21,9 @@ async function doesHeHaveRights(io, userMail, nodeId) {
 
   const [members, owners] = [node.team.members, node.team.owners];
 
-  if (members.find(member => member.email === userMail) ||
-    owners.find(member => member.email === userMail)) {
-    return node;
-  }
-  return null;
+  const users = [...members, ...owners]
+
+  return (users.find(({email}) => email === userMail) !== null) ? node : null;
 }
 
 async function deleteInexistantNode(io, nodeId) {
