@@ -19,5 +19,5 @@ module.exports = {
   tmp: tmp,
   secretSession: "kdjqskdjkqsjdsjqdklqsjdkjziooajdiazjdskjdqklsjdjaziodjsqjdlj",
   secretKey: "Bocket make a new World of Possibilities",
-  fullUrl: 'http://bocket.me:8080',
+  fullUrl: 'https://bocket.me',
 };
