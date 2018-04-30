@@ -16,10 +16,43 @@ $('#profile-img').click(() => {
 
 $('#addcontact').click(() => {
   document.getElementById('new-tchat-form').style.display = 'block';
+  document.getElementById('new-tchat-form').classList.add('blurred');
   document.getElementById('journal-log').style.display = 'none';
   document.getElementById('tchat-content').style.display = 'none';
 /*  const tchat = { title: 'General', messages: [], users: [] };
-  socket.emit('[Tchat] - addTchat', tchat);*/
+  socket.emit('[Tchat] - addTchat', tchat); */
+});
+
+$('#create-tchat-btn').on('click', (e) => {
+  let title = $('#tchat-title-form').val();
+  const newTchat = { title, users: [] };
+  const listItems = $('#social-users-list li');
+  listItems.each((idx, li) => {
+    const idUser = $(li).attr('id').split('-')[0];
+    if (document.getElementById(`${idUser}-check`).checked) {
+      newTchat.users.push(idUser);
+      title = `${title + $(li).text()}, `;
+    }
+  });
+  title += $('#profile-name').text();
+  console.log('title :', title, ': voila');
+  if (newTchat.title === '' || newTchat.title === undefined)
+    newTchat.title = title;
+  console.log('newTchat :', newTchat);
+  socket.emit('[Tchat] - add', newTchat);
+  document.getElementById('cancel-tchat-btn').click();
+});
+
+$('#cancel-tchat-btn').on('click', (e) => {
+  $('#tchat-title-form').val('');
+  document.getElementById('new-tchat-form').style.display = 'none';
+  document.getElementById('new-tchat-form').classList.remove('blurred');
+
+    const listItems = $('#social-users-list li');
+  listItems.each((idx, li) => {
+    const idUser = $(li).attr('id').split('-')[0];
+    document.getElementById(`${idUser}-check`).checked = false;
+  });
 });
 
 $('.expand-button').click(() => {
@@ -135,24 +168,28 @@ socket.on('[Tchat] - remove', deletedTchat => {
 });
 
 socket.on('[Tchat] - fetchById', (tchat) => {
-  $('#tchat-title').text(tchat.title);
-  if (tchat != null && tchat !== undefined) {
-    selectedTchat = tchat._id;
-    for (message of tchat.messages) {
-      addMessage(message);
+  if (tchat != null) {
+    $('#tchat-title').text(tchat.title);
+    if (tchat != null && tchat !== undefined) {
+      selectedTchat = tchat._id;
+      for (message of tchat.messages) {
+        addMessage(message);
+      }
     }
+  } else {
+    console.error('[Error] Fetched user is null');
   }
 });
 
 socket.on('[Users] - fetchById', (user) => {
-  $('#social-users-list').append(`<li id="${user._id}-contact"><a href="#!"><i class="material-icons">user</i>${user.completeName}</a></li>`)
+  if (user !== null && user !== undefined)
+    $('#social-users-list').append(`<li id="${user._id}-contact"><a href="#!"><input type="checkbox" class="check-with-label" id="${user._id}-check"/><label class="label-for-check" for="${user._id}-check">${user.completeName}</label></a></li>`);
 });
 
 function sortTchats(tchats) {
   $('#contacts-list').empty();
   for (let i = 0; i < tchats.length; i++) {
     addContactCard(tchats[i]);
-    console.log('IDX:', i);
     socket.emit('[Tchat] - joinRoom', String(tchats[i]._id));
   }
 }

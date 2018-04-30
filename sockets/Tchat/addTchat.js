@@ -17,7 +17,7 @@ async function addGeneralTchat(workspace) {
   users.forEach((user) => {
     newUsers.push(user._id);
   });
-  const tchat = { title: 'General - Rodrigo', messages: [], users: newUsers };
+  const tchat = { title: 'General', messages: [], users: newUsers };
   workspace.Tchats.push(tchat);
   await workspace.save();
   const completedWorkspace = await Workspace.findById(workspace._id);

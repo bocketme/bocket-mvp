@@ -133,36 +133,38 @@
         </div>
         <div id="bottom-bar">
             <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
+{#
             <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
+#}
         </div>
     </div>
     <div id="journal-log" class="content" style="display: block; z-index: 14">
     </div>
-    <div id="new-tchat-form" class="content" style="display: none; z-index: 15">
-        <div class="row">
-            <form class="col s12">
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input value="Titre de la conversation" id="tchat-title-form" type="text" class="validate">
-                        <label for="tchat-title-form">Titre</label>
+    <div id="new-tchat-form" class="modal">
+        <div class="modal-form" >
+            <div class="modal-content container">
+                <div class="modal-header">
+                    <h5 style="font-weight: bolder !important;">Create group Chat</h5>
+                </div>
+                <div class="modal-body modal-part">
+                    <div id="tchat-form" >
+                        <div class="row">
+                            <div class="input-field">
+                                <input placeholder="Titre de la conversation" id="tchat-title-form" type="text" class="validate">
+                                <label for="tchat-title-form">Titre</label>
+                            </div>
+                        </div>
+                        <div >
+                            <ul id="social-users-list">
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                {#<div class="row">
-                    <div class="input-field col s12">
-                        <select multiple>
-                            <option value="" disabled selected>Choose your option</option>
-                            <option value="1">Option 1</option>
-                            <option value="2">Option 2</option>
-                            <option value="3">Option 3</option>
-                        </select>
-                        <label>Materialize Multiple Select</label>
-                    </div>
-                </div>#}
-                <div>
-                    <ul id="social-users-list">
-                    </ul>
+                <div class="modal-footer submit-tchat-btns">
+                    <button id="cancel-tchat-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
+                    <button id="create-tchat-btn" class="btn waves-effect waves-light" type="submit">Create Tchat</button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
     <div id="tchat-content" class="content" style="display: none">

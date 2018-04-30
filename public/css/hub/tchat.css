@@ -1,17 +1,30 @@
-/*body {
-    display: none;
-    align-items: center;
-    justify-content: center;
+.blurred {
     min-height: 100vh;
-    background: #27ae60;
+    width: 100%;
+    background: rgba(17, 17, 17, 0.7);
     font-family: "proxima-nova", "Source Sans Pro", sans-serif;
     font-size: 1em;
     letter-spacing: 0.1px;
-    color: #32465a;
     text-rendering: optimizeLegibility;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
     -webkit-font-smoothing: antialiased;
-}*/
+}
+
+.modal-form {
+    width: 30%;
+    height: 50%;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 5001;
+    box-shadow: 2px 2px 3px grey;
+    align-items:center;
+    justify-content: center;
+}
 
 #frame {
     position: absolute;
@@ -422,7 +435,16 @@
     }
 }
 #frame #sidepanel #contacts ul li.contact .wrap .meta .name {
+    margin: 5px 0 0 0;
+    padding: 0 0 1px;
     font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -moz-transition: 1s all ease;
+    -o-transition: 1s all ease;
+    -webkit-transition: 1s all ease;
+    transition: 1s all ease;
 }
 #frame #sidepanel #contacts ul li.contact .wrap .meta .preview {
     margin: 5px 0 0 0;
@@ -669,4 +691,15 @@
 }
 #frame .content .message-input .wrap button:focus {
     outline: none;
+}
+
+.submit-tchat-btns {
+    display: inline;
+    position: center;
+    bottom: 0;
+}
+
+#social-users-list {
+    overflow: auto;
+    height: 250px;
 }
