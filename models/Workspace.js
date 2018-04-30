@@ -4,20 +4,24 @@ const autoPopulatePlugin = require('mongoose-autopopulate');
 let Organization = require("./nestedSchema/NestedOrganizationSchema");
 let User = require("./nestedSchema/NestedUserSchema");
 let Node = require("./Node");
+const NestedNode =  require("./nestedSchema/NestedNodeSchema")
+const NestedTeam = require("./nestedSchema/NestedTeamSchema")
 
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 let Stripe = new mongoose.Schema({
   name: String
 });
 
+/*
 const Team = new mongoose.Schema({
   orga
 })
+*/
 
 let WorkspaceSchema = new mongoose.Schema({
   name: { type: String, require: true },
   description: String,
-  nodeMaster: { type: Schema.Types.ObjectId, ref: 'Node' },
+  //nodeMaster: { type: mongoose., ref: 'Node' },
   node_master: { type: NestedNode },
   creation: { type: Date, default: new Date() },
   users: { type: [User], default: [] },
