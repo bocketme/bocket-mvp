@@ -99,9 +99,11 @@ function getRenderInformation(workspaceId, userMail) {
                     all_parts: 100,
                     last_updates: 10,
                     duplicates: 35,
+
                     /* Const for front end */
                     NodeTypeEnum: JSON.stringify(NodeTypeEnum),
                     ViewTypeEnum: JSON.stringify(ViewTypeEnum),
+                    OptionViewer: user.options 
                   });
                 });
               })

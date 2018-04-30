@@ -139,6 +139,8 @@
         let idOfchoosenNode = undefined;
         const NodeTypeEnum = {{ NodeTypeEnum }};
         var ViewTypeEnum = {{ ViewTypeEnum }};
+        const optionViewer = {{ optionViewer }}
+        global.optionViewer = optionViewer;
         var view = ViewTypeEnum.location;
         socket.emit("joinWorkspace", workspaceId);
         $(".workspace-change").on("click", function () {
