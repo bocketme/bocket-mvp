@@ -6,8 +6,6 @@ let User = require("./nestedSchema/NestedUserSchema");
 let NestedNode = require("./nestedSchema/NestedNodeSchema");
 let NestedTeam = require("./nestedSchema/NestedTeamSchema");
 let Node = require("./Node");
-const NestedNode =  require("./nestedSchema/NestedNodeSchema")
-const NestedTeam = require("./nestedSchema/NestedTeamSchema")
 
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 let Stripe = new mongoose.Schema({
