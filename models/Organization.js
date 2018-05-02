@@ -14,7 +14,7 @@ let Node = new mongoose.Schema({
 let OrganizationSchema = new mongoose.Schema({
   name: { type: String, required: true, index: { unique: true } },
   owner: { type: User, required: true },
-  admin: { type: [User], required: true },
+  admin: { type: [User], default: [] },
   members: [User],
   workspaces: [Workspace],
   // adresse : String
