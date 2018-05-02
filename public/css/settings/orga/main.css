@@ -1,0 +1,19 @@
+body{
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+#sideNav{
+  padding: 0;
+  height: 100%;
+}
+
+#left-pannel{
+  height: 100%;
+}
+
+#main {
+  height: 100%;
+  width: 100%;
+  margin: 0%;
+  padding: 0%;
+}

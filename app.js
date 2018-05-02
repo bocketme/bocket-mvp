@@ -26,7 +26,7 @@ const project = require("./routes/project");
 const user = require("./routes/user");
 const part = require("./routes/part");
 const assembly = require("./routes/assembly");
-
+const organization = require('./routes/organization');
 /* SESSION */
 const expressSession = require("express-session");
 const MongoStore = require('connect-mongo')(expressSession); //session store
@@ -120,12 +120,12 @@ app.use("/user", user);
 app.use("/signin", signin);
 app.use("/signup", signup);
 app.use("/project", project);
+app.use('/organization', organization)
 app.use("/part", part);
 app.use("/node", node)
 app.use("/assembly", assembly);
 
 
-const clearNodeChidren = require('./utils/clearNodeChildren') 
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on("listening", () => {
   for (let dir in FSconfig.appDirectory) {

@@ -1,0 +1,14 @@
+<div class="dropdown-button" data-beloworigin="true">
+    <div class="text">{{ title }}</div>
+</div>
+
+<ul>
+    {% for organization in organizations %}
+        {% if organization.name == title %}
+        {% else %}
+            <li>
+                <a href="/organization/{{ organization._id }}">organization.name</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>

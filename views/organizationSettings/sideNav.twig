@@ -1,0 +1,13 @@
+<div class="loadingImage" load="/organization/image/{{ organization._id }}"></div>
+<hr>
+{% for workspace in currentOrganization.workspaces %}
+    <div class="roundDiv">
+        <div class="loadingImage" load="/workspace/image/{{ workspace._id }}">
+            <a href="/project/{{workspace._id}}">
+                {{ workspace.name |first |capitalize }}
+            </a>
+        </div>
+    </div>
+{% endfor %}
+<hr>
+<div class="loadingImage" load="/user/image/{{ user._id }}"></div>

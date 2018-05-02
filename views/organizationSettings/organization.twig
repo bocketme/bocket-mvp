@@ -1,0 +1,56 @@
+{% extends './layout.twig' %}
+
+{% block body %}
+
+    <div class="row" id="main">
+        <div id="left-pannel" class="col s12 m4 l4 xl3 row">
+            <div id="sideNav" class="col s2 m2 l2 xl2">
+                {% include './sideNav.twig' %}
+            </div>
+            <div class="col s10 m10 l10 xl10">
+                {# {% include './options' %} #}
+            </div>
+        </div>
+        <div class="col s12 m8 l8 xl9">
+            {% include './header.twig' %}
+
+            <div id="organization-settings">
+                <img id="organization-image">
+                <input style='display: none'>
+                <input>
+            </div>
+
+            <div id="organization-info">
+                <p>
+                    <u>Owner:</u>
+                    {{ currentOrganization.owner[0].completeName }}
+                </p>
+                <p>
+                    <u>Date of creation:</u>
+                    <span id="creation"></span></p>
+                <p>
+                    <u>Number of workspaces:</u>
+                    {{ currentOrganization.workspaces.length }}
+                </p>
+                <p>
+                    <u>Number of member:</u>
+                    {{ currentOrganization.members.length }}
+                </p>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+    <script>
+        var dateOfCreation = "{{ currentOrganization.creation }}";
+        dateOfCreation = new Date(dateOfCreation);
+        const creation = document.getElementById('creation');
+        creation.innerHTML = dateOfCreation ? moment(dateOfCreation).format('D/M/YYYY') : 'Non disponible';
+        const image = document.getElementById("organization-image");
+    </script>
+{% endblock %}
