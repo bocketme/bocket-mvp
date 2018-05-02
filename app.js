@@ -32,10 +32,10 @@ const expressSession = require("express-session");
 const MongoStore = require('connect-mongo')(expressSession); //session store
 
 const session = expressSession({
-    secret: config.secretSession,
-    store: new MongoStore({ url: config.mongoDB }),
-    resave: false,
-    saveUninitialized: true
+  secret: config.secretSession,
+  store: new MongoStore({ url: config.mongoDB }),
+  resave: false,
+  saveUninitialized: true
 });
 
 /* Start The Express Server */
@@ -46,7 +46,7 @@ app.use(session);
 const server = require('http').createServer(app);
 const io = require("socket.io")(server);
 io.use(sharedsession(session, {
-    autoSave: false,
+  autoSave: false,
 }));
 
 const ioListener = require("./sockets/socketsListener")(io);
@@ -56,10 +56,10 @@ app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon-bocket.png')));
 
 //configure and verify the server
 try {
-    server.listen(config.port);
+  server.listen(config.port);
 }
 catch (e) {
-    log.error("Unable to bind on port : " + config.port);
+  log.error("Unable to bind on port : " + config.port);
 }
 
 mongoose.Promise = Promise;
@@ -111,7 +111,7 @@ app.use(function (req, res, next) {
 app.engine('twig', require('twig').__express);
 app.set("view engine", "twig");
 app.set('twig options', {
-    strict_variables: false,
+  strict_variables: false,
 });
 app.use(express.static('public'));
 app.use("/signOut", signOut);
@@ -124,18 +124,20 @@ app.use("/part", part);
 app.use("/node", node)
 app.use("/assembly", assembly);
 
+
+const clearNodeChidren = require('./utils/clearNodeChildren') 
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on("listening", () => {
-    for (let dir in FSconfig.appDirectory) {
-        fs.access(FSconfig.appDirectory[dir], err => {
-            if (err) {
-                log.error(err);
-                fs.mkdir(FSconfig.appDirectory[dir], (err) => {
-                    if (err)
-                        return log.fatal(err);
-                    log.info(`Directory ${dir} ==> ok`);
-                });
-            } else log.info(`Directory ${dir} ==> ok`);
+  for (let dir in FSconfig.appDirectory) {
+    fs.access(FSconfig.appDirectory[dir], err => {
+      if (err) {
+        log.error(err);
+        fs.mkdir(FSconfig.appDirectory[dir], (err) => {
+          if (err)
+            return log.fatal(err);
+          log.info(`Directory ${dir} ==> ok`);
         });
-    }
+      } else log.info(`Directory ${dir} ==> ok`);
+    });
+  }
 });
