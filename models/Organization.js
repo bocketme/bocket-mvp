@@ -8,17 +8,18 @@ const fs = require('fs');
 const path = require('path');
 
 let Node = new mongoose.Schema({
-    name: { type: String, required: true }
+  name: { type: String, required: true }
 });
 
 let OrganizationSchema = new mongoose.Schema({
-    name: {type: String, required: true, index: { unique: true }},
-    owner : {type: [User], required: true },
-    members : [User],
-    workspaces: [Workspace],
-    // adresse : String
-    //TODO: Why? - L'organization a une liste de noeud ???
-    node: [Node]
+  name: { type: String, required: true, index: { unique: true } },
+  owner: { type: User, required: true },
+  admin: { type: [User], required: true },
+  members: [User],
+  workspaces: [Workspace],
+  // adresse : String
+  //TODO: Why? - L'organization a une liste de noeud ???
+  node: [Node]
 });
 
 /**
@@ -26,21 +27,21 @@ let OrganizationSchema = new mongoose.Schema({
  * @param {Object} OrganizationInformation - The information of the organization
  */
 OrganizationSchema.statics.newDocument = (OrganizationInformation) => {
-    return new Organization(OrganizationInformation);
+  return new Organization(OrganizationInformation);
 };
 
 OrganizationSchema.pre('save', function (next) {
-    let organizationPath = path.join(config.files3D, '/' + this.name + "-" + this._id);
-    fs.access(organizationPath, (err) => {
-        if (err){
-            fs.mkdir(path.join(organizationPath), (err) => {
-                if (err)
-                    return next(err);
-                return next();
-            })
-        } else
-            return next();
-    });
+  let organizationPath = path.join(config.files3D, '/' + this.name + "-" + this._id);
+  fs.access(organizationPath, (err) => {
+    if (err) {
+      fs.mkdir(path.join(organizationPath), (err) => {
+        if (err)
+          return next(err);
+        return next();
+      })
+    } else
+      return next();
+  });
 });
 OrganizationSchema.plugin(uniqueValidator);
 
