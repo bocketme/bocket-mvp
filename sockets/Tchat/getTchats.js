@@ -13,10 +13,8 @@ module.exports = (io, socket) => {
     Workspace
       .findById(socket.handshake.session.currentWorkspace)
       .then(({ Tchats }) => {
-        console.log('Tchat id : ', tchat._id);
         if (tchat) {
           const result = Tchats.find(elem => String(elem._id) === tchat._id);
-          console.log('result : ', result);
           socket.emit('[Tchat] - fetchById', result);
         } else {
           socket.emit('[Tchat] - 404');

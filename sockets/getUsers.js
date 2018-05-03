@@ -13,7 +13,7 @@ module.exports = (io, socket) => {
           users.sort();
           const filteredUsers = users.filter((elem) => {
             const isTrue = (elem.email !== userMail && elem.id !== tmpId);
-            if (isTrue) { tmpId = elem._id }
+            if (isTrue) { tmpId = elem._id; }
             return isTrue;
           });
           socket.emit('[Users] - fetchFromWorkspace', filteredUsers);

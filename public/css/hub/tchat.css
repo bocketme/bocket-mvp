@@ -572,61 +572,73 @@
     overflow-y: scroll;
     overflow-x: hidden;
 }
-@media screen and (max-width: 735px) {
-    #frame .content .messages {
-        max-height: calc(100% - 105px);
-    }
-}
-#frame .content .messages::-webkit-scrollbar {
-    width: 8px;
-    background: transparent;
-}
-#frame .content .messages::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.3);
-}
+/*@media screen and (max-width: 735px) {*/
+    /*#frame .content .messages {*/
+        /*max-height: calc(100% - 105px);*/
+    /*}*/
+/*}*/
+/*#frame .content .messages::-webkit-scrollbar {*/
+    /*width: 8px;*/
+    /*background: transparent;*/
+/*}*/
+/*#frame .content .messages::-webkit-scrollbar-thumb {*/
+    /*background-color: rgba(0, 0, 0, 0.3);*/
+/*}*/
 #frame .content .messages ul li {
-    display: inline-block;
-    clear: both;
-    float: left;
     margin: 15px 15px 5px 15px;
     width: calc(100% - 25px);
     font-size: 0.9em;
+    border: #4A90E2 3px solid;
 }
-#frame .content .messages ul li:nth-last-child(1) {
-    margin-bottom: 20px;
-}
-#frame .content .messages ul li.sent img {
-    margin: 6px 8px 0 0;
-}
-#frame .content .messages ul li.sent p {
-    background: #435f7a;
-    color: #f5f5f5;
-}
-#frame .content .messages ul li.replies img {
-    float: right;
-    margin: 6px 0 0 8px;
-}
-#frame .content .messages ul li.replies p {
+/*#frame .content .messages ul li:nth-last-child(1) {*/
+    /*margin-bottom: 20px;*/
+/*}*/
+/*#frame .content .messages ul li.sent img {*/
+    /*margin: 6px 8px 0 0;*/
+/*}*/
+/*#frame .content .messages ul li.sent p {*/
+    /*background: #435f7a;*/
+    /*color: #f5f5f5;*/
+/*}*/
+/*#frame .content .messages ul li.replies img {*/
+    /*float: right;*/
+    /*margin: 6px 0 0 8px;*/
+/*}*/
+/*#frame .content .messages ul li.replies p {*/
+    /*background: #f5f5f5;*/
+    /*float: right;*/
+/*}*/
+
+#frame .content .messages ul li.replies p.msg-info {
     background: #f5f5f5;
-    float: right;
 }
-#frame .content .messages ul li img {
-    width: 22px;
-    border-radius: 50%;
-    float: left;
+#frame .content .messages ul li.sent p.msg-info {
+    background: #A78535;
 }
-#frame .content .messages ul li p {
-    display: inline-block;
-    padding: 10px 15px;
-    border-radius: 20px;
-    max-width: 205px;
-    line-height: 130%;
-}
-@media screen and (min-width: 735px) {
-    #frame .content .messages ul li p {
-        max-width: 300px;
-    }
-}
+/*#frame .content .messages ul li img {*/
+    /*width: 22px;*/
+    /*border-radius: 50%;*/
+    /*float: left;*/
+/*}*/
+/*#frame .content .messages ul li p {*/
+    /*display: inline-block;*/
+    /*padding: 10px 15px;*/
+    /*border-radius: 20px;*/
+    /*max-width: 50%;*/
+    /*line-height: 130%;*/
+    /*word-wrap: break-word;*/
+/*}*/
+/*@media screen and (min-width: 735px) {*/
+    /*#frame .content .messages ul li p {*/
+        /*max-width: 50%;*/
+    /*}*/
+/*}*/
+
+/*#frame .content .messages ul li div span {*/
+    /*display: inline-block;*/
+    /*padding: 10px 15px;*/
+/*}*/
+
 #frame .content .message-input {
     position: absolute;
     bottom: 0;
