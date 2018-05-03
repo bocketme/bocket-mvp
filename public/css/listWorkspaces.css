@@ -1,0 +1,89 @@
+
+#list-workspace{
+  max-height: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  overflow-y: scroll;
+  height: 100%;
+  width: 100%;
+}
+
+.cube-responsive-active{
+  background: #00FFC8;
+}
+
+.cube-responsive {
+  background: #9B9B9B;
+  border-radius: 10%;
+  height: 0;
+  padding-bottom: 100%;
+  width: 100%;
+}
+
+.cube-content {
+  background: #9B9B9B;
+  line-height: 1;
+  font-size: 14px;
+  margin-top: -0.5em;
+  padding-top: 50%;
+  text-align: center;
+  width: 100%;
+  font-weight: 600;
+  background-repeat: no-repeat;
+  float: left;
+  color: white;
+}
+
+.circle-responsive-active {
+  background: #00FFC8;
+  border-radius: 50%;
+  padding-bottom: 100%;
+  width: 100%;
+  height: 0;
+  box-shadow: 0 0 0 3px #1E987E;
+}
+
+.circle-responsive {
+  background: #9B9B9B;
+  border-radius: 50%;
+  height: 0;
+  padding-bottom: 100%;
+  width: 100%;
+}
+
+.circle-responsive:hover {
+  background: #8EDACA;
+}
+
+.circle-responsive-active:hover {
+  box-shadow: 0 0 0 3px #1E987E;
+}
+
+.circle-content {
+  color: #ffffff;
+  float: left;
+  line-height: 1;
+  font-size: 14px;
+  margin-top: -0.5em;
+  padding-top: 50%;
+  text-align: center;
+  width: 100%;
+  font-weight: 600;
+  background-repeat: no-repeat;
+}
+
+.circle-responsive-add {
+  background: #9B9B9B;
+  border-radius: 50%;
+  height: 0;
+  padding-bottom: 100%;
+  width: 100%;
+}
+
+.circle-responsive-add:hover {
+  background: #F0F0F0;
+}
+
+.circle-responsive-add:hover .circle-content{
+  color: #000000;
+}

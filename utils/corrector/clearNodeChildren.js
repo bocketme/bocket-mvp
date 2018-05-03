@@ -1,7 +1,7 @@
 const co = require('co');
-const nodeSchema = require('../models/Node');
+const nodeSchema = require('../../models/Node');
 
-const log = require('./log');
+const log = require('../log');
 
 co(function*() {
   const cursor = nodeSchema.find().cursor(); 

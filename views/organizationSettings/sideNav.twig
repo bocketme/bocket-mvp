@@ -1,13 +1,52 @@
-<div class="loadingImage" load="/organization/image/{{ organization._id }}"></div>
-<hr>
-{% for workspace in currentOrganization.workspaces %}
-    <div class="roundDiv">
-        <div class="loadingImage" load="/workspace/image/{{ workspace._id }}">
-            <a href="/project/{{workspace._id}}">
-                {{ workspace.name |first |capitalize }}
-            </a>
+<div style="height:5%">
+<p></p>
+<a class="collection-item collection-item-workspace " href="/organization/{{currentOrganization._id}}">
+    <div class="container">
+        <div class="cube-responsive">
+            <div class="cube-content" style="background: url('/organization/image/{{ currentOrganization._id }}')">
+                {{ currentOrganization.name|first |capitalize }}
+            </div>
         </div>
     </div>
-{% endfor %}
+</a>
+</div>
 <hr>
-<div class="loadingImage" load="/user/image/{{ user._id }}"></div>
+<div style="height:85%">
+{% for workspace in currentOrganization.workspaces %}
+    <a class="collection-item collection-item-workspace " href="/project/{{workspace._id}}">
+        <div class="container">
+            <div class="circle-responsive" data-tooltip="{{ workspace.name }}" data-delay="50" data-position="right" style="background-image: url('/workspace/image/{{ workspace._id }}') ">
+                <div id="{{ workspace.id }}" class="circle-content">
+                    {{ workspace.name|first |capitalize }}
+                </div>
+            </div>
+        </div>
+    </a>
+        <p></p>    
+{% endfor %}
+<div class="icon-list-workspace">
+    <a id="trigger-creation-workspace" class=" modal-trigger" href="#workspace-creation" style="min-height: auto !important; padding: 0px !important;" alt="Add Workspace">
+        <div class="container">
+            <div class="circle-responsive-add">
+                <div class="circle-content">
+                    +
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
+<div class='add-workspace'></div>
+</div>
+<hr>
+<div style="height:10%">
+<a id="trigger-creation-workspace" class=" modal-trigger" href="#workspace-creation" style="min-height: auto !important; padding: 0px !important;" alt="Add Workspace">
+    <div class="container">
+        <div class="circle-responsive" data-tooltip="{{ workspace.name }}" data-delay="50" data-position="right" style="background-image: url('/workspace/image/{{ workspace._id }}') ">
+            <div id="{{ workspace.id }}" class="circle-content">
+                <i class="material-icons">person_outline</i>
+            </div>
+        </div>
+    </div>
+</a>
+<p style="height:3%"></p>
+</div>
