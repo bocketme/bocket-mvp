@@ -14,24 +14,31 @@
 
 .cube-responsive {
   background: #9B9B9B;
-  border-radius: 10%;
+  border-radius: 25%;
   height: 0;
   padding-bottom: 100%;
   width: 100%;
 }
 
+.absolute-container{
+  margin: 0;
+  position: absolute;
+  top: 77%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .cube-content {
-  background: #9B9B9B;
+  padding-top: 50%;
+  color: #ffffff;
+  float: left;
   line-height: 1;
   font-size: 14px;
   margin-top: -0.5em;
-  padding-top: 50%;
   text-align: center;
   width: 100%;
   font-weight: 600;
   background-repeat: no-repeat;
-  float: left;
-  color: white;
 }
 
 .circle-responsive-active {
@@ -53,6 +60,14 @@
 
 .circle-responsive:hover {
   background: #8EDACA;
+}
+
+.collection-item-workspace{
+  margin-top: 3%;
+}
+
+.container-workspace{
+  margin-top: 15%;
 }
 
 .circle-responsive-active:hover {
