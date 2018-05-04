@@ -1,6 +1,8 @@
 let allTchats = [];
 let selectedTchat = {};
+let deletedTchat = {};
 let userId = 0;
+let userName = '';
 
 $(document).ready(() => {
   getUserId();
@@ -19,8 +21,6 @@ $('#addcontact').click(() => {
   document.getElementById('new-tchat-form').classList.add('blurred');
   document.getElementById('journal-log').style.display = 'none';
   document.getElementById('tchat-content').style.display = 'none';
-/*  const tchat = { title: 'General', messages: [], users: [] };
-  socket.emit('[Tchat] - addTchat', tchat); */
 });
 
 $('#create-tchat-btn').on('click', (e) => {
@@ -34,14 +34,14 @@ $('#create-tchat-btn').on('click', (e) => {
       title = `${title + $(li).text()}, `;
     }
   });
-  title += $('#profile-name').text();
+  title += userName;
   if (newTchat.title === '' || newTchat.title === undefined)
     newTchat.title = title;
   socket.emit('[Tchat] - add', newTchat);
   document.getElementById('cancel-tchat-btn').click();
 });
 
-$('#cancel-tchat-btn').on('click', (e) => {
+$('#cancel-tchat-btn, #close-add-modal').on('click', (e) => {
   $('#tchat-title-form').val('');
   document.getElementById('new-tchat-form').style.display = 'none';
   document.getElementById('new-tchat-form').classList.remove('blurred');
@@ -96,15 +96,12 @@ socket.on('[Message] - confirmMessage', (message) => {
 function addMessage(message) {
   let date = new Date(message.date);
   if (String(message.author._id) === userId) {
-    $(`<li class="sent"><p class="msg-info"><strong>${message.author.completeName}</strong><span class="message-data-time" >${date.toDateString()}</span></p><p>${message.content}</p></li>`).appendTo($('.messages ul'));
-    $('.contact.active .preview').html(`<span>You: </span>${message.content}`);
+    $(`<li class="sent"><p class="msg-info"><strong>${message.author.completeName}</strong><span class="message-data-time" >${date.toDateString()}</span></p><p class="message-content">${message.content}</p></li>`).appendTo($('.messages ul'));
   } else {
-    $(`<li class="replies"><p class="msg-info"><strong>${message.author.completeName}</strong><span class="message-data-time" >${date.toDateString()}</span></p><p>${message.content}</p></li>`).appendTo($('.messages ul'));
-    $('.contact.active .preview').html(`<span>${message.author}: </span>${message.content}`);
+    $(`<li class="replies"><p class="msg-info"><strong>${message.author.completeName}</strong><span class="message-data-time" >${date.toDateString()}</span></p><p class="message-content">${message.content}</p></li>`).appendTo($('.messages ul'));
   }
 
   $('.message-input input').val(null);
-  $('.contact.active .preview').html(`<span>You: </span>${message.content}`);
   $('.messages').animate({ scrollTop: $(document).height() }, 'fast');
 }
 
@@ -125,12 +122,10 @@ function addContactCard(tchat) {
     const lastMessage = (tchat.messages.length > 0 ? tchat.messages[tchat.messages.length - 1].content : 'No previous messages..');
     $('#contacts-list').append(`<li id="${tchat._id}" class="contact">\n` +
         '                    <div class="wrap">\n' +
-        '                        <span class="contact-status online"></span>\n' +
-        '                        <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />\n' +
-        `<a id="${tchat._id}-delete" href=#  style="float: right;cursor: pointer"><i class="material-icons">clear</i></a>\n` +
+        '                        <i class="material-icons">comment</i>\n' +
+        `<a id="${tchat._id}-delete" href=#  style="float: right;cursor: pointer"><i class="material-icons" style="color: black">clear</i></a>\n` +
         '                        <div class="meta">\n' +
         `                            <p class="name">${tchat.title}</p>\n` +
-        `                            <p class="preview">${lastMessage}</p>\n` +
         '                        </div>\n' +
         '                    </div>\n' +
         '                </li>');
@@ -149,19 +144,20 @@ function addContactCard(tchat) {
   });
 
   $(`#${tchat._id}-delete`).on('click', () => {
+    deletedTchat = tchat;
     document.getElementById('confirm-tchat-modal').style.display = 'block';
     document.getElementById('confirm-tchat-modal').classList.add('blurred');
   });
 
   $('#confirm-tchat-rm-btn').on('click', () => {
-    socket.emit('[Tchat] - remove', tchat);
+    socket.emit('[Tchat] - remove', deletedTchat);
     document.getElementById('new-tchat-form').style.display = 'none';
     document.getElementById('journal-log').style.display = 'block';
     document.getElementById('tchat-content').style.display = 'none';
     document.getElementById('cancel-tchat-rm-btn').click();
   });
 
-  $('#cancel-tchat-rm-btn').on('click', () => {
+  $('#cancel-tchat-rm-btn, #close-confirm-modal').on('click', () => {
     document.getElementById('confirm-tchat-modal').style.display = 'none';
     document.getElementById('confirm-tchat-modal').classList.remove('blurred')
   });
@@ -233,7 +229,10 @@ function getUserId() {
   socket.emit('[User] - getCurrentUser');
   socket.on('[User] - getCurrentUser', (user) => {
     userId = user._id;
+    userName = user.completeName;
+/*
     $('#profile-name').text(user.completeName);
+*/
   });
 }
 

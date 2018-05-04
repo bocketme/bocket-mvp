@@ -2,30 +2,9 @@
     <div id="sidepanel">
         <div id="profile">
             <div class="wrap">
-                <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt="" />
-                <p id="profile-name">John Doe</p>
-                <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
-                <div id="status-options">
-                    <ul>
-                        <li id="status-online" class="active"><span class="status-circle"></span> <p>Online</p></li>
-                        <li id="status-away"><span class="status-circle"></span> <p>Away</p></li>
-                        <li id="status-busy"><span class="status-circle"></span> <p>Busy</p></li>
-                        <li id="status-offline"><span class="status-circle"></span> <p>Offline</p></li>
-                    </ul>
-                </div>
-                <div id="expanded">
-                    <label for="twitter"><i class="fa fa-facebook fa-fw" aria-hidden="true"></i></label>
-                    <input name="twitter" type="text" value="mikeross" />
-                    <label for="twitter"><i class="fa fa-twitter fa-fw" aria-hidden="true"></i></label>
-                    <input name="twitter" type="text" value="ross81" />
-                    <label for="twitter"><i class="fa fa-instagram fa-fw" aria-hidden="true"></i></label>
-                    <input name="twitter" type="text" value="mike.ross" />
-                </div>
+                <p>Chats</p>
+                <a id="addcontact" class="secondary-content" href="#"><img class="add-content-icon" src="/img/add-content-icon.png"></a>
             </div>
-        </div>
-        <div id="search">
-            <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-            <input type="text" placeholder="Search contacts..." />
         </div>
         <div id="contacts">
             <ul id="contacts-list">
@@ -131,61 +110,11 @@
                 </li>#}
             </ul>
         </div>
-        <div id="bottom-bar">
-            <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
-{#
-            <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
-#}
-        </div>
     </div>
     <div id="journal-log" class="content" style="display: block; z-index: 14">
     </div>
-    <div id="new-tchat-form" class="modal">
-        <div class="modal-form" >
-            <div class="modal-content container">
-                <div class="modal-header">
-                    <h5 style="font-weight: bolder !important;">Create group Chat</h5>
-                </div>
-                <div class="modal-body modal-part">
-                    <div id="tchat-form" >
-                        <div class="row">
-                            <div class="input-field">
-                                <input placeholder="Titre de la conversation" id="tchat-title-form" type="text" class="validate">
-                                <label for="tchat-title-form">Titre</label>
-                            </div>
-                        </div>
-                        <div >
-                            <ul id="social-users-list">
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer submit-tchat-btns">
-                    <button id="cancel-tchat-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
-                    <button id="create-tchat-btn" class="btn waves-effect waves-light" type="submit">Create Tchat</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="confirm-tchat-modal" class="modal">
-        <div class="modal-form">
-            <div class="modal-content container">
-                <div class="modal-header">
-                    <h5 style="font-weight: bolder !important;">Delete Selected Tchat</h5>
-                </div>
-                <div class="modal-body modal-part">
-                    <span>Are you sure you want to selected tchat ?</span>
-                </div>
-                <div class="modal-footer submit-tchat-btns">
-                    <button id="cancel-tchat-rm-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
-                    <button id="confirm-tchat-rm-btn" class="btn waves-effect waves-light" type="submit">Confirm</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <div id="tchat-content" class="content" style="display: none">
         <div class="contact-profile">
-            <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
             <p id="tchat-title">Group Tchat</p>
         </div>
         <div class="messages">
@@ -198,6 +127,47 @@
                 <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
                 <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
             </div>
+        </div>
+    </div>
+    <div id="new-tchat-form" class="modal">
+        <div class="modal-form" >
+            <div class="modal-header">
+                <h5 style="display: inline-block;font-weight: bolder !important;">Create group Chat</h5>
+                <a id="close-add-modal" href="#" style="float: right;cursor: pointer"><i class="material-icons">clear</i></a>
+            </div>
+            <div class="modal-content container tchat-modal-content">
+                <div class="modal-body modal-part">
+                    <div id="tchat-form" class="wrapper">
+                        <div class="row">
+                            <div class="input-field">
+                                <input placeholder="Titre de la conversation" id="tchat-title-form" type="text" class="validate">
+                                <label for="tchat-title-form">Titre</label>
+                            </div>
+                        </div>
+                        <div >
+                            <ul id="social-users-list">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="cancel-tchat-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
+            <button id="create-tchat-btn" class="btn waves-effect waves-light" type="submit">Create Tchat</button>
+        </div>
+    </div>
+    <div id="confirm-tchat-modal" class="modal">
+        <div class="modal-form">
+            <div class="modal-header">
+                <h5 style="display: inline-block;font-weight: bolder !important;">Delete Selected Tchat</h5>
+                <a id="close-confirm-modal" href="#" style="float: right;cursor: pointer"><i class="material-icons">clear</i></a>
+            </div>
+            <div class="modal-content container tchat-modal-content">
+                <div class="modal-body modal-part">
+                    <span >Are you sure you want to delete selected tchat ?</span>
+                </div>
+            </div>
+            <button id="cancel-tchat-rm-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
+            <button id="confirm-tchat-rm-btn" class="btn waves-effect waves-light" type="submit">Confirm</button>
         </div>
     </div>
 </div>
