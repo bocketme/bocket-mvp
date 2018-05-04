@@ -124,8 +124,6 @@ app.use("/part", part);
 app.use("/node", node)
 app.use("/assembly", assembly);
 
-
-const clearNodeChidren = require('./utils/clearNodeChildren') 
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on("listening", () => {
   for (let dir in FSconfig.appDirectory) {
