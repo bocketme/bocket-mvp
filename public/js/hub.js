@@ -2,9 +2,19 @@
   $(function () {
     // initialize all modals
     $('#show-social-space').on('click', () => {
-      let displayValue = document.getElementById('frame').style.getPropertyValue('display');
-      console.log('Im here');
-      document.getElementById('frame').style.display = (displayValue === 'none' ? 'flex': 'none');
+      let displayValue = document.getElementById('social-space').style.getPropertyValue('display');
+
+      console.log('displayValue :', displayValue);
+      if (displayValue === 'block') {
+        document.getElementById('renderDiv').style.display = 'block';
+        document.getElementById('header').style.display = 'block';
+        document.getElementById('social-space').style.display = 'none';
+      } else {
+        document.getElementById('renderDiv').style.display = 'none';
+        document.getElementById('header').style.display = 'none';
+        document.getElementById('social-space').style.display = 'block';
+      }
+      console.log('display value after :', document.getElementById('social-space').style.getPropertyValue('display'));
     });
 
     $('.modal').modal({

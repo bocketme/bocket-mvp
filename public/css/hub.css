@@ -730,3 +730,19 @@ ul#details-tab {
         width: 100%;
     }
 }
+
+#show-social-space {
+    background: #4A90E2 !important;
+    text-align: center !important;
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+#show-social-space i {
+    display: inline-block;
+    vertical-align: middle;
+    padding-bottom: 4px;
+    padding-right: 5px;
+}

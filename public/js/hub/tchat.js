@@ -53,11 +53,6 @@ $('#cancel-tchat-btn, #close-add-modal').on('click', (e) => {
   });
 });
 
-$('.expand-button').click(() => {
-  $('#profile').toggleClass('expanded');
-  $('#contacts').toggleClass('expanded');
-});
-
 $('#status-options ul li').click(function () {
   $('#profile-img').removeClass();
   $('#status-online').removeClass('active');
@@ -83,10 +78,11 @@ $('#status-options ul li').click(function () {
 
 function newMessage() {
   const message = $('.message-input input').val();
-  if ($.trim(message) == '') {
+  if ($.trim(message) === '') {
     return false;
   }
   socket.emit('[Message] - add', message, selectedTchat._id);
+  return true;
 }
 
 socket.on('[Message] - confirmMessage', (message) => {
@@ -134,7 +130,7 @@ function addContactCard(tchat) {
   $(`#${tchat._id}`).on('click', () => {
     if (selectedTchat._id !== tchat._id) {
       $('.messages-list').empty();
-      document.getElementById('journal-log').style.display = 'none';
+      // document.getElementById('journal-log').style.display = 'none';
       document.getElementById('tchat-content').style.display = 'block';
       document.getElementById('new-tchat-form').style.display = 'none';
 

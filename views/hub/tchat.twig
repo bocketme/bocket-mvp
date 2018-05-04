@@ -1,173 +1,181 @@
-<div id="frame" class="containerBox col s8">
-    <div id="sidepanel">
-        <div id="profile">
-            <div class="wrap">
-                <p>Chats</p>
-                <a id="addcontact" class="secondary-content" href="#"><img class="add-content-icon" src="/img/add-content-icon.png"></a>
+<div id="social-space">
+    <div class="data-header-third-column row">
+        <ul class="tabs">
+            <li class="tab col s3"><a class="active" href="#news-feed">News Feed</a></li>
+            <li class="tab col s3"><a href="#frame">Chat</a></li>
+        </ul>
+    </div>
+    <div id="news-feed">
+        <p>This feature will be implemented soon... Please be patient :)</p>
+    </div>
+    <div id="frame">
+        <div id="sidepanel" class="col s3">
+            <div id="profile">
+                <div class="wrap">
+                    <p>Chats</p>
+                    <a id="addcontact" class="secondary-content" href="#"><img class="add-content-icon" src="/img/add-content-icon.png"></a>
+                </div>
+            </div>
+            <div id="contacts">
+                <ul id="contacts-list">
+                    {#                <li class="contact">
+                                        <div class="wrap">
+                                            <span class="contact-status online"></span>
+                                            <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
+                                            <div class="meta">
+                                                <p class="name">Louis Litt</p>
+                                                <p class="preview">You just got LITT up, Mike.</p>
+                                            </div>
+                                        </div>
+                                    </li>#}
+                    {#                <li class="contact active">
+                                        <div class="wrap">
+                                            <span class="contact-status busy"></span>
+                                            <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                                            <div class="meta">
+                                                <p class="name">Harvey Specter</p>
+                                                <p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="contact">
+                                        <div class="wrap">
+                                            <span class="contact-status away"></span>
+                                            <img src="http://emilcarlsson.se/assets/rachelzane.png" alt="" />
+                                            <div class="meta">
+                                                <p class="name">Rachel Zane</p>
+                                                <p class="preview">I was thinking that we could have chicken tonight, sounds good?</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="contact">
+                                        <div class="wrap">
+                                            <span class="contact-status online"></span>
+                                            <img src="http://emilcarlsson.se/assets/donnapaulsen.png" alt="" />
+                                            <div class="meta">
+                                                <p class="name">Donna Paulsen</p>
+                                                <p class="preview">Mike, I know everything! I'm Donna..</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="contact">
+                                        <div class="wrap">
+                                            <span class="contact-status busy"></span>
+                                            <img src="http://emilcarlsson.se/assets/jessicapearson.png" alt="" />
+                                            <div class="meta">
+                                                <p class="name">Jessica Pearson</p>
+                                                <p class="preview">Have you finished the draft on the Hinsenburg deal?</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="contact">
+                                        <div class="wrap">
+                                            <span class="contact-status"></span>
+                                            <img src="http://emilcarlsson.se/assets/haroldgunderson.png" alt="" />
+                                            <div class="meta">
+                                                <p class="name">Harold Gunderson</p>
+                                                <p class="preview">Thanks Mike! :)</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="contact">
+                                        <div class="wrap">
+                                            <span class="contact-status"></span>
+                                            <img src="http://emilcarlsson.se/assets/danielhardman.png" alt="" />
+                                            <div class="meta">
+                                                <p class="name">Daniel Hardman</p>
+                                                <p class="preview">We'll meet again, Mike. Tell Jessica I said 'Hi'.</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="contact">
+                                        <div class="wrap">
+                                            <span class="contact-status busy"></span>
+                                            <img src="http://emilcarlsson.se/assets/katrinabennett.png" alt="" />
+                                            <div class="meta">
+                                                <p class="name">Katrina Bennett</p>
+                                                <p class="preview">I've sent you the files for the Garrett trial.</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="contact">
+                                        <div class="wrap">
+                                            <span class="contact-status"></span>
+                                            <img src="http://emilcarlsson.se/assets/charlesforstman.png" alt="" />
+                                            <div class="meta">
+                                                <p class="name">Charles Forstman</p>
+                                                <p class="preview">Mike, this isn't over.</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="contact">
+                                        <div class="wrap">
+                                            <span class="contact-status"></span>
+                                            <img src="http://emilcarlsson.se/assets/jonathansidwell.png" alt="" />
+                                            <div class="meta">
+                                                <p class="name">Jonathan Sidwell</p>
+                                                <p class="preview"><span>You:</span> That's bullshit. This deal is solid.</p>
+                                            </div>
+                                        </div>
+                                    </li>#}
+                </ul>
             </div>
         </div>
-        <div id="contacts">
-            <ul id="contacts-list">
-{#                <li class="contact">
-                    <div class="wrap">
-                        <span class="contact-status online"></span>
-                        <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
-                        <div class="meta">
-                            <p class="name">Louis Litt</p>
-                            <p class="preview">You just got LITT up, Mike.</p>
-                        </div>
-                    </div>
-                </li>#}
-{#                <li class="contact active">
-                    <div class="wrap">
-                        <span class="contact-status busy"></span>
-                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-                        <div class="meta">
-                            <p class="name">Harvey Specter</p>
-                            <p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
-                        </div>
-                    </div>
-                </li>
-                <li class="contact">
-                    <div class="wrap">
-                        <span class="contact-status away"></span>
-                        <img src="http://emilcarlsson.se/assets/rachelzane.png" alt="" />
-                        <div class="meta">
-                            <p class="name">Rachel Zane</p>
-                            <p class="preview">I was thinking that we could have chicken tonight, sounds good?</p>
-                        </div>
-                    </div>
-                </li>
-                <li class="contact">
-                    <div class="wrap">
-                        <span class="contact-status online"></span>
-                        <img src="http://emilcarlsson.se/assets/donnapaulsen.png" alt="" />
-                        <div class="meta">
-                            <p class="name">Donna Paulsen</p>
-                            <p class="preview">Mike, I know everything! I'm Donna..</p>
-                        </div>
-                    </div>
-                </li>
-                <li class="contact">
-                    <div class="wrap">
-                        <span class="contact-status busy"></span>
-                        <img src="http://emilcarlsson.se/assets/jessicapearson.png" alt="" />
-                        <div class="meta">
-                            <p class="name">Jessica Pearson</p>
-                            <p class="preview">Have you finished the draft on the Hinsenburg deal?</p>
-                        </div>
-                    </div>
-                </li>
-                <li class="contact">
-                    <div class="wrap">
-                        <span class="contact-status"></span>
-                        <img src="http://emilcarlsson.se/assets/haroldgunderson.png" alt="" />
-                        <div class="meta">
-                            <p class="name">Harold Gunderson</p>
-                            <p class="preview">Thanks Mike! :)</p>
-                        </div>
-                    </div>
-                </li>
-                <li class="contact">
-                    <div class="wrap">
-                        <span class="contact-status"></span>
-                        <img src="http://emilcarlsson.se/assets/danielhardman.png" alt="" />
-                        <div class="meta">
-                            <p class="name">Daniel Hardman</p>
-                            <p class="preview">We'll meet again, Mike. Tell Jessica I said 'Hi'.</p>
-                        </div>
-                    </div>
-                </li>
-                <li class="contact">
-                    <div class="wrap">
-                        <span class="contact-status busy"></span>
-                        <img src="http://emilcarlsson.se/assets/katrinabennett.png" alt="" />
-                        <div class="meta">
-                            <p class="name">Katrina Bennett</p>
-                            <p class="preview">I've sent you the files for the Garrett trial.</p>
-                        </div>
-                    </div>
-                </li>
-                <li class="contact">
-                    <div class="wrap">
-                        <span class="contact-status"></span>
-                        <img src="http://emilcarlsson.se/assets/charlesforstman.png" alt="" />
-                        <div class="meta">
-                            <p class="name">Charles Forstman</p>
-                            <p class="preview">Mike, this isn't over.</p>
-                        </div>
-                    </div>
-                </li>
-                <li class="contact">
-                    <div class="wrap">
-                        <span class="contact-status"></span>
-                        <img src="http://emilcarlsson.se/assets/jonathansidwell.png" alt="" />
-                        <div class="meta">
-                            <p class="name">Jonathan Sidwell</p>
-                            <p class="preview"><span>You:</span> That's bullshit. This deal is solid.</p>
-                        </div>
-                    </div>
-                </li>#}
-            </ul>
-        </div>
-    </div>
-    <div id="journal-log" class="content" style="display: block; z-index: 14">
-    </div>
-    <div id="tchat-content" class="content" style="display: none">
-        <div class="contact-profile">
-            <p id="tchat-title">Group Tchat</p>
-        </div>
-        <div class="messages">
-            <ul class="messages-list">
-            </ul>
-        </div>
-        <div class="message-input">
-            <div class="wrap">
-                <input type="text" placeholder="Write your message..." />
-                <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
-                <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+        <div id="tchat-content" class="content" style="display: none">
+            <div class="contact-profile">
+                <p id="tchat-title">Group Tchat</p>
+            </div>
+            <div class="messages">
+                <ul class="messages-list">
+                </ul>
+            </div>
+            <div class="message-input">
+                <div class="wrap">
+                    <input type="text" placeholder="Write your message..." />
+                    <button class="submit"><i class="material-icons">send</i></button>
+                </div>
             </div>
         </div>
-    </div>
-    <div id="new-tchat-form" class="modal">
-        <div class="modal-form" >
-            <div class="modal-header">
-                <h5 style="display: inline-block;font-weight: bolder !important;">Create group Chat</h5>
-                <a id="close-add-modal" href="#" style="float: right;cursor: pointer"><i class="material-icons">clear</i></a>
-            </div>
-            <div class="modal-content container tchat-modal-content">
-                <div class="modal-body modal-part">
-                    <div id="tchat-form" class="wrapper">
-                        <div class="row">
-                            <div class="input-field">
-                                <input placeholder="Titre de la conversation" id="tchat-title-form" type="text" class="validate">
-                                <label for="tchat-title-form">Titre</label>
+        <div id="new-tchat-form" class="modal">
+            <div class="modal-form" >
+                <div class="modal-header">
+                    <h5 style="display: inline-block;font-weight: bolder !important;">Create group Chat</h5>
+                    <a id="close-add-modal" href="#" style="float: right;cursor: pointer"><i class="material-icons">clear</i></a>
+                </div>
+                <div class="modal-content container tchat-modal-content">
+                    <div class="modal-body modal-part">
+                        <div id="tchat-form" class="wrapper">
+                            <div class="row">
+                                <div class="input-field">
+                                    <input placeholder="Titre de la conversation" id="tchat-title-form" type="text" class="validate">
+                                    <label for="tchat-title-form">Titre</label>
+                                </div>
+                            </div>
+                            <div >
+                                <ul id="social-users-list">
+                                </ul>
                             </div>
                         </div>
-                        <div >
-                            <ul id="social-users-list">
-                            </ul>
-                        </div>
                     </div>
                 </div>
+                <button id="cancel-tchat-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
+                <button id="create-tchat-btn" class="btn waves-effect waves-light" type="submit">Create Tchat</button>
             </div>
-            <button id="cancel-tchat-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
-            <button id="create-tchat-btn" class="btn waves-effect waves-light" type="submit">Create Tchat</button>
         </div>
-    </div>
-    <div id="confirm-tchat-modal" class="modal">
-        <div class="modal-form">
-            <div class="modal-header">
-                <h5 style="display: inline-block;font-weight: bolder !important;">Delete Selected Tchat</h5>
-                <a id="close-confirm-modal" href="#" style="float: right;cursor: pointer"><i class="material-icons">clear</i></a>
-            </div>
-            <div class="modal-content container tchat-modal-content">
-                <div class="modal-body modal-part">
-                    <span >Are you sure you want to delete selected tchat ?</span>
+        <div id="confirm-tchat-modal" class="modal">
+            <div class="modal-form">
+                <div class="modal-header">
+                    <h5 style="display: inline-block;font-weight: bolder !important;">Delete Selected Tchat</h5>
+                    <a id="close-confirm-modal" href="#" style="float: right;cursor: pointer"><i class="material-icons">clear</i></a>
                 </div>
+                <div class="modal-content container tchat-modal-content">
+                    <div class="modal-body modal-part">
+                        <span >Are you sure you want to delete selected tchat ?</span>
+                    </div>
+                </div>
+                <button id="cancel-tchat-rm-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
+                <button id="confirm-tchat-rm-btn" class="btn waves-effect waves-light" type="submit">Confirm</button>
             </div>
-            <button id="cancel-tchat-rm-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
-            <button id="confirm-tchat-rm-btn" class="btn waves-effect waves-light" type="submit">Confirm</button>
         </div>
     </div>
 </div>
