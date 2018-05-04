@@ -106,18 +106,23 @@ async function findNodeByIdAndRemove(id) {
 
   for (let i = 0; i < parentNodes.length; i++) {
     const parentNode = parentNodes[i];
-    parentNode.children = parentNode
-      .children
-      // DO NOT TOUCH THE CONSOLE.LOG !!! ELSE IT WONT SAVE THE CHANGEMENT
-      .filter(child => child._id !== node._id && console.log(child._id !== node._id));
+    
+    const children = parentNode
+      .children.filter((child) => {
+        const res = String(child._id) !== String(node._id);
+        res ? console.log(`node ${child.name} saved`):  console.log(`node ${child.name} deleted`);
+        return res;
+      }, parentNode.children);
+    parentNode.children = children;
     await parentNode.save().catch(err => { throw err });
   }
 
   if (!node) throw new Error('Node not Found');
 
   for (let i = 0; i < node.children.length; i++) {
-    const child = await node.findById(child._id).catch((err) => { throw err; });
-    await child.remove().catch((err) => { throw err; });
+    const child = node.children[i]; 
+    const nodeChild = await Node.findById(child._id).catch((err) => { throw err; });
+    await nodeChild.remove().catch((err) => { throw err; });
   }
   return null;
 }

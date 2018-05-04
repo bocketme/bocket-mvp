@@ -3,36 +3,45 @@ const loading = require('./Interface')
 
 module.exports = (io, socket) => {
   const manager = new NodeViewer();
-  const { currentWorkspace } = socket.handshake.session;
 
-  manager.emitAssembly((id, matrix, parentId) =>
-  socket.emit(loading.emit.assembly, id, matrix, parentId)
-  );
-  manager.emitPart((id, name, matrix, parentId) =>
-  socket.emit(loading.emit.part, id, name, matrix, parentId)
-  );
-  manager.emitUpdateMatrix((id, matrix) =>
-    socket.emit(loading.emit.updateMatrix, id, matrix)
-  )
+  manager.emitAssembly((id, matrix, parentId) => {
+    socket.emit(loading.emit.assembly, id, matrix, parentId);
+  });
 
-  manager.emitAssemblyForEveryOne((id, matrix, parentId) =>
-    io.in(currentWorkspace).emit(loading.emit.assembly, id, matrix, parentId)
-  );
-  manager.emitPartForEveryOne((id, name, matrix, parentId) =>
-    io.in(currentWorkspace).emit(loading.emit.part, id, name, matrix, parentId)
-  );
+  manager.emitPart((id, name, matrix, parentId) => {
+    socket.emit(loading.emit.part, id, name, matrix, parentId)
+  });
 
-  socket.on(loading.on.start, (workspaceId) =>
-    manager.loadWorkspace(workspaceId)
-  )
-
-  socket.on(loading.on.save, (nodeId, matrix) => {
-    manager.save(currentWorkspace, nodeId, matrix);
+  manager.emitUpdateMatrix((id, matrix) => {
+    socket.emit(loading.emit.updateMatrix, id, matrix);
   })
 
-  socket.on(loading.on.cancel, () => manager.cancel(currentWorkspace))
+  manager.emitAssemblyForEveryOne((id, matrix, parentId) => {
+    const { currentWorkspace } = socket.handshake.session;
+    io.in(currentWorkspace).emit(loading.emit.assembly, id, matrix, parentId);
+  });
+  manager.emitPartForEveryOne((id, name, matrix, parentId) => {
+    const { currentWorkspace } = socket.handshake.session;
+    io.in(currentWorkspace).emit(loading.emit.part, id, name, matrix, parentId);
+  });
 
-  socket.on(loading.on.update, (nodeId, token) =>
+  socket.on(loading.on.start, (workspaceId) => {
+    const { currentWorkspace } = socket.handshake.session;
+    manager.loadWorkspace(workspaceId);
+  })
+
+  socket.on(loading.on.save, (nodeId, matrix) => {
+    const { currentWorkspace } = socket.handshake.session;
+    manager.save(currentWorkspace, nodeId, matrix);
+    socket.emit('info', 'node Saved');
+  })
+
+  socket.on(loading.on.cancel, () => {
+    const { currentWorkspace } = socket.handshake.session;
+    manager.cancel(currentWorkspace)
+  });
+
+  socket.on(loading.on.update, (nodeId, token) => {
     manager.update(nodeId)
-  )
+  });
 }

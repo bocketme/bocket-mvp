@@ -6,7 +6,7 @@
             {% else %}
                 <div class="container">
                     <div class={% if workspace.id == in_use.id %} {{ "circle-responsive-active" }} {% else %} {{ "circle-responsive" }} {% endif %} 
-                        data-tooltip={{ workspace.name }}
+                        data-tooltip="{{ workspace.name }}"
                         data-delay="50"
                         data-position="right"
                         >
