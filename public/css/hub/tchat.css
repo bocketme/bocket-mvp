@@ -348,16 +348,20 @@
     font-weight: bolder;
     font-size: larger;
     overflow-x: hidden;
+    overflow-y: hidden;
 }
-#frame .content .contact-profile img {
-    width: 40px;
-    border-radius: 50%;
-    float: left;
-    margin: 9px 12px 0 9px;
+#frame .content .contact-profile a {
+    padding-right: 20px !important;
+    padding-top: 5px;
+    vertical-align: middle !important;
+    display: inline-block !important;
+    float: right;
+    cursor: pointer;
 }
 #frame .content .contact-profile p {
     float: left;
     padding-left: 10px;
+    display: inline-block !important;
 }
 #frame .content .messages {
     height: auto;
@@ -454,11 +458,11 @@
 }
 
 .tchat-modal-content {
-    height: 85%;
+    height: calc(75% - 45px);
 }
 
-#cancel-tchat-rm-btn, #cancel-tchat-btn {
-    position: static !important;
+#cancel-tchat-rm-btn, #cancel-tchat-btn, #cancel-add-btn {
+    height: 40px;
     background-color: #ffffff !important;
     color: #4A90E2 !important;
     border: 1px solid #4A90E2 !important;
@@ -469,8 +473,8 @@
     bottom: 0 !important;
 }
 
-#confirm-tchat-rm-btn, #create-tchat-btn {
-    position: static !important;
+#confirm-tchat-rm-btn, #create-tchat-btn, #add-user-btn {
+    height: 40px;
     background-color: #4A90E2 !important;
     color: #ffffff !important;
     text-align: center !important;
@@ -483,4 +487,29 @@
 #social-users-list {
     overflow: auto;
     height: 50%;
+}
+
+#confirm-tchat-modal .modal-form {
+    width: 20% !important;
+    height: 20% !important;
+}
+
+#confirm-tchat-modal h5 {
+    font-weight: bolder;
+    font-size: larger;
+    padding: 10px;
+}
+
+#new-tchat-form h5 {
+    font-weight: bolder;
+    font-size: larger;
+}
+
+#new-tchat-form i, #confirm-tchat-modal i  {
+    padding-top: 9px;
+    padding-right: 10px;
+}
+
+#new-tchat-form ul {
+    height: 100% !important;
 }

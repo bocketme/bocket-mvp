@@ -14,7 +14,7 @@ module.exports = (io, socket) => {
       .findById(socket.handshake.session.currentWorkspace)
       .then(({ Tchats }) => {
         if (tchat) {
-          const result = Tchats.find(elem => String(elem._id) === tchat._id);
+          const result = Tchats.find(elem => String(elem._id) === tchat);
           socket.emit('[Tchat] - fetchById', result);
         } else {
           socket.emit('[Tchat] - 404');

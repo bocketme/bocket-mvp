@@ -78,6 +78,7 @@ main {
 
 #third_column_content{
     height: 94%;
+    display: block;
 }
 
 #second_column_content::-webkit-scrollbar-track, third_column_content::-webkit-scrollbar-track
