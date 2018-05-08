@@ -1,5 +1,6 @@
 const serverConfiguration = require("../config/server");
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const uniqueValidator = require('mongoose-unique-validator');
 const User = require("./nestedSchema/NestedUserSchema");
 const Workspace = require("./nestedSchema/NestedWorkspaceSchema");
@@ -13,14 +14,23 @@ let Node = new mongoose.Schema({
 
 let OrganizationSchema = new mongoose.Schema({
   name: { type: String, required: true, index: { unique: true } },
-  owner: { type: [User], required: true },
-  admin: { type: [User], default: [] },
-  creation: { type: Date, default: new Date() },
-  members: [User],
-  workspaces: [Workspace],
-  // adresse : String
-  //TODO: Why? - L'organization a une liste de noeud ???
-  node: [Node]
+  Owner: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+  Admins: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  Members: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+
+  //The creation date of the workpsaces.
+  creation: { type: Date, default: new Date() },  
+  //TODO: Script to fill the workpsaces.
+  //The list of workspaces of the organization
+  Workspaces: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  //TODO: Delete workspace.
+  //workspaces: [Workspace],
+  //TODO: Fill the address facturation / Need form
+  address: String,
+  city: String,
+  country: String,
+  //TODO: Mise en place du Stripe
+  node: [Node]  //TODO: Delete Safe (node is empty)
 });
 
 /**

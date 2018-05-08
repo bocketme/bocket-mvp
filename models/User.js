@@ -1,11 +1,10 @@
 const serverConfiguration = require('../config/server');
 const mongoose = require('mongoose');
+const Schema =  mongoose.Schema
 const bcrypt = require('bcrypt');
 const uniqueValidator = require('mongoose-unique-validator');
 const util = require('util');
 
-const NestedWorkspaceSchema = require('./nestedSchema/NestedWorkspaceSchema');
-const NestedOrganizationSchema = require('./nestedSchema/NestedOrganizationSchema');
 const compare = util.promisify(bcrypt.compare);
 
 const UserSchema = new mongoose.Schema({
@@ -13,17 +12,25 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   active: Boolean,
-  createDate: Date,
-  workspaces: { type: [NestedWorkspaceSchema] },
-  organizations: { type: [NestedOrganizationSchema] },
-  avatar: { type: String, default: 'bocket.png' },
-  //TODO: Create a forget password context.
-  forget: { 
-    active: { type: Boolean, default: false },
-    key: String 
-   },
-});
+  createDate: {type: Date, default: new Date()},
 
+  avatar: String,
+
+  //TODO: Script to fill the OrganizationManager
+  Organization: [{
+    _id: {type: Schema.Types.ObjectId, required: true},
+    workspaces: [{type: Schema.Types.ObjectId, ref: 'Workspace'}],
+  }],
+  //TODO: Delete all the workspaces + organizations
+  //workspaces: { type: [NestedWorkspaceSchema] },
+  //organizations: { type: [NestedOrganizationSchema] }, //TODO: Deletion Sage (empty var).
+
+  //TODO: Create a forget password context.
+  forget: {
+    active: { type: Boolean, default: false },
+    key: String
+  },
+});
 
 UserSchema.pre('save', function (next) {
   const user = this;

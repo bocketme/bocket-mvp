@@ -8,7 +8,7 @@ const configServer = require('../config/server');
 const fs = require('fs');
 const path = require('path');
 const AssemblyFileSystem = require('../config/AssemblyFileSystem');
-
+const Schema = mongoose.Schema
 const directories = Object.values(AssemblyFileSystem);
 
 /**
@@ -25,20 +25,16 @@ const AssemblyScheama = mongoose.Schema({
   name: { type: String, require: true, index: true },
 
   // TODO: Access To Assembly => Issue
-  // owners: {type: [nestedOwners], default: []}
-
   description: { type: String, default: 'No description aviable', index: true },
   path: { type: String },
-  ownerOrganization: { type: NestedOrganization, require: true },
   maturity: { type: String, default: TypeEnum.maturity[0] },
   quality: { type: Number, default: 0 },
-  whereUsed: { type: [String], default: [] },
-  creator: { type: NestedUser, require: true },
+  //TODO: Script to fill the data
+  creator: { type: Schema.Types.ObjectId, require: true },
 
   // Update tags unused for the 1.0
   tags: { type: [], default: [] },
 
-  annotation: { type: [NestedAnnotation], default: [] },
   activities: { type: [NestedComment], default: [] },
 });
 

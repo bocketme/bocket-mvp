@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const uniqueValidator = require('mongoose-unique-validator');
-
+const Schema =  mongoose.Schema
 const configServer = require('../config/server');
 const TypeEnum = require('../enum/NodeTypeEnum');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
@@ -18,7 +18,7 @@ const log = require('../utils/log');
 const logPart = log.child({ type: 'part' });
 
 const NestedOrganization = mongoose.Schema({
-  _id: { type: mongoose.SchemaTypes.ObjectId, require: true },
+  _id: { type: Schema.Types.ObjectId, require: true },
   name: { type: String, require: true },
 });
 
@@ -31,7 +31,10 @@ const PartSchema = mongoose.Schema({
   ownerOrganization: { type: NestedOrganization, require: true },
   quality: { type: Number, default: 0 },
   tags: { type: [], default: [] },
-  creator: { type: NestedUser, require: true },
+
+  //TODO: Script to fill the data
+  creator: { type: Schema.Types.ObjectId, require: true },
+
   annotation: { type: [NestedAnnotation], default: [] },
   activities: { type: [NestedComment], default: [] },
 

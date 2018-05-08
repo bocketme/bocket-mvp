@@ -85,14 +85,8 @@ const newAssembly = async (req, res) => {
   try {
     assembly = await assemblySchema.create({
       name: name,
-      creator: {
-        _id: creator._id,
-        completeName: creator.completeName,
-        email: creator.email,
-      },
-      Workspaces: parentAssembly.Workspaces,
+      creator: creator._id,
       description: description,
-      ownerOrganization: parentAssembly.ownerOrganization,
     });
 
     await assembly.save();
@@ -112,7 +106,7 @@ const newAssembly = async (req, res) => {
       description: description,
       type: NodeTypeEnum.assembly,
       content: assembly._id,
-      Workspaces: parentNode.Workspaces,
+      Workspace: parentNode.Workspace,
       team: parentNode.team,
     });
 
@@ -140,7 +134,7 @@ const newAssembly = async (req, res) => {
       subNode.remove();
   }
 
-  let fileNotcreated;
+  let fileNotcreated = [];
 
   //TODO: Affichage d'erreur specFiles
   let chemin = path.join(config.files3D, assembly.path);
