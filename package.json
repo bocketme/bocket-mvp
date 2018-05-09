@@ -70,6 +70,8 @@
     "socket.io-file-client": "^2.0.2",
     "stats.js": "^0.17.0",
     "three": "^0.89.0",
+    "three.textsprite": "^18.3.19",
+    "three.texttexture": "^18.3.19",
     "twig": "^1.10.5",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "uid-safe": "^2.1.5",

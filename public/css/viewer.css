@@ -225,3 +225,39 @@
 .note-span {
     padding-right: 5px;
 }
+
+#button-distance.normal img {
+  content: url("/img/viewer/03d-Distances.svg");
+}
+#button-distance.selected img {
+  content: url("/img/viewer/03d-Distances-selected.svg");
+}
+
+
+#button-show-distances.normal img {
+  content: url("/img/viewer/03a-HideDists.svg");
+}
+#button-show-distances.selected img {
+  content: url("/img/viewer/03a-ShowDists.svg");
+}
+
+.button-mini-option{
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+}
+
+.button-mini-option>a{
+  height: 35px !important;
+  width: 35px !important;
+}
+
+
+#distance-option{
+    position: relative;
+    top: unset;
+    bottom: unset;
+    right: unset;
+    left: unset;
+    padding: 0;
+}
+
