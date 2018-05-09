@@ -18,10 +18,14 @@ const UserSchema = new mongoose.Schema({
   organizations: { type: [NestedOrganizationSchema] },
   avatar: { type: String, default: 'bocket.png' },
   //TODO: Create a forget password context.
-  forget: { 
+  forget: {
     active: { type: Boolean, default: false },
-    key: String 
-   },
+    key: String
+  },
+  options: {
+    celShading: { type: Boolean, default: false },
+    colorBackground: { type: String, default: "#e0e0e0" },
+  }
 });
 
 

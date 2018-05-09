@@ -30,20 +30,30 @@
                 <img class="button-viewer" src="/img/viewer/02c-Wireframe.svg" alt="Wireframe">
             </a>
         </li>
+
+        <li class="viewer-option">
+            <div id="distance-option" class="fixed-action-btn horizontal">
+                <a id="button-distance" class="btn-floating grey">
+                    <img class="button-viewer" src="/img/viewer/03d-Distances.svg" alt="Distance">
+                </a>
+                <ul style="right:55px;">
+                    <li class="button-mini-option">
+                        <a id="button-remove-distances" class="btn-floating grey">
+                            <img class="button-viewer" src="/img/viewer/03c-RemoveDists.svg" alt=""></a>
+                    </li>
+                    <li class="button-mini-option">
+                        <a id="button-show-distances" class="btn-floating grey">
+                            <img class="button-viewer" src="/img/viewer/03a-HideDists.svg" alt=""></a>
+                    </li>
+                    <li class="button-mini-option">
+                        <a id="button-add-distance" class="btn-floating grey">
+                            <img class="button-viewer" src="/img/viewer/03b-AddDist.svg" alt=""></a>
+                    </li>
+                </ul>
+            </div>
+        </li>
     </ul>
 
-    {#
-    <div class="fixed-action-btn horizontal viewer-options-3">
-        <a class="btn-floating btn-large green">
-            <img class="button-viewer" src="/img/viewer/03-Annotations.svg" alt="">
-        </a>
-        <ul>
-            <li><a id="button-show-annotation" class="btn-floating grey">   <img class="button-viewer" src="/img/viewer/03a-ShowAnnotes.svg" alt=""></a></li> <!--Show Annotation-->
-            <li><a id="button-add-annotation" class="btn-floating grey">    <img class="button-viewer" src="/img/viewer/03b-AddAnnote.svg" alt=""></a></li> <!--Add Annotation-->
-            <li><a id="button-add-annotation" class="btn-floating grey">    <img class="button-viewer" src="/img/viewer/03c-RemoveAnnote.svg" alt=""></a></li>
-        </ul>
-    </div>
-    #}
     <div id="buttons-saveandcancel">
         <a id="button-save" class="waves-effect waves-light btn">Save</a>
         <a id="button-cancel" class="waves-effect waves-light btn">Cancel</a>

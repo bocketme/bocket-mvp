@@ -11,24 +11,51 @@ const log = require('../utils/log');
  * @param nodeId {string}
  * @return {Promise<void>}
  */
-async function doesHeHaveRights(userMail, nodeId) {
+async function doesHeHaveRights(io, userMail, nodeId) {
   const user = await User.findOne({ email: userMail });
   const node = await Node.findById(nodeId);
 
-  if (!user || !node) return null;
+  if (!node) deleteInexistantNode(io, nodeId);
 
-  /*
-  * console.log("User's mail:", user.email);
-  * console.log("Node's name:", node.name);
-  */
+  if (!user || !node) return null;
 
   const [members, owners] = [node.team.members, node.team.owners];
 
-  if (members.find(member => member.email === userMail) ||
-    owners.find(member => member.email === userMail)) {
-    return node;
+  const users = [...members, ...owners]
+
+  return (users.find(({email}) => email === userMail) !== null) ? node : null;
+}
+
+async function deleteInexistantNode(io, nodeId) {
+  const nodes = await Node.find({ 'children._id': nodeId });
+  log.info(nodes.length);
+  if (nodes.length === 0) return null
+  log.info(`the node ${nodeId} is inexistant, deletion automatic...`);
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+    node.children = node.children.filter(child => child._id !== nodeId);
+    await node.save();
   }
-  return null;
+  log.info(`deletion successfull`);
+  io.to(session.currentWorkspace).emit(socketName, nodeId);
+  io.to(session.currentWorkspace).emit('[Viewer] - Delete', nodeId);
+  return null
+}
+
+async function deleteInexistantNode(io, nodeId) {
+  const nodes = await Node.find({ 'children._id': nodeId });
+  log.info(nodes.length);
+  if (nodes.length === 0) return null
+  log.info(`the node ${nodeId} is inexistant, deletion automatic...`);
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+    node.children = node.children.filter(child => child._id !== nodeId);
+    await node.save();
+  }
+  log.info(`deletion successfull`);
+  io.to(session.currentWorkspace).emit(socketName, nodeId);
+  io.to(session.currentWorkspace).emit('[Viewer] - Delete', nodeId);
+  return null
 }
 
 async function deleteNodeListener(io, session, nodeId) {
@@ -39,7 +66,7 @@ async function deleteNodeListener(io, session, nodeId) {
     });
     if (workspaces.length > 0) throw Error('Node Master');
 
-    const node = await doesHeHaveRights(session.userMail, nodeId);
+    const node = await doesHeHaveRights(io, session.userMail, nodeId);
     if (!node) throw Error('Node not Found');
     const { name } = node;
     if (node) {
@@ -58,7 +85,9 @@ module.exports = async (io, socket) => {
     deleteNodeListener(io, socket.handshake.session, nodeId)
       .catch((e) => {
         log.error(e);
-        socket.emit('error', 'Cannot delete the node');
+        try {
+          socket.emit('error', 'Cannot delete the node');
+        } catch (e) { console.error(e) }
       });
   });
 };

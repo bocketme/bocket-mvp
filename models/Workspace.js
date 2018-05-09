@@ -1,31 +1,36 @@
 let serverConfiguration = require("../config/server");
 let mongoose = require("mongoose");
-
+const autoPopulatePlugin = require('mongoose-autopopulate');
 let Organization = require("./nestedSchema/NestedOrganizationSchema");
 let User = require("./nestedSchema/NestedUserSchema");
-let NestedNode = require("./nestedSchema/NestedNodeSchema");
-let NestedTeam = require("./nestedSchema/NestedTeamSchema");
 let Node = require("./Node");
+const NestedNode =  require("./nestedSchema/NestedNodeSchema")
+const NestedTeam = require("./nestedSchema/NestedTeamSchema")
 
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 let Stripe = new mongoose.Schema({
   name: String
 });
 
+/*
+const Team = new mongoose.Schema({
+  orga
+})
+*/
+
 let WorkspaceSchema = new mongoose.Schema({
   name: { type: String, require: true },
-  owner: { type: User, require: true },
   description: String,
+  //nodeMaster: { type: mongoose., ref: 'Node' },
   node_master: { type: NestedNode },
   creation: { type: Date, default: new Date() },
-  users: { type: [User], required: false, default: [] },
+  users: { type: [User], default: [] },
   team: { type: NestedTeam, required: true },
   organization: { type: Organization, required: true }, // /!\ WITHOUT END VARIABLE /!\
-  Annotations: {type: [NestedAnnotation], required: true, default: [] }
+  Annotations: { type: [NestedAnnotation], required: true, default: [] },
 });
 
-// TODO: DELETE ALL users attribute (workspace.users)
-
+WorkspaceSchema.plugin(autoPopulatePlugin);
 /**
  *
  *
