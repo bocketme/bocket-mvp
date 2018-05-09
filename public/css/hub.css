@@ -384,7 +384,7 @@ p{
 }
 
 .modal { 
-    width: 35%; 
+    width: 35%;
 }
 
 .clear {
@@ -673,10 +673,6 @@ ul#details-tab {
     #side-nav {
         max-height: auto;
     }
-
-    .modal {
-        width: 80%;
-    }
 }
 
 
@@ -711,10 +707,6 @@ ul#details-tab {
     #side-nav {
         overflow: hidden;
         height: 100%;
-    }
-    
-    .modal{
-        max-height: 100%;
     }
 
     .text-file-style {

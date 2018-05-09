@@ -14,9 +14,9 @@
 
 .modal-form {
     width: 30%;
-    height: 50%;
+    height: 60%;
+    position: relative;
     margin: auto;
-    position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
@@ -40,6 +40,10 @@
     background: #FAFAFA;
 }
 
+.toast-error {
+    background: #FF2E63;
+}
+
 #social-space {
     display: none;
     position: absolute;
@@ -50,6 +54,7 @@
 }
 
 #news-feed {
+    display: none;
     min-width: 360px;
     max-width: 100%;
     min-height: 300px;
@@ -72,7 +77,6 @@
 }
 
 #frame {
-    display: none;
     min-width: 360px;
     max-width: 100%;
     min-height: 300px;
@@ -386,13 +390,23 @@
     margin-left: 10px;
     margin-right: 10px;
 }
+
 #frame .content .messages ul li p {
     word-wrap: break-word;
+}
+
+#frame .content .messages ul li img {
+    /*display: inline-block;*/
+    width: 26px;
+    /*border-radius: 50%;*/
+    float: left;
+    margin-right: 10px;
 }
 
 #frame .content .messages ul li p.message-content {
     padding: 10px 15px;
     margin-bottom: 10px;
+    margin-left: 22px;
     /*border-radius: 20px;*/
 }
 #frame .content .messages ul li p.msg-info span {
@@ -484,9 +498,9 @@
     bottom: 0 !important;
 }
 
-#social-users-list {
+#social-users-list, #add-users-list {
     overflow: auto;
-    height: 50%;
+    height: 100%;
 }
 
 #confirm-tchat-modal .modal-form {
@@ -508,8 +522,4 @@
 #new-tchat-form i, #confirm-tchat-modal i  {
     padding-top: 9px;
     padding-right: 10px;
-}
-
-#new-tchat-form ul {
-    height: 100% !important;
 }

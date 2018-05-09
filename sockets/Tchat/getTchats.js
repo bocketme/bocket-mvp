@@ -33,7 +33,6 @@ module.exports = (io, socket) => {
       });
   });
   socket.on('[Tchat] - joinRoom', (room) => {
-    console.log('Je join la room:', room, typeof(room));
     socket.join(room);
   });
 };

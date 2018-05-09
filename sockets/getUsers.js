@@ -7,7 +7,6 @@ module.exports = (io, socket) => {
     Workspace
       .findById(socket.handshake.session.currentWorkspace)
       .then(({ users }) => {
-        console.log(users);
         if (withCurrentUser === false) {
           let tmpId = 0;
           users.sort();

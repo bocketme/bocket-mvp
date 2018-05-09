@@ -18,14 +18,13 @@ $('#profile-img').click(() => {
 });
 
 $('#addcontact').click(() => {
-  document.getElementById('new-tchat-form').style.display = 'block';
+  document.getElementById('new-tchat-form').style.display = 'flex';
   document.getElementById('new-tchat-form').classList.add('blurred');
 });
 
 $('#add-user').click(() => {
-  console.log('missigUsers:', missingUsers);
   if (missingUsers.length > 0) {
-    document.getElementById('add-user-form').style.display = 'block';
+    document.getElementById('add-user-form').style.display = 'flex';
     document.getElementById('add-user-form').classList.add('blurred');
   } else {
     Materialize.toast('No more users to add !', 4000, 'rounded blue');
@@ -94,18 +93,15 @@ function newMessage() {
   return true;
 }
 
-socket.on('[Message] - confirmMessage', (message) => {
-  addMessage(message);
+socket.on('[Message] - confirmMessage', (tchatId, message) => {
+  if (selectedTchat._id === tchatId)
+    addMessage(message);
 });
 
 function addMessage(message) {
-  let date = new Date(message.date);
-  if (String(message.author._id) === userId) {
-    $(`<li class="sent"><p class="msg-info"><strong>${message.author.completeName}</strong><span class="message-data-time" >${date.toDateString()}</span></p><p class="message-content">${message.content}</p></li>`).appendTo($('.messages ul'));
-  } else {
-    $(`<li class="replies"><p class="msg-info"><strong>${message.author.completeName}</strong><span class="message-data-time" >${date.toDateString()}</span></p><p class="message-content">${message.content}</p></li>`).appendTo($('.messages ul'));
-  }
-
+  const date = new Date(message.date);
+  $('.messages ul').append(getMessageHtml(message, date.toDateString()));
+  $('.profile').initial();
   $('.message-input input').val(null);
   $('.messages').animate({ scrollTop: $(document).height() }, 'fast');
 }
@@ -125,14 +121,14 @@ function addContactCard(tchat) {
   const date = new Date(tchat.date);
   if (tchat !== undefined) {
     const lastMessage = (tchat.messages.length > 0 ? tchat.messages[tchat.messages.length - 1].content : 'No previous messages..');
-    $('#contacts-list').append(`<li id="${tchat._id}" class="contact">\n` +
-        '                    <div class="wrap">\n' +
-        '                        <i class="material-icons">comment</i>\n' +
+    $('#contacts-list').append(`<li id="${tchat._id}" class="contact">` +
+        '                    <div class="wrap">' +
+        '                        <i class="material-icons">comment</i>' +
         `<a id="${tchat._id}-delete" href=#  style="float: right;cursor: pointer"><i class="material-icons" style="color: black">clear</i></a>\n` +
-        '                        <div class="meta">\n' +
-        `                            <p class="name">${tchat.title}</p>\n` +
-        '                        </div>\n' +
-        '                    </div>\n' +
+        '                        <div class="meta">' +
+        `                            <p class="name">${tchat.title}</p>` +
+        '                        </div>' +
+        '                    </div>' +
         '                </li>');
   }
 
@@ -150,7 +146,7 @@ function addContactCard(tchat) {
 
   $(`#${tchat._id}-delete`).on('click', () => {
     deletedTchat = tchat;
-    document.getElementById('confirm-tchat-modal').style.display = 'block';
+    document.getElementById('confirm-tchat-modal').style.display = 'flex';
     document.getElementById('confirm-tchat-modal').classList.add('blurred');
   });
 
@@ -166,7 +162,7 @@ function addContactCard(tchat) {
     document.getElementById('confirm-tchat-modal').classList.remove('blurred');
   });
 
-  $('#cancel-add-btn').on('click', () => {
+  $('#cancel-add-btn, #close-add-modal').on('click', () => {
     document.getElementById('add-user-form').style.display = 'none';
     document.getElementById('add-user-form').classList.remove('blurred');
     const listItems = $('#add-users-list li');
@@ -185,8 +181,7 @@ function addContactCard(tchat) {
         usersList.push(idUser);
       }
     });
-    console.log('Selected users:', usersList, selectedTchat._id);
-    if (!jQuery.isEmptyObject(selectedTchat)) {
+    if (!jQuery.isEmptyObject(selectedTchat)) {
       socket.emit('[Tchat] - addUser', selectedTchat._id, usersList);
       document.getElementById('cancel-add-btn').click();
     }
@@ -204,12 +199,16 @@ socket.on('[Tchat] - confirmAdd', tchat => {
 });
 
 socket.on('[Tchat] - remove', deletedTchat => {
+  if (selectedTchat._id === deletedTchat._id) {
+    document.getElementById('tchat-content').style.display = 'none';
+  }
   allTchats = allTchats.filter(tchat => tchat._id !== deletedTchat._id);
   $(`#${deletedTchat._id}`).remove();
+  // Materialize.toast(`${deletedTchat.title} : This channel has been removed.`, 3000, 'rounded toast-error');
 });
 
 socket.on('[Tchat] - fetchById', (tchat) => {
-  if (tchat != null) {
+  if (tchat != null && selectedTchat._id === tchat._id) {
     $('#tchat-title').text(tchat.title);
     if (tchat != null && tchat !== undefined) {
       selectedTchat = tchat;
@@ -228,12 +227,10 @@ socket.on('[Users] - fetchById', (user) => {
 });
 
 socket.on('[Tchat] - confirmUserAdd', (tchat) => {
-  console.log('selected chat:', tchat);
-  Materialize.toast('User well added !', 4000, 'rounded blue');
-  missingUsers = [];
   $('#add-users-list').empty();
-  $('#social-users-list').empty();
   socket.emit('[Users] - fetchFromWorkspace');
+  selectedTchat = tchat;
+  Materialize.toast('User well added !', 4000, 'rounded blue');
 });
 
 socket.on('[Tchat] - notifUserAdded', (tchat, addedUsers) => {
@@ -244,19 +241,24 @@ socket.on('[Tchat] - notifUserAdded', (tchat, addedUsers) => {
   }
   missingUsers = [];
   $('#add-users-list').empty();
-  $('#social-users-list').empty();
+  if (selectedTchat !== undefined && selectedTchat._id === tchat._id)
+    selectedTchat = tchat;
   socket.emit('[Users] - fetchFromWorkspace');
 });
 
 socket.on('[Users] - fetchFromWorkspace', (users) => {
+  while (missingUsers.length > 0) {
+    missingUsers.pop();
+  }
   if (!jQuery.isEmptyObject(selectedTchat)) {
-    for (let user of users) {
+    for (const user of users) {
       if (!selectedTchat.users.includes(String(user._id))) {
         $('#add-users-list').append(`<li id="${user._id}-add"><a href="#!"><input type="checkbox" class="check-with-label" id="${user._id}-checkbox"/><label class="label-for-check" for="${user._id}-checkbox">${user.completeName}</label></a></li>`);
         missingUsers.push(user._id);
       }
     }
   } else {
+    $('#social-users-list').empty();
     users.forEach((user) => {
       socket.emit('[Users] - fetchById', user._id);
     });
@@ -299,7 +301,7 @@ function getUserId() {
   socket.on('[User] - getCurrentUser', (user) => {
     userId = user._id;
     userName = user.completeName;
-/*
+    /*
     $('#profile-name').text(user.completeName);
 */
   });
@@ -308,6 +310,19 @@ function getUserId() {
 function getAllUsers() {
   socket.emit('[Users] - fetchFromWorkspace');
   $('#add-users-list').empty();
-  $('#social-users-list').empty();
 }
 
+function getUserAvatar(author, classes) {
+  const avatar = `<img data-name="${author}" class=" avatar profile ${classes}"/>`;
+  return avatar;
+}
+
+function getMessageHtml(message, date) {
+  const imgHtml = getUserAvatar(message.author.completeName, 'circle');
+  return '<li class="sent">' + imgHtml +
+          '<p class="msg-info">' +
+        '<strong>' + message.author.completeName + '</strong>' +
+        '<span class="message-data-time">' + date + '</span></p>' +
+        '<p class="message-content">' + message.content + '</p>' +
+        '</li>';
+}

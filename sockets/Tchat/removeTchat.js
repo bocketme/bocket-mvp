@@ -12,10 +12,8 @@ module.exports = (io, socket) => {
         return workspaces.save();
       })
       .then(() => {
-        socket.emit('Info', 'The Tchat was deleted');
-        io
-          .in(socket.handshake.session.currentWorkspace)
-          .emit('[Tchat] - remove', tchat);
+        socket.broadcast.to(socket.handshake.session.currentWorkspace).emit('[Tchat] - remove', tchat);
+        socket.emit('[Tchat] - remove', tchat);
       });
   });
 };

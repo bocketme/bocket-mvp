@@ -20,8 +20,8 @@ module.exports = (io, socket) => {
       .then(({ Tchats }) => {
         const newTchat = Tchats.find(elem => String(elem._id) === tchatId);
         const roomId = String(newTchat.id);
-        socket.broadcast.to(roomId).emit('[Message] - confirmMessage', newTchat.messages[newTchat.messages.length - 1]);
-        socket.emit('[Message] - confirmMessage', newTchat.messages[newTchat.messages.length - 1]);
+        socket.broadcast.to(roomId).emit('[Message] - confirmMessage', tchatId, newTchat.messages[newTchat.messages.length - 1]);
+        socket.emit('[Message] - confirmMessage', tchatId, newTchat.messages[newTchat.messages.length - 1]);
       })
       .catch(err => {
         console.error(err);

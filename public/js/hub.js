@@ -4,7 +4,6 @@
     $('#show-social-space').on('click', () => {
       let displayValue = document.getElementById('social-space').style.getPropertyValue('display');
 
-      console.log('displayValue :', displayValue);
       if (displayValue === 'block') {
         document.getElementById('renderDiv').style.display = 'block';
         document.getElementById('header').style.display = 'block';
@@ -14,7 +13,6 @@
         document.getElementById('header').style.display = 'none';
         document.getElementById('social-space').style.display = 'block';
       }
-      console.log('display value after :', document.getElementById('social-space').style.getPropertyValue('display'));
     });
 
     $('.modal').modal({
@@ -28,7 +26,6 @@
         const context = `#${modal.context.id}`;
         const form = $(context).find('form');
         if (form[0] && modal.context.id !== 'edit-part')
-        // console.log("form :", form);
         { form[0].reset(); }
       },
     });
@@ -64,7 +61,6 @@
           const context = `#${modal.context.id}`;
           const form = $(context).find('form');
           if (form[0] && modal.context.id !== 'edit-part')
-          // console.log("form :", form);
           { form[0].reset(); }
         }
       },
@@ -153,7 +149,6 @@
 
     $('#dropdown-trigger-file-spec-menu').on('click', (event) => {
       event.preventDefault();
-      console.log($('#specs-context-menu'));
       $('#specs-context-menu').dropdown('open');
     });
 
