@@ -1,6 +1,20 @@
 (function ($) {
   $(function () {
     // initialize all modals
+    $('#show-social-space').on('click', () => {
+      let displayValue = document.getElementById('social-space').style.getPropertyValue('display');
+
+      if (displayValue === 'block') {
+        document.getElementById('renderDiv').style.display = 'block';
+        document.getElementById('header').style.display = 'block';
+        document.getElementById('social-space').style.display = 'none';
+      } else {
+        document.getElementById('renderDiv').style.display = 'none';
+        document.getElementById('header').style.display = 'none';
+        document.getElementById('social-space').style.display = 'block';
+      }
+    });
+
     $('.modal').modal({
       dismissible: true, // Modal can be dismissed by clicking outside of the modal
       opacity: 0.7, // Opacity of modal background
@@ -12,7 +26,6 @@
         const context = `#${modal.context.id}`;
         const form = $(context).find('form');
         if (form[0] && modal.context.id !== 'edit-part')
-        // console.log("form :", form);
         { form[0].reset(); }
       },
     });
@@ -48,7 +61,6 @@
           const context = `#${modal.context.id}`;
           const form = $(context).find('form');
           if (form[0] && modal.context.id !== 'edit-part')
-          // console.log("form :", form);
           { form[0].reset(); }
         }
       },
@@ -148,7 +160,6 @@
 
     $('#dropdown-trigger-file-spec-menu').on('click', (event) => {
       event.preventDefault();
-      console.log($('#specs-context-menu'));
       $('#specs-context-menu').dropdown('open');
     });
 

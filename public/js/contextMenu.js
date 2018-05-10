@@ -42,12 +42,14 @@ function toggleMenuContextOn(selectorId) {
     gSelectorId = selectorId;
     selector.addClass(activeClass);
     selector.addClass("active"); // add active class of materialize for dropdown behavior
-    var pos = getPosition(event);
-    if (pos.x + selector.width() > $(window).width()) // move the dropdown to the left if he's too wide
-        pos.x = $(window).width() - selector.width() - 10;
-    if (pos.y + selector.height() > $(window).height()) // move the dropdown to the up if he's too wide
-        pos.y =  $(window).height() - selector.height() - 10;
-    selector.css("left", pos.x + "px").css("top", pos.y + "px");
+    if (event) {
+        var pos = getPosition(event);
+        if (pos.x + selector.width() > $(window).width()) // move the dropdown to the left if he's too wide
+            pos.x = $(window).width() - selector.width() - 10;
+        if (pos.y + selector.height() > $(window).height()) // move the dropdown to the up if he's too wide
+            pos.y =  $(window).height() - selector.height() - 10;
+        selector.css("left", pos.x + "px").css("top", pos.y + "px");
+    }
     menuState = true;
 }
 
