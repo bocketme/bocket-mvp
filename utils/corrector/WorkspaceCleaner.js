@@ -1,13 +1,14 @@
 const co = require('co');
 const workspaceSchema = require('../../models/Workspace');
 
-co(function* () {
+module.exports = function* () {
   const cursor = workspaceSchema.find().cursor();
   for (let doc = yield cursor.next(); doc !== null; doc = yield cursor.next()) {
-    if (doc.node_master) {
-      doc.nodeMaster = doc.node_master._id;
-      delete doc.node_master;
-      yield doc.save();  
+    const workspace = doc._id;
+    if (workspace.node_master) {
+      doc.nodeMaster = workspace.node_master._id;
+      doc.node_master = null;
+      yield doc.save();
     }
   }
-});
+};

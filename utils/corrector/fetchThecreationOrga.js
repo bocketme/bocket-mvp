@@ -4,11 +4,10 @@ const workspaceSchema = require('../../models/Workspace');
 const userSchema = require('../../models/User')
 const log = require('../log');
 
-co(function* () {
+module.exports = function* () {
   const cursor = organizationSchema.find().cursor();
   for (let doc = yield cursor.next(); doc !== null; doc = yield cursor.next()) {
     // Print the user, with the `band` field populated
-    log.info('Organization Found');
     if (doc.creation) log.info('Date already created, go to next');
     else {
       const { workspaces, owner } = doc;
@@ -25,4 +24,4 @@ co(function* () {
       }  
     }
   }
-});
+};

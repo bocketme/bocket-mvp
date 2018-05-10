@@ -15,7 +15,7 @@ const directories = Object.values(AssemblyFileSystem);
  * Mongoose Schema for
  * @param {number} _id - The id of the nested organization
  * @param {string} name - The name of the organization
-*/
+ */
 const NestedOrganization = mongoose.Schema({
   _id: { type: mongoose.SchemaTypes.ObjectId, require: true },
   name: { type: String, require: true },
@@ -36,6 +36,7 @@ const AssemblyScheama = mongoose.Schema({
   tags: { type: [], default: [] },
 
   activities: { type: [NestedComment], default: [] },
+  Organization: {type: mongoose.SchemaTypes.ObjectId, required: true}
 });
 
 function mkdirPromise(chemin) {
@@ -46,10 +47,10 @@ function mkdirPromise(chemin) {
   });
 }
 
-AssemblyScheama.pre('validate', function (next) {
+AssemblyScheama.pre('save', function (next) {
   if (this.path) { return next(); }
 
-  this.path = `/${this.ownerOrganization.name}-${this.ownerOrganization._id}/${this.name} - ${this._id}`;
+  this.path = `/${this.Organization}/${this.name} - ${this._id}`;
   const assemblyPath = path.join(configServer.files3D, this.path);
 
   mkdirPromise(assemblyPath)

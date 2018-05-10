@@ -100,15 +100,14 @@ async function createAccount(req, res) {
   const documents = [];
   try {
     // Normal Signin desactivated.
-    if (!req.body.admin)
+    if (!req.body.admin && !req.body.invitationUid)
       throw new Error('Sign In - Desactivated');
 
     const user = await UserSchema.create({
       completeName: req.body.completeName,
       password: req.body.password,
       email: req.body.email,
-      workspaces: [],
-      organizations: [],
+      Organization:[]
     });
 
     await user.save();
@@ -131,6 +130,7 @@ async function createAccount(req, res) {
     const workspace = await WorkspaceSchema.create({
       name: req.body.workspaceName,
       Organization: organization._id,
+      ProductManagers: [user._id],
     });
 
     await workspace.save();
@@ -138,17 +138,16 @@ async function createAccount(req, res) {
 
     if (req.body.invitationUid) {
       const invitationInfo = await acceptInvitation(req.body.invitationUid, user);
-      req.session = signInUserSession(req.session, {
-        email: user.email,
-      });
+      req.session = signInUserSession(req.session, {email: user.email});
       req.session.completeName = user.completeName;
       req.session.currentWorkspace = invitationInfo.workspaceId;
       return res.redirect(`/project/${invitationInfo.workspaceId}`);
     }
 
-    user.workspaces.push({
-      _id: workspace._id,
-      name: workspace.name,
+    user.Organization.push({
+      _id: organization._id,
+      isOwner: true,
+      workspaces: [workspace._id]
     });
 
     await user.save();
@@ -156,6 +155,7 @@ async function createAccount(req, res) {
     const assembly = await AssemblySchema.create({
       name: req.body.workspaceName,
       description: nodeMasterConfig.description,
+      Organization: organization._id,
     });
 
     await assembly.save();

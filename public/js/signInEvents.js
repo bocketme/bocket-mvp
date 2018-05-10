@@ -15,7 +15,7 @@ $(document).ready(function () {
                 '<i class="material-icons circle">folder</i>' +
                 '<span class="workspace-id">' + workspace._id + '</span>' +
                 '<span class="title">' + workspace.name + '</span>' +
-                '<p style="color: lightslategray">' + workspace.organization.name +
+                '<p style="color: lightslategray">' + workspace.organization +
                 '</p>' +
                 '</li>');
         });

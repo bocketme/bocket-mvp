@@ -30,6 +30,18 @@
         <script type="application/javascript" src="/socket.io/socket.io.js"></script>
         <script type="application/javascript">
             var socket = io();
+            $(document).ready(function(){
+              $('.modal').modal();
+                $('.chips-autocomplete').material_chip({
+                  autocompleteOptions: {
+                    data: {
+                      bocketMember: '?organizationMember'
+                    },
+                    limit: Infinity,
+                    minLength: 1
+                  }
+                });
+            });
         </script>
         {% block js %}{% endblock %}
     </body>

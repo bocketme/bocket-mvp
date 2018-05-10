@@ -5,54 +5,44 @@ const userSchema = require('./User');
 const nodeSchema = require('./Node');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const Schema = mongoose.Schema
+const co = require('co');
 let WorkspaceSchema = new mongoose.Schema({
+  //General Information
   name: { type: String, require: true },
   description: String,
-  // TODO: Script to fill the nodeMaster
-  //node_master: { type: NestedNode },
+
+  //Node Master of the product
   nodeMaster: { type: Schema.Types.ObjectId, ref: 'Node' },
-  // TODO: Script to fill the Teamates //Tomorow
+
+  //Team
   ProductManagers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   Teammates: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   Observers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  // users: { type: [User], required: false, default: [] },
-  // team: { type: NestedTeam, required: true },
 
+  //Organization who own the workspace
   Organization: { type: Schema.Types.ObjectId, required: true, ref: 'Organization' },
-  //organization: { type: Organization, required: true }, // /!\ WITHOUT END VARIABLE /!\
 
+  //Creation
   creation: { type: Date, default: new Date() },
+
+  //Annotation
   Annotations: { type: [NestedAnnotation], required: true, default: [] }
 });
 
 // TODO: DELETE ALL users attribute (workspace.users)
 
-WorkspaceSchema.pre('save', async function () {
-  let observers = this.observers.filter(observer => {
-    let users = [...this.Teammates, ...this.ProductManagers];
-    for (let i = 0; i < users.length; i++) {
-      if (String(observer._id) === String(users[i]._id)) return false
-    }
-    return true;
-  });
-  this.observers = observers;
-
-  let Teammates = this.Teammates.filter(observer => {
-    let users = [...this.ProductManagers];
-    for (let i = 0; i < users.length; i++) {
-      if (String(observer._id) === String(users[i]._id)) return false
-    }
-    return true;
-  });
-
-  this.Teammates = Teammates;
-});
-
+/*
+WorkspaceSchema.virtual('users').get(() => co(yield function() {
+  const {Owner, Admin} = organizationSchema.findById()
+  return [Owner, ...Admin, ...this.owner, ...this.ProductManagers, ...this.Teammates, ...this.Observers]
+}))
+*/
 WorkspaceSchema.pre('remove', async function () {
   //Delete the user inside the workspace
   const users = [...this.observers, this.Teammates, this.ProductManagers];
 
   for (let i = 0; i < users.length; i++) {
+    const userId = users[i];
     const user = await userSchema.findById(userId);
 
     const indice = user.OrganizationManager.find(({ _id }) => String(_id) === String(this.Organization));

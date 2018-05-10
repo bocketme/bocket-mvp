@@ -20,100 +20,91 @@ module.exports = {
         req.session.currentWorkspace = req.params.workspaceId;
         res.render('hub', context);
       }).catch((err) => {
-        if (err === 404 || err === 500) {
-          res.sendStatus(err);
-        } else {
-          res.redirect(err);
-        }
-      });
+      log.error(err);
+      if (err === 404 || err === 500) {
+        res.sendStatus(err);
+      } else {
+        res.redirect(err);
+      }
+    });
   },
   indexPOST: (req, res) => { // email, password & workspaceId
     // TODO: CHECK SI L'UTILISATEUR EST CONNECTEE ET A LE DROIT D'AVOIR ACCES A CE WSP
-    if (!req.body.email || !req.body.password || !req.body.workspaceId) {
-      res.redirect('/');
-      return ;
-    }
-    if (!req.session.userMail) {
-      User.findOne({email: req.body.email})
-        .then(result => {
-          result.comparePassword(req.body.password, (err, isMatch) => {
-            if (err) {
-              log.error('[projectController.indexPOST] :', err);
-              res.sendStatus(500);
-            }
-            else if (!isMatch) {
-              log.error("User n'est pas connecté !");
-              res.redirect('/signIn');
-            }
-            else {
-              req.session.userMail = result.email;
-              req.session.completeName = result.completeName;
-              req.session.currentWorkspace = req.body.workspaceId;
-              res.redirect(req.originalUrl + '/' + req.body.workspaceId);
-            }
-          });
-        })
-        .catch((err) => {
-          log.error('[projectController.indexPOST] : ', err);
-        });
-    }
-    else {
-      req.session.currentWorkspace = req.body.workspaceId;
-      res.redirect(req.originalUrl + '/' + req.body.workspaceId);
-    }
+    const {email, password, workspaceId} = req.body;
+
+    connection(email, password)
+      .then((user) => {
+        req.session.userId = user._id;
+        req.session.userMail = user.email;
+        req.session.completeName = user.completeName;
+        req.session.currentWorkspace = req.body.workspaceId;
+        res.redirect(req.originalUrl + '/' + workspaceId);
+      })
+      .catch(err => {
+        log.error('[projectController.indexPOST] : \n', err);
+        res.redirect('/');
+      });
   },
+};
+
+async function connection(email, password) {
+  const user = await User.findOne({email});
+
+  if (!user) throw 'User not Found';
+
+  const isMatch = await user.comparePassword(password);
+
+  if(!isMatch) throw 'Password incorrect';
+
+  return {
+    _id: user._id,
+    email: user.email,
+    completeName: user.completeName,
+  }
 }
 
-function getRenderInformation(workspaceId, userMail) {
-  return new Promise((resolve, reject) => {
-    Workspace.findById({_id: workspaceId})
-      .then((workspace) => {
-        if (workspace === null) {
-          log.warn('[projectController.indexPOST] : - Workspace not found');
-          reject(404);
-        }
-        User.findOne({ email: userMail })
-          .then((user) => {
-            if (user === null) {
-              log.warn('[projectController.indexPOST] : User not found')
-              reject('/signin');
-            }
-            //  req.session.userId = user._id;
-            Node.findById(workspace.node_master._id)
-              .then((node_master) => {
-                let node = {name : node_master.name, _id: node_master._id, type: node_master.type, children: []};
-                let i = 0;
-                while (i < node_master.children.length) {
-                  node.children.push({title: node_master.children[i].title, _id: node_master.children[i]._id, children: []});
-                  i += 1;
-                }
-                Organization.find({"owner._id": user._id}).then((ownerOrganization) => {
-                  resolve({
-                    title: workspace.name,
-                    in_use: {name: workspace.name, id: workspace._id},
-                    data_header: 'All Parts',
-                    user: user.completeName,
-                    ownerOrganization: ownerOrganization,
-                    workspaces: user.workspaces,
-                    node: node,
-                    all_parts: 100,
-                    last_updates: 10,
-                    duplicates: 35,
-                    /* Const for front end */
-                    NodeTypeEnum: JSON.stringify(NodeTypeEnum),
-                    ViewTypeEnum: JSON.stringify(ViewTypeEnum),
-                  });
-                });
-              })
-              .catch((err) => {
-                log.error('[project controller] : error while finding node_master \n', err);
-                reject(500);
-              });
-          })
-          .catch((err) => {
-            log.error('[project controller] : the Workspace while finding node_master \n', err);
-            reject(500);
-          });
-      });
+async function getRenderInformation(workspaceId, email) {
+  const workspace = await Workspace.findById(workspaceId).catch(errorDatabase);
+
+  if (workspace === null) {
+    log.warn('[Workspace Controller] - Workspace not Found');
+    throw 404;
+  }
+
+  const user = await User.findOne({email})
+    .populate('Organization._id', 'name')
+    .populate('Organization.workspaces', 'name')
+    .catch(errorDatabase);
+
+  if(!user) {
+    log.warn('[projectController.indexPOST] : User not found');
+    reject('/signin');
+  }
+
+  const nodeMaster = await Node.findById(workspace.nodeMaster).catch(errorDatabase);
+
+  const Organization = await user.Organization.find((orga) => {
+    for(let i =0; i<orga.workspaces.length; i++){
+      const workspace = orga.workspaces[i];
+      if (String(workspace._id) === String(workspaceId)) return true;
+    }
+    return false;
   });
+
+  return {
+    title: workspace.name,
+    in_use: {name: workspace.name, id: workspace._id},
+    data_header: 'All Parts',
+    user: user.completeName,
+    workspaces: Organization.workspaces,
+    node: nodeMaster,
+    /* Const for front end */
+    NodeTypeEnum: JSON.stringify(NodeTypeEnum),
+    ViewTypeEnum: JSON.stringify(ViewTypeEnum),
+  }
 }
+
+const errorDatabase = (err) => {
+  log.error(err);
+  throw 500;
+};

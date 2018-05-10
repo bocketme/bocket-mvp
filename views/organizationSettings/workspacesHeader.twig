@@ -1,0 +1,16 @@
+<div id="organization-header" class="row" style="margin: 0;">
+    <div class="col s4" style="padding: 0">
+        <button class="dropdown-button" style="width: auto" data-beloworigin="true" data-activates='workspaces-dropdown'>
+            <div class="workspaces-title">
+                {{ currentOrganization.name }}
+                <i style="vertical-align: center" class="material-icons arrow_drop_down">arrow_drop_down</i>
+            </div>
+        </button>
+    </div>
+
+    {% if user.rights>4 %}
+        <div class="col s5 push-s3">
+            <a class="waves-effect waves-light btn right center-align truncate">Add a new workspace</a>
+        </div>
+    {% endif %}
+</div>

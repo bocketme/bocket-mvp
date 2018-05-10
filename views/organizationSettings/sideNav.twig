@@ -11,7 +11,7 @@
 </div>
 <hr>
 <div id="workspaces-block" class="side-nav-scrollbar">
-    {% for workspace in currentOrganization.workspaces %}
+    {% for workspace in userCurrentOrganization %}
         <a class="collection-item collection-item-workspace " href="/project/{{workspace._id}}">
             <div class="container container-workspace">
                 <div class="circle-responsive" data-tooltip="{{ workspace.name }}" data-delay="50" data-position="right" style="background-image: url('/workspace/image/{{ workspace._id }}') ">
@@ -46,4 +46,5 @@
             </div>
         </div>
     </a>
+    {% include 'modals/createWorkspace3.twig' %}
 </div>

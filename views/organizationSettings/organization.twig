@@ -19,21 +19,7 @@
         </div>
         <div class="col s12 m8 l8 xl9">
 
-            <div id="organization-header" class="row" style="margin: 0;">
-                <div class="col s4" style="padding: 0">
-                    <button class="dropdown-button" style="width: auto" data-beloworigin="true" data-activates='workspaces-dropdown'>
-                        <div class="workspaces-title">
-                            {{ currentOrganization.name }}
-                            <i style="vertical-align: center" class="material-icons arrow_drop_down">arrow_drop_down</i>
-                        </div>
-                    </button>
-                </div>
-
-                <div class="col s4 push-s8">
-                    <a class="waves-effect waves-light btn">Add a new workspace</a>
-                </div>
-
-            </div>
+            {% include './organizationHeader.twig' %}
 
             <div id="organization-settings" class="row">
                 <div id="organization-image" style="background-image: url('/organization/image/{{ currentOrganization._id }}')" class="col s4">
@@ -57,18 +43,18 @@
             <div id="organization-info">
                 <p>
                     <u>Owner:</u>
-                    {{ currentOrganization.owner[0].completeName }}
+                    {{ currentOrganization.Owner.completeName }}
                 </p>
                 <p>
                     <u>Date of creation:</u>
                     <span id="creation"></span></p>
                 <p>
                     <u>Number of workspaces:</u>
-                    {{ currentOrganization.workspaces.length }}
+                    {{ currentOrganization.Workspaces.length }}
                 </p>
                 <p>
                     <u>Number of member:</u>
-                    {{ currentOrganization.members.length }}
+                    {{ 1 + currentOrganization.Members|length + currentOrganizaiton.Admins|length }}
                 </p>
             </div>
 

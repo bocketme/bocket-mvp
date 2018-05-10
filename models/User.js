@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema({
 
   //TODO: Script to fill the OrganizationManager
   Organization: [{
-    _id: {type: Schema.Types.ObjectId, required: true},
+    _id: {type: Schema.Types.ObjectId, required: true, ref: 'Organization'},
     workspaces: [{type: Schema.Types.ObjectId, ref: 'Workspace'}],
   }],
   //TODO: Delete all the workspaces + organizations
@@ -53,21 +53,10 @@ UserSchema.pre('save', function (next) {
   });
 });
 
-UserSchema.methods.comparePassword = function (candidatePassword, cb) {
-  if (candidatePassword === null) { cb(err); }
-  else {
-    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-      if (err) return cb(err);
-      cb(null, isMatch);
-    });
-  }
-};
-
-UserSchema.methods.comparePassword.promise = async (candidatePassword, currentPassword) => {
-  // why this.password is undefined ?????????????????
+UserSchema.methods.comparePassword = async function(candidatePassword)  {
   if (candidatePassword === null) { throw Error('need candidatePassword'); }
   else {
-    const b = await compare(candidatePassword, currentPassword);
+    const b = await compare(candidatePassword, this.password);
     return b;
   }
 };
