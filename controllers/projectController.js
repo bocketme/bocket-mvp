@@ -49,14 +49,15 @@ module.exports = {
         .then(result => {
           result.comparePassword(req.body.password, (err, isMatch) => {
             if (err) {
-              log.error('[projectController.indexPOST] :', err);
+              // log.error('[projectController.indexPOST] :', err);
               res.sendStatus(500);
             }
             else if (!isMatch) {
-              log.error("User n'est pas connecté !");
+              // log.error("User n'est pas connecté !");
               res.redirect('/signIn');
             }
             else {
+              // log('RESULT : ', result);
               req.session.userMail = result.email;
               req.session.completeName = result.completeName;
               req.session.currentWorkspace = req.body.workspaceId;

@@ -4,6 +4,7 @@ const User = require('../../models/User');
 async function saveandpopulate(workspace, annotation, email) {
   const user = await User.findOne({ email });
   workspace.Annotations.push({ ...annotation, creator: user._id });
+  console.log({ ...annotation, creator: user._id });
   await workspace.save();
   const completedWorkspace = await Workspace.findById(workspace._id).populate('Annotations.creator', 'completeName');
   return completedWorkspace;
