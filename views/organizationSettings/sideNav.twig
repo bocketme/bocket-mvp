@@ -11,7 +11,8 @@
 </div>
 <hr>
 <div id="workspaces-block" class="side-nav-scrollbar">
-    {% for workspace in userCurrentOrganization %}
+    <div id="listWorkspacesUser">
+    {% for workspace in currentOrganization.Workspaces %}
         <a class="collection-item collection-item-workspace " href="/project/{{workspace._id}}">
             <div class="container container-workspace">
                 <div class="circle-responsive" data-tooltip="{{ workspace.name }}" data-delay="50" data-position="right" style="background-image: url('/workspace/image/{{ workspace._id }}') ">
@@ -22,6 +23,7 @@
             </div>
         </a>
     {% endfor %}
+    </div>
     <div class="icon-list-workspace">
         <a id="trigger-creation-workspace" class=" modal-trigger" href="#workspace-creation" style="min-height: auto !important; padding: 0px !important;" alt="Add Workspace">
             <div class="container container-workspace">

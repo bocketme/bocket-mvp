@@ -1,9 +1,10 @@
-
 <!-- Modal Structure -->
 <div id="workspace-creation" class="modal">
     <div class="modal-content">
-        <div class="container">
-            <h4>Create a new Workspace</h4>
+            <h4>
+                Create a new Workspace
+                <i class="material-icons right">highlight_off</i>
+            </h4>
             <a href="#!">
                 <i></i>
             </a>
@@ -11,11 +12,18 @@
                 <input id="workspace_name" type="text" class="validate">
                 <label for="workspace_name">Workspace Name</label>
             </div>
-            <div style="margin: 60px 0px" class="chips chips-autocomplete"></div>
-            <div class="row col s12">
-                <a class="waves-effect waves-light btn col s3 push-s2">Cancel</a>
-                <a class="waves-effect disabled waves-light btn col s3 push-s4">Send</a>
+            <div class="input-field col s12">
+                <select>
+                    <option value="" disabled selected>Choose your product manager</option>
+                    {% for user in currentOrganization.users %}
+                        <option value="{{ user._id }}">{{ user.completeName }}</option>
+                    {% endfor %}
+                </select>
+                <label>Product Manager</label>
             </div>
-        </div>
+            <div class="row col s12">
+                <a class="waves-effect modal-close waves-light btn col s3 push-s2">Cancel</a>
+                <a id="new-workspace-submit" class="waves-effect modal-close disabled waves-light btn col s3 push-s4">Create</a>
+            </div>
     </div>
 </div>

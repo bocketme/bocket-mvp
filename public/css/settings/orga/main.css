@@ -38,22 +38,6 @@ body, html{
   padding: 0%;
 }
 
-#organization-block{
-  height: 5%;
-  margin-bottom: 40%;
-  position: relative;
-}
-
-#user-block{
-  height: 5%;
-  position: relative;
-}
-
-#workspaces-block{
-  height: 85%;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
 
 .side-nav-scrollbar::-webkit-scrollbar-track{
   background-color: #f7f7f7;
@@ -77,7 +61,7 @@ body, html{
 }
 
 #options>div>a:hover{
-  color: #00ffc8;
+  color: #9B9B9B !important;
 }
 
 #options>div>a{
@@ -89,7 +73,6 @@ body, html{
   position: absolute;
   top: 30%;
   line-height: 52px;
-  font-weight: 700;
   left: 50%;
   transform: translate(-50%, -90%);
 }
@@ -139,11 +122,92 @@ body, html{
   margin: 0;
 }
 
-#sideNav>hr{
-  margin: 0% 10%;
-  opacity: 0.5;
-}
 
 .change-organization{
   width: 100%;
+}
+
+.information{
+  padding-top: 20px;
+  padding-left: 60px;
+}
+
+#button-align-dropdown{
+  vertical-align: middle;
+}
+
+.button-main{
+  background-color: #4A90E2 !important;
+  margin-top: 10px;
+}
+
+.button-main:hover{
+  background-color: #4A90E2 !important;
+}
+
+.user-name{
+  display: inline-block;
+  padding-left: 15px;
+
+}
+
+#owner, #admins, #members{
+  padding-bottom: 20px;
+}
+
+.title{
+  font-size: 18px;
+}
+
+h5.title-page{
+  padding-left: 8px;
+  display: inline-block;
+}
+
+.disabled{
+  color: #00cca0 !important;
+  cursor: none;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.icons-main-button:hover{
+  color: #9b9b9b;
+}
+
+.icons-main-button>i{
+  margin-left: 15px;
+  vertical-align: middle;
+  font-size: 36px;
+}
+
+.indicator{
+  background-color: #00cca0 !important;
+}
+
+.workspace-list{
+  color: #000000 !important;
+}
+
+.list-user{
+  margin-top: 20px;
+  height: 100%;
+}
+
+.outline-button{
+  background-color: transparent !important;
+  color: #4A90E2;
+  border: solid 1px #4A90E2;
+  box-shadow: none;
+}
+
+#quit{
+  position: absolute;
+  bottom: 0;
+  left: 5%;
+}
+
+.outline-button:hover{
+  background-color: transparent!important;
+  box-shadow: none;
 }

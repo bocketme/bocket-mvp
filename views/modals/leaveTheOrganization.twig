@@ -1,0 +1,25 @@
+<div class="modal" id="leave-the-organization">
+    <div class="modal-content">
+        <h4 class="col s12" style="margin-top: 60px">
+            Leave the organization
+            <a class="modal-close" style="color: black;">
+                <i class="material-icons right">highlight_off</i>
+            </a>
+        </h4>
+        <div class="row">
+            <div class="input-field col s12">
+                <select>
+                    <option value="" disabled selected>Choose an owner</option>
+                    {% for user in currentOrganization.users %}
+                        <option value="{{ user._id }}">{{ user.completeName }}</option>
+                    {% endfor %}
+                </select>
+                <label>Owner Organization</label>
+            </div>
+            <div class="row col s12">
+                <a class="waves-effect modal-close waves-light btn col s3 push-s2">No, I don't want to leave</a>
+                <a id="send-the-new-owner" class="waves-effect modal-close disabled waves-light btn col s3 push-s4">Yes, I want to leave</a>
+            </div>
+        </div>
+    </div>
+</div>

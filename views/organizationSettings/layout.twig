@@ -31,18 +31,14 @@
         <script type="application/javascript">
             var socket = io();
             $(document).ready(function(){
-              $('.modal').modal();
-                $('.chips-autocomplete').material_chip({
-                  autocompleteOptions: {
-                    data: {
-                      bocketMember: '?organizationMember'
-                    },
-                    limit: Infinity,
-                    minLength: 1
-                  }
-                });
+              $('.modal').modal({
+                complete: function () {
+                  console.log(7)
+                }
+              });
             });
         </script>
         {% block js %}{% endblock %}
+        <script type="application/javascript" src="/js/app/listWorkspace.js"></script>
     </body>
 </html>

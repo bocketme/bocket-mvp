@@ -9,7 +9,7 @@
             </div>
             <div id="options" class="col s10 m10 l10 xl10">
                 <div>
-                    <a href="/organization/{{ currentOrganization._id }}">Organization</a>
+                    <a class="disabled" href="/organization/{{ currentOrganization._id }}">Organization</a>
                     <hr style="margin: 0% 5%;">
                     <a href="/organization/{{ currentOrganization._id }}/workspaces">Workspaces</a>
                     <hr style="margin: 0% 5%;">
@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-        <div class="col s12 m8 l8 xl9">
+        <div class="col s12 m8 l8 xl9" style="position: relative; height: 99%;">
 
             {% include './organizationHeader.twig' %}
 
@@ -57,9 +57,12 @@
                     {{ 1 + currentOrganization.Members|length + currentOrganizaiton.Admins|length }}
                 </p>
             </div>
-
-
+            <div id="quit">
+                <a class="btn outline-button" onclick="deleteTheOrganization({{ user.rights }})" class="outline-button">Delete the organization</a>
+                <a class="btn outline-button" onclick="leaveTheOrganization({{ user.rights }})" class="">Leave the organization</a>
+            </div>
         </div>
+
     </div>
 {% endblock %}
 

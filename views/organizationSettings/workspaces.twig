@@ -11,7 +11,7 @@
                 <div>
                     <a href="/organization/{{ currentOrganization._id }}">Organization</a>
                     <hr style="margin: 0% 5%;">
-                    <a href="/organization/{{ currentOrganization._id }}/workspaces">Workspaces</a>
+                    <a class="disabled" href="/organization/{{ currentOrganization._id }}/workspaces">Workspaces</a>
                     <hr style="margin: 0% 5%;">
                     <a href="/organization/{{ currentOrganization._id }}/members">Members</a>
                 </div>
@@ -24,73 +24,61 @@
             <div class="row">
                 <div class="col s12">
                     <ul class="tabs">
-                        {% for workspace in currentOrgazation.workspaces %}
-                            <li class="tab col s3">
-                                <a href="#{{workpsace._id}}">{{workspace.name}}</a>
-                            </li>
+                        {% for workspace in workspaces %}
+                        <li class="tab col s3"><a href="#{{ workspace._id }}" class="active workspace-list">{{ workspace.name }}</a></li>
                         {% endfor %}
+                        {% if user.rights > 4 %}
+                        <li class="tab col s3">
+                            <a target="_blank" class=" modal-trigger" href="#workspace-creation" style="text-transform: none; color: #4A90E2;">+ Add Workspace</a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
-            </div>
-
-            {% for Organization in %}
-                {% for workpace in  %}
-                <div id="{{workspace._id}}" class="col s12">
-                    <div class="row">
-                        <div class="iconOrganization"></div>
-                        <input type="text">
-                    </div>
-                    <div class="col s12">
-                        <div class="row">
-                            <div class="col s12">
-                                <div class="input-field col s12">
-                                    <textarea name="description-project" id="description" cols="30" rows="10">{{ workspace.description }}</textarea>
-                                    <label for="description">Description of the project
-                                        <a href="#">
-                                            <i>create</i>
-                                        </a>
-                                    </label>
+                {% for workspace in workspaces %}
+                    <div id="#{{ workspace._id }}" class="col s12">
+                        <div class="list-user">
+                            <div id="organization-image" style="background-image: url('/organization/image/{{ currentOrganization._id }}')" class="col s4">
+                                {% if (user.rights > 4 or user.isProductmanager) %}
+                                <div class="file-field input-field">
+                                    <div class="change-organization">
+                                        <span>Edit</span>
+                                        <input type="file" name="image" accept="image/*">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text" style="display: none">
+                                    </div>
                                 </div>
+                                {% endif %}
                             </div>
+                            <div style="position: relative;margin-top: 49px;margin-left: 15px;" class="col s8">
+                                <input id="workspace-name"
+                                       type="text"
+                                       value="{{ workspace.name }}"
+                                        {% if not (user.rights > 4 or user.isProductmanager) %}
+                                            disabled
+                                            style="color: black"
+                                        {% endif %}
+                                >
+                                {% if (user.rights > 4 or user.isProductmanager) %}
+                                <i id="edit" class="material-icons">edit</i>
+                                {% endif %}
+                            </div>
+
+                            <div class="row">
+                                <form class="col s12">
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <textarea id="textarea1" class="materialize-textarea">{{ workspace.description }}</textarea>
+                                            <label for="textarea1">Description</label>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            {% include './workspaceUserList.twig' with { users: workspace } %}
                         </div>
                     </div>
-                    <div class="col s12">
-                        <h6>Teamates</h6>
-                        <i>person_add</i>
-                        <h8>Project Manager</h8>
-                        {% for user in workspace.users.projectManagers %}
-                            <div style="background-image=url('{{user._id}}')"></div>
-                            <p>{{ user.completeName }}</p>
-                            {% if currentUser.rights > 6 %}
-                                <p>Change Status</p>
-                                <p>Remove</p>
-                            {% endif %}
-                        {% endfor %}
-
-                        <h8>Members</h8>
-                        {% for user in workspace.users.members %}
-                            <div style="background-image=url('{{user._id}}')"></div>
-                            <p>{{ user.completeName }}</p>
-                            {% if currentUser.rights > 6 %}
-                                <p>Change Status</p>
-                                <p>Remove</p>
-                            {% endif %}
-                        {% endfor %}
-
-                        <h8>Observers</h8>
-                        {% for user in workspace.users.observer %}
-                            <div style="background-image:url('/user/image{{user._id}}')"></div>
-                            <p>{{ user.completeName }}</p>
-                            {% if currentUser.rights > 6 %}
-                                <p>Change Status</p>
-                                <p>Remove</p>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endfor %}
-
-
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -100,11 +88,9 @@
 {% block js %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
     <script>
-      var dateOfCreation = "{{ currentOrganization.creation }}";
-      dateOfCreation = new Date(dateOfCreation);
-      const creation = document.getElementById('creation');
-      creation.innerHTML = dateOfCreation ? moment(dateOfCreation).format('D/M/YYYY') : 'Non disponible';
-      const image = document.getElementById("organization-image");
+      $(document).ready(function(){
+        $('ul.tabs').tabs();
+      });
     </script>
 {% endblock %}
 

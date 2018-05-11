@@ -1,16 +1,12 @@
 <div id="organization-header" class="row col s12" style="margin: 0;">
     <div class="col s4" style="padding: 0">
-        <button class="dropdown-button" style="width: auto" data-beloworigin="true" data-activates='workspaces-dropdown'>
+        <button class="dropdown-button" style="padding-bottom: 20px; width: auto" data-beloworigin="true" data-activates='workspaces-dropdown'>
             <div class="workspaces-title">
-                {{ currentOrganization.name }}
-                <i style="vertical-align: center" class="material-icons arrow_drop_down">arrow_drop_down</i>
+                <h5>
+                    {{ currentOrganization.name }}
+                <i id="button-align-dropdown" class="material-icons arrow_drop_down">arrow_drop_down</i>
+                </h5>
             </div>
         </button>
     </div>
-
-    {% if user.rights>4 %}
-        <div class="col s4 push-s4">
-            <a class="waves-effect waves-light btn right center-align truncate">Add a new member</a>
-        </div>
-    {% endif %}
 </div>

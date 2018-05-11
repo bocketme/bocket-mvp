@@ -13,7 +13,7 @@
                     <hr style="margin: 0% 5%;">
                     <a href="/organization/{{ currentOrganization._id }}/workspaces">Workspaces</a>
                     <hr style="margin: 0% 5%;">
-                    <a href="/organization/{{ currentOrganization._id }}/members">Members</a>
+                    <a class="disabled" href="/organization/{{ currentOrganization._id }}/members">Members</a>
                 </div>
             </div>
         </div>
@@ -22,58 +22,76 @@
             {% include './memberHeader.twig' %}
 
             <div class="col s12">
-                <p>Member of the organization</p>
-                <h5><span class="title">Owner</span></h5>
-                <div class="user-block" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
-                    <div style="width: 40px; height: 40px;">
-                        <div class="circle-responsive">
-                            <div class="circle-content">
-                                {{ currentOrganization.Owner.completeName| first }}
+                <h5 class="title-page col s12">
+                    Members of the organization
+                    {% if user.rights>4 %}
+                        <a href="#!" class="icons-main-button"><i class="material-icons">group_add</i></a>
+                    {% endif %}
+                </h5>
+
+                <div class="information">
+                    <div id="owner">
+                        <p><span class="title">Owner</span></p>
+                        <div class="valign-wrapper">
+                            <div class="user-block" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
+                                <div style="width: 40px; height: 40px;">
+                                    <div class="circle-responsive">
+                                        <div class="circle-content">
+                                            {{ currentOrganization.Owner.completeName| first }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                            <p class="user-name">{{ currentOrganization.Owner.completeName }}</p>
                         </div>
+                    </div>
+                    <div id="admins">
+                        <h5><span class="title">Co-owner</span></h5>
+                        {% if (currentOrganization.Admins| length) == 0 %}
+                            There is no admin
+                        {% endif %}
+                        {% for user in currentOrganization.Admins %}
+                            <div style="display: block">
+                                <div class="user-block" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
+                                    <div style="width: 40px; height: 40px;">
+                                        <div class="circle-responsive">
+                                            <div class="circle-content">
+                                                {{ user.completeName| first }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p style="display: inline-block">{{ user.completeName }}</p>
+                                <p style="display: inline-block">Change Status</p>
+                                <p style="display: inline-block">Remove</p>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                    <div id="members">
+                        <h5><span class="title">Members</span></h5>
+                        {% if (currentOrganization.Members|length) == 0 %}
+                            There is no member
+                        {% endif %}
+                        {% for user in currentOrganization.Members %}
+                            <div style="display: block">
+                                <div class="user-block" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
+                                    <div style="width: 40px; height: 40px;">
+                                        <div class="circle-responsive">
+                                            <div class="circle-content">
+                                                {{ user.completeName| first }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p style="display: inline-block">{{ user.completeName }}</p>
+                                <p style="display: inline-block">Change Status</p>
+                                <p style="display: inline-block">Remove</p>
+                            </div>
+                        {% endfor %}
+
                     </div>
                 </div>
-                <p style="display: inline-block">{{ currentOrganization.Owner.completeName }}</p>
-                <h5><span class="title">Co-owner</span></h5>
-                {% if (currentOrganization.Admins| length) == 0 %}
-                    There is no admin
-                {% endif %}
-                {% for user in currentOrganization.Admins %}
-                    <div style="display: block">
-                        <div class="user-block" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
-                            <div style="width: 40px; height: 40px;">
-                                <div class="circle-responsive">
-                                    <div class="circle-content">
-                                        {{ user.completeName| first }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <p style="display: inline-block">{{ user.completeName }}</p>
-                        <p style="display: inline-block">Change Status</p>
-                        <p style="display: inline-block">Remove</p>
-                    </div>
-                {% endfor %}
-                <h5><span class="title">Members</span></h5>
-                {% if (currentOrganization.Members|length) == 0 %}
-                    There is no member
-                {% endif %}
-                {% for user in currentOrganization.Members %}
-                    <div style="display: block">
-                        <div class="user-block" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
-                            <div style="width: 40px; height: 40px;">
-                                <div class="circle-responsive">
-                                    <div class="circle-content">
-                                        {{ user.completeName| first }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <p style="display: inline-block">{{ user.completeName }}</p>
-                        <p style="display: inline-block">Change Status</p>
-                        <p style="display: inline-block">Remove</p>
-                    </div>
-                {% endfor %}
             </div>
 
         </div>
