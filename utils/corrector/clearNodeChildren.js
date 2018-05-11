@@ -1,9 +1,9 @@
 const co = require('co');
-const nodeSchema = require('../models/Node');
+const nodeSchema = require('../../models/Node');
 
-const log = require('./log');
+const log = require('../log');
 
-co(function*() {
+module.exports = function* () {
   const cursor = nodeSchema.find().cursor(); 
   for (let doc = yield cursor.next(); doc !== null; doc = yield cursor.next()) {
     // Print the user, with the `band` field populated
@@ -27,4 +27,4 @@ co(function*() {
       }
     }
   }
-});
+};

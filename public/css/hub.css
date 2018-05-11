@@ -479,80 +479,8 @@ div.collapsible-body  ul {
     font-size: 14px;
 }
 
-.collection-item-workspace {
-    background-color: inherit !important;
-    border: none !important;
-    padding: 5% !important;
-}
-
-.collection-item-workspace:hover {
-    /* background-color: #535151 !important;  */
-}
-
 .collection {
     border: none !important;
-}
-
-#list-workspace{
-    max-height: 100%;
-    overflow-x: hidden;
-    margin: 0;
-    overflow-y: scroll;
-    height: 100%;
-    width: 100%;
-}
-
-.circle-responsive-active {
-    background: #00FFC8;
-    border-radius: 50%;
-    padding-bottom: 100%;
-    width: 100%;
-    height: 0;
-    box-shadow: 0 0 0 3px #1E987E;
-}
-
-.circle-responsive {
-    background: #9B9B9B;
-    border-radius: 50%;
-    height: 0;
-    padding-bottom: 100%;
-    width: 100%;
-}
-
-.circle-responsive:hover {
-    background: #8EDACA;
-}
-
-.circle-responsive-active:hover {
-    box-shadow: 0 0 0 3px #1E987E;
-}
-
-.circle-content {
-    color: #ffffff;
-    float: left;
-    line-height: 1;
-    font-size: 14px;
-    margin-top: -0.5em;
-    padding-top: 50%;
-    text-align: center;
-    width: 100%;
-    font-weight: 600;
-}
-
-.circle-responsive-add {
-    background: #9B9B9B;
-    border-radius: 50%;
-    height: 0;
-    padding-bottom: 100%;
-    width: 100%;
-}
-
-.circle-responsive-add:hover {
-    background: #F0F0F0;
-}
-
-.circle-responsive-add:hover .circle-content{
-    color: #000000;
 }
 
 .collection-manager{

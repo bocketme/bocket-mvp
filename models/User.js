@@ -1,11 +1,10 @@
 const serverConfiguration = require('../config/server');
 const mongoose = require('mongoose');
+const Schema =  mongoose.Schema;
 const bcrypt = require('bcrypt');
 const uniqueValidator = require('mongoose-unique-validator');
 const util = require('util');
 
-const NestedWorkspaceSchema = require('./nestedSchema/NestedWorkspaceSchema');
-const NestedOrganizationSchema = require('./nestedSchema/NestedOrganizationSchema');
 const compare = util.promisify(bcrypt.compare);
 
 const UserSchema = new mongoose.Schema({
@@ -13,10 +12,19 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   active: Boolean,
-  createDate: Date,
-  workspaces: { type: [NestedWorkspaceSchema] },
-  organizations: { type: [NestedOrganizationSchema] },
-  avatar: { type: String, default: 'bocket.png' },
+  createDate: {type: Date, default: new Date()},
+
+  avatar: String,
+
+  //TODO: Script to fill the OrganizationManager
+  Organization: [{
+    _id: {type: Schema.Types.ObjectId, required: true, ref: 'Organization'},
+    workspaces: [{type: Schema.Types.ObjectId, ref: 'Workspace'}],
+  }],
+  //TODO: Delete all the workspaces + organizations
+  //workspaces: { type: [NestedWorkspaceSchema] },
+  //organizations: { type: [NestedOrganizationSchema] }, //TODO: Deletion Sage (empty var).
+
   //TODO: Create a forget password context.
   forget: {
     active: { type: Boolean, default: false },
@@ -28,7 +36,6 @@ const UserSchema = new mongoose.Schema({
     colorBackground: { type: String, default: "#e0e0e0" },
   }
 });
-
 
 UserSchema.pre('save', function (next) {
   const user = this;
@@ -51,21 +58,33 @@ UserSchema.pre('save', function (next) {
   });
 });
 
-UserSchema.methods.comparePassword = function (candidatePassword, cb) {
-  if (candidatePassword === null) { cb(err); }
-  else {
-    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-      if (err) return cb(err);
-      cb(null, isMatch);
-    });
-  }
+UserSchema.methods.removeOrganization = async function(organizationId) {
+  const organizationManager = this.get('Organization');
+  const filter = String(organizationId);
+  this.Organization = organizationManager.filter(manager => {
+    const _id = String(manager._id);
+    return _id !== filter;
+  });
 };
 
-UserSchema.methods.comparePassword.promise = async (candidatePassword, currentPassword) => {
-  // why this.password is undefined ?????????????????
+UserSchema.methods.removeWorkspace = async function(workspaceId) {
+  const organizationManager = this.get('Organization');
+  const filter = String(workspaceId);
+
+  this.Organization = organizationManager.map(manager => {
+    manager.workspaces.filter(workspace => {
+      const id = String(workspace);
+      return id !== filter;
+    });
+    return manager;
+  });
+  await this.save();
+};
+
+UserSchema.methods.comparePassword = async function(candidatePassword)  {
   if (candidatePassword === null) { throw Error('need candidatePassword'); }
   else {
-    const b = await compare(candidatePassword, currentPassword);
+    const b = await compare(candidatePassword, this.password);
     return b;
   }
 };

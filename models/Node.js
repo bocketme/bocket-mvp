@@ -46,8 +46,7 @@ const NodeSchema = mongoose.Schema({
   children: { type: [NestedNode], default: [] },
   notes: { type: [NestedAnnotation], default: [] },
 
-  team: { type: NestedTeam, required: true },
-  owners: { type: [NestedUser], default: [] },
+  team: NestedTeam,
 });
 
 let Node = mongoose.model('Node', NodeSchema, 'Nodes');

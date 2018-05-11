@@ -1,0 +1,213 @@
+body{
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+body, html{
+  height: 100%;
+}
+
+.file-field{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+#edit{
+  position: absolute;
+  top: 25%;
+  right: 0px;
+}
+
+#sideNav{
+  padding: 0;
+  background-color: #3c3c3c;
+  height: 100%;
+}
+
+#left-pannel{
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#main {
+  height: 100%;
+  width: 100%;
+  margin: 0%;
+  padding: 0%;
+}
+
+
+.side-nav-scrollbar::-webkit-scrollbar-track{
+  background-color: #f7f7f7;
+}
+
+.side-nav-scrollbar::-webkit-scrollbar
+{
+  width: 6px;
+  background-color: #3c3c3c;
+}
+
+.side-nav-scrollbar::-webkit-scrollbar-thumb
+{
+  background-color: #3c3c3c;
+}
+
+#options{
+  height: 100%;
+  position: relative;
+  background-color: #FAFAFA;
+}
+
+#options>div>a:hover{
+  color: #9B9B9B !important;
+}
+
+#options>div>a{
+  color: #000;
+}
+#options>div{
+  text-align: center;
+  margin: 0;
+  position: absolute;
+  top: 30%;
+  line-height: 52px;
+  left: 50%;
+  transform: translate(-50%, -90%);
+}
+
+#organization-settings{
+  padding: 10% 0% 10% 5%;
+  width: 100%;
+  margin: 0;
+}
+
+#organization-info{
+  padding-left: 5%;
+}
+
+.row .col{
+  padding: 0;
+}
+
+#organization-header{
+  background-color: #FAFAFA;
+}
+
+.change-organization{
+  position: absolute;
+  bottom: 0px;
+  width: 100px;
+  background-color: #4a4a4a;
+  text-decoration: none;
+  color: #fff;
+  text-align: center;
+  letter-spacing: .5px;
+  vertical-align: middle;
+  display: inline-block;
+  cursor: pointer;
+}
+
+#organization-image{
+  float: left;
+  background-color: #9b9b9b;
+  height: 95px;
+  width: 95px;
+  padding: 0;
+}
+
+#organization-name{
+  float: left;
+  margin: 0;
+}
+
+
+.change-organization{
+  width: 100%;
+}
+
+.information{
+  padding-top: 20px;
+  padding-left: 60px;
+}
+
+#button-align-dropdown{
+  vertical-align: middle;
+}
+
+.button-main{
+  background-color: #4A90E2 !important;
+  margin-top: 10px;
+}
+
+.button-main:hover{
+  background-color: #4A90E2 !important;
+}
+
+.user-name{
+  display: inline-block;
+  padding-left: 15px;
+
+}
+
+#owner, #admins, #members{
+  padding-bottom: 20px;
+}
+
+.title{
+  font-size: 18px;
+}
+
+h5.title-page{
+  padding-left: 8px;
+  display: inline-block;
+}
+
+.disabled{
+  color: #00cca0 !important;
+  cursor: none;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.icons-main-button:hover{
+  color: #9b9b9b;
+}
+
+.icons-main-button>i{
+  margin-left: 15px;
+  vertical-align: middle;
+  font-size: 36px;
+}
+
+.indicator{
+  background-color: #00cca0 !important;
+}
+
+.workspace-list{
+  color: #000000 !important;
+}
+
+.list-user{
+  margin-top: 20px;
+  height: 100%;
+}
+
+.outline-button{
+  background-color: transparent !important;
+  color: #4A90E2;
+  border: solid 1px #4A90E2;
+  box-shadow: none;
+}
+
+#quit{
+  position: absolute;
+  bottom: 0;
+  left: 5%;
+}
+
+.outline-button:hover{
+  background-color: transparent!important;
+  box-shadow: none;
+}

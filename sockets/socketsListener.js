@@ -1,6 +1,5 @@
 const betaRegistrationListener = require('./betaRegistrationSListener');
 const checkUniqueField = require('./checkUniqueField');
-const signinListener = require('./signinListener');
 const Annotation = require('./Annotation/main');
 const newNodeListener = require('./newNodeListener');
 const NodeInformationListener = require('./nodeInformationListener');
@@ -30,10 +29,9 @@ const reportIssueListener = require('./reportIssueListener');
 const changeWorkspaceorOrganizationName = require('./changeWorkspaceorOrganizationName.js');
 const Tchat = require('./Tchat/main');
 const getCurrentUser = require('./getCurrentUser');
-const getUsers = require('./getUsers');
+const getUsers = reqUseruire('./getUsers');
 
-const Workspace = require('../models/Workspace');
-const User = require('../models/User');
+const User = require('./User/main');
 
 const FSconfig = require('../config/FileSystemConfig');
 
@@ -64,7 +62,6 @@ module.exports = function (io) {
       fileUploaderListener(socket, uploader);
       betaRegistrationListener(socket);
       checkUniqueField(socket);
-      signinListener(socket);
       newNodeListener(socket);
       NodeInformationListener(socket);
       searchNodeChildren(socket);
@@ -81,6 +78,7 @@ module.exports = function (io) {
       GetSearchCriteria(socket);
       GetSelectedItemsToAdd(socket);
       changePassword(socket);
+      User(io, socket);
       workspaceManagerListener(socket);
       removeUserFromOW(socket);
       reportIssueListener(socket);

@@ -99,12 +99,15 @@ async function errorIncreationAccount(err, documentsToDelete) {
 async function createAccount(req, res) {
   const documents = [];
   try {
+    // Normal Signin desactivated.
+    if (!req.body.admin && !req.body.invitationUid)
+      throw new Error('Sign In - Desactivated');
+
     const user = await UserSchema.create({
       completeName: req.body.completeName,
       password: req.body.password,
       email: req.body.email,
-      workspaces: [],
-      organizations: [],
+      Organization:[]
     });
 
     await user.save();
@@ -117,56 +120,34 @@ async function createAccount(req, res) {
     };
 
     const organization = await OrganizationSchema.create({
-      owner: nestedUser,
-      members: [nestedUser],
+      Owner: user._id,
       name: req.body.organizationName,
     });
 
     await organization.save();
     documents.push(organization);
 
-    const team = await TeamSchema.create({
-      owners: [nestedUser],
-      members: [nestedUser],
-    });
-
-    await team.save();
-    documents.push(team);
-
     const workspace = await WorkspaceSchema.create({
       name: req.body.workspaceName,
-      owner: nestedUser,
-      organization: {
-        _id: organization._id,
-        name: organization.name,
-      },
-      team: {
-        _id: team._id,
-        owners: team.owners,
-        members: team.members,
-        consults: team.consults,
-      },
+      Organization: organization._id,
+      ProductManagers: [user._id],
     });
 
     await workspace.save();
-    documents.push();
+    documents.push(workspace);
 
     if (req.body.invitationUid) {
       const invitationInfo = await acceptInvitation(req.body.invitationUid, user);
-      req.session = signInUserSession(req.session, {
-        email: user.email,
-      });
+      req.session = signInUserSession(req.session, {email: user.email});
       req.session.completeName = user.completeName;
       req.session.currentWorkspace = invitationInfo.workspaceId;
       return res.redirect(`/project/${invitationInfo.workspaceId}`);
     }
-    // Normal Signin desactivated.
-    if (!req.body.admin)
-      throw new Error('Sign In - Desactivated');
 
-    user.workspaces.push({
-      _id: workspace._id,
-      name: workspace.name,
+    user.Organization.push({
+      _id: organization._id,
+      isOwner: true,
+      workspaces: [workspace._id]
     });
 
     await user.save();
@@ -174,11 +155,7 @@ async function createAccount(req, res) {
     const assembly = await AssemblySchema.create({
       name: req.body.workspaceName,
       description: nodeMasterConfig.description,
-      ownerOrganization: {
-        _id: organization._id,
-        name: organization.name,
-      },
-      creator: nestedUser,
+      Organization: organization._id,
     });
 
     await assembly.save();
@@ -189,33 +166,18 @@ async function createAccount(req, res) {
       description: nodeMasterConfig.description,
       type: NodeTypeEnum.assembly,
       content: assembly._id,
-      Users: [nestedUser],
-      owners: [nestedUser],
-      team: {
-        _id: team._id,
-        owners: team.owners,
-        members: team.members,
-        consults: team.consults,
-      },
-      Workspaces: [{
-        _id: workspace._id,
-        name: workspace.name,
-      }],
+      Workspace: workspace._id
     });
 
     await node.save();
     documents.push(node);
 
-    workspace.node_master = node;
+    workspace.nodeMaster = node._id;
     await workspace.save();
 
-    organization.workspaces.push({
-      _id: workspace._id,
-      name: workspace.name,
-    });
+    organization.Workspaces.push(workspace._id);
     await organization.save();
 
-    assembly.whereUsed.push(node._id);
     await assembly.save();
 
     req.session = signInUserSession(req.session, { email: user.email });

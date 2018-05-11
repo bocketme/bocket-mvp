@@ -7,9 +7,9 @@ const path = require('path');
 const PartFileSystem = require('../../config/PartFileSystem');
 const config = require('../../config/server');
 const log = require('../../utils/log');
-const EventEmitter = require('events')
+const EventEmitter = require('events');
 const loading = require('./Interface');
-const errLog = (err) => log.error(err)
+const errLog = (err) => log.error(err);
 
 /**
  * 
@@ -62,8 +62,8 @@ module.exports = class NodeManager {
   }
 
   async loadWorkspace(workspaceId) {
-    const { _id, name, node_master } = await workspaceSchema.findById(workspaceId).catch(errLog);
-    const start = await this.loadNode(node_master._id, _id).catch(errLog);
+    const { _id, nodeMaster } = await workspaceSchema.findById(workspaceId).catch(errLog);
+    const start = await this.loadNode(nodeMaster, _id).catch(errLog);
     return start
   }
 
@@ -81,7 +81,7 @@ module.exports = class NodeManager {
       let promises = [];
       children.forEach(child => {
         promises.push(this.loadNode(child._id, { name, _id }))
-      })
+      });
       return Promise.all(promises);
     } else return log.error('The node is a ' + type)
   }

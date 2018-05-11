@@ -1,0 +1,19 @@
+<div id="organization-header" class="row" style="margin: 0;">
+    <div class="col s4" style="padding: 0">
+        <button class="dropdown-button" style="width: auto" data-beloworigin="true" data-activates='workspaces-dropdown'>
+            <div class="workspaces-title">
+                <h5>
+                    {{ currentOrganization.name }}
+                    <i id="button-align-dropdown" class="material-icons arrow_drop_down">arrow_drop_down</i>
+                </h5>
+            </div>
+        </button>
+    </div>
+    <ul id='workspaces-dropdown' class='dropdown-content'>
+        {% for organization in userOrganizations %}
+            <li>
+                <a href="/organization/{{ organization._id._id }}">{{ organization._id.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

@@ -31,6 +31,8 @@ const InvitationSchema = mongoose.Schema({
   workspace: { type: nestedWorkspaceSchema, required: true },
   organization: { type: nestedWorkspaceSchema, required: true },
   people: { type: nestedPeopleSchema },
+  //organizationRole: {type: Number, default: 2},
+  //workspaceRole: {type: Number, default: 2},
 });
 
 InvitationSchema.pre('save', function (next) {
