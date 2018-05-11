@@ -72,7 +72,7 @@ async function getRenderInformation(workspaceId, email) {
   }
 
   const user = await User.findOne({email})
-    .populate('Organization._id', 'name')
+    .populate('Organization._id')
     .populate('Organization.workspaces', 'name')
     .catch(errorDatabase);
 
@@ -82,21 +82,25 @@ async function getRenderInformation(workspaceId, email) {
   }
 
   const nodeMaster = await Node.findById(workspace.nodeMaster).catch(errorDatabase);
+  const managerOrganization = user.get('Organization');
 
-  const Organization = await user.Organization.find((orga) => {
-    for(let i =0; i<orga.workspaces.length; i++){
-      const workspace = orga.workspaces[i];
-      if (String(workspace._id) === String(workspaceId)) return true;
+  console.log(managerOrganization);
+
+  const { _id, workspaces } = managerOrganization.find(manager => {
+    for(let i = 0; i < manager.workspaces.length; i++){
+      const workspace = String(manager.workspaces[i]._id);
+      if (workspace === workspaceId) return true;
     }
     return false;
   });
 
   return {
+    currentOrganization: _id,
     title: workspace.name,
     in_use: {name: workspace.name, id: workspace._id},
     data_header: 'All Parts',
     user: user.completeName,
-    workspaces: Organization.workspaces,
+    workspaces,
     node: nodeMaster,
     /* Const for front end */
     NodeTypeEnum: JSON.stringify(NodeTypeEnum),
