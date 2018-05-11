@@ -6,7 +6,7 @@
     z-index:    10;
 }
 
-#renderSurface 
+#renderSurface
 {
   position: absolute;
   top: 0;
@@ -172,9 +172,26 @@
 }
 
 #addNoteButton {
-    width: 100%;
-    position: sticky !important;
-    top: 20px !important;
+  background-color: #223241 !important;
+  border-bottom: #F5F5F5 2px solid;
+  width: 100%;
+  position: sticky !important;
+  margin-top: 5px;
+  top: 20px !important;
+  transition: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+#addNoteButton:hover {
+  background-color: #FF2E63 !important;
+  border-bottom: #D72653 2px solid;
+}
+
+#addNoteButton.active {
+    background-color: #B6C0C1 !important;
+    border-bottom: #223241 2px solid;
 }
 
 #note-list {
@@ -260,4 +277,3 @@
     left: unset;
     padding: 0;
 }
-

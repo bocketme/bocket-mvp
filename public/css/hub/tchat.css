@@ -15,7 +15,7 @@
 .modal-form {
     width: 30%;
     height: 60%;
-    position: relative;
+    position: absolute;
     margin: auto;
     top: 0;
     bottom: 0;
@@ -227,9 +227,16 @@
     padding: 10px;
     vertical-align: middle;
 }
+#frame #sidepanel #contacts ul li.contact .wrap img {
+    float: left;
+    padding: 10px;
+    vertical-align: middle;
+    display: inline-block;
+}
 @media screen and (max-width: 735px) {
     #frame #sidepanel #contacts ul li.contact .wrap img {
         margin-right: 0px;
+        display: inline-block;
     }
 }
 #frame #sidepanel #contacts ul li.contact .wrap .meta {
@@ -248,31 +255,10 @@
     overflow: hidden;
     vertical-align: middle;
     text-overflow: ellipsis;
-    -moz-transition: 1s all ease;
+    /*-moz-transition: 1s all ease;
     -o-transition: 1s all ease;
-    -webkit-transition: 1s all ease;
-    transition: 1s all ease;
-}
-#frame #sidepanel #contacts ul li.contact .wrap .meta .preview {
-    margin: 5px 0 0 0;
-    padding: 0 0 1px;
-    font-weight: 400;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -moz-transition: 1s all ease;
-    -o-transition: 1s all ease;
-    -webkit-transition: 1s all ease;
-    transition: 1s all ease;
-}
-#frame #sidepanel #contacts ul li.contact .wrap .meta .preview span {
-    position: initial;
-    border-radius: initial;
-    background: none;
-    border: none;
-    padding: 0 2px 0 0;
-    margin: 0 0 0 1px;
-    opacity: .5;
+    -webkit-transition: 1s all ease;*/
+    /*transition: 1s all ease;*/
 }
 #frame #sidepanel #bottom-bar {
     position: absolute;
@@ -478,25 +464,43 @@
 #cancel-tchat-rm-btn, #cancel-tchat-btn, #cancel-add-btn {
     height: 40px;
     background-color: #ffffff !important;
-    color: #4A90E2 !important;
-    border: 1px solid #4A90E2 !important;
+    color: #223241 !important;
+    border: 2px solid #223241 !important;
     text-align: center !important;
     display: inline-block !important;
     width: 48% !important;
     margin-left: 1%;
     bottom: 0 !important;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    transition: none;
+}
+
+#cancel-tchat-rm-btn:hover, #cancel-tchat-btn:hover, #cancel-add-btn:hover {
+    color: #FF2E63 !important;
+    border: 2px solid #FF2E63 !important;
 }
 
 #confirm-tchat-rm-btn, #create-tchat-btn, #add-user-btn {
     height: 40px;
-    background-color: #4A90E2 !important;
+    background-color: #00CCA0 !important;
     color: #ffffff !important;
     text-align: center !important;
     display: inline-block !important;
     width: 48% !important;
     margin-left: 1%;
     bottom: 0 !important;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    transition: none;
 }
+
+#confirm-tchat-rm-btn:hover, #create-tchat-btn:hover, #add-user-btn:hover {
+  border-bottom: 3px solid #218A2A !important;
+}
+
 
 #social-users-list, #add-users-list {
     overflow: auto;

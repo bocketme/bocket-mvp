@@ -13,6 +13,51 @@ $(document).ready(() => {
   });
 */
 
+
+  $('#show-notes').on({
+    mouseenter: function() {
+      $('#show-notes img').attr('src', '/img/pin-hover.svg');
+    },
+    mouseleave: function () {
+      if (isHidden === true) {
+        $('#show-notes img').attr('src', '/img/pin-normal.svg');
+      } else {
+        $('#show-notes img').attr('src', '/img/pin-selected.svg');
+      }
+    },
+    click: function () {
+      const displayValue = document.getElementById('side-info').style.getPropertyValue('display');
+      document.getElementById('side-info').style.display = (displayValue === 'block' ? 'none' : 'block');
+      isHidden = !isHidden;
+      if (isHidden === true)
+        $('#cancel-note-button').click();
+      hideOrShowAnnotations();
+      document.getElementById('side-details').style.display = 'none';
+    }
+  },'img');
+
+  $('#show-info').on({
+    mouseenter: function () {
+      $('#show-info img').attr('src', '/img/details-hover.svg');
+    },
+    mouseleave: function () {
+      const displayValue = document.getElementById('side-details').style.getPropertyValue('display');
+      if (displayValue === 'none') {
+        $('#show-info img').attr('src', '/img/details-normal.svg');
+      } else if (displayValue === 'block') {
+        $('#show-info img').attr('src', '/img/details-selected.svg');
+      }
+    },
+    click: function () {
+      const displayValue = document.getElementById('side-details').style.getPropertyValue('display');
+      document.getElementById('side-details').style.display = (displayValue === 'block' ? 'none' : 'block');
+      document.getElementById('side-info').style.display = 'none';
+      $('#cancel-note-button').click();
+      isHidden = true;
+      hideOrShowAnnotations();
+    }
+  },'img');
+
   socket.on('[Annotation] - confirmAnnotation', (gettedAnnotation) => {
     if (gettedAnnotation !== null && gettedAnnotation !== undefined) {
       if (!allAnnotations.find((element) => gettedAnnotation.name === element.name)) {
@@ -56,7 +101,7 @@ $(document).ready(() => {
     if (isAnnotationMode === true) {
       Materialize.toast('Click to add a Note !', 3000, 'rounded blue');
       deselectAll();
-      document.getElementById('addNoteButton').style.backgroundColor = '#00CCA0';
+      document.getElementById('addNoteButton').classList.add('active');
       document.getElementById('add-note-icon').innerHTML = 'clear';
       const evt = new Event('add-annotation');
       document.dispatchEvent(evt);
@@ -68,7 +113,7 @@ $(document).ready(() => {
   $('#cancel-note-button').on('click', () => {
     reinitCardFormContent();
     document.getElementById('note-card-form').style.display = 'none';
-    document.getElementById('addNoteButton').style.backgroundColor = '#4A90E2';
+    document.getElementById('addNoteButton').classList.remove('active');
     document.getElementById('add-note-icon').innerHTML = 'add';
     if (HasClicked === true) {
       // Call l'event Pour supprimer l'annotation coté viewer
@@ -102,24 +147,6 @@ $(document).ready(() => {
     socket.emit('[Annotation] - add', savedAnnotation);
   });
 
-  $('#show-notes').on('click', () => {
-    const displayValue = document.getElementById('side-info').style.getPropertyValue('display');
-    document.getElementById('side-info').style.display = (displayValue === 'block' ? 'none' : 'block');
-    isHidden = !isHidden;
-    if (isHidden === true)
-      $('#cancel-note-button').click();
-    hideOrShowAnnotations();
-    document.getElementById('side-details').style.display = 'none';
-  });
-
-  $('#show-info').on('click', () => {
-    const displayValue = document.getElementById('side-details').style.getPropertyValue('display');
-    document.getElementById('side-details').style.display = (displayValue === 'block' ? 'none' : 'block');
-    document.getElementById('side-info').style.display = 'none';
-    $('#cancel-note-button').click();
-    isHidden = true;
-    hideOrShowAnnotations();
-  });
 });
 
 document.addEventListener('annotation3D-added', (e) => {
@@ -155,9 +182,13 @@ function hideOrShowAnnotations() {
   if (isHidden === true) {
     var evt = new Event('hide-annotations');
     document.dispatchEvent(evt);
+    $('#show-notes img').attr('src', '/img/pin-normal.svg');
+    $('#show-info img').attr('src', '/img/details-normal.svg');
   } else {
     var evt = new Event('show-annotations');
     document.dispatchEvent(evt);
+    $('#show-notes img').attr('src', '/img/pin-selected.svg');
+    $('#show-info img').attr('src', '/img/details-normal.svg');
   }
 }
 

@@ -13,7 +13,7 @@
             <div id="profile">
                 <div class="wrap">
                     <p>Chats</p>
-                    <a id="addcontact" class="secondary-content" href="#"><img class="add-content-icon" src="/img/add-content-icon.png"></a>
+                    <a id="addcontact" class="secondary-content" href="#"><img src="/img/add-tchat-btn-normal.svg"></a>
                 </div>
             </div>
             <div id="contacts">
@@ -23,7 +23,10 @@
         </div>
         <div id="tchat-content" class="content" style="display: none">
             <div class="contact-profile">
-                <a id="add-user"><i class="material-icons" style="color: black">group_add</i></a>
+                <a id="add-user">
+                  <img src="/img/add-user-normal.svg"/>
+                  <!-- <i class="material-icons" style="color: black">group_add</i> -->
+                </a>
                 <p id="tchat-title">Group Tchat<span id="nb-tchat-users"></span></p>
             </div>
             <div class="messages">
@@ -60,7 +63,7 @@
                     </div>
                 </div>
                 <button id="cancel-tchat-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
-                <button id="create-tchat-btn" class="btn waves-effect waves-light" type="submit">Create Tchat</button>
+                <button id="create-tchat-btn" class="btn waves-effect waves-light" type="submit">Create</button>
             </div>
         </div>
         <div id="confirm-tchat-modal" class="modal">
