@@ -1,6 +1,6 @@
 const serverConfiguration = require('../config/server');
 const mongoose = require('mongoose');
-const Schema =  mongoose.Schema
+const Schema =  mongoose.Schema;
 const bcrypt = require('bcrypt');
 const uniqueValidator = require('mongoose-unique-validator');
 const util = require('util');
@@ -52,6 +52,29 @@ UserSchema.pre('save', function (next) {
     });
   });
 });
+
+UserSchema.methods.removeOrganization = async function(organizationId) {
+  const organizationManager = this.get('Organization');
+  const filter = String(organizationId);
+  this.Organization = organizationManager.filter(manager => {
+    const _id = String(manager._id);
+    return _id !== filter;
+  });
+};
+
+UserSchema.methods.removeWorkspace = async function(workspaceId) {
+  const organizationManager = this.get('Organization');
+  const filter = String(workspaceId);
+
+  this.Organization = organizationManager.map(manager => {
+    manager.workspaces.filter(workspace => {
+      const id = String(workspace);
+      return id !== filter;
+    });
+    return manager;
+  });
+  await this.save();
+};
 
 UserSchema.methods.comparePassword = async function(candidatePassword)  {
   if (candidatePassword === null) { throw Error('need candidatePassword'); }

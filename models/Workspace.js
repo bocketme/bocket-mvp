@@ -31,12 +31,34 @@ let WorkspaceSchema = new mongoose.Schema({
 
 // TODO: DELETE ALL users attribute (workspace.users)
 
-/*
-WorkspaceSchema.virtual('users').get(() => co(yield function() {
-  const {Owner, Admin} = organizationSchema.findById()
-  return [Owner, ...Admin, ...this.owner, ...this.ProductManagers, ...this.Teammates, ...this.Observers]
-}))
-*/
+WorkspaceSchema.virtual('users').get(function () {
+  return [...this.owner, ...this.ProductManagers, ...this.Teammates, ...this.Observers];
+});
+
+WorkspaceSchema.methods.removeUser = async function(userId) {
+  const filter = String(userId);
+  const user = await userSchema.findById(userId);
+
+  const ProductManagers = this.get('ProductManagers');
+  this.ProductManagers = ProductManagers.filter(Managers => {
+    const id = String(Managers);
+    return id !== filter;
+  });
+  const Teammates = this.get('Teammates');
+  this.Teammates = Teammates.filter(Teammate => {
+    const id = String(Teammate);
+    return id !== filter;
+  });
+
+  const Observers = this.get('Observers');
+  this.Observers = Observers.filter(Observer => {
+    const id = String(Observer);
+    return id !== filter;
+  });
+
+  await user.removeWorkspace(this._id);
+};
+
 WorkspaceSchema.pre('remove', async function () {
   //Delete the user inside the workspace
   const users = [...this.observers, this.Teammates, this.ProductManagers];

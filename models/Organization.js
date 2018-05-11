@@ -2,7 +2,6 @@ const serverConfiguration = require("../config/server");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const uniqueValidator = require('mongoose-unique-validator');
-const User = require("./nestedSchema/NestedUserSchema");
 const Workspace = require("./nestedSchema/NestedWorkspaceSchema");
 const config = require('../config/server');
 const fs = require('fs');
@@ -22,7 +21,7 @@ let OrganizationSchema = new mongoose.Schema({
   creation: { type: Date, default: new Date() },
   //TODO: Script to fill the workpsaces.
   //The list of workspaces of the organization
-  Workspaces: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  Workspaces: [{ type: Schema.Types.ObjectId, ref: 'Workspace' }],
   //TODO: Delete workspace.
   //workspaces: [Workspace],
   //TODO: Fill the address facturation / Need form
@@ -30,7 +29,7 @@ let OrganizationSchema = new mongoose.Schema({
   city: String,
   country: String,
   //TODO: Mise en place du Stripe
-  node: [Node]  //TODO: Delete Safe (node is empty)
+  //Done delete node list.
 });
 
 /**
@@ -40,6 +39,53 @@ let OrganizationSchema = new mongoose.Schema({
 OrganizationSchema.statics.newDocument = (OrganizationInformation) => {
   return new Organization(OrganizationInformation);
 };
+
+const userSchema = require("./User");
+const workspaceSchema = require('./Workspace');
+
+OrganizationSchema.methods.removeUser = async function (userId, newOwner = null) {
+  try {
+    const filter = String(userId);
+    const Owner = this.get('Owner');
+    let ownerId = String(Owner);
+    if (ownerId === filter) {
+      if(newOwner)
+        this.Owner = newOwner;
+      else
+        throw new Error('The new Owner is not set');
+    }
+
+    const Admins = this.get('Admins');
+    this.Admins =  Admins.filter(adminId => {
+      const id = String(adminId);
+      return id === filter;
+    });
+
+    const Members =  this.get('Members');
+    this.Members = Members.filter(member => {
+      const id = String(member);
+      return id === filter;
+    });
+
+    const workpsaces = this.get('Workspaces');
+
+    for (let i = 0; i<workpsaces.length; i++) {
+      const workspace = await workspaceSchema.findById(workpsaces[i]);
+      await workspace.removeUser(userId);
+    }
+
+    const user = await userSchema(userId);
+    await user.removeOrganization(this._id);
+    await this.save();
+    return 0;
+  } catch (e) {
+
+  }
+};
+
+OrganizationSchema.virtual('users').get(function() {
+  return [this.Owner, ...this.Admins, ...this.Members]
+});
 
 OrganizationSchema.methods.findUserRights = function(userId) {
   const id = mongoose.Types.ObjectId(userId);
