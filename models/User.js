@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema({
   },
   options: {
     celShading: { type: Boolean, default: false },
+    unit: { type: String, default: 'cm' },
     colorBackground: { type: String, default: "#e0e0e0" },
   }
 });
