@@ -8,10 +8,12 @@
         document.getElementById('renderDiv').style.display = 'block';
         document.getElementById('header').style.display = 'block';
         document.getElementById('social-space').style.display = 'none';
+        document.getElementById('show-social-space').classList.remove('active');
       } else {
         document.getElementById('renderDiv').style.display = 'none';
         document.getElementById('header').style.display = 'none';
         document.getElementById('social-space').style.display = 'block';
+        document.getElementById('show-social-space').classList.add('active');
       }
     });
 
