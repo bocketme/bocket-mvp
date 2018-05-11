@@ -10,17 +10,22 @@ module.exports = function* () {
     if (user.workspaces) {
       let nestedWorkspace = user.workspaces;
       for (let i = 0; i < nestedWorkspace.length; i++) {
-        let workspace = yield workspaceSchema.findById(nestedWorkspace._id);
-        const Organization = user.get('Organization');
-        const isExisting = Organization.findIndex(({_id}) => String(_id) ===  String(workspace.Organization));
+        let workspace = yield workspaceSchema.findById(nestedWorkspace[i]._id);
+        const Organization = user.organizations;
+        console.log(doc._id);
+        const organization = yield organizationSchema.findOne({ 'workspaces._id': doc._id });
+        console.log(organization)
+        const isExisting = Organization.findIndex(({_id}) => {
+          const id1 = String(_id);
+          const id2 = String(organization._id);
+          return id1 === id2;
+        });
         if(isExisting && isExisting !== -1) {
           doc.Organization[isExisting].workspaces.push(workspace._id)
         } else {
-          const organization = yield organizationSchema.findById(workspace.Organization);
-          const userRights = organization.findUserRights(doc._id);
-          user.Organization.push({
-            _id: workspace.Organization._id,
-            isOwner: userRights > 4,
+          console.log(organization._id);
+           user.Organization.push({
+             _id: organization._id,
             workspaces: [workspace._id],
           });
         }
@@ -28,4 +33,5 @@ module.exports = function* () {
     }
     yield doc.save();
   }
+  console.log('end');
 };

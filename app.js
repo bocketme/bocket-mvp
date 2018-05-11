@@ -38,6 +38,9 @@ const session = expressSession({
   saveUninitialized: true
 });
 
+const corrector = require('./utils/corrector/main');
+const co = require('co');
+co(corrector());
 /* Start The Express Server */
 const app = express();
 app.use(session);
@@ -126,12 +129,8 @@ app.use("/node", node);
 app.use("/assembly", assembly);
 
 
-const corrector= require('./utils/corrector/main');
-const co = require('co');
-const workspaceSchema = require('./models/Workspace');
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on('listening', () => {
-  co(corrector());
   for (let dir in FSconfig.appDirectory) {
     fs.access(FSconfig.appDirectory[dir], err => {
       if (err) {

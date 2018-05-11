@@ -7,8 +7,9 @@ module.exports = function* () {
     const organization = doc._doc;
     if (organization.workspaces) {
       const workspaces = doc.get('workspaces');
-      doc.Workspaces = workspaces.map(({_id}) => _id);
+      doc.Workspaces = workspaces.map(({ _id }) => _id);
       doc.workspaces = null;
+      yield doc.save();
     }
 
     if (organization.node)
@@ -24,12 +25,12 @@ module.exports = function* () {
     }
 
     if (organization.members) {
-      const members = organization.get('members');
+      const members = organization.members;
       doc.members = null;
       doc.Members =
         members.filter((member) => {
           const id1 = String(member);
-          const id2 = String(organization.Owner);
+          const id2 = String(organization.owner[0]._id);
           return id1 !== id2;
         });
     }

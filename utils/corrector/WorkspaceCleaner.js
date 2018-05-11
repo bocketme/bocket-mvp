@@ -14,19 +14,19 @@ module.exports = function* () {
     
     const users = workspace.users;
     const owner = workspace.owner;
-  if(users) {
-    console.log(users)
-    console.log(owner)
-      doc.ProductManagers = [owner];
+    if (users) {
+
+      doc.ProductManagers = [owner._id];
       let usersId = users.map(user => user._id);
       doc.Teammates = usersId.filter(user => {
         const id = String(user);
-        const filter = String(owner);
+        const filter = String(owner._id);
         return id !== filter;
       });
       doc.users = undefined;
       doc.owner = undefined;
-      yield doc.save();     
+      doc.T
+      yield doc.save();
     }
   }
 };
