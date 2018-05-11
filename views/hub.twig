@@ -45,7 +45,8 @@
                 <ul id="workspaces-dropdown" class="dropdown-content dropdown-nested">
                     <li class="option-node">
                         <a class="dropdown-menu dropdown-button" href='#' data-activates='dropdown-settings-viewer' data-hover="hover" data-alignment="left">
-                            Viewer Settings <i class='material-icons' style="float: right; margin: 0;">keyboard_arrow_right</i>
+                            Viewer Settings
+                            <i class='material-icons' style="float: right; margin: 0;">keyboard_arrow_right</i>
                         </a>
                     </li>
                     <li class="divider"></li>
@@ -72,15 +73,46 @@
                     </li> #}
                 </ul>
 
-                <ul id="dropdown-settings-viewer" class="dropdown-content">
+                <ul id="dropdown-settings-viewer" class="dropdown-content dropdown-nested">
                     <li class="option-node" id="cell-shading-button">
-                        <a class="dropdown-menu" href='?celShading={{optionViewer.celShading ? false : true}}'>Cel Shading{% if optionViewer.celShading == true %} <i class='material-icons' style="margin: 0;">check</i> {% endif %}</a>
+                        <a class="dropdown-menu" href='?celShading={{optionViewer.celShading ? false : true}}'>Cel Shading{% if optionViewer.celShading == true %}
+                                <i class='material-icons' style="margin: 0;">check</i>
+                            {% endif %}
+                        </a>
                     </li>
-                    {#
                     <li class="option-node" id="background-color">
-                        <a class="dropdown-menu disabled">Background color</a>
+                        <a class="dropdown-menu dropdown-button" href='#' data-activates='dropdown-settings-unit' data-hover="hover" data-alignment="left">
+                            Workspace Units
+                            <i class='material-icons' style="float: right; margin: 0;">keyboard_arrow_right</i>
+                        </a>
                     </li>
-                    #}
+                </ul>
+                {% set unit = optionViewer.unit %}
+                <ul id="dropdown-settings-unit" class="dropdown-content">
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu" {% if not (unit == 'm') %} href="?unit=m" {% endif %}>
+                            m
+                            {% if (unit == 'm') %}
+                                <i class='material-icons' style="float: right; margin: 0;">check</i>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu" {% if not (unit == 'cm') %} href="?unit=cm" {% endif %}>
+                            cm
+                            {% if (unit == 'cm') %}
+                                <i class='material-icons' style="float: right; margin: 0;">check</i>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu" {% if not (unit == 'mm') %} href="?unit=mm" {% endif %}>
+                            mm
+                            {% if (unit == 'mm') %}
+                                <i class='material-icons' style="float: right; margin: 0;">check</i>
+                            {% endif %}
+                        </a>
+                    </li>
                 </ul>
 
                 {# Modals #}
@@ -122,7 +154,6 @@
                 {% include 'hub/viewer.twig' %}
                 {% include 'hub/sideNav.twig' %}
                 {% include 'hub/details.twig' %}
-
 
                 <div id="note-card-form" class="row scale-transition scale-in" style="display: none;position: absolute">
                     <div class="card">

@@ -29,12 +29,16 @@ module.exports = {
   },
   changeOption: async (req, res, next) => {
     if (req.query !== {}) {
-      const celShading = req.query.celShading;
-      const user = await User.findOne({ email: req.session.userMail })
-      if (!user.options) user.options = {}
-      user.options.celShading = celShading;
+      const { celShading, unit } = req.query;
+      const user = await User.findOne({ email: req.session.userMail });
+      const options = user.get('options');
+      if (celShading)
+        options.celShading = celShading;
+      if (unit)
+        options.unit = unit;
+      user.options = options;
       await user.save();
-      return next()
+      return next();
     }
     next();
   },
@@ -76,7 +80,7 @@ module.exports = {
   },
 }
 
-function getRenderInformation(workspaceId, userMail) {
+function getRenderInformation (workspaceId, userMail) {
   return new Promise((resolve, reject) => {
     Workspace.findById({ _id: workspaceId })
       .then((workspace) => {
