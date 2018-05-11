@@ -37,7 +37,7 @@ let WorkspaceSchema = new mongoose.Schema({
 // TODO: DELETE ALL users attribute (workspace.users)
 
 WorkspaceSchema.virtual('users').get(function () {
-  return [...this.owner, ...this.ProductManagers, ...this.Teammates, ...this.Observers];
+  return [...this.ProductManagers, ...this.Teammates, ...this.Observers];
 });
 
 WorkspaceSchema.methods.removeUser = async function(userId) {
