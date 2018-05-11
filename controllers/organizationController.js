@@ -29,7 +29,10 @@ module.exports = {
 async function renderOrganization(organizationId, userId) {
   const organization = await organizationSchema
     .findById(organizationId)
-    .populate('Owner')
+    .populate('Workspaces')
+    .populate('Owner', 'completeName')
+    .populate('Admins', 'completeName')
+    .populate('Members', 'completeName')
     .exec();
 
   const rights = organization.findUserRights(userId);
@@ -43,9 +46,11 @@ async function renderOrganization(organizationId, userId) {
 
   if(!user) throw new Error('[Organizaiton Manager] - Cannot find the user');
 
+  console.log(organization.users);
 
   return {
     currentOrganization: organization,
+    OrganizationUsers: organization.users,
     userOrganizations: user.Organization.filter(({_id}) => String(_id._id) !== organizationId),
     user: {
       completeName: user.completeName,
@@ -60,6 +65,9 @@ async function renderWorkspaces(organizationId, userId) {
   const organization = await organizationSchema
     .findById(organizationId)
     .populate('Owner')
+    .populate('Workspaces')
+    .populate('Admins')
+    .populate('Members')
     .exec();
 
   const rights = organization.findUserRights(userId);
@@ -77,11 +85,18 @@ async function renderWorkspaces(organizationId, userId) {
 
   if (!user) throw new Error('[Organizaiton Manager] - Cannot find the user');
 
-  console.log(user.Organization);
+  const managerOrganization = user.get('Organization');
+
+  const index = managerOrganization.findIndex(orga => {
+    const res = String(orga._id._id) === String(organizationId);
+    return res;
+  });
 
   return {
     currentOrganization: organization,
+    OrganizationUsers: organization.users,
     userOrganizations: user.Organization,
+    workspaces: rights > 4 ? organization.Workspaces : user.Organization[index].workspaces,
     user: {
       completeName: user.completeName,
       _id: user._id,
@@ -96,6 +111,7 @@ async function renderMembers(OrganizationId, userId) {
     .findById(OrganizationId)
     .populate('Owner')
     .populate('Admins')
+    .populate('Workspaces')
     .populate('Members')
     .exec();
 
@@ -110,8 +126,10 @@ async function renderMembers(OrganizationId, userId) {
 
   if(!user) throw new Error('[Organizaiton Manager] - Cannot find the user');
 
+
   return {
     currentOrganization: organization,
+    OrganizationUsers: organization.users,
     userOrganizations: user.Organization,
     user: {
       completeName: user.completeName,
