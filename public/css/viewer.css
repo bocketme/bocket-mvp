@@ -190,8 +190,9 @@
 }
 
 #addNoteButton.active {
-    background-color: #B6C0C1 !important;
-    border-bottom: #223241 2px solid;
+  color: #223241;
+  background-color: #B6C0C1 !important;
+  border-bottom: #223241 2px solid;
 }
 
 #note-list {

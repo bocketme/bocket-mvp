@@ -744,16 +744,20 @@ ul#details-tab {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
+    font-weight: bolder !important;
 }
 
 #show-social-space:hover {
     background-color: #FF2E63 !important;
     border-bottom: #D72653 2px solid;
+    font-weight: bolder !important;
 }
 
 #show-social-space.active {
-    background-color: #B6C0C1 !important;
-    border-bottom: #223241 2px solid;
+  color: #223241;
+  font-weight: bolder !important;
+  background-color: #B6C0C1 !important;
+  border-bottom: #223241 2px solid;
 }
 
 #show-social-space i {

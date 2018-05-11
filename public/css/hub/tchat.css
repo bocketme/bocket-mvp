@@ -458,7 +458,7 @@
 }
 
 .tchat-modal-content {
-    height: calc(75% - 45px);
+    height: calc(93% - 45px);
 }
 
 #cancel-tchat-rm-btn, #cancel-tchat-btn, #cancel-add-btn {
@@ -475,11 +475,13 @@
     -moz-box-shadow: none;
     box-shadow: none;
     transition: none;
+    font-weight: bolder !important;
 }
 
 #cancel-tchat-rm-btn:hover, #cancel-tchat-btn:hover, #cancel-add-btn:hover {
     color: #FF2E63 !important;
     border: 2px solid #FF2E63 !important;
+    font-weight: bolder !important;
 }
 
 #confirm-tchat-rm-btn, #create-tchat-btn, #add-user-btn {
@@ -495,16 +497,18 @@
     -moz-box-shadow: none;
     box-shadow: none;
     transition: none;
+    font-weight: bolder !important;
 }
 
 #confirm-tchat-rm-btn:hover, #create-tchat-btn:hover, #add-user-btn:hover {
   border-bottom: 3px solid #218A2A !important;
+  font-weight: bolder !important;
 }
 
 
 #social-users-list, #add-users-list {
     overflow: auto;
-    height: 100%;
+    height: 100% !important;
 }
 
 #confirm-tchat-modal .modal-form {
