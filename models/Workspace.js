@@ -1,6 +1,8 @@
-let serverConfiguration = require("../config/server");
-let mongoose = require("mongoose");
+const serverConfiguration = require('../config/server');
+const mongoose = require('mongoose');
 
+const NestedTchat = require('./nestedSchema/NestedTchat');
+const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const userSchema = require('./User');
 const nodeSchema = require('./Node');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
@@ -10,6 +12,9 @@ let WorkspaceSchema = new mongoose.Schema({
   //General Information
   name: { type: String, require: true },
   description: String,
+
+  Annotations: { type: [NestedAnnotation], required: true, default: [] },
+  Tchats: { type: [NestedTchat], required: true, default: [] },
 
   //Node Master of the product
   nodeMaster: { type: Schema.Types.ObjectId, ref: 'Node' },
@@ -84,10 +89,8 @@ WorkspaceSchema.pre('remove', async function () {
  *
  * @param {any} WorkspaceInformation
  */
-WorkspaceSchema.statics.newDocument = (WorkspaceInformation) => {
-  return new Workspace(WorkspaceInformation);
-};
+WorkspaceSchema.statics.newDocument = (WorkspaceInformation) => new Workspace(WorkspaceInformation);
 
-let Workspace = mongoose.model("Workspace", WorkspaceSchema, "Workspaces");
+let Workspace = mongoose.model('Workspace', WorkspaceSchema, 'Workspaces');
 
 module.exports = Workspace;

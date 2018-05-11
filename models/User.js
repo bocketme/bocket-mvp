@@ -30,6 +30,11 @@ const UserSchema = new mongoose.Schema({
     active: { type: Boolean, default: false },
     key: String
   },
+  options: {
+    celShading: { type: Boolean, default: false },
+    unit: { type: String, default: 'cm' },
+    colorBackground: { type: String, default: "#e0e0e0" },
+  }
 });
 
 UserSchema.pre('save', function (next) {

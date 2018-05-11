@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="/css/hub/specs.css">
     <link rel="stylesheet" href="/css/hub/invitePeople.css">
     <link rel="stylesheet" href="/css/hub/manageWorkspace.css">
+    <link rel="stylesheet" href="/css/hub/tchat.css">
+    <link rel="stylesheet" href="/css/hub/tchat.css">
 {% endblock %}
 
 {% block title %}{{ title }}
@@ -31,7 +33,7 @@
             </div>
             <div class="col s10 m10 l10 xl10" id="structure">
 
-                <button class="dropdown-button" data-beloworigin="true" data-activates='workspaces-dropdown'>
+                <button class="dropdown-button" href='#' data-beloworigin="true" data-activates='workspaces-dropdown'>
                     <div class="workspaces-title">
                         {{ in_use.name }}
                         <i class="material-icons arrow_drop_down">arrow_drop_down</i>
@@ -41,7 +43,14 @@
                     </div>
                 </button>
 
-                <ul id="workspaces-dropdown" class="dropdown-content">
+                <ul id="workspaces-dropdown" class="dropdown-content dropdown-nested">
+                    <li class="option-node">
+                        <a class="dropdown-menu dropdown-button" href='#' data-activates='dropdown-settings-viewer' data-hover="hover" data-alignment="left">
+                            Viewer Settings
+                            <i class='material-icons' style="float: right; margin: 0;">keyboard_arrow_right</i>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
                     <li class="option-node" id="manage-workspace-btn">
                         <a class="dropdown-menu">Settings</a>
                     </li>
@@ -65,8 +74,50 @@
                     </li> #}
                 </ul>
 
+                <ul id="dropdown-settings-viewer" class="dropdown-content dropdown-nested">
+                    <li class="option-node" id="cell-shading-button">
+                        <a class="dropdown-menu" href='?celShading={{optionViewer.celShading ? false : true}}'>Cel Shading{% if optionViewer.celShading == true %}
+                                <i class='material-icons' style="margin: 0;">check</i>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu dropdown-button" href='#' data-activates='dropdown-settings-unit' data-hover="hover" data-alignment="left">
+                            Workspace Units
+                            <i class='material-icons' style="float: right; margin: 0;">keyboard_arrow_right</i>
+                        </a>
+                    </li>
+                </ul>
+                {% set unit = optionViewer.unit %}
+                <ul id="dropdown-settings-unit" class="dropdown-content">
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu" {% if not (unit == 'm') %} href="?unit=m" {% endif %}>
+                            m
+                            {% if (unit == 'm') %}
+                                <i class='material-icons' style="float: right; margin: 0;">check</i>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu" {% if not (unit == 'cm') %} href="?unit=cm" {% endif %}>
+                            cm
+                            {% if (unit == 'cm') %}
+                                <i class='material-icons' style="float: right; margin: 0;">check</i>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu" {% if not (unit == 'mm') %} href="?unit=mm" {% endif %}>
+                            mm
+                            {% if (unit == 'mm') %}
+                                <i class='material-icons' style="float: right; margin: 0;">check</i>
+                            {% endif %}
+                        </a>
+                    </li>
+                </ul>
+
                 {# Modals #}
-                {# 
+                {#
                     {% include "modals/create_part.twig" %}
                     {% include "modals/new_node.twig" %}
                     {% include "modals/import_specfiles.twig"%}
@@ -81,6 +132,9 @@
                 {% include "modals/changePassword.twig" %}
 
                 <div id="second_column_content" class="clear">
+                    <a id="show-social-space" href="#" class="waves-effect waves-light btn" style="z-index: inherit">
+                        <i class="material-icons ">people</i>Social Space
+                    </a>
                     {#
                         {% include "hub/search.twig" %}
                         {% include "hub/location.twig" %}
@@ -96,6 +150,7 @@
 
         <div id="third_column" class="col s12 m8 l8 xl9 ">
             {% include "hub/header.twig" %}
+            {% include "hub/tchat.twig" %}
             <div id="third_column_content" class="row">
                 {% include 'hub/viewer.twig' %}
                 {% include 'hub/sideNav.twig' %}
@@ -140,6 +195,7 @@
         let idOfchoosenNode = undefined;
         const NodeTypeEnum = {{ NodeTypeEnum }};
         var ViewTypeEnum = {{ ViewTypeEnum }};
+        const optionViewer = {{ optionViewer }};
         var view = ViewTypeEnum.location;
         socket.emit("joinWorkspace", workspaceId);
         $(".workspace-change").on("click", function () {
@@ -169,6 +225,7 @@
     <script src="/js/hub/createWorkspace.js"></script>
     <script src="/js/hub/actions.js"></script>
     <script src="/js/hub/changePassword.js"></script>
+    <script src="/js/hub/tchat.js"></script>
     <script type="application/javascript">
         $('.profile').initial();
     </script>

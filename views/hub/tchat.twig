@@ -1,0 +1,107 @@
+<div id="social-space">
+    <div class="data-header-third-column row">
+        <ul class="tabs">
+            <li class="tab col s3"><a class="active" href="#frame">Chat</a></li>
+            <li class="tab col s3"><a href="#news-feed">News Feed</a></li>
+        </ul>
+    </div>
+    <div id="news-feed">
+        <p>This feature will be implemented soon... Please be patient :)</p>
+    </div>
+    <div id="frame">
+        <div id="sidepanel" class="col s3">
+            <div id="profile">
+                <div class="wrap">
+                    <p>Chats</p>
+                    <a id="addcontact" class="secondary-content" href="#"><img src="/img/add-tchat-btn-normal.svg"></a>
+                </div>
+            </div>
+            <div id="contacts">
+                <ul id="contacts-list">
+                </ul>
+            </div>
+        </div>
+        <div id="tchat-content" class="content" style="display: none">
+            <div class="contact-profile">
+                <a id="add-user">
+                  <img src="/img/add-user-normal.svg"/>
+                  <!-- <i class="material-icons" style="color: black">group_add</i> -->
+                </a>
+                <p id="tchat-title">Group Tchat<span id="nb-tchat-users"></span></p>
+            </div>
+            <div class="messages">
+                <ul class="messages-list">
+                </ul>
+            </div>
+            <div class="message-input">
+                <div class="wrap">
+                    <input type="text" placeholder="Write your message..." />
+                    <button class="submit"><i class="material-icons">send</i></button>
+                </div>
+            </div>
+        </div>
+        <div id="new-tchat-form" class="modal">
+            <div class="modal-form" >
+                <div class="modal-header">
+                    <h5 style="display: inline-block;font-weight: bolder !important;">Create group Chat</h5>
+                    <a id="close-add-modal" href="#" style="float: right;cursor: pointer"><i class="material-icons">clear</i></a>
+                </div>
+                <div class="modal-content container tchat-modal-content">
+                    <div class="modal-body modal-part">
+                        <div id="tchat-form" class="wrapper">
+                            <div class="row">
+                                <div class="input-field">
+                                    <input placeholder="Titre de la conversation" id="tchat-title-form" type="text" class="validate">
+                                    <label for="tchat-title-form">Titre</label>
+                                </div>
+                            </div>
+                            <div >
+                                <ul id="social-users-list">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="cancel-tchat-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
+                <button id="create-tchat-btn" class="btn waves-effect waves-light" type="submit">Create</button>
+            </div>
+        </div>
+        <div id="confirm-tchat-modal" class="modal">
+            <div class="modal-form">
+                <div class="modal-header">
+                    <h5 style="display: inline-block;font-weight: bolder !important;">Delete Selected Tchat</h5>
+                    <a id="close-confirm-modal" href="#" style="float: right;cursor: pointer"><i class="material-icons">clear</i></a>
+                </div>
+                <div class="modal-content container tchat-modal-content">
+                    <div class="modal-body modal-part">
+                        <span >Are you sure you want to delete selected tchat ?</span>
+                    </div>
+                </div>
+                <button id="cancel-tchat-rm-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
+                <button id="confirm-tchat-rm-btn" class="btn waves-effect waves-light" type="submit">Confirm</button>
+            </div>
+        </div>
+        <div id="add-user-form" class="modal">
+            <div class="modal-form" >
+                <div class="modal-header">
+                    <h5 style="display: inline-block;font-weight: bolder !important;">Add users to chat</h5>
+                    <a id="close-add-modal" href="#" style="float: right;cursor: pointer"><i class="material-icons">clear</i></a>
+                </div>
+                <div class="modal-content container tchat-modal-content">
+                    <div class="modal-body modal-part">
+                        <div id="tchat-form" class="wrapper">
+                            <div class="row">
+                                <div>
+                                    <ul id="add-users-list">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="cancel-add-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
+                <button id="add-user-btn" class="btn waves-effect waves-light" type="submit">Add users</button>
+            </div>
+        </div>
+    </div>
+</div>

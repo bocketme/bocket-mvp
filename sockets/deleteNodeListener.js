@@ -42,6 +42,22 @@ async function deleteInexistantNode(io, nodeId) {
   return null
 }
 
+async function deleteInexistantNode(io, nodeId) {
+  const nodes = await Node.find({ 'children._id': nodeId });
+  log.info(nodes.length);
+  if (nodes.length === 0) return null
+  log.info(`the node ${nodeId} is inexistant, deletion automatic...`);
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+    node.children = node.children.filter(child => child._id !== nodeId);
+    await node.save();
+  }
+  log.info(`deletion successfull`);
+  io.to(session.currentWorkspace).emit(socketName, nodeId);
+  io.to(session.currentWorkspace).emit('[Viewer] - Delete', nodeId);
+  return null
+}
+
 async function deleteNodeListener(io, session, nodeId) {
   try {
     const workspaces = await Workspace.find({

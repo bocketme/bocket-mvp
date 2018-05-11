@@ -27,6 +27,7 @@ const PartSchema = mongoose.Schema({
   description: { type: String, default: 'No description aviable' },
 
   path: String,
+  pathVersion: { type: Number, default: 1 },
   maturity: { type: String, default: TypeEnum.maturity[0] },
   quality: { type: Number, default: 0 },
   tags: { type: [], default: [] },
@@ -37,6 +38,10 @@ const PartSchema = mongoose.Schema({
   annotation: { type: [NestedAnnotation], default: [] },
   activities: { type: [NestedComment], default: [] },
 
+  optionViewer: {
+    activateCellShading: { type: Boolean, default: false },
+  }
+  
   Organization: {type: mongoose.SchemaTypes.ObjectId, required: true}
   // owners: {type: [nestedOwners], default: []}
 });
@@ -55,6 +60,7 @@ function mkdirPromise(path) {
 }
 
 PartSchema.pre('validate', function (next) {
+
   if (this.path) { return next(); }
 
   this.path = `/${this.Organization}/${this.name} - ${this._id}`;

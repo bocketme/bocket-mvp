@@ -28,6 +28,21 @@ module.exports = {
       }
     });
   },
+  changeOption: async (req, res, next) => {
+    if (req.query !== {}) {
+      const { celShading, unit } = req.query;
+      const user = await User.findOne({ email: req.session.userMail });
+      const options = user.get('options');
+      if (celShading)
+        options.celShading = celShading;
+      if (unit)
+        options.unit = unit;
+      user.options = options;
+      await user.save();
+      return next();
+    }
+    next();
+  },
   indexPOST: (req, res) => { // email, password & workspaceId
     // TODO: CHECK SI L'UTILISATEUR EST CONNECTEE ET A LE DROIT D'AVOIR ACCES A CE WSP
     const {email, password, workspaceId} = req.body;

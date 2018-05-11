@@ -11,7 +11,7 @@ const NestedAnnotation = mongoose.Schema({
   date: { type: Date, default: new Date() },
   posLocalAnnotObject: [],
   relatedObjectid: { type: String, require: true },
-  isImportant: Boolean
+  isImportant: Boolean,
 });
 
 module.exports = NestedAnnotation;
