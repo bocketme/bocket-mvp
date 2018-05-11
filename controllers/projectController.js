@@ -57,7 +57,7 @@ module.exports = {
       })
       .catch(err => {
         log.error('[projectController.indexPOST] : \n', err);
-        res.redirect('/');
+        res.status(500).send('Intern Error');
       });
   },
 };
@@ -117,6 +117,7 @@ async function getRenderInformation(workspaceId, email) {
     user: user.completeName,
     workspaces,
     node: nodeMaster,
+    //optionViewer = user.options,
     /* Const for front end */
     NodeTypeEnum: JSON.stringify(NodeTypeEnum),
     ViewTypeEnum: JSON.stringify(ViewTypeEnum),
