@@ -29,7 +29,7 @@ const reportIssueListener = require('./reportIssueListener');
 const changeWorkspaceorOrganizationName = require('./changeWorkspaceorOrganizationName.js');
 const Tchat = require('./Tchat/main');
 const getCurrentUser = require('./getCurrentUser');
-const getUsers = reqUseruire('./getUsers');
+const getUsers = require('./getUsers');
 
 const User = require('./User/main');
 

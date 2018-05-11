@@ -5,7 +5,6 @@ const NestedTchat = require('./nestedSchema/NestedTchat');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const userSchema = require('./User');
 const nodeSchema = require('./Node');
-const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const Schema = mongoose.Schema
 const co = require('co');
 let WorkspaceSchema = new mongoose.Schema({

@@ -11,16 +11,22 @@ module.exports = function* () {
       doc.node_master = null;
       yield doc.save();
     }
-    const users = doc.get('users');
-    const owner = doc.get('owner._id')
-    if(users) {
-      dov.P = [owner];
+    
+    const users = workspace.users;
+    const owner = workspace.owner;
+  if(users) {
+    console.log(users)
+    console.log(owner)
+      doc.ProductManagers = [owner];
       let usersId = users.map(user => user._id);
       doc.Teammates = usersId.filter(user => {
         const id = String(user);
         const filter = String(owner);
         return id !== filter;
       });
+      doc.users = undefined;
+      doc.owner = undefined;
+      yield doc.save();     
     }
   }
 };

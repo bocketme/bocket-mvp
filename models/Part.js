@@ -40,7 +40,7 @@ const PartSchema = mongoose.Schema({
 
   optionViewer: {
     activateCellShading: { type: Boolean, default: false },
-  }
+  },
   
   Organization: {type: mongoose.SchemaTypes.ObjectId, required: true}
   // owners: {type: [nestedOwners], default: []}
