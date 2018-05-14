@@ -117,7 +117,7 @@ async function getRenderInformation(workspaceId, email) {
     user: user.completeName,
     workspaces,
     node: nodeMaster,
-    //optionViewer = user.options,
+    optionViewer: user.options,
     /* Const for front end */
     NodeTypeEnum: JSON.stringify(NodeTypeEnum),
     ViewTypeEnum: JSON.stringify(ViewTypeEnum),
