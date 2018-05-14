@@ -2,7 +2,7 @@ const betaRegistrationListener = require('./betaRegistrationSListener');
 const checkUniqueField = require('./checkUniqueField');
 const Annotation = require('./Annotation/main');
 const newNodeListener = require('./newNodeListener');
-const NodeInformationListener = require('./nodeInformationListener');
+const NodeInformation =  require('./NodeInformation/main');
 const searchNodeChildren = require('./searchNodeChildren');
 const NodeViewer = require('./NodeViewer/main');
 const newActivityComment = require('./newActivityCommentListener');
@@ -63,7 +63,7 @@ module.exports = function (io) {
       betaRegistrationListener(socket);
       checkUniqueField(socket);
       newNodeListener(socket);
-      NodeInformationListener(socket);
+      NodeInformation(io, socket);
       searchNodeChildren(socket);
       NodeViewer(io, socket);
       newActivityComment(socket, io);
