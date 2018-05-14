@@ -12,7 +12,6 @@ const UserSchema = require('../models/User');
 const WorkspaceSchema = require('../models/Workspace');
 const acceptInvitation = require('../utils/Invitations/acceptInvitation');
 const signInUserSession = require('../utils/signInUserSession');
-const TeamSchema = require('../models/Team');
 const asyncForEach = require('../utils/asyncForeach');
 
 const signUpController = {
@@ -112,12 +111,6 @@ async function createAccount(req, res) {
 
     await user.save();
     documents.push(user);
-
-    const nestedUser = {
-      _id: user._id,
-      completeName: user.completeName,
-      email: user.email,
-    };
 
     const organization = await OrganizationSchema.create({
       Owner: user._id,
