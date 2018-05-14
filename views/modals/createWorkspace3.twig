@@ -1,20 +1,18 @@
 <!-- Modal Structure -->
 <div id="workspace-creation" class="modal">
     <div class="modal-content">
-            <h4>
-                Create a new Workspace
-                <i class="material-icons right">highlight_off</i>
-            </h4>
-            <a href="#!">
-                <i></i>
-            </a>
+        <h4>
+            Create a new Workspace
+            <i class="material-icons right">highlight_off</i>
+        </h4>
+        <form method="post" action='/organization/{{ currentOrganization._id }}/workspace'>
             <div style="margin-top: 60px" class="input-field col s12">
-                <input id="workspace_name" type="text" class="validate">
+                <input id="workspace_name" name='workspaceName' type="text" class="validate">
                 <label for="workspace_name">Workspace Name</label>
             </div>
             <div class="input-field col s12">
-                <select>
-                    <option value="" disabled selected>Choose your product manager</option>
+                <select name="workspaceManager" id='new-workspace-manager'>
+                    <option value="" disabled="disabled" selected="selected">Choose your product manager</option>
                     {% for user in currentOrganization.users %}
                         <option value="{{ user._id }}">{{ user.completeName }}</option>
                     {% endfor %}
@@ -22,8 +20,9 @@
                 <label>Product Manager</label>
             </div>
             <div class="row col s12">
-                <a class="waves-effect modal-close waves-light btn col s3 push-s2">Cancel</a>
-                <a id="new-workspace-submit" class="waves-effect modal-close disabled waves-light btn col s3 push-s4">Create</a>
+                <a class="modal-close btn col s3 push-s2 btn-cancel">Cancel</a>
+                <button type="submit" id="new-workspace-submit" class="modal-close disabled btn col s3 push-s4 btn-confirm">Create</button>
             </div>
+        </form>
     </div>
 </div>
