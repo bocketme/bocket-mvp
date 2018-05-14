@@ -5,5 +5,6 @@ module.exports = (io, socket) => {
     const {userId} = socket.session.handshake;
     const organization = await organizationSchema.findById(organizationId);
     await organization.removeUser(userId, newOwnerId);
+    await organization.save();
   });
 };
