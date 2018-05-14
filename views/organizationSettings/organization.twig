@@ -19,11 +19,11 @@
         </div>
         <div class="col s12 m8 l8 xl9" style="position: relative; height: 99%;">
 
-            {% include './organizationHeader.twig' %}
+            {% include './header.twig' %}
 
             <div id="organization-settings" class="row">
+                {#
                 <div id="organization-image" style="background-image: url('/organization/image/{{ currentOrganization._id }}')" class="col s4">
-
                     <div class="file-field input-field">
                         <div class="change-organization">
                             <span>Edit</span>
@@ -32,8 +32,9 @@
                         <div class="file-path-wrapper">
                             <input class="file-path validate" type="text" style="display: none">
                         </div>
-                    </div>
+                    </div>                
                 </div>
+                #}
                 <div style="position: relative;margin-top: 49px;margin-left: 15px;" class="col s8">
                     <input id="organization-name" type="text" value="{{ currentOrganization.name }}">
                     <i id="edit" class="material-icons">edit</i>
@@ -57,10 +58,15 @@
                     {{ 1 + currentOrganization.Members|length + currentOrganizaiton.Admins|length }}
                 </p>
             </div>
+            {% if user.rights == 6 %}
             <div id="quit">
-                <a class="btn outline-button" onclick="deleteTheOrganization({{ user.rights }})" class="outline-button">Delete the organization</a>
-                <a class="btn outline-button" onclick="leaveTheOrganization({{ user.rights }})" class="">Leave the organization</a>
+                <a id="delete-the-organization" class="btn outline-button" >Delete the organization</a>
+                <a id="leave-the-organization" class="btn outline-button" >Leave the organization</a>
             </div>
+            {% include 'modals/leaveTheOrganization.twig' %}
+            {% include 'modals/deleteAnOrganization.twig' %}            
+            {% endif %}
+            
         </div>
 
     </div>

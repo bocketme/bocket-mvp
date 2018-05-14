@@ -125,3 +125,20 @@
     margin: 0% 10%;
     opacity: 0.5;
 }
+
+.btn-cancel {
+    color: #223241 !important;
+    border: 2px solid #223241 !important;
+    background-color: white !important;
+}
+
+.btn-cancel:hover {
+    color: white !important;
+    border: 2px solid #FF2E63 !important;
+    font-weight: bolder !important;
+}
+
+.btn-confirm {
+    background-color: #00CCA0 !important;
+    color: #ffffff !important;
+}

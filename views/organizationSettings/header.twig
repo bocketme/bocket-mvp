@@ -1,16 +1,25 @@
-<div class="dropdown-button" data-beloworigin="true">
-    <div class="text">{{ currentOrganization.name }}</div>
+<div id="organization-header" class="row" style="margin: 0;">
+    <div class="col s4" style="padding: 0">
+        <button class="dropdown-button" style="width: auto" data-beloworigin="true" data-activates='organizations-dropdown'>
+            <div class="workspaces-title">
+                <h5>
+                    {{ currentOrganization.name }}
+                    <i id="button-align-dropdown" class="material-icons arrow_drop_down">arrow_drop_down</i>
+                </h5>
+            </div>
+        </button>
+    </div>
+    <ul id='organizations-dropdown' class='dropdown-content'>
+        {% for organization in userOrganizations %}
+            <li class='removableOrganization' >
+                <a href="/organization/{{ organization._id._id }}">{{ organization._id.name }}</a>
+            </li>
+        {% endfor %}
+        <li class="divider">
+        <li>
+            <a class="modal-trigger" href="#new-organization" style="font-size: 10px;">Add a new Organization</a>
+        </li>
+    </ul>
 </div>
 
-
-
-<ul>
-    {% for organization in organizations %}
-        {% if organization.name == title %}
-        {% else %}
-            <li>
-                <a href="/organization/{{ organization._id }}">organization.name</a>
-            </li>
-        {% endif %}
-    {% endfor %}
-</ul>
+{% include 'modals/createNewOrganization.twig' %}

@@ -30,6 +30,7 @@
         <script type="application/javascript" src="/socket.io/socket.io.js"></script>
         <script type="application/javascript">
             var socket = io();
+            const userRights = {{user.rights}};
             $(document).ready(function(){
               $('.modal').modal({
                 complete: function () {
@@ -40,5 +41,7 @@
         </script>
         {% block js %}{% endblock %}
         <script type="application/javascript" src="/js/app/listWorkspace.js"></script>
+        <script type="application/javascript" src="/js/settings/organization.js"></script>   
+        <script type="application/javascript" src="/js/settings/workspace.js"></script>   
     </body>
 </html>
