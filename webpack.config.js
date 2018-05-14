@@ -6,13 +6,11 @@ const dev = process.env.NODE_ENV === "dev";
 const config = {
   entry: {
     threejs: './viewer/src/three.js - viewer/main.js',
-    //webgl: './viewer/src/webgl - viewer/main.js',
-    //babylon: './viewer/src/babylon.js - viewer/main.js',
+    // webgl: './viewer/src/webgl - viewer/main.js',
+    // babylon: './viewer/src/babylon.js - viewer/main.js',
   },
   watch: dev,
-  node: {
-    fs: 'empty'
-  },
+  node: { fs: 'empty' },
   devtool: dev ? 'cheap-module-eval-source-map' : false,
   target: 'web',
   output: {

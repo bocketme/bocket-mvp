@@ -27,25 +27,41 @@ module.exports = {
         }
       });
   },
+  changeOption: async (req, res, next) => {
+    if (req.query !== {}) {
+      const { celShading, unit } = req.query;
+      const user = await User.findOne({ email: req.session.userMail });
+      const options = user.get('options');
+      if (celShading)
+        options.celShading = celShading;
+      if (unit)
+        options.unit = unit;
+      user.options = options;
+      await user.save();
+      return next();
+    }
+    next();
+  },
   indexPOST: (req, res) => { // email, password & workspaceId
     // TODO: CHECK SI L'UTILISATEUR EST CONNECTEE ET A LE DROIT D'AVOIR ACCES A CE WSP
     if (!req.body.email || !req.body.password || !req.body.workspaceId) {
       res.redirect('/');
-      return ;
+      return;
     }
     if (!req.session.userMail) {
-      User.findOne({email: req.body.email})
+      User.findOne({ email: req.body.email })
         .then(result => {
           result.comparePassword(req.body.password, (err, isMatch) => {
             if (err) {
-              log.error('[projectController.indexPOST] :', err);
+              // log.error('[projectController.indexPOST] :', err);
               res.sendStatus(500);
             }
             else if (!isMatch) {
-              log.error("User n'est pas connecté !");
+              // log.error("User n'est pas connecté !");
               res.redirect('/signIn');
             }
             else {
+              // log('RESULT : ', result);
               req.session.userMail = result.email;
               req.session.completeName = result.completeName;
               req.session.currentWorkspace = req.body.workspaceId;
@@ -64,9 +80,9 @@ module.exports = {
   },
 }
 
-function getRenderInformation(workspaceId, userMail) {
+function getRenderInformation (workspaceId, userMail) {
   return new Promise((resolve, reject) => {
-    Workspace.findById({_id: workspaceId})
+    Workspace.findById({ _id: workspaceId })
       .then((workspace) => {
         if (workspace === null) {
           log.warn('[projectController.indexPOST] : - Workspace not found');
@@ -81,16 +97,16 @@ function getRenderInformation(workspaceId, userMail) {
             //  req.session.userId = user._id;
             Node.findById(workspace.node_master._id)
               .then((node_master) => {
-                let node = {name : node_master.name, _id: node_master._id, type: node_master.type, children: []};
+                let node = { name: node_master.name, _id: node_master._id, type: node_master.type, children: [] };
                 let i = 0;
                 while (i < node_master.children.length) {
-                  node.children.push({title: node_master.children[i].title, _id: node_master.children[i]._id, children: []});
+                  node.children.push({ title: node_master.children[i].title, _id: node_master.children[i]._id, children: [] });
                   i += 1;
                 }
-                Organization.find({"owner._id": user._id}).then((ownerOrganization) => {
+                Organization.find({ "owner._id": user._id }).then((ownerOrganization) => {
                   resolve({
                     title: workspace.name,
-                    in_use: {name: workspace.name, id: workspace._id},
+                    in_use: { name: workspace.name, id: workspace._id },
                     data_header: 'All Parts',
                     user: user.completeName,
                     ownerOrganization: ownerOrganization,
@@ -99,9 +115,11 @@ function getRenderInformation(workspaceId, userMail) {
                     all_parts: 100,
                     last_updates: 10,
                     duplicates: 35,
+
                     /* Const for front end */
                     NodeTypeEnum: JSON.stringify(NodeTypeEnum),
                     ViewTypeEnum: JSON.stringify(ViewTypeEnum),
+                    optionViewer: user.options
                   });
                 });
               })

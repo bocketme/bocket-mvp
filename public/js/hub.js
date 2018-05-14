@@ -1,6 +1,22 @@
 (function ($) {
   $(function () {
     // initialize all modals
+    $('#show-social-space').on('click', () => {
+      let displayValue = document.getElementById('social-space').style.getPropertyValue('display');
+
+      if (displayValue === 'block') {
+        document.getElementById('renderDiv').style.display = 'block';
+        document.getElementById('header').style.display = 'block';
+        document.getElementById('social-space').style.display = 'none';
+        document.getElementById('show-social-space').classList.remove('active');
+      } else {
+        document.getElementById('renderDiv').style.display = 'none';
+        document.getElementById('header').style.display = 'none';
+        document.getElementById('social-space').style.display = 'block';
+        document.getElementById('show-social-space').classList.add('active');
+      }
+    });
+
     $('.modal').modal({
       dismissible: true, // Modal can be dismissed by clicking outside of the modal
       opacity: 0.7, // Opacity of modal background
@@ -12,7 +28,6 @@
         const context = `#${modal.context.id}`;
         const form = $(context).find('form');
         if (form[0] && modal.context.id !== 'edit-part')
-        // console.log("form :", form);
         { form[0].reset(); }
       },
     });
@@ -48,7 +63,6 @@
           const context = `#${modal.context.id}`;
           const form = $(context).find('form');
           if (form[0] && modal.context.id !== 'edit-part')
-          // console.log("form :", form);
           { form[0].reset(); }
         }
       },
@@ -81,17 +95,27 @@
       stopPropagation: false, // Stops event propagation
     });
 
+/*
     $('.dropdown-button').dropdown({
       inDuration: 300,
       outDuration: 225,
-      constrainWidth: true, // Does not change width of dropdown to that of the activator
+      constrainWidth: false, // Does not change width of dropdown to that of the activator
       hover: false, // Activate on hover
       gutter: 0, // Spacing from edge
       belowOrigin: true, // Displays dropdown below the button
       alignment: 'left', // Displays dropdown with edge aligned to the left of button
       stopPropagation: false, // Stops event propagation
     });
-
+    $('#dropdown-settings-viewer').dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      constrainWidth: true, // Does not change width of dropdown to that of the activator
+      hover: true, // Activate on hover
+      gutter: 0, // Spacing from edge
+      alignment: 'left', // Displays dropdown with edge aligned to the left of button
+      stopPropagation: true, // Stops event propagation
+    });
+*/
     $('.pref-option-style').dropdown({
       inDuration: 300,
       outDuration: 225,
@@ -102,6 +126,7 @@
       alignment: 'down', // Displays dropdown with edge aligned to the left of button
       stopPropagation: false, // Stops event propagation
     });
+
     $('.pref-option-style').on('click', () => {
       const top = $('#pref-option').css('top');
       $('#pref-option').css('top', `${parseInt(top) + 20}px`);
@@ -137,7 +162,6 @@
 
     $('#dropdown-trigger-file-spec-menu').on('click', (event) => {
       event.preventDefault();
-      console.log($('#specs-context-menu'));
       $('#specs-context-menu').dropdown('open');
     });
 

@@ -1,40 +1,45 @@
-let serverConfiguration = require("../config/server");
-let mongoose = require("mongoose");
+const serverConfiguration = require('../config/server');
+const mongoose = require('mongoose');
 
-let Organization = require("./nestedSchema/NestedOrganizationSchema");
-let User = require("./nestedSchema/NestedUserSchema");
-let NestedNode = require("./nestedSchema/NestedNodeSchema");
-let NestedTeam = require("./nestedSchema/NestedTeamSchema");
-let Node = require("./Node");
+const Organization = require('./nestedSchema/NestedOrganizationSchema');
+const User = require('./nestedSchema/NestedUserSchema');
+const NestedNode = require('./nestedSchema/NestedNodeSchema');
+const NestedTeam = require('./nestedSchema/NestedTeamSchema');
+const NestedTchat = require('./nestedSchema/NestedTchat');
+const Node = require('./Node');
 
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
-let Stripe = new mongoose.Schema({
-  name: String
+
+const Stripe = new mongoose.Schema({
+  name: String,
 });
+
+/*
+const Team = new mongoose.Schema({
+  orga
+})
+*/
 
 let WorkspaceSchema = new mongoose.Schema({
   name: { type: String, require: true },
-  owner: { type: User, require: true },
   description: String,
+  // nodeMaster: { type: mongoose., ref: 'Node' },
   node_master: { type: NestedNode },
   creation: { type: Date, default: new Date() },
-  users: { type: [User], required: false, default: [] },
+  users: { type: [User], default: [] },
   team: { type: NestedTeam, required: true },
   organization: { type: Organization, required: true }, // /!\ WITHOUT END VARIABLE /!\
-  Annotations: {type: [NestedAnnotation], required: true, default: [] }
+  Annotations: { type: [NestedAnnotation], required: true, default: [] },
+  Tchats: { type: [NestedTchat], required: true, default: [] },
 });
-
-// TODO: DELETE ALL users attribute (workspace.users)
 
 /**
  *
  *
  * @param {any} WorkspaceInformation
  */
-WorkspaceSchema.statics.newDocument = (WorkspaceInformation) => {
-  return new Workspace(WorkspaceInformation);
-}
+WorkspaceSchema.statics.newDocument = (WorkspaceInformation) => new Workspace(WorkspaceInformation);
 
-let Workspace = mongoose.model("Workspace", WorkspaceSchema, "Workspaces");
+let Workspace = mongoose.model('Workspace', WorkspaceSchema, 'Workspaces');
 
 module.exports = Workspace;

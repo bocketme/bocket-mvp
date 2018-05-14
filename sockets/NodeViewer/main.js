@@ -33,7 +33,7 @@ module.exports = (io, socket) => {
   socket.on(loading.on.save, (nodeId, matrix) => {
     const { currentWorkspace } = socket.handshake.session;
     manager.save(currentWorkspace, nodeId, matrix);
-    socket.emit('info', 'node Saved');
+    socket.to(currentWorkspace).emit(loading.emit.updateMatrix, nodeId, [matrix]);
   })
 
   socket.on(loading.on.cancel, () => {

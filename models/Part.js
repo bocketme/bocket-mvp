@@ -27,6 +27,7 @@ const PartSchema = mongoose.Schema({
   description: { type: String, default: 'No description aviable' },
 
   path: String,
+  pathVersion: { type: Number, default: 1 },
   maturity: { type: String, default: TypeEnum.maturity[0] },
   ownerOrganization: { type: NestedOrganization, require: true },
   quality: { type: Number, default: 0 },
@@ -34,6 +35,10 @@ const PartSchema = mongoose.Schema({
   creator: { type: NestedUser, require: true },
   annotation: { type: [NestedAnnotation], default: [] },
   activities: { type: [NestedComment], default: [] },
+
+  optionViewer: {
+    activateCellShading: { type: Boolean, default: false },
+  }
 
   // owners: {type: [nestedOwners], default: []}
 });
@@ -52,9 +57,11 @@ function mkdirPromise(path) {
 }
 
 PartSchema.pre('validate', function (next) {
+
   if (this.path) { return next(); }
 
   this.path = `/${this.ownerOrganization.name}-${this.ownerOrganization._id}/${this.name} - ${this._id}`;
+  //this.pathVersion = 2
   const partPath = path.join(configServer.files3D, this.path);
 
   mkdirPromise(partPath)

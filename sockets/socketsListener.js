@@ -19,8 +19,8 @@ const removeSpecListener = require('./removeSpecListener');
 const renameSpecListener = require('./renameSpecListener');
 const workspaceManagerListener = require('./workspaceListener');
 const removeUserFromOW = require('./removeUserFromOW');
-const GetSearchCriteria = require("./GetSearchCriteria");
-const GetSelectedItemsToAdd = require("./GetSelectedItemsToAdd");
+const GetSearchCriteria = require('./GetSearchCriteria');
+const GetSelectedItemsToAdd = require('./GetSelectedItemsToAdd');
 const createWorkspaceInSignIn = require('./createWorkspaceInSignIn');
 const createWorkspaceInHub = require('./createWorkspaceInHub');
 const deleteNodeListener = require('./deleteNodeListener');
@@ -28,8 +28,15 @@ const duplicateNodeListener = require('./duplicateNodeListener');
 const changePassword = require('./changePasswordListener');
 const reportIssueListener = require('./reportIssueListener');
 const changeWorkspaceorOrganizationName = require('./changeWorkspaceorOrganizationName.js');
+const Tchat = require('./Tchat/main');
+const getCurrentUser = require('./getCurrentUser');
+const getUsers = require('./getUsers');
+
+const Workspace = require('../models/Workspace');
+const User = require('../models/User');
 
 const FSconfig = require('../config/FileSystemConfig');
+
 module.exports = function (io) {
   io.on('connection', (socket) => {
     const uploader = new SocketIOFile(socket, {
@@ -44,11 +51,11 @@ module.exports = function (io) {
     const { userMail, currentWorkspace } = socket.handshake.session;
 
     socket.join(currentWorkspace, () => {
-
-      let rooms = Object.keys(socket.rooms);
-      console.log(userMail, "join", rooms.find(room => room === socket.handshake.session.currentWorkspace));
+      const rooms = Object.keys(socket.rooms);
+      console.log(userMail, 'join', rooms.find(room => room === socket.handshake.session.currentWorkspace));
 
       Annotation(io, socket);
+      Tchat(io, socket);
       changeWorkspaceorOrganizationName(socket);
       duplicateNodeListener(socket);
       deleteNodeListener(io, socket);
@@ -77,6 +84,8 @@ module.exports = function (io) {
       workspaceManagerListener(socket);
       removeUserFromOW(socket);
       reportIssueListener(socket);
+      getCurrentUser(io, socket);
+      getUsers(io, socket);
     });
   });
 };

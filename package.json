@@ -52,6 +52,7 @@
     "mocha": "^5.0.5",
     "mongodb": "^2.2.35",
     "mongoose": "^5.0.13",
+    "mongoose-autopopulate": "^0.6.1",
     "mongoose-unique-validator": "^2.0.0",
     "morgan": "^1.9.0",
     "multer": "^1.3.0",
@@ -69,6 +70,8 @@
     "socket.io-file-client": "^2.0.2",
     "stats.js": "^0.17.0",
     "three": "^0.89.0",
+    "three.textsprite": "^18.3.19",
+    "three.texttexture": "^18.3.19",
     "twig": "^1.10.5",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "uid-safe": "^2.1.5",
@@ -76,7 +79,7 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "chai-http": "^3.0.0",
+    "chai-http": "^4.0.0",
     "clean-webpack-plugin": "^0.1.19",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
@@ -87,7 +90,8 @@
     "jquery": "^3.3.1",
     "jquery-validation": "^1.17.0",
     "snyk": "^1.71.0",
-    "webpack": "^3.11.0",
+    "webpack": "^4.8.1",
+    "webpack-cli": "^2.1.3",
     "worker-loader": "^1.1.1"
   }
 }

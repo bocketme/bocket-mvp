@@ -6,14 +6,14 @@
     z-index:    10;
 }
 
-#renderSurface 
+#renderSurface
 {
   position: absolute;
   top: 0;
 }
 
 #renderDiv{
-    padding: 0px;
+    padding: 0;
     height: 99%;
     position: relative;
     background-color: #ffffff;
@@ -172,9 +172,27 @@
 }
 
 #addNoteButton {
-    width: 100%;
-    position: sticky !important;
-    top: 20px !important;
+  background-color: #223241 !important;
+  border-bottom: #F5F5F5 2px solid;
+  width: 100%;
+  position: sticky !important;
+  margin-top: 5px;
+  top: 20px !important;
+  transition: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+#addNoteButton:hover {
+  background-color: #FF2E63 !important;
+  border-bottom: #D72653 2px solid;
+}
+
+#addNoteButton.active {
+  color: #223241;
+  background-color: #B6C0C1 !important;
+  border-bottom: #223241 2px solid;
 }
 
 #note-list {
@@ -224,4 +242,39 @@
 
 .note-span {
     padding-right: 5px;
+}
+
+#button-distance.normal img {
+  content: url("/img/viewer/03d-Distances.svg");
+}
+#button-distance.selected img {
+  content: url("/img/viewer/03d-Distances-selected.svg");
+}
+
+
+#button-show-distances.normal img {
+  content: url("/img/viewer/03a-HideDists.svg");
+}
+#button-show-distances.selected img {
+  content: url("/img/viewer/03a-ShowDists.svg");
+}
+
+.button-mini-option{
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+}
+
+.button-mini-option>a{
+  height: 35px !important;
+  width: 35px !important;
+}
+
+
+#distance-option{
+    position: relative;
+    top: unset;
+    bottom: unset;
+    right: unset;
+    left: unset;
+    padding: 0;
 }

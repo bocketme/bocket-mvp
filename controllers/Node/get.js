@@ -37,6 +37,7 @@ async function getFile3D(nodeId, workspaceId) {
     .catch(err => {
       throw (err)
     });
+    console.log(files)
   for (let i = 0; i < files.length; i++) {
     if (path.extname(files[i]) == '.json') {
       return path.join(file3Ddirectory, files[i])
@@ -73,7 +74,7 @@ module.exports = {
     Promise.resolve(getFile3D(nodeId, workspaceId))
       .then((file3D) => {
         if (file3D) res.sendFile(file3D)
-        else res.status(403).send('Bad Request')
+        else res.status(404).send('Not Found')
       })
       .catch(err => {
         res.status(404).send('Not Found');

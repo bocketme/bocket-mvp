@@ -1,9 +1,9 @@
-var isAnnotationMode = false;
-var isHidden = true;
-var HasClicked = false;
-var savedAnnotation = {};
-var allAnnotations = [];
-var idx = 0;
+let isAnnotationMode = false;
+let isHidden = true;
+let HasClicked = false;
+let savedAnnotation = {};
+let allAnnotations = [];
+const idx = 0;
 
 $(document).ready(() => {
   /*
@@ -13,14 +13,57 @@ $(document).ready(() => {
   });
 */
 
+
+  $('#show-notes').on({
+    mouseenter: function() {
+      $('#show-notes img').attr('src', '/img/pin-hover.svg');
+    },
+    mouseleave: function () {
+      if (isHidden === true) {
+        $('#show-notes img').attr('src', '/img/pin-normal.svg');
+      } else {
+        $('#show-notes img').attr('src', '/img/pin-selected.svg');
+      }
+    },
+    click: function () {
+      const displayValue = document.getElementById('side-info').style.getPropertyValue('display');
+      document.getElementById('side-info').style.display = (displayValue === 'block' ? 'none' : 'block');
+      isHidden = !isHidden;
+      if (isHidden === true)
+        $('#cancel-note-button').click();
+      hideOrShowAnnotations();
+      document.getElementById('side-details').style.display = 'none';
+    }
+  },'img');
+
+  $('#show-info').on({
+    mouseenter: function () {
+      $('#show-info img').attr('src', '/img/details-hover.svg');
+    },
+    mouseleave: function () {
+      const displayValue = document.getElementById('side-details').style.getPropertyValue('display');
+      if (displayValue === 'none') {
+        $('#show-info img').attr('src', '/img/details-normal.svg');
+      } else if (displayValue === 'block') {
+        $('#show-info img').attr('src', '/img/details-selected.svg');
+      }
+    },
+    click: function () {
+      const displayValue = document.getElementById('side-details').style.getPropertyValue('display');
+      document.getElementById('side-details').style.display = (displayValue === 'block' ? 'none' : 'block');
+      document.getElementById('side-info').style.display = 'none';
+      $('#cancel-note-button').click();
+      isHidden = true;
+      hideOrShowAnnotations();
+    }
+  },'img');
+
   socket.on('[Annotation] - confirmAnnotation', (gettedAnnotation) => {
     if (gettedAnnotation !== null && gettedAnnotation !== undefined) {
-      if (!allAnnotations.find(function (element) {
-        return gettedAnnotation.name === element.name;
-      })) {
+      if (!allAnnotations.find((element) => gettedAnnotation.name === element.name)) {
         savedAnnotation = gettedAnnotation;
         if (savedAnnotation.isImportant) {
-          var evt = new CustomEvent("change-material", { 'detail': savedAnnotation });
+          const evt = new CustomEvent('change-material', { detail: savedAnnotation });
           allAnnotations.unshift(savedAnnotation);
           addAnnotationCard(savedAnnotation);
           document.dispatchEvent(evt);
@@ -44,11 +87,11 @@ $(document).ready(() => {
 
   function getAllAnnotations() {
     reinitCardFormContent();
-    socket.emit('[Annotation] - fetch')
+    socket.emit('[Annotation] - fetch');
     socket.on('[Annotation] - fetch', (annotations, loadAnnotation) => {
       if (annotations !== null && annotations !== undefined) {
         allAnnotations = [];
-        sortAnnotations(annotations, loadAnnotation)
+        sortAnnotations(annotations, loadAnnotation);
       }
     });
   }
@@ -58,9 +101,9 @@ $(document).ready(() => {
     if (isAnnotationMode === true) {
       Materialize.toast('Click to add a Note !', 3000, 'rounded blue');
       deselectAll();
-      document.getElementById('addNoteButton').style.backgroundColor = '#00CCA0';
+      document.getElementById('addNoteButton').classList.add('active');
       document.getElementById('add-note-icon').innerHTML = 'clear';
-      var evt = new Event("add-annotation");
+      const evt = new Event('add-annotation');
       document.dispatchEvent(evt);
     } else {
       document.getElementById('cancel-note-button').click();
@@ -70,14 +113,14 @@ $(document).ready(() => {
   $('#cancel-note-button').on('click', () => {
     reinitCardFormContent();
     document.getElementById('note-card-form').style.display = 'none';
-    document.getElementById('addNoteButton').style.backgroundColor = '#4A90E2';
+    document.getElementById('addNoteButton').classList.remove('active');
     document.getElementById('add-note-icon').innerHTML = 'add';
     if (HasClicked === true) {
-      // Call l'event Pour supprimer l'annotation coté viewer 
-      var evt = new Event("del-last-annotation");
+      // Call l'event Pour supprimer l'annotation coté viewer
+      var evt = new Event('del-last-annotation');
       document.dispatchEvent(evt);
     } else {
-      var evt = new Event("close-annotation-mode");
+      var evt = new Event('close-annotation-mode');
       document.dispatchEvent(evt);
     }
     isAnnotationMode = false;
@@ -97,45 +140,27 @@ $(document).ready(() => {
     savedAnnotation.isImportant = isImportant;
     document.getElementById('note-card-form').style.display = 'none';
     reinitCardFormContent();
-    document.getElementById('addNoteButton').style.backgroundColor = '#4A90E2';
+    document.getElementById('addNoteButton').classList.remove('active');
+//    document.getElementById('addNoteButton').style.backgroundColor = '#4A90E2';
     document.getElementById('add-note-icon').innerHTML = 'add';
     isAnnotationMode = false;
     HasClicked = false;
     socket.emit('[Annotation] - add', savedAnnotation);
   });
 
-  $('#show-notes').on('click', () => {
-    const displayValue = document.getElementById('side-info').style.getPropertyValue('display');
-    document.getElementById('side-info').style.display = (displayValue === 'block' ? 'none' : 'block');
-    isHidden = !isHidden;
-    if (isHidden === true)
-      $('#cancel-note-button').click();
-    hideOrShowAnnotations();
-    document.getElementById('side-details').style.display = 'none';
-  });
-
-  $('#show-info').on('click', () => {
-    const displayValue = document.getElementById('side-details').style.getPropertyValue('display');
-    document.getElementById('side-details').style.display = (displayValue === 'block' ? 'none' : 'block');
-    document.getElementById('side-info').style.display = 'none';
-    $('#cancel-note-button').click();
-    isHidden = true;
-    hideOrShowAnnotations();
-  });
-
 });
 
 document.addEventListener('annotation3D-added', (e) => {
   if (e.detail !== null) {
-    let annotation = e.detail;
+    const annotation = e.detail;
     document.getElementById('note-card-form').style.display = 'block';
     HasClicked = true;
     savedAnnotation = annotation;
   } else {
-    var evt = new Event("add-annotation");
+    const evt = new Event('add-annotation');
     document.dispatchEvent(evt);
   }
-}, false)
+}, false);
 
 function sortAnnotations(annotations, loadAnnotation) {
   $('#note-list').empty();
@@ -150,17 +175,21 @@ function sortAnnotations(annotations, loadAnnotation) {
 }
 
 function retrieve3dAnnotation(annotation) {
-  var evt = new CustomEvent("retrieve-annotation", { 'detail': annotation });
+  const evt = new CustomEvent('retrieve-annotation', { detail: annotation });
   document.dispatchEvent(evt);
 }
 
 function hideOrShowAnnotations() {
   if (isHidden === true) {
-    var evt = new Event("hide-annotations");
+    var evt = new Event('hide-annotations');
     document.dispatchEvent(evt);
+    $('#show-notes img').attr('src', '/img/pin-normal.svg');
+    $('#show-info img').attr('src', '/img/details-normal.svg');
   } else {
-    var evt = new Event("show-annotations");
+    var evt = new Event('show-annotations');
     document.dispatchEvent(evt);
+    $('#show-notes img').attr('src', '/img/pin-selected.svg');
+    $('#show-info img').attr('src', '/img/details-normal.svg');
   }
 }
 
@@ -169,11 +198,11 @@ function deselectAll() {
     annotation.isSelected = false;
     if (annotation.isImportant) {
       document.getElementById(annotation.name).style.borderLeft = '6px solid #f44336';
-      var evt = new CustomEvent("change-material", { 'detail': annotation });
+      var evt = new CustomEvent('change-material', { detail: annotation });
       document.dispatchEvent(evt);
     } else {
       document.getElementById(annotation.name).style.borderLeft = '6px solid #296BB3';
-      var evt = new CustomEvent("change-material", { 'detail': annotation });
+      var evt = new CustomEvent('change-material', { detail: annotation });
       document.dispatchEvent(evt);
     }
   }
@@ -185,11 +214,11 @@ function deselectAllExceptClicked(id) {
       annotation.isSelected = false;
       if (annotation.isImportant) {
         document.getElementById(annotation.name).style.borderLeft = '6px solid #f44336';
-        var evt = new CustomEvent("change-material", { 'detail': annotation });
+        var evt = new CustomEvent('change-material', { detail: annotation });
         document.dispatchEvent(evt);
       } else {
         document.getElementById(annotation.name).style.borderLeft = '6px solid #296BB3';
-        var evt = new CustomEvent("change-material", { 'detail': annotation });
+        var evt = new CustomEvent('change-material', { detail: annotation });
         document.dispatchEvent(evt);
       }
     }
@@ -197,56 +226,54 @@ function deselectAllExceptClicked(id) {
 }
 
 function addAnnotationCard(annotation) {
-  var date = new Date(annotation.date);
+  const date = new Date(annotation.date);
   if (annotation.creator === null || annotation.creator === undefined)
     annotation.creator = 'undefined';
   if (annotation.date === null || annotation.date === undefined)
     annotation.date = 'undefined';
   if (annotation !== undefined && annotation.isImportant) {
-    $('#note-list').prepend('<li id='+ annotation.name +'-header class="collection-item-note">\n' +
-      '            <div id="' + annotation.name + '" class="note-important">\n' +
-      '                <p class="note-title"><strong>' + annotation.title + '</strong><a id="' + annotation._id + '" href=#  style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n' +
-      '                <p class="note-creation-details"><span class="note-span">' + annotation.creator.completeName + ', </span><span class="note-span">' + date.toDateString() + '</span></p>\n' +
-        '                <p class="note-content">' + annotation.content + '</p>\n' +
-      '            </div>\n' +
-      '        </li>');
+    $('#note-list').prepend(`<li id=${annotation.name}-header class="collection-item-note">\n` +
+        `            <div id="${annotation.name}" class="note-important">\n` +
+        `                <p class="note-title"><strong>${annotation.title}</strong><a id="${annotation._id}" href=#  style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n` +
+        `                <p class="note-creation-details"><span class="note-span">${annotation.creator.completeName}, </span><span class="note-span">${date.toDateString()}</span></p>\n` +
+          `                <p class="note-content">${annotation.content}</p>\n` +
+        '            </div>\n' +
+        '        </li>');
   } else {
-    $('#note-list').append('<li id='+ annotation.name +'-header class="collection-item-note">\n' +
-      '            <div id="' + annotation.name + '" class="note">\n' +
-      '                <p class="note-title"><strong>' + annotation.title + '</strong><a id="' + annotation._id + '" href=#  style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n' +
-      '                <p class="note-creation-details"><span class="note-span">' + annotation.creator.completeName + ', </span><span class="note-span">' + date.toDateString() + '</span></p>\n' +
-      '                <p class="note-content">' + annotation.content + '</p>\n' +
-      '            </div>\n' +
-      '        </li>');
+    $('#note-list').append(`<li id=${annotation.name}-header class="collection-item-note">\n` +
+        `            <div id="${annotation.name}" class="note">\n` +
+        `                <p class="note-title"><strong>${annotation.title}</strong><a id="${annotation._id}" href=#  style="float: right;cursor: pointer"><i class="material-icons">clear</i></a></p>\n` +
+        `                <p class="note-creation-details"><span class="note-span">${annotation.creator.completeName}, </span><span class="note-span">${date.toDateString()}</span></p>\n` +
+        `                <p class="note-content">${annotation.content}</p>\n` +
+        '            </div>\n' +
+        '        </li>');
   }
-  $('#' + annotation._id).on('click', () => {
+  $(`#${annotation._id}`).on('click', () => {
     socket.emit('[Annotation] - remove', annotation);
   });
 
   socket.on('[Annotation] - remove', deletedAnnotation => {
-    allAnnotations = allAnnotations.filter(annot => annot.name !== deletedAnnotation.name)
+    allAnnotations = allAnnotations.filter(annot => annot.name !== deletedAnnotation.name);
     $(`#${deletedAnnotation.name}-header`).remove();
-    var evt = new CustomEvent("delete-annotation", { 'detail': deletedAnnotation });
+    const evt = new CustomEvent('delete-annotation', { detail: deletedAnnotation });
     document.dispatchEvent(evt);
   });
 
-  $('#' + annotation.name).on('click', () => {
+  $(`#${annotation.name}`).on('click', () => {
     deselectAllExceptClicked(annotation._id);
     annotation.isSelected = !annotation.isSelected;
     if (annotation.isSelected) {
       document.getElementById(annotation.name).style.borderLeft = '6px solid #0DFFC8';
-      var evt = new CustomEvent("select-annotation", { 'detail': annotation });
+      var evt = new CustomEvent('select-annotation', { detail: annotation });
+      document.dispatchEvent(evt);
+    } else if (annotation.isImportant) {
+      document.getElementById(annotation.name).style.borderLeft = '6px solid #f44336';
+      var evt = new CustomEvent('change-material', { detail: annotation });
       document.dispatchEvent(evt);
     } else {
-      if (annotation.isImportant) {
-        document.getElementById(annotation.name).style.borderLeft = '6px solid #f44336';
-        var evt = new CustomEvent("change-material", { 'detail': annotation });
-        document.dispatchEvent(evt);
-      } else {
-        document.getElementById(annotation.name).style.borderLeft = '6px solid #296BB3';
-        var evt = new CustomEvent("change-material", { 'detail': annotation });
-        document.dispatchEvent(evt);
-      }
+      document.getElementById(annotation.name).style.borderLeft = '6px solid #296BB3';
+      var evt = new CustomEvent('change-material', { detail: annotation });
+      document.dispatchEvent(evt);
     }
   });
 }
