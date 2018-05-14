@@ -1,13 +1,38 @@
 const organizationSchema = require('../../models/Organization');
+const userSchema = require('../../models/User');
+const Twig = require('twig');
 
-module.exports = () => {
+module.exports = (io, socket) => {
   socket.on('[Organization] - create', async (name) => {
-    const organization = new organizationSchema({
-      name,
-      Owner: socket.handshake.session.userId
-    });
+    try {
+      const {userId} = socket.handshake.session;
+      const organization = new organizationSchema({
+        name,
+        Owner: socket.handshake.session.userId
+      });
 
-    await organization.save();
-    socket.emit('[Organization] - create');
+      await organization.save();
+
+      const user = await userSchema.findById(socket.handshake.session.userId);
+      user.Organization.push({
+        _id: organization._id,
+        workspaces: []
+      });
+
+      await user.save();
+
+      const userRender = await userSchema.findOne(user._id).populate('Organization._id');
+      Twig.renderFile('./views/socket/listOrganization.twig',
+        { userOrganizations: userRender.Organization },
+        (err, html) => {
+          if (err)
+            throw (err);
+          else
+            return socket.emit('[Organization] - create', null, html);
+        });
+    } catch (e) {
+      console.error(e);
+      return socket.emit('[Organization] - create', '[Error] - Error while treating the request');
+    }
   });
 };

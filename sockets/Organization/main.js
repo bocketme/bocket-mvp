@@ -4,5 +4,5 @@ const leave = require('./leave');
 const remove = require('./remove');
 
 module.exports = (io, socket) => {
-
+  add(io, socket);
 }
