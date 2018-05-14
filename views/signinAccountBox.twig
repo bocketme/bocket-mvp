@@ -16,7 +16,9 @@
                 </button>
 
                 <div class="already-have-an-account text-center center">
-                    <a href="#" id="create_account">Create an account</a> - <a href="#" id="forget_passwork">Forgot password</a>
+                    {% if invitation %}
+                    <a href="#" id="create_account">Create an account</a>
+                     {% endif %} 
                 </div>
 
             </form>
