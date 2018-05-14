@@ -32,7 +32,7 @@ module.exports = (io, socket) => {
 
   socket.on('[Users] - fetchById', async (id) => {
     try {
-      const { users } = Workspace
+      const { users } = await Workspace
         .findById(socket.handshake.session.currentWorkspace)
         .populate('ProductManagers')
         .populate('Teammates')
