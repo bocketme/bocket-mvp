@@ -28,6 +28,7 @@ module.exports = (io, socket) => {
 
   socket.on(loading.on.save, (nodeId, matrix) => {
     manager.save(currentWorkspace, nodeId, matrix);
+    socket.to(currentWorkspace).emit(loading.emit.updateMatrix, nodeId, [matrix]);
   })
 
   socket.on(loading.on.cancel, () => manager.cancel(currentWorkspace))
