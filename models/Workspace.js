@@ -29,6 +29,7 @@ let WorkspaceSchema = new mongoose.Schema({
   //Creation
   creation: { type: Date, default: new Date() },
 
+  avatar: String,
   //Annotation
   Annotations: { type: [NestedAnnotation], required: true, default: [] }
 });
@@ -65,15 +66,13 @@ WorkspaceSchema.methods.removeUser = async function(userId) {
 
 WorkspaceSchema.pre('remove', async function () {
   //Delete the user inside the workspace
-  const users = [...this.observers, this.Teammates, this.ProductManagers];
+  const users = this.users;
 
   for (let i = 0; i < users.length; i++) {
     const userId = users[i];
     const user = await userSchema.findById(userId);
 
-    const indice = user.OrganizationManager.find(({ _id }) => String(_id) === String(this.Organization));
-    const workpsaces = user.OrganizationManager[indice].workspaces.filter(workspaceId => String(workspaceId) !== String(this._id));
-    user.OrganizationManager[indice].workspaces = workpsaces;
+    await user.removeWorkspace(this._id);
     await user.save();
   }
 

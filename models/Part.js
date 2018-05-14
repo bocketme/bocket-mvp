@@ -42,7 +42,7 @@ const PartSchema = mongoose.Schema({
     activateCellShading: { type: Boolean, default: false },
   },
   
-  Organization: {type: mongoose.SchemaTypes.ObjectId, required: true}
+  Organization: {type: mongoose.SchemaTypes.ObjectId, required: true, ref:'Organization'}
   // owners: {type: [nestedOwners], default: []}
 });
 PartSchema.index({ name: 'text', description: 'text' });

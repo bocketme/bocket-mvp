@@ -1,4 +1,6 @@
 const serverConfiguration = require("../config/server");
+const workspaceSchema = require('./Workspace')
+const userSchema = require("./User");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const uniqueValidator = require('mongoose-unique-validator');
@@ -17,6 +19,7 @@ let OrganizationSchema = new mongoose.Schema({
   Admins: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   Members: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 
+  avatar: String,
   //The creation date of the workpsaces.
   creation: { type: Date, default: new Date() },
   //TODO: Script to fill the workpsaces.
@@ -40,61 +43,68 @@ OrganizationSchema.statics.newDocument = (OrganizationInformation) => {
   return new Organization(OrganizationInformation);
 };
 
-const userSchema = require("./User");
-const workspaceSchema = require('./Workspace');
 
-OrganizationSchema.methods.removeUser = async function (userId, newOwner = null) {
+OrganizationSchema.methods.removeUser = function (userId, isOwner) {
+  return new Promise((resolve, reject) => {
+    deletingUser(this, userId, isOwner)
+    .then(() => next)
+    .catch(err => next(err));
+  });
+}
+
+async function deletingUser (userId, newOwner = null) {
   try {
+    console.log('deleting a user ...');
     const filter = String(userId);
-    const Owner = this.get('Owner');
+    const Owner = doc.get('Owner');
     let ownerId = String(Owner);
     if (ownerId === filter) {
-      if(newOwner)
-        this.Owner = newOwner;
+      if (newOwner)
+        doc.Owner = newOwner;
       else
         throw new Error('The new Owner is not set');
     }
 
-    const Admins = this.get('Admins');
-    this.Admins =  Admins.filter(adminId => {
+    const Admins = doc.get('Admins');
+    doc.Admins = Admins.filter(adminId => {
       const id = String(adminId);
       return id === filter;
     });
 
-    const Members =  this.get('Members');
-    this.Members = Members.filter(member => {
+    const Members = doc.get('Members');
+    doc.Members = Members.filter(member => {
       const id = String(member);
       return id === filter;
     });
 
-    const workpsaces = this.get('Workspaces');
+    const workpsaces = doc.get('Workspaces');
 
-    for (let i = 0; i<workpsaces.length; i++) {
+    for (let i = 0; i < workpsaces.length; i++) {
       const workspace = await workspaceSchema.findById(workpsaces[i]);
       await workspace.removeUser(userId);
     }
 
     const user = await userSchema(userId);
-    await user.removeOrganization(this._id);
-    await this.save();
+    await user.removeOrganization(doc._id);
+    await doc.save();
     return 0;
   } catch (e) {
 
   }
 };
 
-OrganizationSchema.virtual('users').get(function() {
+OrganizationSchema.virtual('users').get(function () {
   return [this.Owner, ...this.Admins, ...this.Members]
 });
 
 OrganizationSchema.methods.findUserRights = function(userId) {
   const id = mongoose.Types.ObjectId(userId);
-  if(this.Owner.equals(id))return 6;
+  if(this.Owner.equals(id) ||this.populated('Owner').equals(id))return 6;
   for(let i=0;i<this.Admins.length;i++){
-    if(this.Admins[i].equals(id)) return 5
+    if(this.Admins[i].equals(id) || this.populated(`Admins[${i}]`)) return 5
   }
   for(let i=0;i<this.Members.length;i++){
-    if(this.Members[i].equals(id)) return 5
+    if(this.Members[i].equals(id) || this.populated(`Members[${i}]`)) return 4
   }
   return null
 };
@@ -113,6 +123,31 @@ OrganizationSchema.pre('save', function (next) {
       return next();
   });
 });
+
+OrganizationSchema.pre('remove', async function (next) {
+  try {
+    const organization = OrganizationSchema.findById(this._id)
+    for (let i = 0; i < this.Admins.length; i++) {
+      const admin = this.Admins[i];
+      await organization.removeUser(admin);
+    }
+
+    for (let i = 0; i < this.Members.length; i++) {
+      const member = this.Members[i];
+      await organization.removeUser(member);
+    }
+
+    for (let i = 0; i < this.Workspaces.length; i++) {
+      const workspaceId = this.Workspaces[i];
+      const workspace = await workspaceSchema.findById(workspaceId);
+      await workspace.remove();
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 OrganizationSchema.plugin(uniqueValidator);
 
 let Organization = mongoose.model("Organization", OrganizationSchema, "Organizations");

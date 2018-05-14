@@ -18,21 +18,21 @@ const nestedPeopleSchema = mongoose.Schema({
 const nestedWorkspaceSchema = mongoose.Schema({
   name: { type: String, required: true },
   id: { type: String, required: true },
+  role: { type: Number, default: 'Member' },
 });
 
 const nestedOrganization = mongoose.Schema({
   name: { type: String, required: true },
   id: { type: String, required: true },
+  role: {type: Number, default: 'Owner' },
 });
 
 const InvitationSchema = mongoose.Schema({
   uid: { type: String, default: '' },
   author: { type: String, required: true },
-  workspace: { type: nestedWorkspaceSchema, required: true },
-  organization: { type: nestedWorkspaceSchema, required: true },
+  workspace: nestedWorkspaceSchema,
+  organization: nestedOrganization,
   people: { type: nestedPeopleSchema },
-  //organizationRole: {type: Number, default: 2},
-  //workspaceRole: {type: Number, default: 2},
 });
 
 InvitationSchema.pre('save', function (next) {
@@ -63,7 +63,7 @@ InvitationSchema.post('save', (invitation) => {
     url: `${serverConfig.fullUrl}/${invitation.uid}`,
 
   };
-    // http://localhost:8080/project/5a4f4a87488d0c0770f8bef0
+  // http://localhost:8080/project/5a4f4a87488d0c0770f8bef0
   Twig.renderFile('./views/invitation.twig', renderVar, (err, html) => {
     const mailOptions = {
       from: mailConfig.email,

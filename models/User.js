@@ -2,6 +2,7 @@ const serverConfiguration = require('../config/server');
 const mongoose = require('mongoose');
 const Schema =  mongoose.Schema;
 const bcrypt = require('bcrypt');
+const organizationSchema = require('./Organization');
 const uniqueValidator = require('mongoose-unique-validator');
 const util = require('util');
 
@@ -56,6 +57,24 @@ UserSchema.pre('save', function (next) {
       next();
     });
   });
+});
+
+UserSchema.pre('remove', async function(next) {
+  try {
+    const user = this;
+
+    const ownerOrganization = await organizationSchema.find({'Owner': user._id});
+  
+    for (let i = 0; i < ownerOrganization.length; i++) {
+      const organization = ownerOrganization[i];
+      await organization.remove();
+    }
+  
+  } catch(e) {
+    console.error(e);
+  }
+
+  return next();
 });
 
 UserSchema.methods.removeOrganization = async function(organizationId) {
