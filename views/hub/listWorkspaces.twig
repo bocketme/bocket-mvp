@@ -12,12 +12,11 @@
 <hr>
 <div id="workspaces-block" class="side-nav-scrollbar">
     <div id="listWorkspacesUser">
-        {% set isEqual = workspace._id == in_use._id %}
         {% for workspace in workspaces %}
             <a class="collection-item collection-item-workspace " href="/project/{{workspace._id}}">
                 <div class="container container-workspace">
                     <div
-                            {% if isEqual %} class="circle-responsive-active"
+                            {% if workspace._id == in_use.id %} class="circle-responsive-active"
                             {% else %}  class="circle-responsive"
                             {% endif %}
                              data-tooltip="{{ workspace.name }}" data-delay="50" data-position="right" style="background-image: url('/workspace/image/{{ workspace._id }}') ">
