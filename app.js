@@ -27,6 +27,7 @@ const user = require("./routes/user");
 const part = require("./routes/part");
 const assembly = require("./routes/assembly");
 const organization = require('./routes/organization');
+const workspace = require('./routes/workspaces');
 /* SESSION */
 const expressSession = require("express-session");
 const MongoStore = require('connect-mongo')(expressSession); //session store
@@ -117,6 +118,8 @@ app.set('twig options', {
   strict_variables: false,
 });
 app.use(express.static('public'));
+app.use("/workspace", workspace)
+app.use("/user", user);
 app.use("/signOut", signOut);
 app.use("/", index);
 app.use("/user", user);
