@@ -1,22 +1,27 @@
-<div class="modal" id="leave-the-organization">
+<div class="modal" id="confirm-leave-organization">
     <div class="modal-content">
-        <h4 class="col s12" style="margin-top: 60px">
+        <h4 class="col s12">
             Leave the organization
             <a class="modal-close" style="color: black;">
                 <i class="material-icons right">highlight_off</i>
             </a>
         </h4>
+
         <div class="row">
-            <div class="input-field col s12">
+            <div class="input-field col s12" style="margin-top: 60px">
                 <select>
                     <option value="" disabled selected>Choose an owner</option>
-                    {% for user in currentOrganization.users %}
+                    {% set userId = user._id %}
+                    {% for user in OrganizationUsers %}
+                     {% if userId == currentUser._id %}
+                     {% else %}                       
                         <option value="{{ user._id }}">{{ user.completeName }}</option>
+                     {% endif %}
                     {% endfor %}
                 </select>
                 <label>Owner Organization</label>
             </div>
-            <div class="row col s12">
+            <div class="row col s12" style="margin-top: 60px">
                 <a class="waves-effect modal-close waves-light btn col s3 push-s2">No, I don't want to leave</a>
                 <a id="send-the-new-owner" class="waves-effect modal-close disabled waves-light btn col s3 push-s4">Yes, I want to leave</a>
             </div>
