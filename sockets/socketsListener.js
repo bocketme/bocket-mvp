@@ -5,6 +5,7 @@ const newNodeListener = require('./newNodeListener');
 const NodeInformation =  require('./NodeInformation/main');
 const searchNodeChildren = require('./searchNodeChildren');
 const NodeViewer = require('./NodeViewer/main');
+const Organization = require('./Organization/main');
 const newActivityComment = require('./newActivityCommentListener');
 const getActivities = require('./getActivitiesListener');
 const addCommentListener = require('./addCommentToActivityListener');
@@ -79,6 +80,7 @@ module.exports = function (io) {
       GetSelectedItemsToAdd(socket);
       changePassword(socket);
       User(io, socket);
+      Organization(io, socket);
       workspaceManagerListener(socket);
       removeUserFromOW(socket);
       reportIssueListener(socket);
