@@ -12,10 +12,14 @@
 
 .containerBox {
     z-index: 4000;
-    position: relative;
+    position: absolute;
     display: -webkit-flex;
     display: none;
     align-items:center;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     width: 0;
     justify-content: center;
 }

@@ -1,10 +1,8 @@
 body {
+    /*
     background: #262626;
+    */
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-}
-
-p {
-    color: white;
 }
 
 input#email_beta {
@@ -54,6 +52,7 @@ input#email_beta {
 
 #blur {
     width: 100%;
+    height: 100%;
     background: #d8d8d8;
     position: absolute;
     top: 0;
@@ -63,108 +62,115 @@ input#email_beta {
     opacity: 0;
     z-index: 1000;
     visibility: hidden;
-}
-
-.popup-desc {
-    color: black;
-    font-weight: lighter;
-    margin-bottom: 0;
-    font-size: 18px;
-}
-
-@-moz-document url-prefix() {
-    .popup-desc {
-        color: grey;
-    }
-}
-
-.info1 {
-    font-size: 30px;
-    font-weight: lighter;
-}
-
-.info2{
-    font-size: 40px;
-    font-weight: 500;
+    overflow-y: hidden;
 }
 
 .main {
-    position: absolute;
-    margin: auto;
-    top: 0;
-    bottom: 25%;
-    right: 0;
-    left: 0;
     width: 100%;
-    height: 200px;
+    overflow-y: auto;
+}
+
+.carousel {
+    height: 750px;
 }
 
 .content {
     /*margin-left: 5em;*/
 }
 
-.informations {
-
- }
-
-.subtitle {
-    font-weight: lighter;
+.info1 {
+    height: 700px;
 }
 
-.overlay {
-    width: 35%;
-    height: 20%;
-    margin: auto;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: white;
-    z-index: 5001;
-    visibility: hidden;
-    box-shadow: 2px 2px 3px grey;
+.info1 .col {
+    padding: 100px;
 }
 
-/*.overlay:target {
-    visibility: visible;
-    box-shadow: 2px 2px 3px grey;
-    opacity: 1;
-}*/
+.info1 .col img {
+    height: 500px;
+    width: 760px
+}
 
-.popup {
+.info2 {
+    height: 700px;
+    background-image: linear-gradient(to right, #4A90E2, #00ffc8);
+}
+
+.info2 .col {
+    padding: 100px;
+}
+
+.info2 .col img {
+    height: 500px;
+    width: 760px
+}
+
+.prices {
+    height: 1000px;
+}
+
+.prices .prices-header {
+    padding: 100px;
+}
+
+.prices .col .s10 {
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.prices .col .s3 {
+    margin-left: 100px;
+}
+
+.prices .card {
     text-align: center;
+    height: 600px;
+    border-radius: 25px;
 }
 
-.bocket-nav {
-    box-shadow: none;
+.request-access {
+    height: 500px;
+    background-image: linear-gradient(to right, #4A90E2, #00ffc8);
 }
 
-@media screen and (max-width: 600px)
-{
-    .main {
-        margin:0px;
-    }
+.request-access .request-access-header {
+    padding-top: 100px;
+    padding-left: 100px;
 }
 
-@media screen and (min-width: 600px) and (max-width:992px)
-{
-    .main {
-        margin:0px;
-    }
+.request-access .access-inputs {
+    padding-top: 50px;
+    padding-left: 100px;
 }
 
-@media screen and (min-width: 992px) and (max-width:1200px)
-{
-
+.request-access .access-inputs .input-field label {
+    color: #262626;
 }
 
-@media screen and (max-width: 1680px)
-{
-    #beta_button {
-        width: auto;
-    }
+.request-access .access-inputs .input-field input[type=text]:focus + label {
+    color: #262626;
 }
 
+.request-access .access-inputs .input-field input[type=text]:focus {
+    border-bottom: 1px solid #262626;
+    box-shadow: 0 1px 0 0 #262626;
+}
 
+.request-access .access-inputs .input-field input[type=email]:focus + label {
+    color: #262626;
+}
 
+.request-access .access-inputs .input-field input[type=email]:focus {
+    border-bottom: 1px solid #262626;
+    box-shadow: 0 1px 0 0 #262626;
+}
+
+.info-footer {
+    height: 100px;
+    padding-left: 100px;
+}
+
+.brand-logo img {
+    width: 70px;
+    height: 50px;
+}

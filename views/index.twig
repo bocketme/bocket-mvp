@@ -1,6 +1,7 @@
 {% extends "layout.twig" %}
 
 {% block css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/logbox.css">
     <link rel="stylesheet" href="/css/workspace.css">
@@ -9,42 +10,183 @@
 {% block body %}
     <div class="">
         <div class="main">
-            <div class="row content">
-                <div class="col s1"></div>
-                <div class="col s12 m12 l4 xl4 informations">
-                    <p>
-                        <br>
-                        <br>
-                        <span class="info1">Whatever your 3D software is</span><br>
-                        <span class="info2">Build 3D projects,<br>In a single place.</span>
-                        <br>
-                        <br>
-                    </p>
-                    <input id="email_beta" type="email" placeholder="Enter your email address..." class="validate col s6" required="required">
-                    <div class="col"></div>
-                    <a id="beta_button" class="waves-effect waves-light btn col s3">Join our beta</a>
-                    {% if beta %}
-                        <p style="margin-left: -0.5em !important;" class="col s12">
-                            <span class="subtitle">Wanna do more ?</span>
-                            <a id="slackRequest" href="mailto:hello@bocket.me">Request an access to our Slack</a>
-                            <br>
-                        </p>
-                    {% else %}
-                        <p style="margin-left: -0.5em !important;" class="col s12">
-                            {#<span class="subtitle">Want to create an account ?</span>#}
-                        <span id="signUp" style="display: none">{#Sign up here#}</span>
-                            <br>
-                            <span class="subtitle">Already a member ?</span>
-                            <a id="signIn">Sign in here</a>
-                        </p>
-                    {% endif %}
+            <div class="carousel carousel-slider center" data-indicators="true">
+                <div class="carousel-fixed-item center">
+                    <a class="btn waves-effect white grey-text darken-text-2">button</a>
                 </div>
-                <div class="col s12 m6 l6 xl6" style="margin-bottom: 1.2em;">
-                    <img id="overview" src="/img/site-vitrine-overview.png" alt="overview">
+                <div class="carousel-item red white-text" href="#">
+                    <h2>Welcome to Bocket !</h2>
+                    <p class="white-text">This is your first panel</p>
+                </div>
+                <div class="carousel-item amber white-text" href="#">
+                    <h2>Second Panel</h2>
+                    <p class="white-text">This is your second panel</p>
+                </div>
+                <div class="carousel-item green white-text" href="#">
+                    <h2>Third Panel</h2>
+                    <p class="white-text">This is your third panel</p>
+                </div>
+                <div class="carousel-item blue white-text" href="#">
+                    <h2>Fourth Panel</h2>
+                    <p class="white-text">This is your fourth panel</p>
                 </div>
             </div>
         </div>
-        <div id="popup1" class="overlay">
+        <div class="info1 row">
+            <div class="col s6" >
+                <h3>Why use our platform ?</h3>
+                <p>
+                    <h5>Compatibility</h5>
+                    No more headaches between files types, we accept all ! Stay focus on your projects !
+                </p>
+                <p>
+                    <h5>Freedom</h5>
+                    Free your team from using the same CAD, let them chose ! Free them from none efficient meeting.<br/>
+                    Share the same workspace and keep an eye on projects... all together !
+                </p>
+                <p>
+                    <h5>Efficiency</h5>
+                    A faster and better way to work by having everything in one place. Use a flexible and versatile environment.
+                </p>
+            </div>
+            <div class="col s6"><img src="img/capture2.png" /></div>
+        </div>
+        <div class="info2 row">
+            <div class="col s6"><img src="img/capture2.png"/></div>
+            <div class="col s6">
+                <h3>What we can help you with ?</h3>
+                <p>
+                <h5>Unite</h5>
+                We are here to help you reunite your team around your project.<br/>
+                Team and projects are in one place !
+                </p>
+                <p>
+                <h5>Collaborate</h5>
+                No more emails or meetings, communicate directly with your  teammate through the platform and follow the evolution of everyone’s works !
+                </p>
+                <p>
+                <h5>Assemble</h5>
+                Smoothly assemble your project online without having any compatibility problems !
+                </p>
+            </div>
+        </div>
+        <div class="prices row">
+            <div class="prices-header">
+                <h3>What about the costs ?</h3>
+                <p>3 different packs for different uses and needs ! Please contact us for the price or furthermore questions.</p>
+            </div>
+            <div class="col s10 offset-s1">
+                <div class="col s3">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title">Starter</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
+                            <ul>
+                                <li><i class="material-icons">check</i>Manage 3D open format (bla bla bla)</li>
+                                <li><i class="material-icons">check</i>Manage 3D open format (bla bla bla)</li>
+                                <li><i class="material-icons">check</i>Manage 3D open format (bla bla bla)</li>
+                                <li><i class="material-icons">check</i>Manage 3D open format (bla bla bla)</li>
+                                <li><i class="material-icons">check</i>Manage 3D open format (bla bla bla)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s3">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title">Professional</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
+                            <ul>
+                                <li><i class="material-icons">check</i>Manage 3D open format (bla bla bla)</li>
+                                <li><i class="material-icons">check</i>Manage 3D open format (bla bla bla)</li>
+                                <li><i class="material-icons">check</i>Manage 3D open format (bla bla bla)</li>
+                                <li><i class="material-icons">check</i>Manage 3D open format (bla bla bla)</li>
+                                <li><i class="material-icons">check</i>Manage 3D open format (bla bla bla)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s3">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title">Ultimate</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                                I am convenient because I require little markup to use effectively.</p>
+                            <ul>
+                                <li><i class="material-icons">check</i>Manage 3D open format (bla bla bla)</li>
+                                <li><i class="material-icons">check</i>Manage 3D open format (bla bla bla)</li>
+                                <li><i class="material-icons">check</i>Manage 3D open format (bla bla bla)</li>
+                                <li><i class="material-icons">check</i>Manage 3D open format (bla bla bla)</li>
+                                <li><i class="material-icons">check</i>Manage 3D open format (bla bla bla)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="requestAccess" class="request-access row">
+            <div class="request-access-header">
+                <h3>Join our community</h3>
+                <p>Want to participate in our journey and help us improve it ? Come and become part of community !</p>
+            </div>
+            <form class="access-inputs col s11">
+                <div class="row">
+                    <div class="input-field col s2">
+                        <input id="nameAccess" name="name" type="text" class="validate" required>
+                        <label for="nameAccess">Name</label>
+                    </div>
+                    <div class="input-field col s2">
+                        <input id="surnameAccess" name="surname" type="text" class="validate" required>
+                        <label for="surnameAccess">Surname</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <input id="emailAccess" name="email" type="email" class="validate" required>
+                        <label for="emailAccess">Email</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="info-footer row">
+            <a href="/" class="brand-logo" style="padding-bottom:15px"><img src="/img/logo.png" alt="bocket.me logo"></a>
+            {#Add FB TWITTER LINKEDIN links button#}
+        </div>
+            {#<div class="row content">#}
+                {#<div class="col s1"></div>#}
+                {#<div class="col s12 m12 l4 xl4 informations">#}
+                    {#<p>#}
+                        {#<br>#}
+                        {#<br>#}
+                        {#<span class="info1">Whatever your 3D software is</span><br>#}
+                        {#<span class="info2">Build 3D projects,<br>In a single place.</span>#}
+                        {#<br>#}
+                        {#<br>#}
+                    {#</p>#}
+                    {#<input id="email_beta" type="email" placeholder="Enter your email address..." class="validate col s6" required="required">#}
+                    {#<div class="col"></div>#}
+                    {#<a id="beta_button" class="waves-effect waves-light btn col s3">Join our beta</a>#}
+                    {#{% if beta %}#}
+                        {#<p style="margin-left: -0.5em !important;" class="col s12">#}
+                            {#<span class="subtitle">Wanna do more ?</span>#}
+                            {#<a id="slackRequest" href="mailto:hello@bocket.me">Request an access to our Slack</a>#}
+                            {#<br>#}
+                        {#</p>#}
+                    {#{% else %}#}
+                        {#<p style="margin-left: -0.5em !important;" class="col s12">#}
+                            {#<span class="subtitle">Want to create an account ?</span>#}
+                        {#<span id="signUp" style="display: none">#}{##}{#Sign up here#}{#</span>#}
+                            {#<br>#}
+                            {#<span class="subtitle">Already a member ?</span>#}
+                            {#<a id="signIn">Sign in here</a>#}
+                        {#</p>#}
+                    {#{% endif %}#}
+                {#</div>#}
+                {#<div class="col s12 m6 l6 xl6" style="margin-bottom: 1.2em;">#}
+                    {#<img id="overview" src="/img/site-vitrine-overview.png" alt="overview">#}
+                {#</div>#}
+            {#</div>#}
+{#        <div id="popup1" class="overlay">
             <div class="row popup">
                 <a id="close" href="#">
                     <i class="material-icons">close</i>
@@ -58,7 +200,7 @@
                 <p id="second-desc" class="col s12">
                     Enjoy your day :)
                 </p>
-            </div>
+            </div>#}
         </div>
     </div>
     <div id="blur"></div>
@@ -85,6 +227,11 @@
     <script type="application/javascript" src="/js/signup.js"></script>
     <script type="application/javascript" src="/js/signin.js"></script>
     <script type="application/javascript" src="/js/resetPassword.js"></script>
+    <script type="application/javascript">
+        $(document).ready(function() {
+            $('.carousel.carousel-slider').carousel({fullWidth: true});
+        });
+    </script>
     {% if not invitation %}
         <script type="application/javascript" src="/js/signInEvents.js"></script>
     {% else %}
