@@ -1,4 +1,4 @@
-const {flatten} = require('lodash');
+const { flatten } = require('lodash');
 const order = 'signin';
 
 const internalErrorEmitter = require('../emitter/internalErrorEmitter');
@@ -11,13 +11,14 @@ const log = require('../../utils/log');
 
 
 module.exports = (io, socket) => {
-  socket.on(order, async({email, password, invitationUid}) => {
-    const user = await User.findOne({email});
+  socket.on(order, async ({ email, password, invitationUid }) => {
+    const user = await User.findOne({ email })
+      .exec();
 
-    if(!user) return socket.emit('signinFailed');
+    if (!user) return socket.emit('signinFailed');
 
     const simplifiedUser = {
-      _id : user._id,
+      _id: user._id,
       completeName: user.completeName,
       email: user.email
     };
@@ -26,14 +27,16 @@ module.exports = (io, socket) => {
 
     if (!isMatch) return socket.emit('signinFailed');
 
-    if (invitationUid) return emitWithInvitation(invitationUid, user, socket);
+    if (invitationUid) return await emitWithInvitation(invitationUid, user, socket);
 
-    const { Organization } = user;
+    const { Manager } = user;
     let works = [];
-    for (let i = 0; i < Organization.length; i++) {
-      const organization = await organizationSchema.findById(Organization[i]._id);
-      for (let j = 0; j < Organization[i].workspaces.length; j++) {
-        const workspace = await workspaceSchema.findById(Organization[i].workspaces[j]);
+
+    for (let i = 0; i < Manager.length; i++) {
+      const { Organization, Workspaces } = Manager[i];
+      const organization = await organizationSchema.findById(Organization);
+      for (let j = 0; j < Workspaces.length; j++) {
+        const workspace = await workspaceSchema.findById(Workspaces[j]);
         works.push({
           name: workspace.name,
           _id: workspace._id,
@@ -42,7 +45,7 @@ module.exports = (io, socket) => {
       }
     }
 
-    return socket.emit('signinSucced', {workspaces: works, user: simplifiedUser, organization: []});
+    return socket.emit('signinSucced', { workspaces: works, user: simplifiedUser, organization: [] });
   });
 };
 
