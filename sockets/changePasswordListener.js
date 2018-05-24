@@ -8,7 +8,7 @@ async function changePasswordListener(userMail, { lastPassword, newPassword, con
 
   if (newPassword.length < 6 || confirmPassword < 6 || newPassword !== confirmPassword) {
     return { error: 'Invalid new password, please check the new and the confirm password' };
-  } else if (await user.comparePassword.promise(lastPassword, user.password) === false) {
+  } else if (await user.comparePassword(lastPassword, user.password) === false) {
     return { error: 'Invalid last password.' };
   }
   user.password = newPassword;
