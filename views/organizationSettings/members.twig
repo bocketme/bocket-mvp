@@ -24,8 +24,10 @@
             <div class="col s12">
                 <h5 class="title-page col s12">
                     Members of the organization
-                    {% if user.rights>4 %}
-                        <a href="#!" class="icons-main-button"><i class="material-icons">group_add</i></a>
+                    {% if currentUser.rights>4 %}
+                        <a href="#invite-organisation" class="modal-trigger icons-main-button"><i class="material-icons">group_add</i></a>
+
+                        {% include 'modals/invitationOrganisation.twig' %}
                     {% endif %}
                 </h5>
 
@@ -45,51 +47,71 @@
                             <p class="user-name">{{ currentOrganization.Owner.completeName }}</p>
                         </div>
                     </div>
-                    <div id="admins">
-                        <h5><span class="title">Co-owner</span></h5>
-                        {% if (currentOrganization.Admins| length) == 0 %}
-                            There is no admin
-                        {% endif %}
-                        {% for user in currentOrganization.Admins %}
-                            <div style="display: block">
-                                <div class="user-block" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
-                                    <div style="width: 40px; height: 40px;">
-                                        <div class="circle-responsive">
-                                            <div class="circle-content">
-                                                {{ user.completeName| first }}
+                    <div id="adminsAndMembers">
+                        <div id="admins">
+                            <h5><span class="title">Co-owner</span></h5>
+                            {% if (currentOrganization.Admins| length) == 0 %}
+                                There is no admin
+                            {% endif %}
+                            {% for admin in currentOrganization.Admins %}
+                                <div class="row">
+                                    <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
+                                        <div style="width: 40px; height: 40px;">
+                                            <div class="circle-responsive">
+                                                <div class="circle-content" style="color: black!important;">
+                                                    {{ admin.completeName |first |capitalize }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <p class="user-name left">{{ admin.completeName }}</p>
+                                    {% if (currentUser.rights == 6 %}
+                                        <div class="input-field col s3 push-s2" style="height: 21.75px; margin: 0">
+                                            <select userId="{{admin._id}}">
+                                                <option value="Admin" selected>Co-Owner</option>
+                                                <option value="Member">Member</option>
+                                            </select>
+                                        </div>
+                                        <div class="col s4 push-s2">
+                                            <a href="#!" class="right" style="display: inline-block; margin-top: 10px">Remove</a>
+                                        </div>
+                                    {% endif %}
                                 </div>
-                                <p style="display: inline-block">{{ user.completeName }}</p>
-                                <p style="display: inline-block">Change Status</p>
-                                <p style="display: inline-block">Remove</p>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
 
-                    </div>
-                    <div id="members">
-                        <h5><span class="title">Members</span></h5>
-                        {% if (currentOrganization.Members|length) == 0 %}
-                            There is no member
-                        {% endif %}
-                        {% for user in currentOrganization.Members %}
-                            <div style="display: block">
-                                <div class="user-block" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
-                                    <div style="width: 40px; height: 40px;">
-                                        <div class="circle-responsive">
-                                            <div class="circle-content">
-                                                {{ user.completeName| first }}
+                        </div>
+                        <div id="members">
+                            <h5><span class="title">Members</span></h5>
+                            {% if (currentOrganization.Members|length) == 0 %}
+                                There is no member
+                            {% endif %}
+                            {% for member in currentOrganization.Members %}
+                                <div class="row">
+                                    <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
+                                        <div style="width: 40px; height: 40px;">
+                                            <div class="circle-responsive">
+                                                <div class="circle-content" style="color: black!important;">
+                                                    {{ member.completeName |first |capitalize }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <p class="user-name left">{{ member.completeName }}</p>
+                                    {% if (currentUser.rights == 6 %}
+                                        <div class="input-field col s3 push-s2" style="height: 21.75px; margin: 0">
+                                            <select userId="{{member._id}}">
+                                                <option value="Admin" selected>Co-Owner</option>
+                                                <option value="Member">Member</option>
+                                            </select>
+                                        </div>
+                                        <div class="col s4 push-s2">
+                                            <a href="#!" class="right" style="display: inline-block; margin-top: 10px">Remove</a>
+                                        </div>
+                                    {% endif %}
                                 </div>
-                                <p style="display: inline-block">{{ user.completeName }}</p>
-                                <p style="display: inline-block">Change Status</p>
-                                <p style="display: inline-block">Remove</p>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -98,8 +120,10 @@
     </div>
 {% endblock %}
 
-{% block css %}{% endblock %}
+{% block css %}
+
+{% endblock %}
 
 {% block js %}
-
+    <script type="application/javascript" src="/js/settings/invitationOrganization.js"></script>
 {% endblock %}

@@ -30,12 +30,11 @@
         <script type="application/javascript" src="/socket.io/socket.io.js"></script>
         <script type="application/javascript">
             var socket = io();
-            const userRights = {{user.rights}};
+            const CurrentOrganization = "{{ currentOrganization._id }}";
+            const userRights = {{currentUser.rights}};
             $(document).ready(function(){
               $('.modal').modal({
-                complete: function () {
-                  console.log(7)
-                }
+                complete: function () {}
               });
             });
         </script>

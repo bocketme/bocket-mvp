@@ -32,14 +32,32 @@
                         <div class="file-path-wrapper">
                             <input class="file-path validate" type="text" style="display: none">
                         </div>
-                    </div>                
+                    </div>
                 </div>
                 #}
-                <div style="position: relative;margin-top: 49px;margin-left: 15px;" class="col s8">
-                    <input id="organization-name" type="text" value="{{ currentOrganization.name }}">
-                    <i id="edit" class="material-icons">edit</i>
+                <form action="/organization/{{ currentOrganization._id }}/info" method="post">
+                <div class="row">
+                    <div class="col s12">
+                      <div class="row">
+                        <div class="input-field col s6" style="position: relative;">
+                          <input id="organization-name" name="organizationName" type="text" value="{{ currentOrganization.name }}">
+                          <label for="organization-name">Organization Name</label>
+                          <i id="edit" class="material-icons">edit</i>
+                        </div>
+                        <div class="input-field col s5 push-s1">
+                          <div class="input-field col s12">
+                            <button class="btn btn-confirm" type="submit" name="action">
+                                Submit
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 </div>
             </div>
+          </form>
+
+
 
             <div id="organization-info">
                 <p>
@@ -59,14 +77,14 @@
                 </p>
             </div>
             {% if user.rights == 6 %}
-            <div id="quit">
-                <a id="delete-the-organization" class="btn outline-button" >Delete the organization</a>
-                <a id="leave-the-organization" class="btn outline-button" >Leave the organization</a>
-            </div>
-            {% include 'modals/leaveTheOrganization.twig' %}
-            {% include 'modals/deleteAnOrganization.twig' %}            
+                <div id="quit">
+                    <a id="delete-the-organization" class="btn outline-button" >Delete the organization</a>
+                    <a id="leave-the-organization" class="btn outline-button" >Leave the organization</a>
+                </div>
+                {% include 'modals/leaveTheOrganization.twig' %}
+                {% include 'modals/deleteAnOrganization.twig' %}
             {% endif %}
-            
+
         </div>
 
     </div>

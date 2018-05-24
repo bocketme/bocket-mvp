@@ -1,7 +1,7 @@
 <div class="col s12">
     <h5 class="col s10">
         Teammates
-        {% if  (user.rights > 4 or user.isProductmanager) %}
+        {% if (user.rights > 4 or user.isProductmanager) %}
             <a href="#invite-people" class="modal-trigger">
                 <i class="material-icons right" style="color: #000;">person_add</i>
             </a>
@@ -11,105 +11,104 @@
 </div>
 <div class="col s12">
     <h6>Product Manager</h6>
-    {% for manager  in users.ProductManagers %}
-        <div class="valign-wrapper" style="width: 100%; text-align: right; display: inline-block">
-        <div class="user-block" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
-            <div style="width: 40px; height: 40px;">
-                <div class="circle-user-responsive">
-                    <div class="circle-user-content">
-                        {{ manager.completeName | capitalize | first }}
+    {% set isProductmanager = user._id in users.ProductManagers %}
+    {% for manager in users.ProductManagers %}
+        <div class="row">
+            <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ manager._id }}')">
+                <div style="width: 40px; height: 40px;">
+                    <div class="circle-responsive">
+                        <div class="circle-content" style="color: black!important;">
+                            {{manager.completeName | first}}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <p class="user-name">{{ manager.completeName }}</p>
-        {% if  user.rights > 4 %}
-            <div class="row">
-                <div class="input-field col s5 push-s1" style="height: 21.75px; margin: 0">
-                    <select>
-                        <option value="" disabled>Choose your option</option>
-                        <option value="ProductManagers" selected>Product Manager</option>
+            <p class="user-name left">{{manager.completeName}}</p>
+            {% if currentUser.rights > 4 %}
+                <div class="input-field col s3 push-s2" style="height: 21.75px; margin: 0">
+                    <select userId="{{manager._id}}">
+                        <option value="" disabled="disabled">Choose your option</option>
+                        <option value="ProductManagers" selected="selected">Product Manager</option>
                         <option value="Teammates">Member</option>
+                       {#
                         <option value="Observers">Observer</option>
+                       #}
                     </select>
                 </div>
                 <div class="col s4 push-s2">
-                    <a href="#!" style="display: inline-block; margin-top: 10px">Remove</a>
+                    <a href="#!" class="right" style="display: inline-block; margin-top: 10px">Remove</a>
                 </div>
-            </div>
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
     {% endfor %}
 </div>
 <h6>Members</h6>
-{% if (users.Teammates|length) == 0 %}
+{% if (users.Teammates | length) == 0 %}
     <p>There is no Member</p>
 {% endif %}
+<div class="col s12">
     {% for teammate in users.Teammates %}
-        <div class="valign-wrapper" id="user-{{ user._id }}">
-            <div class="user-block" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
+        <div class="row">
+            <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ teammate._id }}')">
                 <div style="width: 40px; height: 40px;">
-                    <div class="circle-user-responsive">
-                        <div class="circle-user-content">
+                    <div class="circle-responsive">
+                        <div class="circle-content" style="color: black!important;">
                             {{ teammate.completeName |first |capitalize }}
                         </div>
                     </div>
                 </div>
             </div>
-            <p class="user-name">{{ teammate.completeName }}</p>
-            {% if  (user.rights > 4 or user.isProductmanager) %}
-                <div class="valign-wrapper" style="width: 100%; text-align: right; display: inline-block">
-                    <div class="row">
-                        <div class="input-field col s5 push-s1" style="height: 21.75px; margin: 0">
-                            <select>
-                                <option value="" disabled>Choose your option</option>
-                                <option value="ProductManagers">Product Manager</option>
-                                <option value="Teammates" selected>Member</option>
-                                <option value="Observers">Observer</option>
-                            </select>
-                        </div>
-                        <div class="col s4 push-s2">
-                            <a onclick="deleteUser("{{ teammate._id }}") href="#!" style="display: inline-block; margin-top: 10px">Remove</a>
-                        </div>
-                    </div>
+            <p class="user-name left">{{ teammate.completeName }}</p>
+            {% if (currentUser.rights > 4 or currentUser.isProductmanager) %}
+                <div class="input-field col s3 push-s2" style="height: 21.75px; margin: 0">
+                    <select userId="{{teammate._id}}">
+                        <option value="" disabled="disabled">Choose your option</option>
+                        <option value="ProductManagers" selected="selected">Product Manager</option>
+                        <option value="Teammates" selected>Member</option>
+                        {#                        
+                        <option value="Observers">Observer</option>
+                        #}
+                    </select>
+                </div>
+                <div class="col s4 push-s2">
+                    <a href="#!" class="right" style="display: inline-block; margin-top: 10px">Remove</a>
                 </div>
             {% endif %}
         </div>
     {% endfor %}
+</div>
+{#
 <h6>Observers</h6>
-{% if (users.Observers|length) == 0 %}
+{% if (users.Observers | length) == 0 %}
     <p>There is no Observer</p>
 {% endif %}
+<div class="col s12">
     {% for observer in users.Observers %}
-        <div class="valign-wrapper" id="user-{{ observer._id }}">
-            <div class="user-block" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
+        <div class="row">
+            <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
                 <div style="width: 40px; height: 40px;">
-                    <div class="circle-user-responsive">
-                        <div class="circle-user-content">
+                    <div class="circle-responsive">
+                        <div class="circle-content" style="color: black!important;">
                             {{ observer.completeName |first |capitalize }}
                         </div>
                     </div>
                 </div>
             </div>
-            <p class="user-name">{{ observer.completeName }}</p>
-            {% if  (user.rights > 4 or user.isProductmanager) %}
-                <div class="valign-wrapper" style="width: 100%; text-align: right; display: inline-block">
-                    <div class="row">
-                        <div class="input-field col s5 push-s1" style="height: 21.75px; margin: 0">
-                            <select>
-                                <option value="" disabled>Choose your option</option>
-                                <option value="ProductManagers">Product Manager</option>
-                                <option value="Teammates">Member</option>
-                                <option value="Observers" selected>Observer</option>
-                            </select>
-                        </div>
-                        <div class="col s4 push-s2">
-                            <a onclick="deleteUser("{{ observer._id }}") href="#!" style="display: inline-block; margin-top: 10px">Remove</a>
-                        </div>
-                    </div>
+            <p class="user-name left">{{ observer.completeName }}</p>
+            {% if (user.rights > 4 or user.isProductmanager) %}
+                <div class="input-field col s3 push-s2" style="height: 21.75px; margin: 0">
+                    <select userId="{{observer._id}}">
+                        <option value="" disabled="disabled">Choose your option</option>
+                        <option value="ProductManagers">Product Manager</option>
+                        <option value="Teammates">Member</option>
+                        <option value="Observers" selected>Observer</option>
+                    </select>
+                </div>
+                <div class="col s4 push-s2">
+                    <a href="#!" class="right" style="display: inline-block; margin-top: 10px">Remove</a>
                 </div>
             {% endif %}
         </div>
     {% endfor %}
-
 </div>
+#}

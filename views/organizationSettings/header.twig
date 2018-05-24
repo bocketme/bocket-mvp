@@ -12,7 +12,7 @@
     <ul id='organizations-dropdown' class='dropdown-content'>
         {% for organization in userOrganizations %}
             <li class='removableOrganization' >
-                <a href="/organization/{{ organization._id._id }}">{{ organization._id.name }}</a>
+                <a href="/organization/{{ organization._id }}">{{ organization.name }}</a>
             </li>
         {% endfor %}
         <li class="divider">
