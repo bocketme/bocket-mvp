@@ -38,7 +38,7 @@ socket.on('[Organization] - create', (err, html) => {
     Materialize.toast('Cannot create the organization');        
   } else {
     const organizationList = $('#organizations-dropdown');
-    organizationList.empty('.removableOrganization')
+    organizationList.empty('.removableOrganization');
     organizationList.prepend(html);
     $('.dropdown-button').dropdown();    
     $('.modal').modal();
