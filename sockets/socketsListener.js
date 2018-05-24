@@ -31,6 +31,7 @@ const changeWorkspaceorOrganizationName = require('./changeWorkspaceorOrganizati
 const Tchat = require('./Tchat/main');
 const getCurrentUser = require('./getCurrentUser');
 const getUsers = require('./getUsers');
+const Invitation = require('./Invitation/main');
 
 const User = require('./User/main');
 
@@ -86,6 +87,7 @@ module.exports = function (io) {
       reportIssueListener(socket);
       getCurrentUser(io, socket);
       getUsers(io, socket);
+      Invitation(io, socket);
     });
   });
 };
