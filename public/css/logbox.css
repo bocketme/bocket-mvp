@@ -12,7 +12,7 @@
 
 .containerBox {
     z-index: 4000;
-    position: absolute;
+    position: fixed;
     display: -webkit-flex;
     display: none;
     align-items:center;
