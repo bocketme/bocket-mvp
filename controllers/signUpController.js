@@ -134,13 +134,12 @@ async function createAccount(req, res) {
       req.session = signInUserSession(req.session, {email: user.email});
       req.session.completeName = user.completeName;
       req.session.currentWorkspace = invitationInfo.workspaceId;
-      return res.redirect(`/project/${invitationInfo.workspaceId}`);
+      return res.redirect(invitationInfo);
     }
 
-    user.Organization.push({
-      _id: organization._id,
-      isOwner: true,
-      workspaces: [workspace._id]
+    user.Manager.push({
+      Organization: organization._id,
+      Workspaces: [workspace._id]
     });
 
     await user.save();

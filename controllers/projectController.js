@@ -87,8 +87,8 @@ async function getRenderInformation(workspaceId, email) {
   }
 
   const user = await User.findOne({email})
-    .populate('Organization._id')
-    .populate('Organization.workspaces', 'name')
+    .populate('Manager.Organization')
+    .populate('Manager.Workspaces', 'name')
     .catch(errorDatabase);
 
   if(!user) {
@@ -97,25 +97,25 @@ async function getRenderInformation(workspaceId, email) {
   }
 
   const nodeMaster = await Node.findById(workspace.nodeMaster).catch(errorDatabase);
-  const managerOrganization = user.get('Organization');
+  const managerOrganization = user.get('Manager');
 
-  console.log(managerOrganization);
-
-  const { _id, workspaces } = managerOrganization.find(manager => {
-    for(let i = 0; i < manager.workspaces.length; i++){
-      const workspace = String(manager.workspaces[i]._id);
+  const manager = managerOrganization.find(manager => {
+    for(let i = 0; i < manager.Workspaces.length; i++){
+      const workspace = String(manager.Workspaces[i]._id);
       if (workspace === workspaceId) return true;
     }
     return false;
   });
 
+  console.log(manager.Organization)
+
   return {
-    currentOrganization: _id,
+    currentOrganization: manager.Organization,
     title: workspace.name,
     in_use: {name: workspace.name, id: workspace._id},
     data_header: 'All Parts',
     user: user.completeName,
-    workspaces,
+    workspaces: manager.Workspaces,
     node: nodeMaster,
     optionViewer: user.options,
     /* Const for front end */

@@ -7,13 +7,13 @@ module.exports = {
     const { workspaceId } = req.params;
     const { userId } = req.session;
     changeData(workspaceId, userId, name, description)
-    .then((organizationId) => {
-      res.redirect(`/organization/${organizationId}/workspaces`);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.redirect('');      
-    });
+      .then((organizationId) => {
+        res.redirect(`/organization/${organizationId}/workspaces`);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.redirect('');
+      });
   }
 }
 
@@ -26,37 +26,15 @@ const changeData = async (id, userId, name, description) => {
 
   const user = String(userId);
 
-  for (let i = 0; i < productManagers.length; i++) {
-    const manager = productManagers[i];
-    const managerId = String(manager)
-    if (managerId === user) {
-      workspace.name = name;
-      workspace.description = description;
-      await workspace.save();
-      return organization._id;
-    }
-  }
+  const isOwner = organization.isOwner(userId);
+  const isProductManager = workspace.isProductManager(userId);
 
-  const Owner = organization.get('Owner')
-  const owner = String(Owner);
-
-  if (owner === user) {
+  if (isOwner || isProductManager) {
     workspace.name = name;
     workspace.description = description;
     await workspace.save();
-    return organization._id;
-  }
 
-  const admins = organization.get('Admins');
-  for (let i = 0; i < admins.length; i++) {
-    const admin = admins[i];
-    const adminId = String(manager)
-    if (adminId === user) {
-      workspace.name = name;
-      workspace.description = description;
-      await workspace.save();
-      return organization._id;
-    }
-  }
-  throw new Error('Cannot make changes, you have no right')
+  } else throw new Error('Cannot make changes, you have no right');
+
+  return organization._id;
 }

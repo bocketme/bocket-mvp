@@ -47,12 +47,12 @@ OrganizationSchema.statics.newDocument = (OrganizationInformation) => {
 OrganizationSchema.methods.removeUser = function (userId, isOwner) {
   return new Promise((resolve, reject) => {
     deletingUser(this, userId, isOwner)
-    .then(() => next)
-    .catch(err => next(err));
+      .then(() => next)
+      .catch(err => next(err));
   });
 }
 
-async function deletingUser (userId, newOwner = null) {
+async function deletingUser(userId, newOwner = null) {
   try {
     console.log('deleting a user ...');
     const filter = String(userId);
@@ -97,17 +97,99 @@ OrganizationSchema.virtual('users').get(function () {
   return [this.Owner, ...this.Admins, ...this.Members]
 });
 
-OrganizationSchema.methods.findUserRights = function(userId) {
-  const id = mongoose.Types.ObjectId(userId);
-  if(this.Owner.equals(id) ||this.populated('Owner').equals(id))return 6;
-  for(let i=0;i<this.Admins.length;i++){
-    if(this.Admins[i].equals(id) || this.populated(`Admins[${i}]`)) return 5
-  }
-  for(let i=0;i<this.Members.length;i++){
-    if(this.Members[i].equals(id) || this.populated(`Members[${i}]`)) return 4
-  }
-  return null
+
+OrganizationSchema.methods.addAdmin = async function (userId) {
+  this.Admins.push(userId);
+  await this.save();
 };
+
+OrganizationSchema.methods.deleteAdmin = async function (userId) {
+  this.Admins = this.Admins.filter(function (admin) {
+    const isEqual = admin.equals(userId);
+    return !isEqual;
+  });
+  await this.save();
+};
+
+OrganizationSchema.methods.addMember = async function (userId) {
+  this.Members.push(userId);
+  await this.save();
+};
+
+OrganizationSchema.methods.deleteMember = async function (userId) {
+  this.Members = this.Members.filter(function (member) {
+    const isEqual = member.equals(userId);
+    return !isEqual;
+  });
+  await this.save();
+};
+
+OrganizationSchema.methods.changeOwner = async function (userId) {
+  const role = this.userRights(userId);
+
+  switch (role) {
+    case 4:
+      this.deleteMember(userId);
+      break;
+    case 5:
+      this.deleteAdmin(userId);
+      break;
+    default:
+      throw new Error('Cannot change the user, it has no rights inside the organization or he is already the owner, role = ', role)
+      break;
+  }
+
+  this.Owner = userId;
+  await this.save();
+};
+
+
+
+/**
+ * Returns whether the user has the rights or not
+ * @param {any} userId 
+ * @returns {Boolean} rights
+ */
+OrganizationSchema.methods.isOwner = function (userId) {
+  const Owner = this.populated('Owner') || this.Owner
+  return Owner.equals(userId);
+};
+/**
+ * Returns whether the user has the rights or not
+ * @param {any} userId 
+ * @returns 
+ */
+OrganizationSchema.methods.isAdmin = function (userId) {
+  const Admins = this.populated('Admins') || this.Admins;
+  const even = function (admin) {
+    return admin.equals(userId)
+  };
+  return Admins.some(even);
+};
+/**
+ * Returns whether the user has the rights or not
+ * @param {any} userId 
+ * @returns 
+ */
+OrganizationSchema.methods.isMember = function (userId) {
+  const Members = this.populated('Members') || this.Members;
+  const even = function (member) {
+    return member.equals(userId);
+  }
+  return Members.some(even);
+};
+
+/**
+ * Returns which rights the user has 
+ * @param {any} userId 
+ * @returns 
+ */
+OrganizationSchema.methods.userRights = function (userId) {
+  if (this.isOwner(userId)) return 6;
+  else if (this.isAdmin(userId)) return 5;
+  else if (this.isMember(userId)) return 4;
+  else return null;
+}
 
 OrganizationSchema.pre('save', function (next) {
   const id = String(this._id);
