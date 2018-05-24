@@ -14,10 +14,7 @@ module.exports = (io, socket) => {
       await organization.save();
 
       const user = await userSchema.findById(socket.handshake.session.userId);
-      user.Organization.push({
-        _id: organization._id,
-        workspaces: []
-      });
+      await user.addOrganization(organization._id);
 
       await user.save();
 
