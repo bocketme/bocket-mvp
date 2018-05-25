@@ -17,9 +17,19 @@
     {% endblock %}
 </head>
 <body>
-    <nav class="bocket-nav">
+    <nav class="home-nav">
         <div class="nav-wrapper">
-            <a href="/" class="brand-logo"><img id="logo" src="/img/logo-white.png" alt="bocket.me logo"></a>
+            <a href="/" class="brand-logo"><img id="logo" src="/img/logo.png"></a>
+{#            <ul class="left hide-on-med-and-down tabs tabs-transparent">
+                <li class="tab"><a href="#test1">Test 1</a></li>
+                <li class="tab"><a class="active" href="#test2">Test 2</a></li>
+                <li class="tab disabled"><a href="#test3">Disabled Tab</a></li>
+                <li class="tab"><a href="#test4">Test 4</a></li>
+            </ul>#}
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#requestAccess">Request an access</a></li>
+                <li><a id="signIn" href="#">Sign In</a></li>
+            </ul>
         </div>
     </nav>
 
