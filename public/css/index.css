@@ -5,6 +5,13 @@ body {
     font-family: "Montserrat", Monserrat,sans-serif;
     scroll-behavior: smooth;
     overflow-x: hidden;
+    font-size: calc(0.55em + 1vmin);
+    height: 100%;
+}
+
+.landing-page-body {
+    height: 100%;
+    width: 100%;
 }
 
 .home-nav {
@@ -18,7 +25,7 @@ body {
 }
 
 .home-nav .brand-logo img {
-    height: 45px !important;
+    height: inherit !important;
     width: 150px !important;
 }
 
@@ -54,7 +61,7 @@ body {
 }
 
 #signUp, #signIn, #slackRequest {
-    font-weight: 400;
+    /*font-weight: 400;*/
     color: black;
     cursor: pointer;
 }
@@ -76,6 +83,7 @@ body {
 
 .main {
     width: 100%;
+    height: inherit;
     overflow-y: auto;
 }
 
@@ -87,9 +95,35 @@ body {
     background-size: cover;
 }
 
+
+@media only screen and (max-height : 768px) {
+    /* Styles */
+    .carousel {
+        height: 600px;
+    }
+}
+@media only screen and (max-height : 640px), (max-height: 732px), (max-width: 360px), (max-width: 412px)  {
+    /* Styles */
+    .carousel {
+        height: 450px;
+    }
+
+    h5, h4, h3, h2, h1 {
+        font-size: calc(1.6em + 1vmin);
+    }
+
+    label, option, input {
+        font-size: calc(0.5em + 1vmin) !important;
+    }
+
+    .card {
+        width: 150px !important;
+    }
+}
 .carousel h1 {
-    padding-top: 300px;
+    padding-top: 15%;
     vertical-align: center;
+    font-size: calc(1.6em + 1vmax);
 }
 
 .carousel .request-carousel-btn {
@@ -97,7 +131,7 @@ body {
     background: rgba(10, 10, 10, 0) !important;
     border-radius: 7px;
     box-shadow: none;
-    margin-bottom: 100px;
+    margin-bottom: 5%;
 }
 
 .content {
@@ -105,7 +139,7 @@ body {
 }
 
 .info1 {
-    height: 700px;
+    height: 80%;
 }
 
 .info1 h4 {
@@ -116,11 +150,11 @@ body {
 }
 
 .info1 .col {
-    padding: 100px;
+    padding: 5%;
 }
 
 .info1 p {
-    margin-top: 40px;
+    margin-top: 5%;
 }
 
 .info1 h5 {
@@ -128,14 +162,14 @@ body {
 }
 
 .info1 .col img {
-    height: 500px;
-    width: 760px
+    height: 100%;
+    width: 100%;
 }
 
 
 
 .info2 {
-    height: 700px;
+    height: 80%;
     /*background-image: linear-gradient(to right, #4A90E2, #00ffc8);*/
     background-image: url("../img/Fond-1-01.png");
     background-size: cover;
@@ -143,12 +177,12 @@ body {
 }
 
 .info2 .col {
-    padding: 100px;
+    padding: 5%;
 }
 
 .info2 .col img {
-    height: 500px;
-    width: 760px
+    height: 100%;
+    width: 100%;
 }
 
 .info2 h4 {
@@ -162,22 +196,22 @@ body {
 }
 
 .info2 p {
-    margin-top: 40px;
+    margin-top: 5%;
 }
 
 
 
 .prices {
-    height: 1000px;
+    height: 120%;
     background-image: url("../img/Fond-3-01.png");
     background-size: cover;
 }
 
 .prices .prices-header {
-    padding-left: 100px;
-    padding-right: 100px;
-    padding-top: 100px;
-    padding-bottom: 50px;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 5%;
+    padding-bottom: 3%;
 }
 
 .prices .prices-header h4 {
@@ -187,20 +221,22 @@ body {
 }
 
 .prices .prices-header p {
-    margin-top: 50px;
+    margin-top: 3%;
 }
 
 .prices .col .s10 {
-    margin-left: 100px;
-    margin-right: 100px;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 .prices .col .s3 {
-    margin-left: 100px;
+    margin-left: 5%;
 }
 
 .prices .card {
-    height: 600px;
+    height: 80%;
+    width: 90%;
+    margin-left: 10%;
     border-radius: 25px;
 }
 
@@ -226,16 +262,18 @@ body {
 .prices .card i {
     color: #FF2E63;
     display: inline;
-    margin-right: 15%;
-    margin-left: 3%;
+    padding-right: 10%;
+    float: left;
+    font-size: inherit;
 }
 
 .prices .card ul li {
     margin-bottom: 10%;
+    text-align: justify;
 }
 
 .request-access {
-    height: 500px;
+    height: 70%;
     background-image: url("../img/Fond-2-01.png");
     background-size: cover;
     /*background-image: linear-gradient(to right, #4A90E2, #00ffc8);*/
@@ -250,18 +288,18 @@ body {
 
 .request-access p {
     color: #FFFFFF;
-    margin-top: 50px;
+    margin-top: 3%;
 
 }
 
 .request-access .request-access-header {
-    padding-top: 100px;
-    padding-left: 100px;
+    padding-top: 5%;
+    padding-left: 5%;
 }
 
 .request-access .access-inputs {
-    padding-top: 50px;
-    padding-left: 100px;
+    padding-top: 3%;
+    padding-left: 5%;
 }
 
 .request-access .access-inputs .input-field label {
@@ -299,19 +337,19 @@ body {
 }
 
 .info-footer {
-    height: 100px;
-    padding-left: 100px;
-    padding-right: 100px;
+    height: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
 }
 
 .info-footer .brand-logo img {
-    width: 200px;
-    height: 50px;
+    width: 10%;
+    height: 5%;
 }
 
 .link-icons {
     float: right;
-    padding-left: 10px;
+    padding-left: 2%;
 }
 
 .link-icons img {
@@ -320,10 +358,10 @@ body {
 }
 
 .legal-links {
-    padding-top: 10px;
+    padding-top: 1%;
     font-size: smaller;
 }
 
 .legal-links span {
-    padding-right: 20px;
+    padding-right: 3%;
 }
