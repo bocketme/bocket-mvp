@@ -206,7 +206,11 @@ body {
 
 .prices .card-header {
     text-align: center;
-    padding-top: 3%;
+    padding-top: 4%;
+}
+
+.prices .card-header h5 {
+    padding-top: 4%;
 }
 
 .prices .card-title {
@@ -227,7 +231,7 @@ body {
 }
 
 .prices .card ul li {
-    margin-bottom: 15%;
+    margin-bottom: 10%;
 }
 
 .request-access {
