@@ -23,14 +23,12 @@ async function create3DFile(chemin, file) {
   file3D.end(file.buffer);
 
   file3D.on("close", () => {
-    const executeConvert = exclude.find((ext) => {
-      return ext === path.extname(file.originalname);
-    })
-    if (executeConvert) {
-      let resultImport = converter.JSimport(filePath);
-      console.log("Import File 3D : ", resultImport);
-      converterInfo.info(resultImport);
-    }
+      console.log("in the if ");
+      if(converter){
+        let resultImport = converter.JSimport(filePath);
+        console.log("Import File 3D : ", resultImport);
+        converterInfo.info(resultImport);
+      }
   });
 }
 
