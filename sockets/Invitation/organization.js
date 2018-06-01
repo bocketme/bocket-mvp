@@ -12,16 +12,21 @@ module.exports = (io, socket) => {
       const people = checkData(socket, data);
 
       for (let i = 0; i < people.length; i++) {
-        const invitation = new invitationSchema({
-          organization: { id: organization._id, name: organization.name, role: people[i].role },
-          people: { completeName: people[i].completeName, email: people[i].email },
-          author: socket.handshake.session.completeName,
-          authorId: socket.handshake.session.userId,
-        });
-        console.log(invitation);
-        await invitation.save();
+        try {
+          const invitation = new invitationSchema({
+            organization: { id: organization._id, name: organization.name, role: people[i].role },
+            people: { completeName: people[i].completeName, email: people[i].email },
+            author: socket.handshake.session.completeName,
+            authorId: socket.handshake.session.userId,
+          });
+          console.log(invitation);
+          await invitation.save();  
+        } catch(e) {
+          socket.emit('[Invitation] - error', `Cannot Invite ${people[i].email}`);
+        }
       }
-      return null
+      socket.emit('[Invitation] - orgnanization', 'Invitation send');
+      return null;      
     } catch (e) {
       console.error(e);
       socket.emit('[Invitation] - error', `Cannot Invite people`);

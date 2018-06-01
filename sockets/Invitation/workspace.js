@@ -1,32 +1,39 @@
-const Invitation = require('../../models/Invitation');
-const Workspace = require('../../models/Workspace');
+const invitationSchema = require('../../models/Invitation');
+const workspaceSchema = require('../../models/Workspace');
+const organizationSchema = require('../../models/Organization');
 const checkData = require('./checkData');
 
 module.exports = (io, socket) => {
-  socket.on('[Invitation] - workspace', async function(workspaceId, data) {
+  socket.on('[Invitation] - workspace', async function (workspaceId, data) {
     try {
+      console.log("workspace");
 
-      const workspace = await Workspace
-        .findById(workspaceId)
-        .populate('Organization', 'name').exec();
+      const workspace = await workspaceSchema.findById(workspaceId);
+
+      const organization = await organizationSchema.findById(workspace.Organization);
 
       const people = checkData(socket, data);
 
-      for (let i = 0; i < people.length; i += 1) {
-        const invitation = new Invitation({
-          workspace: {id: workspaceId, name: workspace.name, role: people[i].role},
-          organization: {id: workspace.Organization._id, name: workspace.Organization.name, role: 4},
-          people: people[i],
-          author: socket.handshake.session.completeName,
-          authorId: socket.handshake.session.userId,
-        });
-
-        await invitation.save();
+      for (let i = 0; i < people.length; i++) {
+        try {
+          const invitation = new invitationSchema({
+            workspace: { id: workspace._id, name: workspace.name, role: people[i].role },
+            organization: { id: organization._id, name: organization.name, role: 4 },
+            people: { completeName: people[i].completeName, email: people[i].email },
+            author: socket.handshake.session.completeName,
+            authorId: socket.handshake.session.userId,
+          });
+          await invitation.save();
+        } catch (e) {
+          console.error(e)
+          socket.emit('[Invitation] - workspace', `Cannot Invite ${people[i].email}`);
+        }
       }
+      socket.emit('[Invitation] - workspace', 'Invitation send');
       return null;
     } catch (e) {
       console.error(e);
-      socket.emit('[Invitation] - error', `Cannot Invite people`);
+      socket.emit('[Invitation] - workspace', `Cannot Invite people`);
       return null;
     }
   })

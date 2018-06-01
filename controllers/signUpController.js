@@ -33,7 +33,7 @@ const signUpController = {
       }
     }
     createAccount(req, res)
-      .catch(() => {return res.status(400).send('Bad Request')});
+      .catch(() => { return res.status(400).send('Bad Request') });
   }
 };
 
@@ -70,6 +70,7 @@ function checkCompleteName(body) {
 }
 
 function checkWorkspaceName(body) {
+  if (!body.workspaceName) return true;
   body.workspaceName = escape(body.workspaceName);
   return basicCheck(body.workspaceName, workspaceNameInfo);
 }
@@ -80,7 +81,6 @@ function checkPassword(body) {
 }
 
 function checkEmail(body) {
-  console.log('Email:', body.email);
   body.email = escape(body.email);
   return basicCheck(body.email, emailInfo);
 }
@@ -106,7 +106,7 @@ async function createAccount(req, res) {
       completeName: req.body.completeName,
       password: req.body.password,
       email: req.body.email,
-      Organization:[]
+      Organization: []
     });
 
     await user.save();
@@ -131,10 +131,12 @@ async function createAccount(req, res) {
 
     if (req.body.invitationUid) {
       const invitationInfo = await acceptInvitation(req.body.invitationUid, user);
-      req.session = signInUserSession(req.session, {email: user.email});
+      log.info(invitationInfo);
+      req.session = signInUserSession(req.session, { email: user.email });
       req.session.completeName = user.completeName;
       req.session.currentWorkspace = invitationInfo.workspaceId;
-      return res.redirect(invitationInfo);
+      req.session.currentOrganization = invitationInfo.organizationId;
+      return res.redirect(invitationInfo.url);
     }
 
     user.Manager.push({
@@ -175,9 +177,11 @@ async function createAccount(req, res) {
     req.session = signInUserSession(req.session, { email: user.email });
     req.session.completeName = user.completeName;
     req.session.currentWorkspace = workspace._id;
-    return res.redirect(`/project/${workspace._id}`);
+    console.log('ok')
+    return res.redirect(`/workspace/${workspace._id}`);
   } catch (err) {
-    errorIncreationAccount(err, documents);
+    log.error(err);
+    await errorIncreationAccount(err, documents);
     throw err;
   }
 }
