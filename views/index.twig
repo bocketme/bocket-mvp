@@ -9,24 +9,24 @@
 
 {% block body %}
     <div class="landing-page-body">
-        <div class="main row">
+        <div class="main col s12 row">
             <div class="carousel carousel-slider center" data-indicators="true">
                 <div class="carousel-fixed-item center">
-                    <a class="btn waves-effect request-carousel-btn" href="#requestAccess">Request an Access</a>
+                    <a class="btn waves-effect request-carousel-btn" href="#requestAccess">Request an Account</a>
                 </div>
-                <div class="carousel-item white-text" href="#">
+                <div class="carousel-item white-text col s9" href="#">
                     <h1>Working together on 3D projects has never been easier</h1>
                 </div>
-                <div class="carousel-item white-text" href="#">
+                <div class="carousel-item white-text col s9" href="#">
                     <h1>A new way to design 3D as a team</h1>
                 </div>
-                <div class="carousel-item white-text" href="#">
+                <div class="carousel-item white-text col s9" href="#">
                     <h1>Kneel down frontiers between 3D CAD software</h1>
                 </div>
             </div>
         </div>
         <div class="info1 row">
-            <div class="col s6" >
+            <div class="col s12 m12 l6 xl6" >
                 <h4>Why use our platform ?</h4>
                 <p>
                     <h5>Compatibility</h5>
@@ -43,11 +43,11 @@
                 A faster and better way to work by having everything in one place. Use a flexible and versatile environment.
                 </p>
             </div>
-            <div class="col s6"><img src="img/info1-img.png" /></div>
+            <div class="col s6 hide-on-med-and-down"><img src="img/info1-img.png" /></div>
         </div>
         <div class="info2 row">
-            <div class="col s6"><img  src="img/info2-img.png"/></div>
-            <div class="col s6">
+            <div class="col s6 hide-on-med-and-down"><img  src="img/info2-img.png"/></div>
+            <div class="col s12 m12 l6 xl6">
                 <h4>How can we help you ?</h4>
                 <p>
                 <h5>Unite</h5>
@@ -69,125 +69,64 @@
                 <h4>What about the costs ?</h4>
                 <p>3 different packs for different uses and needs ! Please contact us for the prices or furthermore questions.</p>
             </div>
-            <div class="col s8 offset-s4">
-                <div class="col s4">
-                    <div class="card z-depth-4">
-                        <div class="card-header">
-                            <span class="card-title">Starter</span>
-                            <p class="prices-description">Get started and discover new possibilities</p>
-                            <h5>39,95 €</h5>
-                        </div>
-                        <div class="card-content">
-                            <ul>
-                                <li><i class="material-icons">check</i>Manage 3D open formats</li>
-                                <li><i class="material-icons">check</i>Textual annotations</li>
-                                <li><i class="material-icons">check</i>Measuring tool</li>
-                                <li><i class="material-icons">check</i>Live chat and groups</li>
-                                <li><i class="material-icons">check</i>Project news feed</li>
-                            </ul>
-                        </div>
+            <div class="card-container col s12 m12 l8 xl8 center-align">
+                <div class="card l8 xl8 z-depth-4 center-align">
+                    <div class="card-header">
+                        <span class="card-title">Starter</span>
+                        <p class="prices-description">Get started and discover new possibilities</p>
+                        <h5>39,95 €</h5>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li><i class="material-icons">check</i><div class="center">Manage 3D open formats</div></li>
+                            <li><i class="material-icons">check</i><div class="center">Textual annotations</div></li>
+                            <li><i class="material-icons">check</i><div class="center">Measuring tool</div></li>
+                            <li><i class="material-icons">check</i><div class="center">Live chat and groups</div></li>
+                            <li><i class="material-icons">check</i><div class="center">Project news feed</div></li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
         <div id="requestAccess" class="request-access row">
             <div class="request-access-header">
-                <h4>Join our community</h4>
-                <p>Want to participate in our journey and help us improve it ? Come and become part of community !</p>
+                <h4>Account Request</h4>
+                <p>Want to participate in our journey and help us improve it ? Contact us to create your account ! </p>
             </div>
-            <form class="access-inputs col s11">
+            <form class="access-inputs col s12">
                 <div class="row">
-                    <div class="input-field col s2">
+                    <div class="input-field col s6 m3 l2">
                         <input id="nameAccess" name="name" type="text" class="validate" required>
                         <label for="nameAccess">Name</label>
                     </div>
-                    <div class="input-field col s2">
+                    <div class="input-field col s6 m3 l2">
                         <input id="surnameAccess" name="surname" type="text" class="validate" required>
                         <label for="surnameAccess">Surname</label>
                     </div>
-                    <div class="input-field col s3">
+                    <div class="input-field col s6 m3 l2">
                         <input id="email_beta" name="email" type="email" class="validate" required>
                         <label for="email_beta">Email</label>
                     </div>
-                    <div class="input-field col s3">
-                        <select id="choiceAccess">
-                            <option value="" disabled selected>Choose your option</option>
-                            <option value="1">Personal use</option>
-                            <option value="2">Professional use</option>
-                        </select>
-                        <label for="choiceAccess">Uses ?</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s1 offset-s6">
-                        <a id="beta_button" class="btn waves-effect center">Join</a>
+                    <div class="col s12 m3 l2">
+                        <a id="beta_button" class="btn waves-effect center">Send Request</a>
                     </div>
                 </div>
             </form>
         </div>
         <div class="info-footer row">
-            <div class="link-buttons">
-                <a href="/" class="brand-logo" ><img src="/img/logo.png"></a>
-                <a href="https://www.facebook.com/bocketme/" class="link-icons" ><img src="/img/facebook-icon.png"></a>
-                <a href="https://www.linkedin.com/company/bocket/?originalSubdomain=fr" class="link-icons" ><img src="/img/linkedin-icon.png"></a>
-                <a href="https://twitter.com/hellobocket" class="link-icons" ><img src="/img/twitter-icon.png"></a>
+            <div class="link-buttons ">
+                <a href="/" class="link-logo col s6 m6 l6 xl6 hide-on-med-and-down" ><img src="/img/logo.png"></a>
+                <div class="col s12 m12 l6 xl6">
+                    <a href="https://www.facebook.com/bocketme/" class="link-icons" ><img src="/img/facebook-icon-dark.png"></a>
+                    <a href="https://www.linkedin.com/company/bocket/?originalSubdomain=fr" class="link-icons" ><img  src="/img/linkedin-icon-dark.png"></a>
+                    <a href="https://twitter.com/hellobocket" class="link-icons " ><img src="/img/twitter-icon-dark.png"></a>
+                </div>
             </div>
-            <div class="legal-links">
+            <div class="legal-links col s12">
                 <span>Legal Notice</span>
                 <span>Terms of Service</span>
                 <span>© Bocket.me - 2017 DEM-4382871//DEM-4382874</span>
             </div>
-            {#Add FB TWITTER LINKEDIN links button#}
-        </div>
-            {#<div class="row content">#}
-                {#<div class="col s1"></div>#}
-                {#<div class="col s12 m12 l4 xl4 informations">#}
-                    {#<p>#}
-                        {#<br>#}
-                        {#<br>#}
-                        {#<span class="info1">Whatever your 3D software is</span><br>#}
-                        {#<span class="info2">Build 3D projects,<br>In a single place.</span>#}
-                        {#<br>#}
-                        {#<br>#}
-                    {#</p>#}
-                    {#<input id="email_beta" type="email" placeholder="Enter your email address..." class="validate col s6" required="required">#}
-                    {#<div class="col"></div>#}
-                    {#<a id="beta_button" class="waves-effect waves-light btn col s3">Join our beta</a>#}
-                    {#{% if beta %}#}
-                        {#<p style="margin-left: -0.5em !important;" class="col s12">#}
-                            {#<span class="subtitle">Wanna do more ?</span>#}
-                            {#<a id="slackRequest" href="mailto:hello@bocket.me">Request an access to our Slack</a>#}
-                            {#<br>#}
-                        {#</p>#}
-                    {#{% else %}#}
-                        {#<p style="margin-left: -0.5em !important;" class="col s12">#}
-                            {#<span class="subtitle">Want to create an account ?</span>#}
-                        {#<span id="signUp" style="display: none">#}{##}{#Sign up here#}{#</span>#}
-                            {#<br>#}
-                            {#<span class="subtitle">Already a member ?</span>#}
-                            {#<a id="signIn">Sign in here</a>#}
-                        {#</p>#}
-                    {#{% endif %}#}
-                {#</div>#}
-                {#<div class="col s12 m6 l6 xl6" style="margin-bottom: 1.2em;">#}
-                    {#<img id="overview" src="/img/site-vitrine-overview.png" alt="overview">#}
-                {#</div>#}
-            {#</div>#}
-{#        <div id="popup1" class="overlay">
-            <div class="row popup">
-                <a id="close" href="#">
-                    <i class="material-icons">close</i>
-                </a>
-                <p class="col s12">
-                    <h5 id="popup-title">Thank you for your interest !</h5>
-                </p>
-                <p id="first-desc" class="col s12">
-                    We will keep you in touch very soon.<br>
-                </p>
-                <p id="second-desc" class="col s12">
-                    Enjoy your day :)
-                </p>
-            </div>#}
         </div>
     </div>
     <div id="blur"></div>
