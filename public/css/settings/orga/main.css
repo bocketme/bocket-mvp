@@ -38,6 +38,10 @@ body, html{
   padding: 0%;
 }
 
+.workspaces-overflow {
+  max-height: 100%;
+  overflow: auto;
+}
 
 .side-nav-scrollbar::-webkit-scrollbar-track{
   background-color: #f7f7f7;
@@ -52,6 +56,10 @@ body, html{
 .side-nav-scrollbar::-webkit-scrollbar-thumb
 {
   background-color: #3c3c3c;
+}
+
+#workspace-creation {
+  overflow-y: visible;
 }
 
 #options{
@@ -181,12 +189,26 @@ h5.title-page{
   font-size: 36px;
 }
 
-.indicator{
-  background-color: #00cca0 !important;
+
+.workspace-list, .workspace-list-active{
+  color: #223241 !important;
 }
 
-.workspace-list{
-  color: #000000 !important;
+.indicator {
+  border-bottom: 2px solid #223241;
+}
+
+.truncate{
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pagination {
+  position: relative; 
+  padding-left: 40px !important;
+  padding-right: 40px !important; 
+  white-space: nowrap;
+  overflow: hidden !important;
 }
 
 .list-user{
@@ -210,4 +232,34 @@ h5.title-page{
 .outline-button:hover{
   background-color: transparent!important;
   box-shadow: none;
+}
+
+.bloc {
+  margin-top: 72px;
+}
+
+.bloc:first{
+  margin-top: 0%;
+}
+
+.alinea{
+  font-size: 1.1em;
+  margin: 25px 26px;
+}
+
+.wrapper-user-list{
+  padding-bottom: 20px;
+}
+
+@media screen and (min-width: 600px) {
+  .overflow-content{
+    overflow-y: scroll; 
+    max-height: 80vh; 
+  }
+
+  .overflow-hide{
+    max-height: 90%;
+    margin-bottom: 0px;
+    overflow: hidden;
+  }
 }
