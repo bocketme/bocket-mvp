@@ -17,6 +17,8 @@ body {
 .home-nav {
     background: #FFFFFF !important;
     height: 70px !important;
+    position: fixed;
+    z-index: 9999;
 }
 
 .home-nav ul li a {
@@ -26,7 +28,7 @@ body {
 
 .home-nav .brand-logo img {
     height: inherit !important;
-    width: 150px !important;
+    width: 5em !important;
 }
 
 #overview {
@@ -35,14 +37,18 @@ body {
 }
 
 #beta_button {
-    background: #262626 !important;
+    background: #223241 !important;
     color: #FFFFFF !important;
     border-radius: 8px;
-    padding-top: 0.5em;
-    height: 3em;
     text-align: center;
     vertical-align: middle;
     font-weight: bolder;
+    width: 100%;
+    margin-top: 5%;
+}
+
+#beta_button:hover {
+    background: #FF2E63 !important;
 }
 
 #popup-title {
@@ -88,25 +94,24 @@ body {
 }
 
 .carousel {
-    height: 750px;
+    height: 40em;
     width: inherit;
-    /*background-image: linear-gradient(to right, #4A90E2, #00ffc8);*/
     background-image: url("../img/Carouselle-01.png");
     background-size: cover;
 }
 
 
 @media only screen and (max-height : 768px) {
-    /* Styles */
+     Styles
     .carousel {
-        height: 600px;
+        height: 400px;
+    }
+
+    .prices {
+        background-size: cover !important;
     }
 }
 @media only screen and (max-height : 640px), (max-height: 732px), (max-width: 360px), (max-width: 412px)  {
-    /* Styles */
-    .carousel {
-        height: 450px;
-    }
 
     h5, h4, h3, h2, h1 {
         font-size: calc(1.6em + 1vmin);
@@ -116,14 +121,12 @@ body {
         font-size: calc(0.5em + 1vmin) !important;
     }
 
-    .card {
-        width: 150px !important;
-    }
+
 }
 .carousel h1 {
     padding-top: 15%;
     vertical-align: center;
-    font-size: calc(1.6em + 1vmax);
+    font-size: calc(2.3em + 1vmax);
 }
 
 .carousel .request-carousel-btn {
@@ -132,6 +135,7 @@ body {
     border-radius: 7px;
     box-shadow: none;
     margin-bottom: 5%;
+    font-size: 1.2em;
 }
 
 .content {
@@ -145,7 +149,7 @@ body {
 .info1 h4 {
     /*text-decoration: #00CCA0 underline ;*/
     display: inline;
-    border-bottom: #00CCA0 4px solid;
+    border-bottom: #00CCA0 3px solid;
     text-transform: uppercase;
 }
 
@@ -170,7 +174,6 @@ body {
 
 .info2 {
     height: 80%;
-    /*background-image: linear-gradient(to right, #4A90E2, #00ffc8);*/
     background-image: url("../img/Fond-1-01.png");
     background-size: cover;
     color: #FFFFFF;
@@ -187,7 +190,7 @@ body {
 
 .info2 h4 {
     display: inline;
-    border-bottom: #223241 4px solid;
+    border-bottom: #223241 3px solid;
     text-transform: uppercase;
 }
 
@@ -202,9 +205,12 @@ body {
 
 
 .prices {
-    height: 120%;
+    height: 100%;
     background-image: url("../img/Fond-3-01.png");
-    background-size: cover;
+    /*background-size: cover;*/
+    background-size: 60% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .prices .prices-header {
@@ -216,7 +222,7 @@ body {
 
 .prices .prices-header h4 {
     display: inline;
-    border-bottom: #FF2E63 4px solid;
+    border-bottom: #FF2E63 3px solid;
     text-transform: uppercase;
 }
 
@@ -229,14 +235,14 @@ body {
     margin-right: 5%;
 }
 
-.prices .col .s3 {
-    margin-left: 5%;
+.prices .card-container {
+    padding-left: 5%;
 }
 
 .prices .card {
     height: 80%;
-    width: 90%;
-    margin-left: 10%;
+    max-width: 350px;
+    min-width: 200px;
     border-radius: 25px;
 }
 
@@ -262,13 +268,12 @@ body {
 .prices .card i {
     color: #FF2E63;
     display: inline;
-    padding-right: 10%;
     float: left;
     font-size: inherit;
 }
 
 .prices .card ul li {
-    margin-bottom: 10%;
+    margin-bottom: 5%;
     text-align: justify;
 }
 
@@ -276,12 +281,11 @@ body {
     height: 70%;
     background-image: url("../img/Fond-2-01.png");
     background-size: cover;
-    /*background-image: linear-gradient(to right, #4A90E2, #00ffc8);*/
 }
 
 .request-access h4 {
     display: inline;
-    border-bottom: #223241 4px solid;
+    border-bottom: #223241 3px solid;
     color: #FFFFFF;
     text-transform: uppercase;
 }
@@ -298,8 +302,9 @@ body {
 }
 
 .request-access .access-inputs {
-    padding-top: 3%;
+    padding-top: 1%;
     padding-left: 5%;
+    padding-bottom: 4%;
 }
 
 .request-access .access-inputs .input-field label {
@@ -337,7 +342,6 @@ body {
 }
 
 .info-footer {
-    height: 5%;
     padding-left: 5%;
     padding-right: 5%;
 }
@@ -347,14 +351,24 @@ body {
     height: 5%;
 }
 
-.link-icons {
-    float: right;
-    padding-left: 2%;
+@media only screen and (max-width : 1024px) {
+
+
+    .link-icons img {
+        width: 10% !important;
+        float: none !important;
+    }
+}
+
+
+.link-logo img {
+    width: 20%;
 }
 
 .link-icons img {
-    width: 50px;
-    height: 50px;
+    margin-right: 1%;
+    width: 5%;
+    float: right;
 }
 
 .legal-links {
@@ -364,4 +378,42 @@ body {
 
 .legal-links span {
     padding-right: 3%;
+}
+
+#signIn {
+    background: #223241 !important;
+    color: #FFFFFF !important;
+    border-radius: 10px;
+}
+
+#signIn:hover {
+    background: #FF2E63 !important;
+    border-bottom: #D72653 2px solid !important;
+}
+
+#signIn:active {
+    color: #223241;
+    font-weight: bolder !important;
+    background-color: #B6C0C1 !important;
+    border-bottom: #223241 2px solid;
+}
+
+#request-access-btn {
+    color: #223241;
+    border: #223241 2px solid;
+    border-radius: 10px;
+}
+
+#request-access-btn:hover {
+    color: #FF2E63 !important;
+    border: #FF2E63 2px solid;
+    background: #FFFFFF !important;
+    border-radius: 10px;
+}
+
+#request-access-btn:focus {
+    color: #223241;
+    font-weight: bolder !important;
+    background-color: #B6C0C1 !important;
+    border-bottom: #223241 2px solid;
 }
