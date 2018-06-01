@@ -22,7 +22,6 @@ const node = require('./routes/node')
 const signin = require("./routes/signin");
 const signup = require("./routes/signup");
 const signOut = require("./routes/signOut");
-const project = require("./routes/project");
 const user = require("./routes/user");
 const part = require("./routes/part");
 const assembly = require("./routes/assembly");
@@ -112,7 +111,7 @@ app.use(function (req, res, next) {
 //TODO: Make an middleware which check if user have permissions
 //TODO: Only char & number in workspace, no special char
 
-app.engine('twig', require('twig').__express);
+app.engine('twig', twig.__express);
 app.set("view engine", "twig");
 app.set('twig options', {
   strict_variables: false,
@@ -125,7 +124,6 @@ app.use("/", index);
 app.use("/user", user);
 app.use("/signin", signin);
 app.use("/signup", signup);
-app.use("/project", project);
 app.use('/organization', organization);
 app.use("/part", part);
 app.use("/node", node);
