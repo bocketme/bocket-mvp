@@ -20,15 +20,14 @@
     <nav class="home-nav">
         <div class="nav-wrapper">
             <a href="/" class="brand-logo"><img id="logo" src="/img/logo.png"></a>
-{#            <ul class="left hide-on-med-and-down tabs tabs-transparent">
-                <li class="tab"><a href="#test1">Test 1</a></li>
-                <li class="tab"><a class="active" href="#test2">Test 2</a></li>
-                <li class="tab disabled"><a href="#test3">Disabled Tab</a></li>
-                <li class="tab"><a href="#test4">Test 4</a></li>
-            </ul>#}
+            <a href="#" data-activates="mobile-links" class="button-collapse"><i class="material-icons black-text">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="#requestAccess">Request an access</a></li>
-                <li><a id="signIn" href="#">Sign In</a></li>
+                <li><a id="request-access-btn" class="btn waves-effect" href="#requestAccess">Request an account</a></li>
+                <li><a id="signIn" class="btn waves-effect" href="#">Sign In</a></li>
+            </ul>
+            <ul id="mobile-links" class="side-nav collection">
+                <li class="collection-item"><a class="request-access-btn" href="#requestAccess">Request an account</a></li>
+                <li class="collection-item"><a id="signIn-nav" href="#">Sign In</a></li>
             </ul>
         </div>
     </nav>
@@ -43,6 +42,11 @@
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script type="application/javascript">
         var socket = io();
+        $(document).ready(() => {
+            $(".button-collapse").sideNav({
+                closeOnClick: true,
+            });
+        });
     </script>
     {% block js %}
     {% endblock %}
