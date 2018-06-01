@@ -10,8 +10,11 @@ async function acceptInvitation(invitationUid, user) {
   if (!invitation) throw new Error('[Invitaiton] - Invitation Not Found');
   const { workspace, organization } = invitation;
 
+  const result = {}
+
+  const Organization = await organisationSchema.findById(invitation.organization.id);
   if (organization) {
-    const Organization = await organisationSchema.findById(invitation.organization.id);
+    result.organizationId = Organization._id;
     switch (organization.role) {
       case 5:
         await Organization.addAdmin(user._id);
@@ -20,22 +23,22 @@ async function acceptInvitation(invitationUid, user) {
         await Organization.addMember(user._id);
         break;
       default:
-        throw new Error('The Organization has no role');
+        throw new Error(`The Organization has no role or the role is incorect, role = ${role}`);
         break;
     }
   } else throw new Error('You cannot invite people without an organization')
 
-
   if (workspace) {
-    const Workspace = await workspaceSchema.findById(invitation.Workspace.id);
+    const Workspace = await workspaceSchema.findById(invitation.workspace.id);
+    result.workspaceId = Workspace._id;    
     switch (workspace.role) {
-      case 1:
+      case 3:
         await Workspace.addProductManager(user._id);
         break;
       case 2:
         await Workspace.addTeammate(user._id);
         break;
-      case 3:
+      case 1:
         throw new Error('Cannot use Observer');
         //Workspace.addObserver(user._id);
         break;
@@ -44,42 +47,13 @@ async function acceptInvitation(invitationUid, user) {
         break;
     }
     await invitation.remove();
-    return `/project/${Workspace._id}`;
+    result.url = `/project/${Workspace._id}`;
+    return result;
   } else {
     await invitation.remove();
-    return `/organization/${Organization._id}`;    
-  } 
-}
-
-/**
- * Accept the Invitation
- * @param invitationUid : {String}
- * @param user : {Mongoose}
- * @return {Promise}
- */
-function acceptInvitation(invitationUid, user) {
-  //            .then(res => updateTeam(res.team, res.user))
-  return new Promise((resolve, rej) => {
-    let invitation = null;
-    Invitation.findOne({ uid: invitationUid })
-      .then((inv) => {
-        if (inv === null) rej();
-        invitation = inv;
-        return updateUser(inv, user);
-      })
-      .then(res => updateWorkspace(res.workspace, res.user))
-      .then((workspace) => {
-        updateOwnerOrganization(user, workspace.Organization)
-          .then(() => {
-            resolve({ workspaceId: workspace._id });
-            invitation.remove();
-          })
-          .catch();
-      })
-      .catch((err) => {
-        rej(err);
-      });
-  });
+    result.url = `/organization/${Organization._id}`;
+    return result;
+  }
 }
 
 function updateUser(inv, user) {
