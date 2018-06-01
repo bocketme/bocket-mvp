@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 const organizationSchema = require('./Organization');
+const workspaceSchema = require('./Workspace');
 const uniqueValidator = require('mongoose-unique-validator');
 const util = require('util');
 
@@ -24,7 +25,6 @@ const UserSchema = new mongoose.Schema({
 
   //TODO: Script to fill the OrganizationManager
   Manager: [ManagerSchema],
-  //TODO: Delete all the workspaces + organizations
   //workspaces: { type: [NestedWorkspaceSchema] },
   //organizations: { type: [NestedOrganizationSchema] }, //TODO: Deletion Sage (empty var).
 
@@ -46,6 +46,7 @@ UserSchema.pre('save', function (next) {
   user.active = true;
   if (!user.createDate) { user.createDate = new Date(); }
   // only hash the password if it has been modified (or is new)
+  console.log(user.isModified('password'));
   if (user.isModified('password')) {
     // generate a salt
     bcrypt.genSalt(serverConfiguration.saltRounds, (err, salt) => {
@@ -55,29 +56,34 @@ UserSchema.pre('save', function (next) {
         if (err) return next(err);
         // override the cleartext password with the hashed one
         user.password = hash;
+        return next();
       });
     });
-  }
-
-  return next();
+  } else return next();
 });
 
-UserSchema.pre('remove', async function (next) {
+UserSchema.pre('remove', async function () {
   try {
-    const user = this;
-
-    const ownerOrganization = await organizationSchema.find({ 'Owner': user._id });
-
-    for (let i = 0; i < ownerOrganization.length; i++) {
-      const organization = ownerOrganization[i];
-      await organization.remove();
+    for (let i = 0; i < this.Manager.length; i++) {
+      const manager = this.Manager[i];
+      const organization = await organizationSchema.findById(manager.Organization);
+      let hasRights = organization.userRights(this._id);
+      if (!hasRights)
+        throw new Error('[UserSchema - Remove] - The user has no rights inside the organization');
+      else if (hasRights === organization.OWNER)
+        await organization.remove();
+      else {
+        if (hasRights === organization.ADMIN)
+          await organization.deleteAdmin(this._id);
+        else if (hasRights === organization.MEMBER)
+          await organization.deleteMember(this._id);
+        else throw new Error('The user has no rights inside the organization');
+      }
     }
-
   } catch (e) {
-    console.error(e);
+    log.error(e);
+    throw new Error('[UserSchema - Remove] - Cannot remove the user')
   }
-
-  return next();
 });
 
 /**
@@ -143,9 +149,23 @@ UserSchema.methods.removeOrganization = async function (organizationId) {
   const isExisting = this.checkOrganization(organizationId);
   if (!isExisting) throw new Error("[Database] - [User] - [Magnager] - Cannot delete an organization that does not exists")
   else {
-    this.Manager.filter(function ({ Organization }) {
+    function findWorkspace({ Organization }) {
+      return Organization.equals(organizationId);
+    };
+
+    const { Workspaces } = this.Manager.find(findWorkspace);
+
+    for (let i = 0; i < Workspaces.length; i++) {
+      const workspaceId = Workspaces[i];
+      const workspace = await workspaceSchema.findById(workspaceId);
+      await workspace.removeUser(this._id)
+    }
+    
+    function filterOrganization({ Organization }) {
       return !Organization.equals(organizationId);
-    });
+    }
+
+    this.Manager = this.Manager.filter(filterOrganization);
   }
   await this.save();
   return this;
@@ -157,8 +177,10 @@ UserSchema.methods.addWorkspace = async function (organizationId, workspaceId) {
 
   const index = this.findIndexOrganization(organizationId);
 
-  if (index === -1)
-    throw new Error("[Database] - [User] - [Manager] - Cannot find the organization");
+  if (index === -1) {
+    await this.addOrganization(organizationId);
+    this.Manager[this.Manager.length - 1].Workspaces.push(workspaceId);
+  }
   else
     this.Manager[index].Workspaces.push(workspaceId);
 
@@ -180,11 +202,14 @@ UserSchema.methods.removeWorkspace = async function (organizationId, workspaceId
   if (index === -1)
     throw new Error("[Database] - [User] - [Manager] - Cannot find the organization");
   else {
-    const workspaces = this.Manager[index].Workspaces;
-    workspaces.filter(function (id) {
-      const isEqual = id.equals(id);
+    function isNotEqual(id) {
+      const isEqual = id.equals(workspaceId);
+      console.log(`${id} is not equal with ${workspaceId} ? ${!isEqual}`)
       return !isEqual;
-    });
+    }
+    console.log(`User: ${this.completeName}, before action ${this.Manager[index].Workspaces.length}`)
+    const workspaces = this.Manager[index].Workspaces.filter(isNotEqual);
+    console.log(`User: ${this.completeName}, after action ${workspaces.length}`)    
     this.Manager[index].Workspaces = workspaces;
   }
   this.save();

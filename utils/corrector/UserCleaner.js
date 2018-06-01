@@ -11,20 +11,20 @@ module.exports = function* () {
       let nestedWorkspace = user.workspaces;
       for (let i = 0; i < nestedWorkspace.length; i++) {
         let workspace = yield workspaceSchema.findById(nestedWorkspace[i]._id);
-        const OrganizationManager = user.get('Organization');
+        const manager = user.get('Manager');
         const organization = yield organizationSchema.findOne({ 'Workspaces': doc._id });
-        const isExisting = OrganizationManager.findIndex(({_id}) => {
-          const id1 = String(_id);
+        const isExisting = manager.findIndex(({ Organization }) => {
+          const id1 = String(Organization);
           const id2 = String(organization._id);
           return id1 === id2;
         });
-        if(isExisting && isExisting !== -1) {
-          doc.Organization[isExisting].workspaces.push(workspace._id);
-        } else {
-           user.Organization.push({
-             _id: organization._id,
+        if (isExisting == -1) {
+          doc.Manager.push({
+            _id: organization._id,
             workspaces: [workspace._id],
           });
+        } else {
+          doc.Manager[isExisting].workspaces.push(workspace._id)
         }
       }
     }

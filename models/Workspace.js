@@ -1,10 +1,10 @@
 const serverConfiguration = require('../config/server');
 const mongoose = require('mongoose');
-
 const NestedTchat = require('./nestedSchema/NestedTchat');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const userSchema = require('./User');
 const nodeSchema = require('./Node');
+
 const { Schema } = mongoose;
 
 let WorkspaceSchema = new mongoose.Schema({
@@ -60,7 +60,8 @@ WorkspaceSchema.methods.isProductManager = function (userId) {
 WorkspaceSchema.methods.isTeammate = function (userId) {
   const Teammates = this.populated('Teammates') || this.Teammates;
   const even = function (teammate) {
-    return teammate.isEqual(userId);
+    const id = mongoose.Types.ObjectId(teammate)
+    return id.equals(userId);
   }
   return Teammates.some(even);
 }
@@ -73,7 +74,8 @@ WorkspaceSchema.methods.isTeammate = function (userId) {
 WorkspaceSchema.methods.isObserver = function (userId) {
   const Observers = this.populated('Observers') || this.Observers;
   const even = function (observer) {
-    return observer.isEqual(userId);
+    const id = mongoose.Types.ObjectId(Observers);
+    return id.equals(userId);
   }
   return Observers.some(even);
 }
@@ -97,20 +99,19 @@ WorkspaceSchema.methods.hasRights = function (userId) {
  * @returns {Promise<WorkspaceSchema>}
  */
 WorkspaceSchema.methods.addProductManager = async function (userId) {
-  let role = this.authorization.hasRights(userId);
+  let role = this.hasRights(userId);
   if (role) throw new Error('[Workspace] - [Users] - Duplicate User !');
 
   const User = await userSchema.findById(userId);
-  if (!user) throw new Error('[Workspace] - [User] - Cannot find the user.');
+  if (!User) throw new Error('[Workspace] - [User] - Cannot find the user.');
 
-  let organizationAlreadyExist = User.authorization.organization
-    .check(this.Organization);
+  let organizationAlreadyExist = User.checkOrganization(this.Organization);
 
   if (organizationAlreadyExist)
-    await User.administrate.workspace.add(this.Organization, this._id);
+    await User.addWorkspace(this.Organization, this._id);
   else {
-    await User.administrate.organization.add(this.Organization);
-    await User.administrate.workspace.add(this.Organization, this._id);
+    await User.addOrganization(this.Organization);
+    await User.addWorkspace(this.Organization, this._id);
   }
 
   this.ProductManagers.push(userId);
@@ -118,65 +119,90 @@ WorkspaceSchema.methods.addProductManager = async function (userId) {
 };
 
 WorkspaceSchema.methods.addTeammate = async function (userId) {
-  let role = this.authorization.hasRights(userId);
+  let role = this.hasRights(userId);
   if (role) throw new Error('[Workspace] - [Users] - Duplicate User !');
 
   const User = await userSchema.findById(userId);
   if (!user) throw new Error('[Workspace] - [User] - Cannot find the user.');
 
-  let organizationAlreadyExist = User.authorization.organization
-    .check(this.Organization);
+  let organizationAlreadyExist = User.checkOrganization(this.Organization);
 
   if (organizationAlreadyExist)
-    await User.administrate.workspace.add(this.Organization, this._id);
+    await User.addWorkspace(this.Organization, this._id);
   else {
-    await User.administrate.organization.add(this.Organization);
-    await User.administrate.workspace.add(this.Organization, this._id);
+    await User.addOrganization(this.Organization);
+    await User.addWorkspace(this.Organization, this._id);
   }
 
   this.Teammates.push(userId);
   await this.save();
 }
 
+// noinspection JSAnnotator
 WorkspaceSchema.methods.changeRole = async function (userId, newRole) {
-  await this.removeUser(userId);
+  try {
+    const formerRole = this.hasRights(userId);
+    if (!formerRole) throw new Error('Cannot find the user');
+    if (formerRole === Number(newRole)) throw new Error('[Organization] the new role is the same before the changement, skipping changement ...')
 
-  switch (newRole) {
-    case 3:
-      this.ProductManagers.push(userId);
-      break;
-    case 2:
-      this.Teammates.push(userId);
-      break;
-    case 1:
-      //TODO: Delete the throw Error
-      throw new Error('Cannot Use An Observer');
-      //this.Observers.push(userId);
-      break;
-    default:
-      throw new Error('The value of role is not defined');
-      break;
+    function idNotEqual(_id) {
+      const isEqual = !_id.equals(userId);
+      return isEqual;
+    }
+
+    switch (formerRole) {
+      case 3:
+        this.ProductManagers = this.ProductManagers.filter(idNotEqual);
+        break;
+      case 2:
+        this.Teammates = this.Teammates.filter(idNotEqual);
+        break;
+      case 1:
+        this.Observers = this.Observers.filter(idNotEqual);
+        break;
+      default:
+        break;
+    }
+
+    switch (Number(newRole)) {
+      case 3:
+        this.ProductManagers.push(userId);
+        break;
+      case 2:
+        this.Teammates.push(userId);
+        break;
+      case 1:
+        //TODO: Delete the throw Error
+        throw new Error('Cannot Use An Observer');
+        //this.Observers.push(userId);
+        break;
+      default:
+        throw new Error('The value of role is not defined');
+        break;
+    }
+
+    await this.save();
+    return this;
+  } catch (e) {
+    log.error(e);
+    throw e;
   }
-  await this.save();
-  return this;
-
-}
+};
 
 WorkspaceSchema.methods.addObserver = async function (userId) {
-  let role = this.authorization.hasRights(userId);
+  let role = this.hasRights(userId);
   if (role) throw new Error('[Workspace] - [Users] - Duplicate User !');
 
-  const User = await userSchema.findById(userId);
+  const user = await userSchema.findById(userId);
   if (!user) throw new Error('[Workspace] - [User] - Cannot find the user.');
 
-  let organizationAlreadyExist = User.authorization.organization
-    .check(this.Organization);
+  let organizationAlreadyExist = User.checkOrganization(this.Organization);
 
   if (organizationAlreadyExist)
-    await User.administrate.workspace.add(this.Organization, this._id);
+    await user.addWorkspace(this.Organization, this._id);
   else {
-    await User.administrate.organization.add(this.Organization);
-    await User.administrate.workspace.add(this.Organization, this._id);
+    await user.addOrganization(this.Organization);
+    await user.addWorkspace(this.Organization, this._id);
   }
 
   this.Observers.push(userId);
@@ -186,55 +212,67 @@ WorkspaceSchema.methods.addObserver = async function (userId) {
 WorkspaceSchema.methods.removeUser = async function (userId) {
   const filter = String(userId);
 
-  const User = await userSchema.findById(userId);
-  if (!User) throw new Error('The user does not exist');
+  const user = await userSchema.findById(userId);
+  if (!user) throw new Error('The user does not exist');
 
-  let role = this.authorization.hasRights(userId);
+  let role = this.hasRights(userId);
+
+  function filterId(id) {
+    const isEqual = id.equals(userId);
+    return !isEqual;
+  }
 
   switch (role) {
     case 3:
-      this.ProductManagers = this.ProductManagers.filter(Managers => {
-        const id = String(Managers);
-        return id !== filter;
-      });
+      this.ProductManagers = this.ProductManagers.filter(filterId);
       break;
     case 2:
-      this.Teammates = this.Teammates.filter(Teammate => {
-        const id = String(Teammate);
-        return id !== filter;
-      });
+      this.Teammates = this.Teammates.filter(filterId);
       break;
     case 1:
-      this.Observers = this.Observers.filter(Observer => {
-        const id = String(Observer);
-        return id !== filter;
-      });
+      this.Observers = this.Observers.filter(filterId);
       break;
     default:
       throw new Error('The user has no right in this workspace');
       break;
   }
 
-  await User.administrate.workspace.remove(this.Organization, this._id);
+  await user.removeWorkspace(this.Organization, this._id);
   await this.save();
 };
 
-WorkspaceSchema.pre('remove', async function () {
-  //Delete the user inside the workspace
-  const users = this.users;
+WorkspaceSchema.pre('save', function (next) {
+  if (this.isModified('name'))
+    this.name = this.name.trim();
+  if (this.isModified('description') && !(this.description == null || this.description == ""))
+    this.description = this.description.trim();
 
+  return next();
+});
+
+WorkspaceSchema.pre('remove', async function () {
+
+  const _id = this._id;
+  function filterWorkspace(id) {
+    const isEqual = id.equals(_id);
+    return !isEqual;
+  };
+
+  const organizationSchema = require('./Organization')
+  const organization = await organizationSchema.findById(this.Organization);
+  organization.Workspaces = organization.Workspaces.filter(filterWorkspace);
+  await organization.save();
+
+  //Delete the user inside the workspace
+  const users = this.users
   for (let i = 0; i < users.length; i++) {
     const userId = users[i];
-    const user = await userSchema.findById(userId);
-
-    await user.removeWorkspace(this._id);
-    await user.save();
+    await this.removeUser(userId);
   }
 
   //Delete the nodeMaster
   const nodeMaster = await nodeSchema.findById(this.nodeMaster);
-  nodeMaster.remove();
-
+  await nodeMaster.remove();
 });
 
 /**
