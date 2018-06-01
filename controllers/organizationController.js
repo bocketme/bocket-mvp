@@ -5,35 +5,42 @@ const assemblySchema = require('../models/Assembly');
 const NodeTypeEnum = require('../enum/NodeTypeEnum');
 const nodeSchema = require('../models/Node');
 const querystring = require('querystring');
+const log = require('../utils/log');
 
 module.exports = {
   index: (req, res) => {
     const { organizationId } = req.params;
     const { userId } = req.session;
+    req.session.currentWorkspace = null;
+    log.info(req.session)
     renderOrganization(organizationId, userId)
       .then(params => res.render('organizationSettings/organization', params))
       .catch(err => {
-        console.error(err);
+        log.error(err);
         res.redirect('/');
-      })
+      });
   },
   workspaces: (req, res) => {
     const { organizationId } = req.params;
     const { userId } = req.session;
+    req.session.currentWorkspace = null;
+    
     renderWorkspaces(organizationId, userId)
       .then(params => res.render('organizationSettings/workspaces', params))
       .catch(err => {
-        console.error(err);
+        log.error(err);
         res.redirect('/');
       })
   },
   members: (req, res) => {
     const { organizationId } = req.params;
     const { userId } = req.session;
+    req.session.currentWorkspace = null;
+    
     renderMembers(organizationId, userId)
       .then(params => res.render('organizationSettings/members', params))
       .catch(err => {
-        console.error(err);
+        log.error(err);
         res.redirect('/');
       })
   },
@@ -41,22 +48,28 @@ module.exports = {
     const { organizationId } = req.params;
     const { userId } = req.session;
     organizationSchema.findById(organizationId)
-      .then((organization) => {
+      .then(async (organization) => {
         if (!organization)
           throw new Error('Cannot find the Organization');
 
         const owner = String(organization.Owner);
-        const user = String(userId);
-        if (owner === user)
-          return organization.remove();
+        const userid = String(userId);
+        if (owner === userid)
+          await organization.remove();
+
+        return user.Manager[0].Organization || '/'
       })
-      .then(() => {
-        res.redirect('/');
+      .then(link => {
+        res.status(200).send();
       })
       .catch(err => {
-        console.error(err);
-        res.redirect('/');
+        log.error(err);
+        res.status(500).send(err);
       });
+  },
+  leaveOrganization: (req, res) => {
+    const { organizationId } = req.params;
+    const { userId } = req.session;
   },
   createWorkspace: (req, res) => {
     const { organizationId } = req.params;
@@ -65,7 +78,7 @@ module.exports = {
       .then(() => {
         res.redirect(`/organization/${organizationId}/workspaces`);
       }).catch((err) => {
-        console.error(err);
+        log.error(err);
         res.redirect('');
       })
   },
@@ -87,7 +100,13 @@ async function createNewWorkspace(organizationId, body, userId) {
   const organization = await organizationSchema.findById(organizationId);
   if (!organization) throw new Error('Cannot find the organization');
 
-  const productManager = await userSchema.findById(userId);
+  const userAsking = await userSchema.findById(userId)
+  if (!userAsking) throw new Error('Cannot find the user');
+
+  if (!(organization.isAdmin(userAsking._id) || organization.isOwner(userAsking._id)))
+    throw new Error('The user has no right');
+
+  const productManager = await userSchema.findById(body.productManager);
   if (!productManager) throw new Error('Cannot find the user');
 
   const assembly = await assemblySchema.create({
@@ -104,17 +123,15 @@ async function createNewWorkspace(organizationId, body, userId) {
 
   const workspace = await workspaceSchema.create({
     name: body.workspaceName,
-    ProductManagers: [productManager._id],
     Organization: organizationId,
     nodeMaster: nodeMaster._id,
   });
   await workspace.save();
 
+  await workspace.addProductManager(productManager._id);
+
   nodeMaster.Workspace = workspace._id;
   await nodeMaster.save();
-
-  productManager.addWorkspace(organizationId, workspace._id);
-  await productManager.save();
 
   organization.Workspaces.push(workspace._id);
   await organization.save();
@@ -148,8 +165,8 @@ async function renderOrganization(organizationId, userId) {
 
   if (index === -1) throw new Error('Cannot find the organization');
 
-  let listOrganizations = user.Manager.map(({Organization}) => Organization);
-  listOrganizations = listOrganizations.filter(({_id}) => !_id.equals(organizationId));
+  let listOrganizations = user.Manager.map(({ Organization }) => Organization);
+  listOrganizations = listOrganizations.filter(({ _id }) => !_id.equals(organizationId));
   return {
     currentOrganization: organization,
     OrganizationUsers: organization.users,
@@ -165,6 +182,7 @@ async function renderOrganization(organizationId, userId) {
 }
 
 async function renderWorkspaces(organizationId, userId) {
+
   const organization = await organizationSchema
     .findById(organizationId)
     .populate('Owner')
@@ -193,19 +211,19 @@ async function renderWorkspaces(organizationId, userId) {
     .populate('Manager.Organization')
     .populate('Manager.Workspaces')
     .populate({
-      path: 'Manager.workspaces',
+      path: 'Manager.Workspaces',
       populate: { path: 'ProductManagers', select: 'completeName' }
     })
     .populate({
-      path: 'Manager.workspaces',
+      path: 'Manager.Workspaces',
       populate: { path: 'Teammates', select: 'completeName' }
     })
     .populate({
-      path: 'Manager.workspaces',
+      path: 'Manager.Workspaces',
       populate: { path: 'Observers', select: 'completeName' }
     })
     .exec()
-    .catch(err => console.error(err));
+    .catch(err => log.error(err));
 
   if (!user) throw new Error('[Organizaiton Manager] - Cannot find the user');
 
@@ -218,16 +236,27 @@ async function renderWorkspaces(organizationId, userId) {
 
   if (index === -1) throw new Error('Cannot find the organization');
 
-  const workspaces = rights > 4 ? organization.Workspaces : user.Manager[index].Workspaces;
+  let workspaces = rights > 4 ? organization.Workspaces : user.Manager[index].Workspaces;
+  function isWorkspaceManager(workspace) {
+    function even(manager) {
+      return manager._id.equals(user._id)
+    }
+    workspace.isProductManager = workspace.ProductManagers.some(even);
+    return workspace;
+  }
 
-  let listOrganizations = user.Manager.map(({Organization}) => Organization);
-  listOrganizations = listOrganizations.filter(({_id}) => !_id.equals(organizationId));
+  workspaces = workspaces.map(isWorkspaceManager);
+
+  let listOrganizations = user.Manager.map(({ Organization }) => Organization);
+  listOrganizations = listOrganizations.filter(({ _id }) => !_id.equals(organizationId));
 
   return {
     currentOrganization: organization,
     OrganizationUsers: organization.users,
     userOrganizations: listOrganizations,
+    userWorkspaces: user.Manager[index].Workspaces,
     workspaces: workspaces,
+    workspace: workspaces[0],
     currentUser: {
       completeName: user.completeName,
       _id: user._id,
@@ -265,8 +294,8 @@ async function renderMembers(organizationId, userId) {
 
   if (index === -1) throw new Error('Cannot find the organization');
 
-  let listOrganizations = user.Manager.map(({Organization}) => Organization);
-  listOrganizations = listOrganizations.filter(({_id}) => !_id.equals(organizationId));
+  let listOrganizations = user.Manager.map(({ Organization }) => Organization);
+  listOrganizations = listOrganizations.filter(({ _id }) => !_id.equals(organizationId));
 
   return {
     currentOrganization: organization,
