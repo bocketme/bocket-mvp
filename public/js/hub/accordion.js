@@ -58,12 +58,13 @@ const headerTitle = new class HeaderTitle {
 }();
 
 function hideOrShowNode(event) {
-  event.stopPropagation();
   const listItem = $(event.currentTarget.parentElement.parentElement);
   const parentElem = $(event.currentTarget.parentElement);
   const element = $(event.currentTarget);
   var length = listItem.has('div.collapsible-body').length;
   const nodeId = parentElem.attr('id');
+  $(`#${nodeId}`).trigger('click');
+  const parentUl = listItem.parent().closest('li');
 
   if (length) {
     const elementBody = $('#' + nodeId + '-body').find('ul.collapsible li');
@@ -73,9 +74,9 @@ function hideOrShowNode(event) {
     } else {
       element.trigger('hideOrShow', [true]);
       elementBody.find('i.hide-show').trigger('hideOrShow', [true]);
+      parentUl.children('div:first').children('i').trigger('hideOrShow', [true]);
     }
   } else {
-    const parentUl = listItem.parent().closest('li');
     if (element.hasClass('is-visible')) {
       element.trigger('hideOrShow', [false]);
     } else {
@@ -84,27 +85,6 @@ function hideOrShowNode(event) {
     }
   }
 }
-
-// function hideOrShowNode(event) {
-//   const parent_element = $(event.currentTarget.parentElement);
-//   const element = $(event.currentTarget);
-//   console.log(parent_element.find('span').text());
-//   const nodeId = parent_element.attr('id');
-//   const elementBody = $('#' + nodeId + '-body').find('ul.collapsible li');
-//
-//   if (element.hasClass('is-visible')) {
-//     element.removeClass('is-visible');
-//     element.addClass('is-not-visible');
-//     element.text('visibility_off');
-//   } else {
-//     element.removeClass('is-not-visible');
-//     element.addClass('is-visible');
-//     element.text('visibility');
-//   }
-//
-//   elementBody.find('i.hide-show').click();
-//
-// }
 
 function nodeChildrenChargement(event) {
   const element = $(event.target);

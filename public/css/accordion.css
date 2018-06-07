@@ -85,6 +85,16 @@
 	background-color: #e9e8e9; 
 }
 
+.collapsible-header.three-node{
+	position: relative;
+}
+
+.hide-show{
+	position: absolute;
+	right: 0;
+	z-index: 9;
+}
+
 ul.collapsible{
 	border: 0px;
 	box-shadow: none;
