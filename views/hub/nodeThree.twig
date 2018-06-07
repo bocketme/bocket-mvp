@@ -6,10 +6,11 @@
 </div>
 <ul class="node-tree collapsible collapsible-first bocket-scrollbar" data-collapsible="accordion">
     <li>
-        <div id="{{ node._id }}" class="collapsible-header three-node search_child valign-wrapper">
-            <i class="material-icons">keyboard_arrow_right</i>
+        <div id="{{ node._id }}" class="collapsible-header three-node search_child valign-wrapper" onclick="nodeChildrenChargement(event)">
+            <i class="arrow_drop_down material-icons">keyboard_arrow_right</i>
             <img class="pad-right" src="/img/07-Assembly icon.svg">
             <span class="p-node node-name" data-node="part" data-breadcrumbs="{{ node.name }}" data-sublevel="0">{{ node.name }}</span>
+            <i class="hide-show is-visible material-icons dont-collapse right">visibility</i>
         </div>
         <div id="{{ node._id }}-body" class="collapsible-body container valign-wrapper">
             <div class="progress">
