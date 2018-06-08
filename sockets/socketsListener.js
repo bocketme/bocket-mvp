@@ -2,7 +2,7 @@ const betaRegistrationListener = require('./betaRegistrationSListener');
 const checkUniqueField = require('./checkUniqueField');
 const Annotation = require('./Annotation/main');
 const newNodeListener = require('./newNodeListener');
-const NodeInformation =  require('./NodeInformation/main');
+const NodeInformation = require('./NodeInformation/main');
 const searchNodeChildren = require('./searchNodeChildren');
 const NodeViewer = require('./NodeViewer/main');
 const Organization = require('./Organization/main');
@@ -32,7 +32,7 @@ const Tchat = require('./Tchat/main');
 const getCurrentUser = require('./getCurrentUser');
 const getUsers = require('./getUsers');
 const Invitation = require('./Invitation/main');
-
+const Workspace = require('./Workspace/main');
 const User = require('./User/main');
 
 const FSconfig = require('../config/FileSystemConfig');
