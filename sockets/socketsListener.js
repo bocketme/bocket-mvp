@@ -1,11 +1,11 @@
 const betaRegistrationListener = require('./betaRegistrationSListener');
 const checkUniqueField = require('./checkUniqueField');
-const Annotation = require('./Annotation/main');
+const Annotation = require('./Annotation');
 const newNodeListener = require('./newNodeListener');
-const NodeInformation = require('./NodeInformation/main');
+const NodeInformation = require('./NodeInformation');
 const searchNodeChildren = require('./searchNodeChildren');
-const NodeViewer = require('./NodeViewer/main');
-const Organization = require('./Organization/main');
+const NodeViewer = require('./NodeViewer');
+const Organization = require('./Organization');
 const newActivityComment = require('./newActivityCommentListener');
 const getActivities = require('./getActivitiesListener');
 const addCommentListener = require('./addCommentToActivityListener');
@@ -28,12 +28,12 @@ const duplicateNodeListener = require('./duplicateNodeListener');
 const changePassword = require('./changePasswordListener');
 const reportIssueListener = require('./reportIssueListener');
 const changeWorkspaceorOrganizationName = require('./changeWorkspaceorOrganizationName.js');
-const Tchat = require('./Tchat/main');
+const Tchat = require('./Tchat');
 const getCurrentUser = require('./getCurrentUser');
 const getUsers = require('./getUsers');
-const Invitation = require('./Invitation/main');
-const Workspace = require('./Workspace/main');
-const User = require('./User/main');
+const Invitation = require('./Invitation');
+const Workspace = require('./Workspace');
+const User = require('./User');
 
 const FSconfig = require('../config/FileSystemConfig');
 
@@ -48,46 +48,44 @@ module.exports = function (io) {
       overwrite: true, // overwrite file if exists, default is true.
     });
 
-    const { userMail, currentWorkspace } = socket.handshake.session;
 
-    socket.join(currentWorkspace, () => {
-      const rooms = Object.keys(socket.rooms);
-      console.log(userMail, 'join', rooms.find(room => room === socket.handshake.session.currentWorkspace));
+    socket.on('reload', (workspaceId) => socket.to(workspaceId).emit('reload'));
 
-      Annotation(io, socket);
-      Tchat(io, socket);
-      changeWorkspaceorOrganizationName(socket);
-      duplicateNodeListener(socket);
-      deleteNodeListener(io, socket);
-      createWorkspaceInHub(io, socket);
-      createWorkspaceInSignIn(io, socket);
-      fileUploaderListener(socket, uploader);
-      betaRegistrationListener(socket);
-      checkUniqueField(socket);
-      newNodeListener(socket);
-      NodeInformation(io, socket);
-      searchNodeChildren(socket);
-      NodeViewer(io, socket);
-      newActivityComment(socket, io);
-      getActivities(socket);
-      addCommentListener(socket, io);
-      invitePeopleListener(socket);
-      joinWorkspaceListener(io, socket);
-      leaveWorkspaceListener(io, socket);
-      getAllSpecListener(socket);
-      removeSpecListener(io, socket);
-      renameSpecListener(io, socket);
-      GetSearchCriteria(socket);
-      GetSelectedItemsToAdd(socket);
-      changePassword(socket);
-      User(io, socket);
-      Organization(io, socket);
-      workspaceManagerListener(socket);
-      removeUserFromOW(socket);
-      reportIssueListener(socket);
-      getCurrentUser(io, socket);
-      getUsers(io, socket);
-      Invitation(io, socket);
-    });
+    Annotation(io, socket);
+    Tchat(io, socket);
+    changeWorkspaceorOrganizationName(socket);
+    duplicateNodeListener(socket);
+    deleteNodeListener(io, socket);
+    createWorkspaceInHub(io, socket);
+    createWorkspaceInSignIn(io, socket);
+    fileUploaderListener(socket, uploader);
+    betaRegistrationListener(socket);
+    checkUniqueField(socket);
+    newNodeListener(socket);
+    NodeInformation(io, socket);
+    searchNodeChildren(socket);
+    NodeViewer(io, socket);
+    newActivityComment(socket, io);
+    getActivities(socket);
+    addCommentListener(socket, io);
+    invitePeopleListener(socket);
+    joinWorkspaceListener(io, socket);
+    leaveWorkspaceListener(io, socket);
+    getAllSpecListener(socket);
+    removeSpecListener(io, socket);
+    renameSpecListener(io, socket);
+    GetSearchCriteria(socket);
+    GetSelectedItemsToAdd(socket);
+    changePassword(socket);
+    User(io, socket);
+    Organization(io, socket);
+    workspaceManagerListener(socket);
+    removeUserFromOW(socket);
+    reportIssueListener(socket);
+    getCurrentUser(io, socket);
+    getUsers(io, socket);
+    Invitation(io, socket);
+    Workspace(io, socket)
+
   });
 };
