@@ -1,32 +1,11 @@
 const organizationSchema = require('../../../models/Organization');
 const userSchema = require('../../../models/User');
+const log = require('../../../utils/log');
 
 async function workspaces(req, res, next) {
   try {
     const { organizationId } = req.params;
     const { userId } = req.session;
-
-    const organization = await organizationSchema
-      .findById(organizationId)
-      .populate('Owner').populate('Admins')
-      .populate('Members').populate('Workspaces')
-      .populate({
-        path: 'Workspaces',
-        populate: { path: 'ProductManagers', select: 'completeName' }
-      })
-      .populate({
-        path: 'Workspaces',
-        populate: { path: 'Observers', select: 'completeName' }
-      })
-      .populate({
-        path: 'Workspaces',
-        populate: { path: 'Teammates', select: 'completeName' }
-      })
-      .exec();
-
-
-    if (!organization) throw new Error('[Organization Manager] - Cannot Find the organization');
-    const rights = organization.userRights(userId);
 
     const user = await userSchema
       .findById(userId)
@@ -44,10 +23,36 @@ async function workspaces(req, res, next) {
         path: 'Manager.Workspaces',
         populate: { path: 'Observers', select: 'completeName' }
       })
-      .exec()
-      .catch(err => console.error(err));
+      .exec();
 
     if (!user) throw new Error('[Organizaiton Manager] - Cannot find the user');
+
+    if (user.Manager[0])
+      res.locals.redirect = `/organization/${user.Manager[0].Organization._id}`;
+
+    const organization = await organizationSchema
+      .findById(organizationId);
+
+    if (!organization) throw new Error('[Organization Manager] - Cannot Find the organization');
+
+    const rights = organization.userRights(userId);
+
+    await organization
+      .populate('Owner').populate('Admins')
+      .populate('Members').populate('Workspaces')
+      .populate({
+        path: 'Workspaces',
+        populate: { path: 'ProductManagers', select: 'completeName' }
+      })
+      .populate({
+        path: 'Workspaces',
+        populate: { path: 'Observers', select: 'completeName' }
+      })
+      .populate({
+        path: 'Workspaces',
+        populate: { path: 'Teammates', select: 'completeName' }
+      })
+      .execPopulate();
 
     const managerOrganization = user.get('Manager');
 
@@ -92,7 +97,9 @@ async function workspaces(req, res, next) {
     return res.render('organizationSettings/workspaces', html);
   } catch (e) {
     log.error(e);
-    res.redirect('/')
+    if (res.locals.redirect)
+      return res.redirect(res.locals.redirect);
+    else res.redirect("/signOut");
   }
 }
 

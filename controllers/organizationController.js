@@ -24,7 +24,7 @@ module.exports = {
     const { organizationId } = req.params;
     const { userId } = req.session;
     req.session.currentWorkspace = null;
-    
+
     renderWorkspaces(organizationId, userId)
       .then(params => res.render('organizationSettings/workspaces', params))
       .catch(err => {
@@ -36,7 +36,7 @@ module.exports = {
     const { organizationId } = req.params;
     const { userId } = req.session;
     req.session.currentWorkspace = null;
-    
+
     renderMembers(organizationId, userId)
       .then(params => res.render('organizationSettings/members', params))
       .catch(err => {
@@ -57,7 +57,7 @@ module.exports = {
         if (owner === userid)
           await organization.remove();
 
-        return user.Manager[0].Organization || '/'
+        return '/'
       })
       .then(link => {
         res.status(200).send();
@@ -138,17 +138,6 @@ async function createNewWorkspace(organizationId, body, userId) {
 }
 
 async function renderOrganization(organizationId, userId) {
-  const organization = await organizationSchema
-    .findById(organizationId)
-    .populate('Workspaces')
-    .populate('Owner', 'completeName')
-    .populate('Admins', 'completeName')
-    .populate('Members', 'completeName')
-    .exec();
-
-  const rights = organization.userRights(userId);
-
-  if (!organization) throw new Error('[Organization Manager] - Cannot Find the organization');
 
   const user = await userSchema
     .findById(userId)
@@ -157,6 +146,18 @@ async function renderOrganization(organizationId, userId) {
     .exec();
 
   if (!user) throw new Error('[Organizaiton Manager] - Cannot find the user');
+
+  const organization = await organizationSchema
+    .findById(organizationId)
+    .populate('Workspaces')
+    .populate('Owner', 'completeName')
+    .populate('Admins', 'completeName')
+    .populate('Members', 'completeName')
+    .exec();
+
+  if (!organization) throw new Error('[Organization Manager] - Cannot Find the organization');
+
+  const rights = organization.userRights(userId);
 
   const index = user.Manager.findIndex(manager => {
     const res = String(manager.Organization._id) === String(organizationId);

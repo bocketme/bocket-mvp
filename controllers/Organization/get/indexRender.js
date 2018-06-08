@@ -1,22 +1,11 @@
 const organizationSchema = require('../../../models/Organization');
 const userSchema = require('../../../models/User');
+const log = require('../../../utils/log');
 
 async function index(req, res, next) {
   try {
     const { organizationId } = req.params;
     const { userId } = req.session;
-
-    const organization = await organizationSchema
-      .findById(organizationId)
-      .populate('Workspaces')
-      .populate('Owner', 'completeName')
-      .populate('Admins', 'completeName')
-      .populate('Members', 'completeName')
-      .exec();
-
-    const rights = organization.userRights(userId);
-
-    if (!organization) throw new Error('[Organization Manager] - Cannot Find the organization');
 
     const user = await userSchema
       .findById(userId)
@@ -25,6 +14,25 @@ async function index(req, res, next) {
       .exec();
 
     if (!user) throw new Error('[Organizaiton Manager] - Cannot find the user');
+
+    if (user.Manager[0])
+      res.locals.redirect = `/organization/${user.Manager[0].Organization._id}`;
+
+    const organization = await organizationSchema
+      .findById(organizationId);
+
+    if (!organization) throw new Error('[Organization Manager] - Cannot Find the organization');
+
+    const rights = organization.userRights(userId);
+
+    await organization
+      .populate('Workspaces')
+      .populate('Owner', 'completeName')
+      .populate('Admins', 'completeName')
+      .populate('Members', 'completeName')
+      .execPopulate();
+
+    if (!organization) throw new Error('[Organization Manager] - Cannot Find the organization');
 
     const index = user.Manager.findIndex(manager => {
       const res = String(manager.Organization._id) === String(organizationId);
@@ -52,7 +60,9 @@ async function index(req, res, next) {
     return res.render('organizationSettings/organization', html);
   } catch (e) {
     log.error(e);
-    res.redirect('/');
+    if (res.locals.redirect)
+      return res.redirect(res.locals.redirect);
+    else res.redirect("/signOut");
   }
 }
 
