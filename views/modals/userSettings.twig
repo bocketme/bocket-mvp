@@ -27,15 +27,8 @@
 
         <div style="margin-top: 5px; margin-left: 5px">
             <a class="modal-close btn btn-confirm" href="/logout">Log Out</a>
-            <a class="modal-close btn btn-confirm" id="#deleteAccount" onclick="deleteAccount()">Delete Account</a>
+            <a class="modal-close btn btn-confirm" id="delete-account">Delete Account</a>
         </div>
     </div>
 </div>
 {% include 'modals/confirmDeleteAccount.twig' %}
-
-<script>
-    function deleteAccount() {
-        $('#user-options').modal('close');
-        $('#confirmDeleteAccount').modal('open');
-    }
-</script>
