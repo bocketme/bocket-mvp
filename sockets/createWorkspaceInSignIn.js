@@ -40,10 +40,10 @@ module.exports = (io, socket) => {
 
       await workspace.save();
 
-      const ownerOrganization = await organizationSchema.find({'Owner': user._id})
+      const ownerOrganization = await organizationSchema.find({'Owner': user._id}).select('name');
 
       const organizationManager = user.get('Organization');
-      let workspaces = organizationManager.map
+      //TODO: Workspaces
 
       return socket.emit("signinSucced", {
         user: user,
