@@ -12,7 +12,7 @@ $(() => {
   $('i.material-icons.assembly').click();
   $('body').on('click', '.three-node', loadNodeInformation);
   $('body').on('click', '.hide-show', hideOrShowNode);
-  $('body').on('hideOrShow', '.hide-show', (event, isVisible) => {
+  $('body').on('hideOrShowPart', '.hide-show', (event, isVisible) => {
     const element = $(event.currentTarget);
     const parentElem = $(event.currentTarget.parentElement);
     const nodeId = parentElem.attr('id');
@@ -20,6 +20,26 @@ $(() => {
       element.removeClass('is-not-visible');
       element.addClass('is-visible');
       element.text('visibility');
+    } else {
+      element.removeClass('is-visible');
+      element.addClass('is-not-visible');
+      element.text('visibility_off');
+    }
+  });
+  $('body').on('hideOrShowAssembly', '.hide-show', (event, isVisible) => {
+    const element = $(event.currentTarget);
+    const parentElem = $(event.currentTarget.parentElement);
+    const nodeId = parentElem.attr('id');
+
+    const listItem = $(event.currentTarget.parentElement.parentElement);
+    const parentUl = listItem.parent().closest('li');
+
+
+    if (isVisible) {
+      element.removeClass('is-not-visible');
+      element.addClass('is-visible');
+      element.text('visibility');
+      parentUl.children('div:first').children('i').trigger('hideOrShowAssembly', [true]);
     } else {
       element.removeClass('is-visible');
       element.addClass('is-not-visible');
@@ -69,19 +89,19 @@ function hideOrShowNode(event) {
   if (length) {
     const elementBody = $('#' + nodeId + '-body').find('ul.collapsible li');
     if (element.hasClass('is-visible')) {
-      element.trigger('hideOrShow', [false]);
-      elementBody.find('i.hide-show').trigger('hideOrShow', [false]);
+      element.trigger('hideOrShowAssembly', [false]);
+      elementBody.find('i.hide-show').trigger('hideOrShowPart', [false]);
     } else {
-      element.trigger('hideOrShow', [true]);
-      elementBody.find('i.hide-show').trigger('hideOrShow', [true]);
-      parentUl.children('div:first').children('i').trigger('hideOrShow', [true]);
+      element.trigger('hideOrShowAssembly', [true]);
+      elementBody.find('i.hide-show').trigger('hideOrShowPart', [true]);
+      // parentUl.children('div:first').children('i').trigger('hideOrShowAssembly', [true]);
     }
   } else {
     if (element.hasClass('is-visible')) {
-      element.trigger('hideOrShow', [false]);
+      element.trigger('hideOrShowPart', [false]);
     } else {
-      element.trigger('hideOrShow', [true]);
-      parentUl.children('div:first').children('i').trigger('hideOrShow', [true]);
+      element.trigger('hideOrShowPart', [true]);
+      parentUl.children('div:first').children('i').trigger('hideOrShowAssembly', [true]);
     }
   }
 }

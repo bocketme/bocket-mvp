@@ -92,7 +92,6 @@
 .hide-show{
 	position: absolute;
 	right: 0;
-	z-index: 9;
 }
 
 ul.collapsible{
