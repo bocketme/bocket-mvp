@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="input-field col s5 push-s1">
                                     <div class="input-field col s12">
-                                        <button class="btn btn-confirm" type="submit" name="action">
+                                        <button class="btn btn-confirm cancel" type="submit" name="action">
                                             Submit
                                         </button>
                                     </div>
@@ -76,7 +76,7 @@
             </div>
             <div id="quit">
                 {% if currentUser.rights == 6 %}
-                    <a id="delete-the-organization" class="btn outline-button">Delete the organization</a>
+                    <a id="delete-organization-wanted" class="btn outline-button">Delete the organization</a>
                 {% endif %}
                 <a id="leave-the-organization" class="btn outline-button">Leave the organization</a>
             </div>

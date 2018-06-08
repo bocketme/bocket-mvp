@@ -134,10 +134,8 @@
 
 .btn-cancel:hover {
   background-color: transparent !important;
-  color: #4A90E2 !important;
-  border: 2px solid #4A90E2 !important;
-    color: white !important;
-    border: 2px solid #FF2E63 !important;
+  color: #223241 !important;
+  border: 2px solid #223241 !important;
     font-weight: bolder !important;
 }
 
@@ -147,19 +145,19 @@
 }
 
 .cancel {
-  background-color: #4A90E2 !important;
+  background-color: #223241 !important;
   color: white !important;
 }
 
 .cancel:hover {
-  background-color: #4A90E2 !important;
+  background-color: #223241 !important;
   color: white !important;
 }
 
 .confirm {
   background-color: transparent !important;
-  color: #4A90E2 !important;
-  border: 2px solid #4A90E2 !important;
+  color: #223241 !important;
+  border: 2px solid #223241 !important;
 }
 
 .confirm:hover {

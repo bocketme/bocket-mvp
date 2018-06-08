@@ -1,0 +1,11 @@
+.tab-title {
+  color: #223241 !important;
+}
+
+.tab-title:hover {
+  color: #FF2E63 !important;
+}
+
+.tab-title.active {
+  font-weight: bolder;
+}
