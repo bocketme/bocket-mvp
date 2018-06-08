@@ -36,6 +36,12 @@ let OrganizationSchema = new mongoose.Schema({
   //Done delete node list.
 });
 
+
+OrganizationSchema.virtual('users').get(function () {
+  return [this.Owner, ...this.Admins, ...this.Members];
+});
+
+
 //LIST OF VIRTUAL CONSTANT
 OrganizationSchema.virtual('MEMBER').get(() => 4);
 OrganizationSchema.virtual('ADMIN').get(() => 5);
@@ -188,7 +194,7 @@ OrganizationSchema.methods.transfertOwnership = async function (userId) {
   this.Admins.push(this.Owner);
 
   this.Owner = userId;
-  await this.save();  
+  await this.save();
 };
 
 OrganizationSchema.methods.changeOwner = async function (userId) {
@@ -273,8 +279,18 @@ OrganizationSchema.pre('save', function (next) {
   });
 });
 
-OrganizationSchema.pre('remove', async function (next) {
+OrganizationSchema.pre('remove', async function () {
   try {
+    for (let i = 0; i < this.Workspaces.length; i++) {
+      const workspaceId = this.Workspaces[i];
+      const workspace = await workspaceSchema.findById(workspaceId);
+      await workspace.remove();
+    }
+    
+    const Owner = await userSchema.findById(this.Owner).catch();
+    if (Owner)
+      await Owner.removeOrganization(this._id);
+
     for (let i = 0; i < this.Admins.length; i++) {
       const admin = this.Admins[i];
       await this.deleteAdmin(admin);
@@ -284,15 +300,9 @@ OrganizationSchema.pre('remove', async function (next) {
       const member = this.Members[i];
       await this.deleteMember(member);
     }
-
-    for (let i = 0; i < this.Workspaces.length; i++) {
-      const workspaceId = this.Workspaces[i];
-      const workspace = await workspaceSchema.findById(workspaceId);
-      await workspace.remove();
-    }
-    next();
+    return null;
   } catch (err) {
-    next(err);
+    throw new Error(`[Organization] - Remove Cannot remove the workspace \n ${err}`);
   }
 });
 
