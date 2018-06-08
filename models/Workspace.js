@@ -49,7 +49,6 @@ WorkspaceSchema.methods.isProductManager = function (userId) {
   const isManager = function (manager) {
     return manager.equals(userId);
   }
-  console.log(ProductManagers)
   return ProductManagers.some(isManager);
 }
 
@@ -83,7 +82,7 @@ WorkspaceSchema.methods.isObserver = function (userId) {
 /**
   * Returns the user 'level access' 
   * @param {mongoose.SchemaTypes.ObjectId} userId 
-  * @returns {number}
+  * @returns {Number}
   */
 WorkspaceSchema.methods.hasRights = function (userId) {
   if (this.isProductManager(userId)) return 3;
@@ -123,7 +122,7 @@ WorkspaceSchema.methods.addTeammate = async function (userId) {
   if (role) throw new Error('[Workspace] - [Users] - Duplicate User !');
 
   const User = await userSchema.findById(userId);
-  if (!user) throw new Error('[Workspace] - [User] - Cannot find the user.');
+  if (!User) throw new Error('[Workspace] - [User] - Cannot find the user.');
 
   let organizationAlreadyExist = User.checkOrganization(this.Organization);
 
@@ -190,6 +189,8 @@ WorkspaceSchema.methods.changeRole = async function (userId, newRole) {
 };
 
 WorkspaceSchema.methods.addObserver = async function (userId) {
+  throw new Error('Cannot create an observer');
+
   let role = this.hasRights(userId);
   if (role) throw new Error('[Workspace] - [Users] - Duplicate User !');
 
@@ -251,28 +252,33 @@ WorkspaceSchema.pre('save', function (next) {
 });
 
 WorkspaceSchema.pre('remove', async function () {
+  try {
+    const _id = this._id;
+    function filterWorkspace(id) {
+      const isEqual = id.equals(_id);
+      return !isEqual;
+    };
 
-  const _id = this._id;
-  function filterWorkspace(id) {
-    const isEqual = id.equals(_id);
-    return !isEqual;
-  };
+    const organizationSchema = require('./Organization')
+    const organization = await organizationSchema.findById(this.Organization);
+    organization.Workspaces = organization.Workspaces.filter(filterWorkspace);
+    await organization.save();
 
-  const organizationSchema = require('./Organization')
-  const organization = await organizationSchema.findById(this.Organization);
-  organization.Workspaces = organization.Workspaces.filter(filterWorkspace);
-  await organization.save();
+    //Delete the nodeMaster
+    const nodeMaster = await nodeSchema.findById(this.nodeMaster);
+    await nodeMaster.remove();
 
-  //Delete the user inside the workspace
-  const users = this.users
-  for (let i = 0; i < users.length; i++) {
-    const userId = users[i];
-    await this.removeUser(userId);
+    //Delete the user inside the workspace
+    const users = this.users
+    for (let i = 0; i < users.length; i++) {
+      const userId = users[i];
+      await this.removeUser(userId);
+    }
+    return null;
+  } catch (err) {
+    console.error(err);
+    throw new Error(`[Workspace] - remove \n ${err}`);
   }
-
-  //Delete the nodeMaster
-  const nodeMaster = await nodeSchema.findById(this.nodeMaster);
-  await nodeMaster.remove();
 });
 
 /**
