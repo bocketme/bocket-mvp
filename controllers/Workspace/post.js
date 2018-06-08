@@ -1,6 +1,8 @@
 const userSchema = require('../../models/User');
-const { isMongoId } = require('validator');
+const organizationSchema = require('../../models/Organization');
+const workspaceSchema = require('../../models/Workspace');
 const log = require('../../utils/log');
+const isMongoId = require('validator/lib/isMongoId')
 
 const indexPost = async (req, res, next) => {
   try {
@@ -20,7 +22,51 @@ const indexPost = async (req, res, next) => {
     return res.redirect(`workspace/${workspaceId}`);
   } catch (e) {
     log.error(e);
-    next(err);
+    next(e);
+  }
+};
+
+const addOrganizationMember = async (req, res, next) => {
+  try {
+    const { userId, currentOrganization } = req.session;
+    const { workspaceId } = req.params;
+
+    console.log(req.body);
+    const organization = await organizationSchema.findById(currentOrganization)
+    if (!organization) throw new Error('Cannot find the organization');
+
+    const workspace = await workspaceSchema.findById(workspaceId);
+    if (!workspace) throw new Error('Cannot find The workspace');
+
+    const hasRights = organization.isAdmin(userId) || organization.isOwner(userId) || workspace.isProductManager(userId);
+    if (!hasRights) throw new Error('The current user has no rights');
+
+    const _id = Array.isArray(req.body["_id[]"]) ? req.body["_id[]"] : [req.body["_id[]"]];
+    const role = Array.isArray([req.body["role[]"]]) ? req.body["role[]"] : [req.body["role[]"]];
+    console.log(_id, role)
+    for (let i = 0; i < _id.length; i++) {
+      const user = { _id: _id[i], role: role[i] };
+      if (!isMongoId(user._id)) throw new Error('Cannot invite this user')
+      switch (Number(user.role)) {
+        case 3:
+          await workspace.addProductManager(user._id);
+          break;
+        case 2:
+          await workspace.addTeammate(user._id);
+          break;
+        case 1:
+          throw new Error('Cannot Invite Observer');
+          await workspace.addObserver(user._id);
+          break;
+        default:
+          throw new Error('Cannot understand the role of an user');
+          break;
+      }
+    }
+    res.status(200).send();
+  } catch (e) {
+    log.error(e);
+    next(e);
   }
 };
 
@@ -72,9 +118,6 @@ const createWorkspace = async (req, res, next) => {
     log.error(e);
     next(e);
   }
-
-
-
 }
 
-module.exports = { indexPost };
+module.exports = { indexPost, createWorkspace, addOrganizationMember };
