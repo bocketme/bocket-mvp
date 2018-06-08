@@ -78,12 +78,14 @@ const newPart = async (req, res) => {
       name,
       description,
       creator: creator._id,
+      Organization: parentAssembly.Organization
     });
 
     part = await part.save();
   } catch (err) {
     const message = 'Intern Error';
     const status = 500;
+    console.error(err);
     await part.remove().catch(error => log.fatal(error));
     log.error('[ Post Part Controller ] - Cannot create the Part \n', new Error(err));
     return res.status(status).send(message);
