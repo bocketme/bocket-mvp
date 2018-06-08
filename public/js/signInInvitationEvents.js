@@ -7,7 +7,7 @@ $(document).ready(function () {
 
     socket.on(signInSucceed, function (signinInfo) {
         console.log("SIGNIN SUCCEED");
-        $("#vincent").attr("action", "/project/" + signinInfo).submit();
+        $("#vincent").attr("action", "/workspace/" + signinInfo).submit();
         /*
         $("#emailWorkspace").val($("#emailSignIn").val());
         $("#passwordlWorkspace").val($("#passwordSignIn").val());

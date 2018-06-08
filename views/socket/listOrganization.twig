@@ -1,0 +1,9 @@
+{% for organization in userOrganizations %}
+    <li class='removableOrganization' >
+        <a href="/organization/{{ organization._id._id }}">{{ organization._id.name }}</a>
+    </li>
+{% endfor %}
+        <li class="divider">
+        <li>
+            <a class="modal-trigger" href="#new-organization" style="font-size: 10px;">Add a new Organization</a>
+        </li>

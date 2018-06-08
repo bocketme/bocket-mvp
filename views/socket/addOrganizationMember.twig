@@ -1,0 +1,26 @@
+{% if users.length > 0 %}
+<form id="invite-member-form" action="/workspace/{{workspaceId}}/addOrganizationMember" method="post">
+    {% for user in users %}
+        <div class="col s12">
+            <div class="row">
+                <p class="col s6">
+                    {% set randomId = random() %}
+                    <input type="checkbox" name="validation" id="{{randomId}}">
+                    <label for="{{randomId}}">{{user.completeName}}</label>
+                </p>
+                <input type="hidden" name="name" value="{{user._id}}">
+                <div class="col s6">
+                <select name="role">
+                    <option value selected disabled>Change the role</option>
+                    <option value="3">Product Manager</option>
+                    <option value="2">Teammate</option>
+                </select>
+            </div>
+            </div>
+        </div>
+    {% endfor %}
+</form>
+    <button class="modal-quit" id="invite-member-submit">Invite people</button>  
+{% else %}
+  <p> All the users are already invited </p>
+{% endif %}

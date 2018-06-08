@@ -1,11 +1,11 @@
 // let escape = require('escape-html');
 const internalErrorEmitter = require('./emitter/internalErrorEmitter');
-const User = require('../models/User');
-const Workspaces = require('../models/Workspace');
-const Organization = require('../models/Organization');
-const acceptInvitation = require('../utils/Invitations/acceptInvitation');
+const User = require('../../models/User');
+const Workspaces = require('../../models/Workspace');
+const Organization = require('../../models/Organization');
+const acceptInvitation = require('../../utils/Invitations/acceptInvitation');
 
-const log = require('../utils/log');
+const log = require('../../utils/log');
 
 module.exports = function (socket) {
     socket.on("signin", (accountInformation) => { // accountInformation.email & accountInformation.password && invitationUid (optional)
@@ -21,6 +21,7 @@ module.exports = function (socket) {
                 {
                     user.comparePassword(accountInformation.password, (err, isMatch) => {
                         if (err) throw err;
+                        console.log(isMatch)
                         if (isMatch)
                         {
                             findAllWorkspaces(user.workspaces)
@@ -77,14 +78,7 @@ function findAllWorkspaces(nestedWorkspaces) {
   });
 }
 
-function emitWithInvitation(accountInformation, user, socket) {
-  acceptInvitation(accountInformation.invitationUid, user)
-    .then(res => socket.emit('signinSucced', res.workspaceId))
-    .catch((err) => {
-      console.log(err);
-      internalErrorEmitter(socket);
-    });
-}
+
 
 function findOwnerOrganization(userId) {
   return new Promise((resolve, reject) => {

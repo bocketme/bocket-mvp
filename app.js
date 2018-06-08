@@ -22,11 +22,11 @@ const node = require('./routes/node')
 const signin = require("./routes/signin");
 const signup = require("./routes/signup");
 const signOut = require("./routes/signOut");
-const project = require("./routes/project");
 const user = require("./routes/user");
 const part = require("./routes/part");
 const assembly = require("./routes/assembly");
-
+const organization = require('./routes/organization');
+const workspace = require('./routes/workspaces');
 /* SESSION */
 const expressSession = require("express-session");
 const MongoStore = require('connect-mongo')(expressSession); //session store
@@ -38,6 +38,9 @@ const session = expressSession({
   saveUninitialized: true
 });
 
+const corrector = require('./utils/corrector/main');
+const co = require('co');
+co(corrector());
 /* Start The Express Server */
 const app = express();
 app.use(session);
@@ -54,6 +57,8 @@ const ioListener = require("./sockets/socketsListener")(io);
 //Initialize the favicon
 app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon-bocket.png')));
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 //configure and verify the server
 try {
   server.listen(config.port);
@@ -108,26 +113,27 @@ app.use(function (req, res, next) {
 //TODO: Make an middleware which check if user have permissions
 //TODO: Only char & number in workspace, no special char
 
-app.engine('twig', require('twig').__express);
+app.engine('twig', twig.__express);
 app.set("view engine", "twig");
 app.set('twig options', {
   strict_variables: false,
 });
 app.use(express.static('public'));
+app.use("/workspace", workspace)
+app.use("/user", user);
 app.use("/signOut", signOut);
 app.use("/", index);
 app.use("/user", user);
 app.use("/signin", signin);
 app.use("/signup", signup);
-app.use("/project", project);
+app.use('/organization', organization);
 app.use("/part", part);
-app.use("/node", node)
+app.use("/node", node);
 app.use("/assembly", assembly);
 
 
-const clearNodeChidren = require('./utils/clearNodeChildren') 
 // TODO: Bouton "connectez vous" ne fonctionne pas
-server.on("listening", () => {
+server.on('listening', () => {
   for (let dir in FSconfig.appDirectory) {
     fs.access(FSconfig.appDirectory[dir], err => {
       if (err) {

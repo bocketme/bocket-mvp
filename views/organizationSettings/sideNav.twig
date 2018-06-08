@@ -1,0 +1,60 @@
+<div id="organization-block">
+    <a class="collection-item collection-item-workspace " href="/organization/{{currentOrganization._id}}">
+        <div class="absolute-container container">
+            <div class="cube-responsive" style="background: transparent; color: #F5F5F5; box-shadow: 0 0 0 3px #F5F5F5;">
+                <div class="cube-content">
+                    {{ currentOrganization.name|first |capitalize }}
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
+<hr>
+<div id="workspaces-block" class="side-nav-scrollbar">
+    <div id="listWorkspacesUser">
+        {% for workspace in userWorkspaces %}
+            <a class="collection-item collection-item-workspace " href="/workspace/{{workspace._id}}">
+                <div class="container container-workspace">
+                    <div
+                            {% if workspace._id == in_use.id %} class="circle-responsive-active"
+                            {% else %}  class="circle-responsive"
+                            {% endif %}
+                             data-tooltip="{{ workspace.name }}" data-delay="50" data-position="right" style="background-image: url('/workspace/image/{{ workspace._id }}') ">
+                        <div id="{{ workspace._id }}" class="circle-content">
+                            {{ workspace.name|first |capitalize }}
+                        </div>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+    <div class="icon-list-workspace">
+        <a id="trigger-creation-workspace" class=" modal-trigger" href="#workspace-creation" style="min-height: auto !important; padding: 0px !important;" alt="Add Workspace">
+            <div class="container container-workspace">
+                <div class="circle-responsive-add">
+                    <div class="circle-content">
+                        +
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class='add-workspace'></div>
+</div>
+<hr>
+<div id="user-block">
+    <a href="#user-options"
+       class="modal-trigger"
+       style="min-height: auto !important; padding: 0px !important;"
+    >
+        <div class="absolute-container container">
+            <div class="circle-responsive" style="background-image: url('/workspace/image/{{ workspace._id }}') ">
+                <div class="circle-content" style="padding-top: 38%">
+                    <i class="material-icons">person_outline</i>
+                </div>
+            </div>
+        </div>
+    </a>
+    {% include 'modals/userSettings.twig' %}
+    {% include 'modals/createWorkspace3.twig' %}
+</div>

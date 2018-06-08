@@ -23,12 +23,14 @@ const indexController = {
         return res.render('index', {
           invitation: true,
           invitationUid: req.params.invitationUid,
-          workspaceName: i.workspace.name,
           completeName: i.people.completeName,
           email: i.people.email,
         });
       })
-      .catch(() => res.send('Internal server error', 500));
+      .catch((err) => {
+        log.error(err);
+        res.status(500).send('Internal Error');
+      });
   },
   download: (req, res) => {
     const { nodeId, filename } = req.params;

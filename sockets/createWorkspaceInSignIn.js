@@ -9,182 +9,71 @@ const log = require('../utils/log');
 const nodeMasterConfig = require('../config/nodeMaster');
 
 module.exports = (io, socket) => {
-    socket.on("signInNewWorkspace", (userId, orga, workspaceName) => {
-        (async () => {
+  socket.on('signInNewWorkspace', async (userId, orga, workspaceName) => {
+    try {
+      const user = await userSchema.findById(userId).populate('Organization.workspaces');
+      if (!user) throw new Error('Cannot find the user');
+      const organization = await findOrCreate(orga.type, orga, userId);
 
-            log.info("search the user");
-            let user;
-            try {
-                user = await userSchema.findById(userId);
-            } catch (e) {
-                throw new Error(e)
-            }
+      const assembly = await assemblySchema.create({
+        name: workspaceName,
+        description: nodeMasterConfig.description,
+        Organization: organization._id,
+        creator: user._id
+      });
+      await assembly.save();
 
-            log.info("search / create organization");
-            let organization;
-            console.log(orga);
-            if (orga.type === "new") {
-                try {
-                    organization = await organizationSchema.create({
-                        name: orga.name,
-                        owner: [{
-                            _id: user._id,
-                            completeName: user.completeName,
-                            email: user.email,
-                        }],
-                        members: [{
-                            _id: user._id,
-                            completeName: user.completeName,
-                            email: user.email,
-                        }]
-                    });
-                    await organization.save();
-                } catch (e) {
-                    throw new Error(e)
-                }
-            } else if (orga.type === "search") {
-                try {
-                    organization = await organizationSchema.findById(orga._id);
-                } catch (e) {
-                    throw new Error(e);
-                }
-            } else {
-                throw new Error("Type of orga false or inexisting : " + orga.type);
-                socket.emit("newOrgaFailed");
-            }
+      const nodeMaster = await nodeSchema.create({
+        name: workspaceName,
+        description: nodeMasterConfig.description,
+        Organization: organization._id,
+        creator: user._id
+      })
+      await nodeMaster.save();
 
-            log.info("create assembly");
-            let newassembly;
-            try {
-                newassembly = await assemblySchema.create({
-                    name: workspaceName,
-                    description: nodeMasterConfig.description,
-                    ownerOrganization: {
-                        _id: organization._id,
-                        name: organization.name,
-                    },
-                    creator: {
-                        _id: user._id,
-                        completeName: user.completeName,
-                        email: user.email,
-                    },
-                });
+      const workspace = await workspaceSchema.create({
+        name: workspaceName,
+        owner: user,
+        nodeMaster: nodeMaster._id,
+        Organization: organization._id,
+      });
 
-                await newassembly.save();
-            } catch (e) {
-                throw new Error(e);
-            }
+      await workspace.save();
 
-            log.info("create team");
-            let team;
+      const ownerOrganization = await organizationSchema.find({'Owner': user._id}).select('name');
 
-            try {
-                team = await teamSchema.create({
-                    owners: [{
-                        _id: user._id,
-                        completeName: user.completeName,
-                        email: user.email,
-                    }],
-                });
+      const organizationManager = user.get('Organization');
+      //TODO: Workspaces
 
-                await team.save();
-            } catch (e) {
-                throw new Error(e)
-            }
+      return socket.emit("signinSucced", {
+        user: user,
+        workspaces: workspaces,
+        organization: ownerOrganization,
+      });
 
-            log.info("create nodemaster");
-            let nodeMaster;
+    } catch (error) {
+      console.error(error);
+    }
+  });
 
-            try {
-                nodeMaster = await nodeSchema.create({
-                    name: workspaceName,
-                    type: NodeTypeEnum.assembly,
-                    content: newassembly._id,
-                    team: team
-                });
-                await nodeMaster.save();
-            } catch (e) {
-                throw new Error(e);
-            }
-
-            log.info("create workspace");
-            let workspace;
-            try {
-                workspace = await workspaceSchema.create({
-                    name: workspaceName,
-                    owner: user,
-                    node_master: {
-                        _id: nodeMaster._id,
-                        name: nodeMaster.name,
-                        type: NodeTypeEnum.assembly,
-                    },
-                    organization: {
-                        _id: organization._id,
-                        name: organization.name,
-                    },
-                    team: team,
-                });
-
-                await workspace.save();
-            } catch (e) {
-                throw new Error(e)
-            }
-
-            log.info("last changements");
-            try {
-                nodeMaster.Workspaces.push({
-                    "_id": workspace._id,
-                    "name": workspace.name
-                });
-                await nodeMaster.save();
-
-                newassembly.whereUsed.push(nodeMaster._id);
-                await newassembly.save();
-
-                user.workspaces.push(workspace);
-                await user.save();
-            } catch (e) {
-                throw new Eroor(e);
-            }
-
-            let workspaces = [];
-            try {
-                let owners = await workspaceSchema.find({
-                    "team.owners._id": user._id
-                });
-                workspaces.push(...owners);
-                let members = await workspaceSchema.find({
-                    "team.members._id": user._id
-                });
-                workspaces.push(...members);
-                let consults = await workspaceSchema.find({
-                    "team.consults._id": user._id
-                });
-                workspaces.push(...consults);
-            } catch (e) {
-                throw new Error(e);
-            }
-
-            let ownerOrganization;
-
-            try {
-                ownerOrganization = await organizationSchema.find({
-                    "owner._id": user._id
-                })
-            } catch (e) {
-                throw new Error(e);
-            }
-
-            return {
-                user: user,
-                workspaces: workspaces,
-                organization: ownerOrganization,
-            }
-        })().then((res) => {
-                socket.emit("signinSucced", res)
-            })
-            .catch(err => log.error(err));
-    });
-
-
+  async function findOrCreate(type, orga, userId) {
+    let organization;
+    switch (type) {
+      case 'new':
+        organization = await organizationSchema.create({
+          name: orga.name,
+          Owner: userId,
+        });
+        await organization.save();
+        break;
+      case 'search':
+        organization = await organizationSchema.findById(orga._id);
+        if (!organization) throw new Error('Cannot Find The Organization')
+        break;
+      default:
+        throw new Error('Cannot understand the command');
+        break;
+    }
+    return organization;
+  }
 };
