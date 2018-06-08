@@ -11,7 +11,6 @@ const getActivities = require('./getActivitiesListener');
 const addCommentListener = require('./addCommentToActivityListener');
 const joinWorkspaceListener = require('./joinWorkspaceListener');
 const leaveWorkspaceListener = require('./leaveWorkspaceListener');
-const invitePeopleListener = require('./invitePeopleListener');
 const fileUploaderListener = require('./fileUploaderListener');
 const SocketIOFile = require('socket.io-file');
 const getAllSpecListener = require('./getAllSpecListener');
@@ -68,7 +67,6 @@ module.exports = function (io) {
     newActivityComment(socket, io);
     getActivities(socket);
     addCommentListener(socket, io);
-    invitePeopleListener(socket);
     joinWorkspaceListener(io, socket);
     leaveWorkspaceListener(io, socket);
     getAllSpecListener(socket);
