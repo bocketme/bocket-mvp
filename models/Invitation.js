@@ -71,7 +71,6 @@ InvitationSchema.post('save', (invitation) => {
       return null;
     }
     else {
-      console.log('iooioio')
       let mailOptions = {
         from: mailConfig.email,
         to: invitation.people.email,
