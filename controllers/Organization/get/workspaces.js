@@ -77,8 +77,6 @@ async function workspaces(req, res, next) {
     let listOrganizations = user.Manager.map(({ Organization }) => Organization);
     listOrganizations = listOrganizations.filter(({ _id }) => !_id.equals(organizationId));
 
-    console.log(workspaces)
-
     const html = {
       currentOrganization: organization,
       OrganizationUsers: organization.users,
@@ -93,6 +91,9 @@ async function workspaces(req, res, next) {
         rights: rights
       }
     }
+
+    req.session.currentOrganization = organization._id;
+    req.session.currentWorkpsace = null;
 
     return res.render('organizationSettings/workspaces', html);
   } catch (e) {

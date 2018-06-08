@@ -57,6 +57,9 @@ async function index(req, res, next) {
       },
     }
 
+    req.session.currentOrganization = organization._id;
+    req.session.currentWorkpsace = null;
+
     return res.render('organizationSettings/organization', html);
   } catch (e) {
     log.error(e);
