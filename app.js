@@ -57,6 +57,8 @@ const ioListener = require("./sockets/socketsListener")(io);
 //Initialize the favicon
 app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon-bocket.png')));
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 //configure and verify the server
 try {
   server.listen(config.port);
