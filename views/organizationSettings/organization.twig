@@ -36,28 +36,26 @@
                 </div>
                 #}
                 <form action="/organization/{{ currentOrganization._id }}/info" method="post">
-                <div class="row">
-                    <div class="col s12">
-                      <div class="row">
-                        <div class="input-field col s6" style="position: relative;">
-                          <input id="organization-name" name="organizationName" type="text" value="{{ currentOrganization.name }}">
-                          <label for="organization-name">Organization Name</label>
-                          <i id="edit" class="material-icons">edit</i>
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="row">
+                                <div class="input-field col s6" style="position: relative;">
+                                    <input id="organization-name" name="organizationName" type="text" value="{{ currentOrganization.name }}">
+                                    <label for="organization-name">Organization Name</label>
+                                    <i id="edit" class="material-icons">edit</i>
+                                </div>
+                                <div class="input-field col s5 push-s1">
+                                    <div class="input-field col s12">
+                                        <button class="btn btn-confirm" type="submit" name="action">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="input-field col s5 push-s1">
-                          <div class="input-field col s12">
-                            <button class="btn btn-confirm" type="submit" name="action">
-                                Submit
-                            </button>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                 </div>
-            </div>
-          </form>
-
-
+            </form>
 
             <div id="organization-info">
                 <p>
@@ -76,12 +74,16 @@
                     {{ 1 + currentOrganization.Members|length + currentOrganizaiton.Admins|length }}
                 </p>
             </div>
-            {% if user.rights == 6 %}
-                <div id="quit">
-                    <a id="delete-the-organization" class="btn outline-button" >Delete the organization</a>
-                    <a id="leave-the-organization" class="btn outline-button" >Leave the organization</a>
-                </div>
-                {% include 'modals/leaveTheOrganization.twig' %}
+            <div id="quit">
+                {% if currentUser.rights == 6 %}
+                    <a id="delete-the-organization" class="btn outline-button">Delete the organization</a>
+                {% endif %}
+                <a id="leave-the-organization" class="btn outline-button">Leave the organization</a>
+            </div>
+
+            {% include 'modals/leaveTheOrganization.twig' %}
+
+            {% if currentUser.rights == 6 %}
                 {% include 'modals/deleteAnOrganization.twig' %}
             {% endif %}
 
@@ -95,10 +97,11 @@
 {% block js %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
     <script>
-      var dateOfCreation = "{{ currentOrganization.creation }}";
-      dateOfCreation = new Date(dateOfCreation);
-      const creation = document.getElementById('creation');
-      creation.innerHTML = dateOfCreation ? moment(dateOfCreation).format('D/M/YYYY') : 'Non disponible';
-      const image = document.getElementById("organization-image");
+        var dateOfCreation = "{{ currentOrganization.creation }}";
+        dateOfCreation = new Date(dateOfCreation);
+        const creation = document.getElementById('creation');
+        creation.innerHTML = dateOfCreation ? moment(dateOfCreation).format('D/M/YYYY') : 'Non disponible';
+        const image = document.getElementById("organization-image");
     </script>
+    <script src="/js/settings/leaveOrganization.js"></script>
 {% endblock %}

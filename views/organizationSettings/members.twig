@@ -24,16 +24,21 @@
             <div class="col s12">
                 <h5 class="title-page col s12">
                     Members of the organization
-                    {% if currentUser.rights>4 %}
-                        <a href="#invite-organisation" class="modal-trigger icons-main-button"><i class="material-icons">group_add</i></a>
+                    {% if currentUser.rights > 4 %}
+                    {#
+                        <a href="#invite-organisation" class="modal-trigger icons-main-button">
+                            <i class="material-icons">group_add</i>
+                        </a>
 
-                        {% include 'modals/invitationOrganisation.twig' %}
+                        {% include 'modals/invitationOrganisation.twig' %}                    
+                    #}
                     {% endif %}
                 </h5>
 
                 <div class="information">
                     <div id="owner">
-                        <p><span class="title">Owner</span></p>
+                        <p>
+                            <span class="title">Owner</span></p>
                         <div class="valign-wrapper">
                             <div class="user-block" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
                                 <div style="width: 40px; height: 40px;">
@@ -49,8 +54,9 @@
                     </div>
                     <div id="adminsAndMembers">
                         <div id="admins">
-                            <h5><span class="title">Co-owner</span></h5>
-                            {% if (currentOrganization.Admins| length) == 0 %}
+                            <h5>
+                                <span class="title">Co-owner</span></h5>
+                            {% if (currentOrganization.Admins | length) == 0 %}
                                 There is no admin
                             {% endif %}
                             {% for admin in currentOrganization.Admins %}
@@ -67,9 +73,9 @@
                                     <p class="user-name left">{{ admin.completeName }}</p>
                                     {% if (currentUser.rights == 6 %}
                                         <div class="input-field col s3 push-s2" style="height: 21.75px; margin: 0">
-                                            <select userId="{{admin._id}}">
-                                                <option value="Admin" selected>Co-Owner</option>
-                                                <option value="Member">Member</option>
+                                            <select name="organizationManager" userId="{{admin._id}}">
+                                                <option value selected disabled>Change the role</option>
+                                                <option value="4">Member</option>
                                             </select>
                                         </div>
                                         <div class="col s4 push-s2">
@@ -81,8 +87,9 @@
 
                         </div>
                         <div id="members">
-                            <h5><span class="title">Members</span></h5>
-                            {% if (currentOrganization.Members|length) == 0 %}
+                            <h5>
+                                <span class="title">Members</span></h5>
+                            {% if (currentOrganization.Members | length) == 0 %}
                                 There is no member
                             {% endif %}
                             {% for member in currentOrganization.Members %}
@@ -97,13 +104,15 @@
                                         </div>
                                     </div>
                                     <p class="user-name left">{{ member.completeName }}</p>
-                                    {% if (currentUser.rights == 6 %}
+                                    {% if currentUser.rights == 6 %}
                                         <div class="input-field col s3 push-s2" style="height: 21.75px; margin: 0">
-                                            <select userId="{{member._id}}">
-                                                <option value="Admin" selected>Co-Owner</option>
-                                                <option value="Member">Member</option>
+                                            <select name="organizationManager" userId="{{member._id}}">
+                                                <option value selected disabled>Change the role</option>
+                                                <option value="5">Co-Owner</option>
                                             </select>
                                         </div>
+                                    {% endif %}
+                                    {% if currentUser.rights > 4 %}
                                         <div class="col s4 push-s2">
                                             <a href="#!" class="right" style="display: inline-block; margin-top: 10px">Remove</a>
                                         </div>
@@ -126,4 +135,5 @@
 
 {% block js %}
     <script type="application/javascript" src="/js/settings/invitationOrganization.js"></script>
+    <script src="/js/settings/member.js"></script>    
 {% endblock %}

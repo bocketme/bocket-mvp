@@ -28,6 +28,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
         <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.js"></script>
         <script type="application/javascript" src="/socket.io/socket.io.js"></script>
+        <script type="application/javascript" src="/js/initial.js"></script>
         <script type="application/javascript">
             var socket = io();
             const CurrentOrganization = "{{ currentOrganization._id }}";
@@ -37,6 +38,7 @@
                 complete: function () {}
               });
             });
+            $('.tooltipped').tooltip({delay: 50});
         </script>
         {% block js %}{% endblock %}
         <script type="application/javascript" src="/js/app/listWorkspace.js"></script>

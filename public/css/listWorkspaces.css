@@ -133,6 +133,9 @@
 }
 
 .btn-cancel:hover {
+  background-color: transparent !important;
+  color: #4A90E2 !important;
+  border: 2px solid #4A90E2 !important;
     color: white !important;
     border: 2px solid #FF2E63 !important;
     font-weight: bolder !important;
@@ -141,4 +144,26 @@
 .btn-confirm {
     background-color: #00CCA0 !important;
     color: #ffffff !important;
+}
+
+.cancel {
+  background-color: #4A90E2 !important;
+  color: white !important;
+}
+
+.cancel:hover {
+  background-color: #4A90E2 !important;
+  color: white !important;
+}
+
+.confirm {
+  background-color: transparent !important;
+  color: #4A90E2 !important;
+  border: 2px solid #4A90E2 !important;
+}
+
+.confirm:hover {
+  background-color: transparent !important;
+  color: #4A90E2 !important;
+  border: 2px solid #4A90E2 !important;
 }
