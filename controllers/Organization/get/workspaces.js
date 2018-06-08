@@ -31,13 +31,7 @@ async function workspaces(req, res, next) {
       res.locals.redirect = `/organization/${user.Manager[0].Organization._id}`;
 
     const organization = await organizationSchema
-      .findById(organizationId);
-
-    if (!organization) throw new Error('[Organization Manager] - Cannot Find the organization');
-
-    const rights = organization.userRights(userId);
-
-    await organization
+      .findById(organizationId)
       .populate('Owner').populate('Admins')
       .populate('Members').populate('Workspaces')
       .populate({
@@ -51,8 +45,11 @@ async function workspaces(req, res, next) {
       .populate({
         path: 'Workspaces',
         populate: { path: 'Teammates', select: 'completeName' }
-      })
-      .execPopulate();
+      }).exec();
+
+    if (!organization) throw new Error('[Organization Manager] - Cannot Find the organization');
+
+    const rights = organization.userRights(userId);
 
     const managerOrganization = user.get('Manager');
 
