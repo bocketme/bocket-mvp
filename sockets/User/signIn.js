@@ -30,18 +30,27 @@ module.exports = (io, socket) => {
     if (invitationUid) return await emitWithInvitation(invitationUid, user, socket);
 
     const { Manager } = user;
-    let works = [];
+    let works = [], organizations = [];
+
+    console.log(Manager);
 
     for (let i = 0; i < Manager.length; i++) {
       const { Organization, Workspaces } = Manager[i];
       const organization = await organizationSchema.findById(Organization);
+      organizations.push({
+        name: organization.name,
+        _id: organization._id,
+      });
       for (let j = 0; j < Workspaces.length; j++) {
         const workspace = await workspaceSchema.findById(Workspaces[j]);
-        works.push({
-          name: workspace.name,
-          _id: workspace._id,
-          organization: organization.name
-        });
+        console.log(workspace);
+        if (workspace) {
+          works.push({
+            name: workspace.name,
+            _id: workspace._id,
+            organization: organization.name
+          });
+        } else await user.removeWorkspace(organization._id, Workspaces[j])
       }
     }
 
