@@ -37,5 +37,5 @@ module.exports = (io, socket) => {
 const checkData = async (workspaceId, userId, data) => {
   const organization = Organization.findById(workspaceId);
   organization.findUserRights(userId);
-  
+
 };

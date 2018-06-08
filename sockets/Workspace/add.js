@@ -4,7 +4,7 @@ const nodeSchema = require('../../models/Node');
 const NodeTypeEnum = require('../../enum/NodeTypeEnum');
 
 module.exports = (io, socket) => {
-  socket.on('[Workspace] - add', (name, Owner) => {
+  socket.on('[Workspace] - add', async (name, Owner) => {
     const {currentOrganization} = socket.handshake.session;
 
     const workpsace = await workpsaceSchema.create({
