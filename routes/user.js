@@ -1,33 +1,46 @@
 const userSchema = require('../models/User');
+const organizationSchema = require('../models/Organization');
 const path = require('path');
 const fs = require('fs');
-const FileSystemConfig = require('../config/FileSystemConfig'); 
-
+const FileSystemConfig = require('../config/FileSystemConfig');
+const log = require('../utils/log');
 const router = require('express').Router();
 
 router.get('/image', async (req, res) => {
-  try{
+  try {
     const userId = req.params;
     const user = await userSchema.findById(userId);
     const chemin = path.join(FileSystemConfig.appDirectory.avatar, user.avatar);
     console.log(chemin);
-    res.sendFile(chemin);    
+    res.sendFile(chemin);
   } catch (err) {
     console.error(err);
     res.status(404).send('Not Found');
   }
 });
 
-router.delete('/:userId', async (req, res) => {
+router.get('/Ownership', async function userOwnership(req, res) {
   try {
-    const userId = req.params;
-    if (userId === req.session.userId);
+    const organizations = await organizationSchema
+      .find({ Owner: req.session.userId })
+      .select("name");
+    return res.render('socket/userOwnership.twig', { organizations });
+  } catch (e) {
+    log.error(e);
+    res.status(500).send('Intern Error');
+  }
+});
+
+router.delete('/', async (req, res) => {
+  try {
+    const { userId } = req.session;
     const user = await userSchema.findById(userId);
     await user.remove();
+    return res.status(200).send()
   } catch (e) {
-    console.error(e);
+    log.error(e);
+    return res.status(500).send('Intern Error');
   }
-  res.redirect('/');
 });
 
 
