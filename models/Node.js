@@ -33,8 +33,7 @@ const NodeSchema = mongoose.Schema({
   type: { type: String, require: true },
   content: { type: mongoose.SchemaTypes.ObjectId, require: true },
   matrix: { type: [], default: new THREE.Matrix4() },
-  Workspaces: { type: [NestedWorkspace], require: true },
-
+  Workspace: { type: mongoose.SchemaTypes.ObjectId, require: true },
   // The system Information of the Node
   created: { type: Date, default: Date.now() },
   modified: { type: Date, default: Date.now() },

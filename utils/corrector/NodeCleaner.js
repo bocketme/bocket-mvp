@@ -1,6 +1,8 @@
 const co = require('co');
 const workspaceSchema = require('../../models/Workspace');
 
+
+//Need Rework
 module.exports = function* () {
   const cursor = workspaceSchema.find().cursor();
   for (let doc = yield cursor.next(); doc !== null; doc = yield cursor.next()) {
@@ -25,6 +27,7 @@ module.exports = function* () {
       });
       doc.users = undefined;
       doc.owner = undefined;
+      doc.T
       yield doc.save();
     }
   }
