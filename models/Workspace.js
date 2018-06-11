@@ -254,6 +254,14 @@ WorkspaceSchema.pre('save', function (next) {
 WorkspaceSchema.pre('remove', async function () {
   try {
     const _id = this._id;
+
+    const Invitation = require('./Invitation');
+    const invitations = Invitation.find({"workspace.id": this._id}).cursor();
+
+    for (let doc = await invitations.next(); doc !== null; doc = await cursor.next()) {
+      await doc.remove().catch(err => log.error(err));
+    }
+
     function filterWorkspace(id) {
       const isEqual = id.equals(_id);
       return !isEqual;

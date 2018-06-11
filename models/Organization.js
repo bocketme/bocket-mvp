@@ -281,6 +281,14 @@ OrganizationSchema.pre('save', function (next) {
 
 OrganizationSchema.pre('remove', async function () {
   try {
+
+    const Invitation = require('./Invitation');
+    const invitations = Invitation.find({"organization.id": this._id}).cursor();
+
+    for (let doc = await invitations.next(); doc !== null; doc = await cursor.next()) {
+      await doc.remove().catch(err => log.error(err));
+    }
+
     for (let i = 0; i < this.Workspaces.length; i++) {
       const workspaceId = this.Workspaces[i];
       const workspace = await workspaceSchema.findById(workspaceId);
