@@ -9,7 +9,7 @@ function removeNode() {
   let node = $(pointedElem);
   if (!node.attr('id')) { node = node.parent('div.three-node'); }
   Materialize.toast('Deletion In Process', 1000);
-  socket.emit('deleteNode', node.attr('id'));
+  socket.emit('[Node] - Delete', node.attr('id'));
 }
 
 /**

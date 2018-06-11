@@ -1,5 +1,5 @@
-const Workspace = require('../models/Workspace');
-const User = require('../models/User');
+const Workspace = require('../../models/Workspace');
+const User = require('../../models/User');
 
 module.exports = (io, socket) => {
   socket.on('[Users] - fetchFromWorkspace', async (withCurrentUser = false) => {

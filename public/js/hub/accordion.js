@@ -94,7 +94,7 @@ function loadNodeInformation(event) {
   });
 }
 
-socket.on('deleteNode', (nodeId) => {
+socket.on('[Node] - Delete', (nodeId) => {
   deleteNode(nodeId);
   const updateNodeEvent = new CustomEvent('[Viewer] - remove', { nodeId });
   document.dispatchEvent(updateNodeEvent);
