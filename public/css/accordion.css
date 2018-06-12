@@ -91,7 +91,18 @@
 
 .hide-show{
 	position: absolute;
-	right: 0;
+  right: 0;
+  visibility: hidden;
+  font-size: 15px !important;
+}
+
+.hide-show.is-not-visible {
+  visibility: visible;
+  color: grey;
+}
+
+.collapsible-header.three-node:hover .hide-show {
+  visibility: visible;
 }
 
 ul.collapsible{
