@@ -25,7 +25,6 @@ module.exports = function* () {
       });
       doc.users = undefined;
       doc.owner = undefined;
-      doc.T
       yield doc.save();
     }
   }

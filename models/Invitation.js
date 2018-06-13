@@ -18,13 +18,13 @@ const nestedPeopleSchema = mongoose.Schema({
 const nestedWorkspaceSchema = mongoose.Schema({
   id: { type: String, required: true },
   name: { type: String, required: true },
-  role: { type: Number, required: true },
+  role: { type: Number, required: true, default: 2 },
 });
 
 const nestedOrganization = mongoose.Schema({
   id: { type: String, required: true },
   name: { type: String, required: true },
-  role: { type: Number, required: true },
+  role: { type: Number, required: true, default: 4 },
 });
 
 const InvitationSchema = mongoose.Schema({
@@ -71,7 +71,6 @@ InvitationSchema.post('save', (invitation) => {
       return null;
     }
     else {
-      console.log('iooioio')
       let mailOptions = {
         from: mailConfig.email,
         to: invitation.people.email,

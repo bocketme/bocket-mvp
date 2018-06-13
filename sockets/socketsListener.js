@@ -1,4 +1,3 @@
-const betaRegistrationListener = require('./betaRegistrationSListener');
 const checkUniqueField = require('./checkUniqueField');
 const Annotation = require('./Annotation');
 const newNodeListener = require('./newNodeListener');
@@ -17,19 +16,13 @@ const getAllSpecListener = require('./getAllSpecListener');
 const removeSpecListener = require('./removeSpecListener');
 const renameSpecListener = require('./renameSpecListener');
 const workspaceManagerListener = require('./workspaceListener');
-const removeUserFromOW = require('./removeUserFromOW');
-const GetSearchCriteria = require('./GetSearchCriteria');
 const GetSelectedItemsToAdd = require('./GetSelectedItemsToAdd');
 const createWorkspaceInSignIn = require('./createWorkspaceInSignIn');
-const createWorkspaceInHub = require('./createWorkspaceInHub');
-const deleteNodeListener = require('./deleteNodeListener');
 const duplicateNodeListener = require('./duplicateNodeListener');
 const changePassword = require('./changePasswordListener');
 const reportIssueListener = require('./reportIssueListener');
-const changeWorkspaceorOrganizationName = require('./changeWorkspaceorOrganizationName.js');
 const Tchat = require('./Tchat');
 const getCurrentUser = require('./getCurrentUser');
-const getUsers = require('./getUsers');
 const Invitation = require('./Invitation');
 const Workspace = require('./Workspace');
 const User = require('./User');
@@ -43,7 +36,7 @@ module.exports = function (io) {
       accepts: ['image/png', 'image/jpeg', 'application/pdf', 'application/vnd.oasis.opendocument.text', 'image/svg+xml'], // chrome and some of browsers checking mp3 as 'audio/mp3', not 'audio/mpeg'
       maxFileSize: 4194304, // 4 MB. default is undefined(no limit)
       chunkSize: 10240, // default is 10240(1KB)
-      transmissionDelay: 0, // delay of each transmission, higher value saves more cpu resources, lower upload speed. default is 0(no delay)
+      transmissionDelay: 0, // delay of each transmission
       overwrite: true, // overwrite file if exists, default is true.
     });
 
@@ -52,13 +45,9 @@ module.exports = function (io) {
 
     Annotation(io, socket);
     Tchat(io, socket);
-    changeWorkspaceorOrganizationName(socket);
     duplicateNodeListener(socket);
-    deleteNodeListener(io, socket);
-    createWorkspaceInHub(io, socket);
     createWorkspaceInSignIn(io, socket);
     fileUploaderListener(socket, uploader);
-    betaRegistrationListener(socket);
     checkUniqueField(socket);
     newNodeListener(socket);
     NodeInformation(io, socket);
@@ -72,18 +61,15 @@ module.exports = function (io) {
     getAllSpecListener(socket);
     removeSpecListener(io, socket);
     renameSpecListener(io, socket);
-    GetSearchCriteria(socket);
     GetSelectedItemsToAdd(socket);
     changePassword(socket);
     User(io, socket);
     Organization(io, socket);
     workspaceManagerListener(socket);
-    removeUserFromOW(socket);
     reportIssueListener(socket);
     getCurrentUser(io, socket);
-    getUsers(io, socket);
     Invitation(io, socket);
-    Workspace(io, socket)
+    Workspace(io, socket);
 
   });
 };

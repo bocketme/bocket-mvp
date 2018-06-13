@@ -37,6 +37,7 @@ const index = async (req, res, next) => {
     req.session.currentOrganization = workspace.Organization._id;
 
     const options = {
+      currentUser: { completeName: user.completeName, email: user.email },
       currentOrganization: Manager.Organization,
       title: workspace.name,
       in_use: { name: workspace.name, id: workspace._id },
@@ -65,11 +66,14 @@ const listOrganization = async function (req, res, next) {
       .findById(req.session.currentOrganization)
       .populate({ path: 'Owner', select: 'completeName' })
       .populate({ path: 'Admins', select: 'completeName' })
-      .populate({ path: 'Members', select: 'completeName' });
+      .populate({ path: 'Members', select: 'completeName' })
+      .exec();
+
     if (!organization) throw new Error('Cannot find the organization');
+
     const workspace = await workspaceSchema
       .findById(req.params.workspaceId);
-    if (!organization) throw new Error('Cannot find the workspace');
+    if (!workspace) throw new Error('Cannot find the workspace');
 
     const organizationUsers = organization.users;
     const workspaceUsers = workspace.users;

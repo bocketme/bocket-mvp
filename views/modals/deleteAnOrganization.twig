@@ -1,7 +1,7 @@
 <div class="modal" id="confirm-delete-organization">
     <div class="modal-content">
         <h4 class="col s12">
-            Leave the organization
+            Delete The Organization
             <a class="modal-close" style="color: black;">
                 <i class="material-icons right">highlight_off</i>
             </a>
@@ -9,17 +9,15 @@
 
         <div class="row">
             <div class="input-field col s12 center-align" style="margin-top: 60px">
-            <p>
-            Are you sure you want to delete the organization ?
-            <br>
-            Every project will be lost and your subscription will be stopped
-            </p>
+                <p>
+                    Are you sure you want to delete the organization ?
+                    <br>
+                    Every project will be lost and your subscription will be stopped
+                </p>
             </div>
             <div class="row col s12" style="margin-top: 60px">
-                <a class="waves-effect modal-close waves-light btn col s3 push-s2">No, I don't want to delete</a>
-                <form action="/organization/{{ currentOrganization._id }}/delete" method="post" >
-                    <button id="confirm-delete-Organization" class="modal-close btn col s3 push-s4" style="background-color: ;">Yes, I want to delete</button>
-                </form>
+                <a class="cancel modal-close btn col s3 push-s2">No</a>
+                <button id="delete-the-organization" class="confirm modal-close btn col s3 push-s4">Yes</button>
             </div>
         </div>
     </div>

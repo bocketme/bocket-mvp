@@ -140,7 +140,8 @@ $(document).ready(() => {
     savedAnnotation.isImportant = isImportant;
     document.getElementById('note-card-form').style.display = 'none';
     reinitCardFormContent();
-    document.getElementById('addNoteButton').style.backgroundColor = '#4A90E2';
+    document.getElementById('addNoteButton').classList.remove('active');
+//    document.getElementById('addNoteButton').style.backgroundColor = '#4A90E2';
     document.getElementById('add-note-icon').innerHTML = 'add';
     isAnnotationMode = false;
     HasClicked = false;

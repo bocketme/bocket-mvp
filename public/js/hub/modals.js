@@ -135,42 +135,6 @@ const defaultNodeValue = "Select a node";
             } else
                 Materialize.toast("You must select a node", 1000);
         });
-        /////////////////////////////
-        // Search for existing items
-        ////////////////////////////
-        $('#submit-search-existing').click((event) => {
-
-            //    console.log ("submit-search-existing trigger");
-            event.preventDefault();
-            var cible = headerTitle.title;
-
-            if (cible !== "Select a node") {
-                var nodeId = idOfchoosenNode;
-                var form = document.getElementById("form-add-existing");
-                //        console.log ("submit-search-existing sur node", nodeId);
-
-                var saisie = document.getElementById('full-text-search').value;
-                console.log("submit-search-existing entrée", saisie);
-
-                socket.emit("GetSearchCriteria", nodeId, saisie);
-
-
-
-                socket.on("SearchAnswer", function (data) {
-                    var nodeId = nodeId;
-                    if ($("#form-items-to-add")) {
-                        //remove existing search results
-                        $("#form-items-to-add").remove();
-                        //$("#form-items-to-add").html('');
-
-                    } //add 
-                    $("#form-add-existing").append(data);
-
-                });
-
-            } else
-                Materialize.toast("You must select a node", 1000);
-        });
 
         $('body').on('click', '#submit-add-existing', (event) => {
             event.preventDefault();

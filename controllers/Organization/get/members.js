@@ -55,6 +55,9 @@ async function members(req, res, next) {
       }
     }
 
+    req.session.currentOrganization = organization._id;
+    req.session.currentWorkpsace = null;
+
     return res.render('organizationSettings/members', html);
 
   } catch (e) {

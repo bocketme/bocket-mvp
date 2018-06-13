@@ -3,6 +3,10 @@ const organizationSchema = require('../../models/Organization');
 const workspaceSchema = require('../../models/Workspace');
 const log = require('../../utils/log');
 const isMongoId = require('validator/lib/isMongoId')
+const Twig = require('twig');
+const mailTransporter = require('../../utils/mailTransporter');
+const mailConfig = require('../../config/welcomeEmail');
+
 
 const indexPost = async (req, res, next) => {
   try {
@@ -43,7 +47,7 @@ const addOrganizationMember = async (req, res, next) => {
 
     const _id = Array.isArray(req.body["_id[]"]) ? req.body["_id[]"] : [req.body["_id[]"]];
     const role = Array.isArray([req.body["role[]"]]) ? req.body["role[]"] : [req.body["role[]"]];
-    console.log(_id, role)
+
     for (let i = 0; i < _id.length; i++) {
       const user = { _id: _id[i], role: role[i] };
       if (!isMongoId(user._id)) throw new Error('Cannot invite this user')
@@ -62,6 +66,27 @@ const addOrganizationMember = async (req, res, next) => {
           throw new Error('Cannot understand the role of an user');
           break;
       }
+      const realUser = await userSchema.findById(user._id);
+      Twig.renderFile('./views/mail/invitationWorkspace.twig', { user: realUser.completeName, organization: organization.name, workspace: workspace.name }, function (err, html) {
+        if (err)
+          log.error(err)
+        else {
+          let mailOptions = {
+            from: mailConfig.email,
+            to: realUser.email,
+            subject: `Vous avez été ajouté dans un workspace.`,
+            html,
+          };
+
+          mailTransporter.sendMail(mailOptions, (error, info) => {
+            if (error)
+              log.error(error);
+            else
+              log.info(`Email sent: ${info.response}`);
+          });
+
+        }
+      });
     }
     res.status(200).send();
   } catch (e) {

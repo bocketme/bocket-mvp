@@ -6,8 +6,8 @@ leaveTheOrganization.on('click', () => {
     socket.emit('[Organization] - leave');
 });
 
-const deleteTheOrganization = $('#delete-the-organization');
-deleteTheOrganization.on('click', () => {
+const deleteOrganizationWanted = $('#delete-organization-wanted');
+deleteOrganizationWanted.on('click', () => {
   if (userRights === 6)
     $('#confirm-delete-organization').modal('open');
   else
@@ -37,9 +37,7 @@ socket.on('[Organization] - create', (err, html) => {
     console.error(err);
     Materialize.toast('Cannot create the organization');        
   } else {
-    const organizationList = $('#organizations-dropdown');
-    organizationList.empty('.removableOrganization');
-    organizationList.prepend(html);
+    document.location.reload(true);
     $('.dropdown-button').dropdown();    
     $('.modal').modal();
   }

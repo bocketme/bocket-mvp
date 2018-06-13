@@ -31,13 +31,7 @@ async function workspaces(req, res, next) {
       res.locals.redirect = `/organization/${user.Manager[0].Organization._id}`;
 
     const organization = await organizationSchema
-      .findById(organizationId);
-
-    if (!organization) throw new Error('[Organization Manager] - Cannot Find the organization');
-
-    const rights = organization.userRights(userId);
-
-    await organization
+      .findById(organizationId)
       .populate('Owner').populate('Admins')
       .populate('Members').populate('Workspaces')
       .populate({
@@ -51,8 +45,11 @@ async function workspaces(req, res, next) {
       .populate({
         path: 'Workspaces',
         populate: { path: 'Teammates', select: 'completeName' }
-      })
-      .execPopulate();
+      }).exec();
+
+    if (!organization) throw new Error('[Organization Manager] - Cannot Find the organization');
+
+    const rights = organization.userRights(userId);
 
     const managerOrganization = user.get('Manager');
 
@@ -77,8 +74,6 @@ async function workspaces(req, res, next) {
     let listOrganizations = user.Manager.map(({ Organization }) => Organization);
     listOrganizations = listOrganizations.filter(({ _id }) => !_id.equals(organizationId));
 
-    console.log(workspaces)
-
     const html = {
       currentOrganization: organization,
       OrganizationUsers: organization.users,
@@ -93,6 +88,9 @@ async function workspaces(req, res, next) {
         rights: rights
       }
     }
+
+    req.session.currentOrganization = organization._id;
+    req.session.currentWorkpsace = null;
 
     return res.render('organizationSettings/workspaces', html);
   } catch (e) {

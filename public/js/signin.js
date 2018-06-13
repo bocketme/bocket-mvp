@@ -1,5 +1,6 @@
 /* ID */
 var lauchButtonId = "#signIn";
+var signinNav = '#signIn-nav';
 var boxId = "#userSignInBox";
 var userSignIn = "#userSignIn";
 var workspacesPickerId = "#workspacesPicker";
@@ -31,6 +32,7 @@ $(document).ready(function() {
     $('select').material_select();
 
     begin(lauchButtonId, boxId, toReset);
+    begin(signinNav, boxId, toReset);
 
     $(".closeBox").click(function() {
         hideBlur($(blurId));
