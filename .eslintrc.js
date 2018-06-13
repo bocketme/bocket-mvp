@@ -11,7 +11,9 @@ module.exports = {
     'func-names': 'off',
     'no-use-before-define': 'off',
     'arrow-parens': 'off',
-    curly: 'off'
+    curly: 'off',
+    'guard-for-in': 'off',
+    'no-restricted-syntax': 'off'
   },
   extends: 'airbnb'
 };
