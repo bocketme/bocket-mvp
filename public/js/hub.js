@@ -1,4 +1,5 @@
 (function ($) {
+
   $(function () {
     // initialize all modals
     $('#show-social-space').on('click', () => {
@@ -32,21 +33,10 @@
       },
     });
     $('.collapsible').collapsible();
-    $('.collapsible').collapsible('open', 1);
     $('ul.tabs').tabs();
     $('.circle-responsive-active').addClass('tooltipped');
     $('.circle-responsive').addClass('tooltipped');
     $('.tooltipped').tooltip();
-
-    $('.button-collapse').sideNav({
-      menuWidth: 400, // Default is 300
-      edge: 'right', // Choose the horizontal origin
-      onOpen(el) {
-        if ($('#comments').css('display') === 'block') {
-          $('.message-area').animate({ scrollTop: $('.message-area').prop('scrollHeight') }, 'slow');
-        }
-      },
-    });
 
     $('#import-part, #import-assembly').modal({
       dismissible: true, // Modal can be dismissed by clicking outside of the modal
@@ -64,22 +54,6 @@
           const form = $(context).find('form');
           if (form[0] && modal.context.id !== 'edit-part')
           { form[0].reset(); }
-        }
-      },
-    });
-    $('.collapsible').collapsible();
-    $('.collapsible').collapsible('open', 1);
-    $('ul.tabs').tabs();
-    $('.circle-responsive-active').addClass('tooltipped');
-    $('.circle-responsive').addClass('tooltipped');
-    $('.tooltipped').tooltip();
-
-    $('.button-collapse').sideNav({
-      menuWidth: 400, // Default is 300
-      edge: 'right', // Choose the horizontal origin
-      onOpen(el) {
-        if ($('#comments').css('display') === 'block') {
-          $('.message-area').animate({ scrollTop: $('.message-area').prop('scrollHeight') }, 'slow');
         }
       },
     });
@@ -200,6 +174,7 @@
         collapsible_body.html(html);
         $('.collapsible').collapsible();
       }
+      $('.search_child').click();
     });
     const views = $('.view');
     views.mouseout(function () {
