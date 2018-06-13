@@ -155,7 +155,12 @@ const newAssembly = async (req, res) => {
     node: parentNode,
     TypeEnum: NodeTypeEnum,
     sub_level: sub_level,
-    breadcrumb: breadcrumb
+    breadcrumb: breadcrumb,
+    sockets:[{
+      message: 'Update File 3D',
+      order: '[Viewer] - Update',
+      dataToSend: [subNode._id],
+    }]
   }, (err, html) => {
     if (err) {
       log.error("[ Post Assembly Controller ] \n" + new Error(err));
