@@ -11,6 +11,9 @@ router.put('/update/:nodeId', upload.fields([{ name: 'file3D', maxCount: 1 }, { 
 router.post('/:nodeId', upload.fields([{ name: 'file3D', maxCount: 1 }, { name: 'specFiles' }, { name: 'textureFiles' }]), (req, res, next) => {
   postController.newPart(req, res).catch(err => next(err));
 });
+router.post('/:nodeId/file3d', upload.fields({ name: 'file3D', maxCount: 1 }), (req, res, next) => {
+  postController.newFile3d(req, res).catch(err => next(err))
+});
 router.get('/:nodeId/modeler', getController.modeler);
 
 router.use((err, req, res, next) => {

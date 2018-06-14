@@ -6,49 +6,55 @@
     </div>
     <div class="modal-content container">
         <div class="modal-body">
-            <form id="form-import-part" method="post" action="/test">
-                <div class="input-field col s12">
-                    <input type="text" id="import-part-name" name="name" class="validate">
-                    <label for="name">Part Name</label>
+            <div class="file-field input-field col s12">
+                <div class="files-button btn upload_button">
+                    <span>Add a Part</span>
+                    <input type="file" multiple id="import-part-files" name="textureFiles">
                 </div>
+            </div>
+            {#<form id="form-import-part" method="post" action="/test">#}
+            {#<div class="input-field col s12">#}
+            {#<input type="text" id="import-part-name" name="name" class="validate">#}
+            {#<label for="name">Part Name</label>#}
+            {#</div>#}
 
-                <div class="input-field col s12">
-                    <input type="text" id="import-part-description" name="description" class="validate">
-                    <label for="description">Description</label>
-                </div>
+            {#<div class="input-field col s12">#}
+            {#<input type="text" id="import-part-description" name="description" class="validate">#}
+            {#<label for="description">Description</label>#}
+            {#</div>#}
 
-                <div class="file-field input-field col s12">
-                    <div class="files-button btn upload_button">
-                        <span>...</span>
-                        <input type="file" id="import-part-file3D" name="file3D" @change="chargefile">
-                    </div>
-                    <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text" placeholder="Upload your 3D Model">
-                    </div>
-                </div>
+            {#<div class="file-field input-field col s12">#}
+            {#<div class="files-button btn upload_button">#}
+            {#<span>...</span>#}
+            {#<input type="file" id="import-part-file3D" name="file3D" @change="chargefile">#}
+            {#</div>#}
+            {#<div class="file-path-wrapper">#}
+            {#<input class="file-path validate" type="text" placeholder="Upload your 3D Model">#}
+            {#</div>#}
+            {#</div>#}
 
-                <div class="file-field input-field col s12">
-                    <div class="files-button btn upload_button">
-                        <span>...</span>
-                        <input type="file" multiple id="import-part-texture-files" name="textureFiles" @change="chargefile">
-                    </div>
-                    <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text" placeholder="Upload your Texture">
-                    </div>
-                </div>
+            {#<div class="file-field input-field col s12">#}
+            {#<div class="files-button btn upload_button">#}
+            {#<span>...</span>#}
+            {#<input type="file" multiple id="import-part-texture-files" name="textureFiles" @change="chargefile">#}
+            {#</div>#}
+            {#<div class="file-path-wrapper">#}
+            {#<input class="file-path validate" type="text" placeholder="Upload your Texture">#}
+            {#</div>#}
+            {#</div>#}
 
-                <div class="file-field input-field col s12">
-                    <div class="files-button btn upload_button">
-                        <span>...</span>
-                        <input type="file" multiple id="import-part-specFiles" name="specFiles" @change="chargespecFiles">
-                    </div>
-                    <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text" placeholder="Upload your Specs File">
-                    </div>
-                </div>
-                <br>
-                <button id="submit-import-part" class="btn button-form-validate" type="submit">Import a Part</button>
-            </form>
+            {#<div class="file-field input-field col s12">#}
+            {#<div class="files-button btn upload_button">#}
+            {#<span>...</span>#}
+            {#<input type="file" multiple id="import-part-specFiles" name="specFiles" @change="chargespecFiles">#}
+            {#</div>#}
+            {#<div class="file-path-wrapper">#}
+            {#<input class="file-path validate" type="text" placeholder="Upload your Specs File">#}
+            {#</div>#}
+            {#</div>#}
+            {#<br>#}
+            {#<button id="submit-import-part" class="btn button-form-validate" type="submit">Import a Part</button>#}
+            {#</form>#}
         </div>
     </div>
 </div>
