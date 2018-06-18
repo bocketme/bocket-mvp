@@ -50,7 +50,7 @@ function mkdirPromise(chemin) {
 AssemblyScheama.pre('save', function (next) {
   if (this.path) { return next(); }
 
-  this.path = `/${this.Organization}/${this.name} - ${this._id}`;
+  this.path = `/${this.Organization}/${this._id}`;
   const assemblyPath = path.join(configServer.files3D, this.path);
 
   mkdirPromise(assemblyPath)
