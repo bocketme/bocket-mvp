@@ -91,10 +91,11 @@ async function deleteContent(id, type) {
     content = await AssemblySchema.findById(id).catch((err) => { throw err; });
   } else throw new Error('The type of the node is not specified');
 
+  if (!content) throw new Error('There is no content');
+
   await deleteNode(path.join(Fsconfig.appDirectory.files3D, content.path)).catch((err) => { throw err; });
 
-  if (!content) throw new Error('There is no content');
-  content.remove();
+  await content.remove();
 }
 
 async function findNodeByIdAndRemove(id) {
@@ -102,9 +103,8 @@ async function findNodeByIdAndRemove(id) {
 
   const parentNodes = await Node.find({ 'children._id': id });
 
-  function filterChildId(child) {
-    const isEqual = child._id.equals(node._id);
-    return isEqual;
+  function filterChildId({_id}) {
+    return ! _id.equals(node._id);
   }
 
   for (let i = 0; i < parentNodes.length; i++) {
