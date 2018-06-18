@@ -12,7 +12,9 @@ const log = require('../../utils/log');
 
 module.exports = (io, socket) => {
   socket.on(order, async ({ email, password, invitationUid }) => {
-    const user = await User.findOne({ email })
+    const user = await User
+      .findOne({ email })
+      .populate({path: 'Manager.Organization', select:'name'})
       .exec();
 
     if (!user) return socket.emit('signinFailed');
@@ -30,9 +32,8 @@ module.exports = (io, socket) => {
     if (invitationUid) return await emitWithInvitation(invitationUid, user, socket);
 
     const { Manager } = user;
+    console.info(Manager)
     let works = [], organizations = [];
-
-    console.log(Manager);
 
     for (let i = 0; i < Manager.length; i++) {
       const { Organization, Workspaces } = Manager[i];
@@ -43,7 +44,6 @@ module.exports = (io, socket) => {
       });
       for (let j = 0; j < Workspaces.length; j++) {
         const workspace = await workspaceSchema.findById(Workspaces[j]);
-        console.log(workspace);
         if (workspace) {
           works.push({
             name: workspace.name,
@@ -54,7 +54,7 @@ module.exports = (io, socket) => {
       }
     }
 
-    return socket.emit('signinSucced', { workspaces: works, user: simplifiedUser, organization: [] });
+    return socket.emit('signinSucced', { workspaces: works, user: simplifiedUser, organization: organizations });
   });
 };
 
