@@ -6,7 +6,7 @@ $(document).on('ready', function (event) {
       workspaceDeleteReq.onreadystatechange = function (event) {
         if (this.readyState === 4) {
           if (this.status === 200) {
-            socket.emit("reload", $(trigger).attr('workspaceId'));
+            socket.emit("[USER] - reload Workspace", $(trigger).attr('workspaceId'));
             Materialize.toast(`Workspace Deleted`, 500);
             setTimeout(document.location.reload(true), 500)
           } else
