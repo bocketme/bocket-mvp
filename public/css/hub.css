@@ -320,14 +320,6 @@ div.modal-body>p{
     margin: 0;
     padding-top: 10px;
 }
-.button-form-validate[type=submit]{
-    width: 100%;
-    margin: 0;
-    border: none;
-    padding: 20px 0;
-    text-align: center;
-    height: 100%;
-}
 
 .preloader-wrapper.active{
     margin: auto !important;
