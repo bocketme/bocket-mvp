@@ -57,3 +57,26 @@ async function transfertOwnership(req, res, next) {
     res.status(500).send('intern Error');
   }
 }
+
+
+const organizationInfo = async (req, res, next) => {
+  try {
+    const { organizationId } = req.params;
+    const { userId } = req.session;
+    const { organizationName } = req.body;
+
+    const organization = await organizationSchema.findById(organizationId);
+
+    const hasRight = organization.isOwner(userId) && organization.isAdmin(userId);
+
+    if (!hasRight)
+      throw new Error('[Organization] - Cannot change the organizationName');
+
+    organization.name = organizationName || organization.name;
+    await organization.save();
+    return res.redirect(`/organization/${organizationId}/workspaces/`);
+  } catch (e) {
+    log.error(e);
+    next(e);
+  }
+};
