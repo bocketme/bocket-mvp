@@ -1,14 +1,6 @@
 const deleteAUser = $('#delete-from-workspace');
 deleteAUser.on('click', () => {
-  if (rights > 4 || isProductManager)
-    $('#').modal('open');
-  else
-    Materialize.toast('You have no rights to delete a user from the workspace')
-});
-
-const leaveTheWorkspace = $('#leave-the-workspace');
-leaveTheWorkspace.on('click', () => {
-  if (rights > 4 || isProductManager)
+  if (rights > 4)
     $('#').modal('open');
   else
     Materialize.toast('You have no rights to delete a user from the workspace')
@@ -39,7 +31,7 @@ $(document).on('change', 'select[name=workspaceManager]', function (event) {
 
 function removeWorkspaceUser(workspaceId, userId) {
   Materialize.toast('Ongoing deletion', 1000);
-  socket.emit('[Workspace] - remove', workspaceId, userId);
+  socket.emit('[Workspace] - remove user', workspaceId, userId);
 }
 
 socket.on("[Workspace] - changeRoles", (err, html, workspaceId) => {
