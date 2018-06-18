@@ -38,6 +38,17 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
+UserSchema.methods.organizationOwner = async function () {
+  const organizationSchema = require('./Organization');
+  const owner = [];
+  for (let i = 0; i < this.Manager.length; i++) {
+    const manager = this.Manager[i];
+    const organization = await organizationSchema.findById(manager.Organization);
+    if (organization.isOwner(this._id)) owner.push(organization._id);
+  }
+  return owner
+}
+
 UserSchema.pre('save', function (next) {
   const user = this;
 
