@@ -32,7 +32,7 @@
   "homepage": "https://github.com/bocketme/bocket-mvp#readme",
   "dependencies": {
     "archiver": "^2.1.1",
-    "bcrypt": "^2.0.0",
+    "bcrypt": "^2.0.1",
     "body-parser": "^1.18.3",
     "co": "^4.6.0",
     "connect-mongo": "^2.0.1",
@@ -72,11 +72,11 @@
     "three": "^0.90.0",
     "three.textsprite": "^18.3.19",
     "three.texttexture": "^18.3.19",
-    "twig": "^1.11.1",
+    "twig": "^1.12.0",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "uid-safe": "^2.1.5",
-    "validator": "^10.2.0",
-    "webpack-merge": "^4.1.1"
+    "validator": "^10.3.0",
+    "webpack-merge": "^4.1.3"
   },
   "devDependencies": {
     "chai": "^4.1.2",
@@ -87,12 +87,12 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.8.2",
+    "eslint-plugin-react": "^7.9.1",
     "jquery": "^3.3.1",
     "jquery-validation": "^1.17.0",
-    "snyk": "^1.82.0",
-    "webpack": "^4.9.1",
-    "webpack-cli": "^2.1.3",
+    "snyk": "^1.83.0",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^2.1.5",
     "worker-loader": "^1.1.1"
   }
 }
