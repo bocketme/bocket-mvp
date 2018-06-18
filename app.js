@@ -11,6 +11,7 @@ const mongoose = require('mongoose');
 const FSconfig = require('./config/FileSystemConfig');
 const log = require('./utils/log');
 const sharedsession = require('express-socket.io-session');
+const debug = require('debug')('bocketmvp:server');
 
 /* ROUTES */
 const index = require('./routes/index');
@@ -34,10 +35,6 @@ const session = expressSession({
   saveUninitialized: true,
 });
 
-const corrector = require('./utils/corrector');
-const co = require('co');
-
-co(corrector());
 /* Start The Express Server */
 const app = express();
 app.use(session);
@@ -137,6 +134,13 @@ app.use('/assembly', assembly);
 
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on('listening', () => {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+  log.info('Listening on ' + bind)
+
   for (const dir in FSconfig.appDirectory) {
     if (Object.prototype.hasOwnProperty.call(dir, FSconfig.appDirectory)) {
       fs.access(FSconfig.appDirectory[dir], err => {
