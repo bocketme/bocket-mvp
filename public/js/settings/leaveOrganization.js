@@ -20,6 +20,7 @@ $(document).on('click', '#delete-the-organization', function (event) {
   deleteOrganizationRequest.onreadystatechange = function (event) {
     if (this.readyState === XMLHttpRequest.DONE) {
       if (this.status === 200) {
+        socket.emit("");
         document.location.reload(true);
       } else {
         Materialize.toast('Cannot Leave The Organization', 1000);
