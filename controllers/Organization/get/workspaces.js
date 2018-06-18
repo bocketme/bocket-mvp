@@ -65,6 +65,7 @@ async function workspaces(req, res, next) {
       function even(manager) {
         return manager._id.equals(user._id)
       }
+      workspace.userRights = workspace.hasRights(user._id);
       workspace.isProductManager = workspace.ProductManagers.some(even);
       return workspace;
     }
