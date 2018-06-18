@@ -1,6 +1,5 @@
 const userSchema = require('../../models/User');
 const organizationSchema = require('../../models/Organization')
-const { isMongoId } = require('validator');
 const log = require('../../utils/log')
 
 const changeOption = async (req, res, next) => {
@@ -29,7 +28,6 @@ const changeOption = async (req, res, next) => {
 
 const changeInformation = async (req, res, next) => {
   try {
-    const { organizationId } = req.params;
     const { userId } = req.session;
 
     const workspace = await workspaceSchema.findById(id);
@@ -56,32 +54,12 @@ const changeInformation = async (req, res, next) => {
     workspace.description = description;
 
     await workspace.save();
+    log.info(`/organization/${organizationId}/workspaces#${workspace._id}`);
+    return res.redirect(`/organization/${organizationId}/workspaces#${workspace._id}`);
   } catch (e) {
     log.error(e);
     next(e);
   }
 }
-
-const organizationInfo = async (req, res, next) => {
-  try {
-    const { organizationId } = req.params;
-    const { userId } = req.session;
-    const { organizationName } = req.body;
-
-    const organization = await organizationSchema.findById(organizationId);
-
-    const hasRight = organization.isOwner(userId) && organization.isAdmin(userId);
-
-    if (!hasRight)
-      throw new Error('[Organization] - Cannot change the organizationName');
-
-    organization.name = organizationName || organization.name;
-    await organization.save();
-    return res.redirect(`/organization/${organizationId}/workspaces`);
-  } catch (e) {
-    log.error(e);
-    next(e);
-  }
-};
 
 module.exports = { changeOption, changeInformation };

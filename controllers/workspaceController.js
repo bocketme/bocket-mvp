@@ -8,7 +8,7 @@ module.exports = {
     const { userId } = req.session;
     changeData(workspaceId, userId, name, description)
       .then((organizationId) => {
-        res.redirect(`/organization/${organizationId}/workspaces`);
+        res.redirect(`/organization/${organizationId}/workspaces#${workspaceId}-tabs`);
       })
       .catch((err) => {
         console.error(err);
@@ -26,7 +26,7 @@ const changeData = async (id, userId, name, description) => {
 
   const user = String(userId);
 
-  const isOwner = organization.isOwner(userId);
+  const isOwner = organization.isOwner(userId) || organization.isAdmin(userId);
   const isProductManager = workspace.isProductManager(userId);
 
   if (isOwner || isProductManager) {
