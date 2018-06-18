@@ -17,6 +17,17 @@ $(document).on('ready', function (event) {
     }
   })
 
+  $("#leave-the-workspace").click(() => {
+    socket.emit('[Workspace] - remove user', $("#workspaceId").val(), $("#currentUserId").val() );
+    document.location.reload(true);    
+  });
+
+  $("#confirm-workspace-leave").modal({
+    ready: (modal, trigger) => {
+      $("#workspaceId").val($(trigger).attr('workspaceId'))
+    }
+  })
+
   $(document).on('click', '#delete-the-workspace', () => {
     const workspaceId = $('#workspaceIdDelete').val();
   
