@@ -4,6 +4,7 @@ const newNodeListener = require('./newNodeListener');
 const NodeInformation = require('./NodeInformation');
 const searchNodeChildren = require('./searchNodeChildren');
 const NodeViewer = require('./NodeViewer');
+const NodeManager = require('./NodeManager');
 const Organization = require('./Organization');
 const newActivityComment = require('./newActivityCommentListener');
 const getActivities = require('./getActivitiesListener');
@@ -40,9 +41,7 @@ module.exports = function (io) {
       overwrite: true, // overwrite file if exists, default is true.
     });
 
-
-    socket.on('reload', (workspaceId) => socket.to(workspaceId).emit('reload'));
-
+    NodeManager(io, socket);
     Annotation(io, socket);
     Tchat(io, socket);
     duplicateNodeListener(socket);
