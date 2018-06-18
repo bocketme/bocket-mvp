@@ -41,6 +41,11 @@
   font-weight: bolder;
 }
 
+.btn.fix {
+  float: right;
+  margin-top: -8px; 
+}
+
 .btn-normal {
   background-color: #223241;
   box-shadow: 0px 3px #B6C0C1;

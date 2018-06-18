@@ -1,7 +1,7 @@
 $(document).on('click', '#delete-account', function (event) {
-  const getUserOwnerShip = new XMLHttpRequest();
-  getUserOwnerShip.open('GET', '/user/Ownership');
-  getUserOwnerShip.onreadystatechange = function (event) {
+  const getUserownership = new XMLHttpRequest();
+  getUserownership.open('GET', '/user/ownership');
+  getUserownership.onreadystatechange = function (event) {
     if (this.readyState === 4) {
       if (this.status === 200) {
         $('#modal-confirm-deletion-content').html(this.response);
@@ -9,7 +9,7 @@ $(document).on('click', '#delete-account', function (event) {
         Materialize.toast(`Cannot delete the workspace`, 1000);
     }
   };
-  getUserOwnerShip.send();
+  getUserownership.send();
   $('#modal-confirm-deletion-content').html('');
   $('#user-options').modal('close');
   $('#confirmDeleteAccount').modal('open');

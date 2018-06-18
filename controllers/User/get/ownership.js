@@ -1,4 +1,4 @@
-const organizationSchema = require('../models/Organization');
+const organizationSchema = require('../../../models/Organization');
 
 module.exports = async function userOwnership(req, res) {
   try {

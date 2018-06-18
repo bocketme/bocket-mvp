@@ -1,31 +1,26 @@
-<div class="modal-content">
-  <h5>{{title}}</h5>
-
-  <ul class="collapsible" data-collapsible="accordion">
-    {% for organization in Manager %}
-    <li>
-      <div class="collapsible-header">
-        {{Organizaiton.name}}
-        <a href="/organization/{{Organizaiton._id}}" class="btn btn-normal">Access to this organization</a>
-      </div>
-      <div class="collapsible-body">
-        <ul class="collection">
-          {% for item in items %}
-          <li class="collection-item">
-            <div>
-              {{Workspace.name}}
-              <a href="/workspace/{{Workspace._id}}" class="btn btn-normal">Go to this workspace</a>
+<ul class="collapsible" data-collapsible="accordion">
+    {% for manager in Manager %}
+        <li>
+            <div class="collapsible-header">
+                <div class="col s12">
+                    <h5 class="left">
+                        {{manager.Organization.name}}
+                    </h5>
+                    <a href="/organization/{{manager.Organization._id}}" class="btn btn-normal right">Access to this organization</a>
+                </div>
             </div>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-    </li>
+            <div class="collapsible-body">
+                <ul class="collection">
+                    {% for Workspace in manager.Workspaces %}
+                        <li class="collection-item">
+                            {{Workspace.name}}
+                            <a href="/workspace/{{Workspace._id}}" class="secondary-contents">
+                                <a href="/workspace/{{Workspace._id}}" class="btn btn-normal fix">Go to this workspace</a>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </li>
     {% endfor %}
-  </ul>
-  <div class="col s12">
-    <div class="center-align">
-      <a href="/logOut" class="btn btn-cancel">Sign Out</a>
-    </div>
-  </div>
-</div>
+</ul>

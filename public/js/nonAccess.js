@@ -20,15 +20,18 @@ $(document).ready(function () {
     inDuration: 300,
     outDuration: 200,
     ready: function (modal, trigger) {
-      const child = $(modal).children(".content");
+      const child = $(modal).find(".membership-user");
+      console.log(child)
       const forcedReturn = $('.forced-return');
 
       forcedReturn.attr("href", `#${$(modal).attr("id")}`)
       const membershipReq = new XMLHttpRequest();
       membershipReq.open('GET', '/user/membership');
+      membershipReq.send();
       membershipReq.onreadystatechange = function (event) {
         if (this.readyState === XMLHttpRequest.DONE) {
           if (this.status === 200) {
+            console.log(this.response);
             child.html(this.response);
           } else {
             child.html('<p>Cannot Find the current user</p>');
