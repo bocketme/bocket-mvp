@@ -2,6 +2,7 @@ $(document).ready(function () {
   const invitePeopleError = $('#invite-people-error');
   const inviteWorkspace = $("#invite-workspace");
   const hiddenWorkspace = $('#hidden-Workspace');
+
   resetMember();
   inviteWorkspace.modal({
     ready: function (modal, trigger) {
@@ -69,7 +70,7 @@ function lineUser() {
     '<div class="input-field col s3 push-s2">\n' +
     '<select>\n' +
     '<option value="" disabled selected>Choose a role</option>\n';
-  const hasRights = userRights === 6 || isProductManager ? '<option value="3">Product Manager</option>\n' : '';
+  const hasRights = userRights > 4 ? '<option value="3">Product Manager</option>\n' : '';
   const part3 = '<option value="2">Member</option>\n' +
     '</select>\n' +
     '<label>Role</label>\n' +
