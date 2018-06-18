@@ -1,0 +1,18 @@
+{% extends './layoutFooter.twig' %}
+
+{% block id %}id="forced-create-organization"{% endblock %}
+
+{% block title %}
+    Create An Organization
+{% endblock %}
+
+{% block content %}
+    <div class="valign-wrapper input-field col s8 push-s2">
+        <input id="organizationName" type="text" class="validate">
+        <label for="organizationName">Organization Name</label>
+    </div>
+{% endblock %}
+{% block footer %}
+    <a class="modal-close modal-trigger forced-return btn btn-cancel col s3 push-s2">Cancel</a>
+    <a id="new-organization-submit" class="modal-close disabled btn btn-valid col s3 push-s4">Create</a>
+{% endblock %}

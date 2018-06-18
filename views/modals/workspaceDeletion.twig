@@ -1,0 +1,15 @@
+{% extends './layoutFooter.twig' %}
+
+{% block id %} id="workspace-deleted" {% endblock %}
+
+{% block title %}This workspace has been deleted{% endblock %}
+
+{% block content %}
+<div id="workspace-deleted-content">
+</div>
+{% endblock %}
+
+{% block footer %}
+  <a href="/logOut" class="btn btn-normal modal-close right">Log Out</a>
+  <a href="#forced-create-organization" class="modal-trigger btn btn-normal modal-close left">Create an Organiaztion</a>
+{% endblock %}
