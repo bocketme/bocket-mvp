@@ -32,13 +32,11 @@ organizationNameSubmit.on('click', () => {
   organizationNameInput.val('');
 });
 
-socket.on('[Organization] - create', (err, html) => {
+socket.on('[Organization] - create', (err, redirection) => {
   if(err) {
     console.error(err);
     Materialize.toast('Cannot create the organization');        
   } else {
-    document.location.reload(true);
-    $('.dropdown-button').dropdown();    
-    $('.modal').modal();
+    document.location.href = redirection;
   }
 });
