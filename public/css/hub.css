@@ -682,3 +682,8 @@ ul#details-tab {
     padding-bottom: 4px;
     padding-right: 5px;
 }
+
+.separator {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

@@ -243,7 +243,7 @@ h5.title-page{
 
 .alinea{
   font-size: 1.1em;
-  margin: 25px 26px;
+  margin: 3% 26px;
 }
 
 .wrapper-user-list{
@@ -252,13 +252,18 @@ h5.title-page{
 
 @media screen and (min-width: 600px) {
   .overflow-content{
-    overflow-y: scroll; 
-    max-height: 80vh; 
+    overflow-y: auto;
+    max-height: 85vh; 
   }
 
   .overflow-hide{
-    max-height: 90%;
+    max-height: 100%;
     margin-bottom: 0px;
     overflow: hidden;
   }
+}
+
+.bloc-users {
+  padding-left: 5%;
+  padding-top: 2%;
 }
