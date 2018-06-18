@@ -10,7 +10,8 @@
     "webpackDev": "NODE_ENV=dev webpack",
     "debugCode": "node app.js --inspect",
     "debug": "node $NODE_DEBUG_OPTION app.js",
-    "vsCodeDebug": "nodemon --inspect app.js"
+    "vsCodeDebug": "nodemon --inspect app.js",
+    "corrector": "node ./database/index.js"
   },
   "nodemonConfig": {
     "ignore": [
