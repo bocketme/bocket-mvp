@@ -16,7 +16,6 @@ const debug = require('debug')('bocketmvp:server');
 /* ROUTES */
 const index = require('./routes/index');
 const node = require('./routes/node');
-const signin = require('./routes/signin');
 const signup = require('./routes/signup');
 const signOut = require('./routes/signOut');
 const user = require('./routes/user');
@@ -124,7 +123,6 @@ app.use('/user', user);
 app.use('/signOut', signOut);
 app.use('/', index);
 app.use('/user', user);
-app.use('/signin', signin);
 app.use('/signup', signup);
 app.use('/organization', organization);
 app.use('/part', part);
