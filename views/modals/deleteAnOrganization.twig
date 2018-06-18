@@ -1,23 +1,25 @@
 <div class="modal" id="confirm-delete-organization">
     <div class="modal-content">
-        <h4 class="col s12">
+        <h5 class="col s12">
             Delete The Organization
             <a class="modal-close" style="color: black;">
                 <i class="material-icons right">highlight_off</i>
             </a>
-        </h4>
+        </h5>
 
         <div class="row">
             <div class="input-field col s12 center-align" style="margin-top: 60px">
                 <p>
                     Are you sure you want to delete the organization ?
                     <br>
-                    Every project will be lost and your subscription will be stopped
+                    <span style="font-weight: bolder">
+                    Every project will be lost and your subscription will be stopped.
+                    </span>
                 </p>
             </div>
             <div class="row col s12" style="margin-top: 60px">
-                <a class="cancel modal-close btn col s3 push-s2">No</a>
-                <button id="delete-the-organization" class="confirm modal-close btn col s3 push-s4">Yes</button>
+                <button class="btn-valid modal-close btn col s3 push-s2">No</button>
+                <button id="delete-the-organization" class="btn-cancel modal-close btn col s3 push-s4">Yes</button>
             </div>
         </div>
     </div>

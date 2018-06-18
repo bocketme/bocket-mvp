@@ -1,55 +1,70 @@
 <div class="modal" id="confirm-leave-organization">
     <div class="modal-content">
-        <h4 class="col s12">
+        <h5 class="col s12">
             Leave The Organization
             <a class="modal-close" style="color: black;">
                 <i class="material-icons right">highlight_off</i>
             </a>
-        </h4>
+            </h4>
 
-        <div class="row">
-            {% if currentUser.rights == 6 %}
-                {% if OrganizationUsers.length == 1 %}
-                    <p>
-                        <i class="material-icons left">warning</i>
-                        Since you are the only user, leaving this organization will delete it.
-                        <br>
-                        Are you sure you want to leave ?
-                    </p>
-                    <div class="row col s12" style="margin-top: 60px">
-                        <a class="waves-effect modal-close waves-light btn cancel col s3 push-s2">No</a>
-                        <a id="delete-the-organization" class="waves-effect modal-close waves-light btn confirm col s3 push-s4">Yes</a>
-                    </div>
+            <div class="row">
+                {% if currentUser.rights == 6 %}
+                    {% if OrganizationUsers.length == 1 %}
+                        <div class="col s12">
+                            <div class="row" style="margin: 60px 0px; position: relative;">
+                                <div class="col s2 valign-wrapper">
+                                    <i class="material-icons" style="position: absolute; top: 35%; left: 10%">warning</i>
+                                </div>
+                                <div class="col s8">
+                                    <p>
+                                        Since you are the only user, leaving this organization will <span style="font-weight: bolder">delete</span> it.
+                                        Are you sure you want to leave ?
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col s12">
+                            <button class="modal-close btn btn-valid col s3 push-s2">STAY</button>
+                            <button id="delete-the-organization" class=" modal-close btn btn-cancel col s3 push-s4">DELETE</button>
+                        </div>
+                    {% else %}
+                        <div class="col s8 push-s2" style="margin: 60px 0px;">
+                            <div class="col s12 center-align">
+                            Since you leave this organization, please select a new owner.
+                          <br><br>
+                            </div>
+                            <div class="input-field col s12 center-align">
+                                <select name="organization-new-owner">
+                                    <option value="" disabled="disabled" selected="selected">Choose an owner</option>
+                                    {% for user in OrganizationUsers %}
+                                        {% if user._id.equals(currentUser._id) %}
+                                        {% else %}
+                                            <option value="{{ user._id }}">{{ user.completeName }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <label>Owner Organization</label>
+                            </div>
+                        </div>
+                        <div class="row col s12">
+                            <button class=" modal-close btn col s3 push-s2">STAY</button>
+                            <button id="send-the-new-owner" class=" modal-close disabled btn btn-valid col s3 push-s4">LEAVE</button>
+                        </div>
+                    {% endif %}
                 {% else %}
-                    <div class="input-field col s12" style="margin-top: 60px">
-                        <select name="organization-new-owner">
-                            <option value="" disabled="disabled" selected="selected">Choose an owner</option>
-                            {% for user in OrganizationUsers %}
-                                {% if user._id.equals(currentUser._id) %}
-                                {% else %}
-                                    <option value="{{ user._id }}">{{ user.completeName }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                        <label>Owner Organization</label>
+                    <div class="col s8 push-s2" style="margin: 60px 0px;">
+                        <p>
+                            You will leave this organization.
+                            <br>
+                            <i class="material-icons left">warning</i>
+                            If you leave the organization, you will no longer have access to the workspaces belonging to that organization.
+                        </p>
                     </div>
-                    <div class="row col s12" style="margin-top: 60px">
-                        <a class="waves-effect modal-close waves-light btn col s3 push-s2">No, I don't want to leave</a>
-                        <a id="send-the-new-owner" class="waves-effect modal-close disabled waves-light btn col s3 push-s4">Yes, I want to leave</a>
+                    <div class="row col s12">
+                        <button class="modal-close btn-cancel btn col s3 push-s2">STAY</button>
+                        <button id="quit-the-organization" class="btn-valid modal-close disabled btn col s3 push-s4">LEAVE</button>
                     </div>
                 {% endif %}
-            {% else %}
-                <p>
-                    You will leave this organization.
-                    <br>
-                    <i class="material-icons left">warning</i>
-                    If you leave the organization, you will no longer have access to the workspaces belonging to that organization.
-                </p>
-                <div class="row col s12" style="margin-top: 60px">
-                    <a class="modal-close cancel btn col s3 push-s2">No, I don't want to leave</a>
-                    <a id="quit-the-organization" class="confirm modal-close disabled btn col s3 push-s4">Yes, I want to leave</a>
-                </div>
-            {% endif %}
-        </div>
+            </div>
     </div>
 </div>
