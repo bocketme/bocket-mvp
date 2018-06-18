@@ -23,6 +23,10 @@ $(document).on('click', '#confirm-delete-user', function (event) {
     if (this.readyState === 4) {
       if (this.status === 200) {
         Materialize.toast(`Your account is deleted`, 500);
+        for (let i = 0; i < this.response.organizations.length; i++) {
+          const organiaztionId = this.response.organizations[i];
+          socket.emit("[USER] - reload Organization", organiaztionId);
+        }
         setTimeout(function (params) {
           document.location.href = "/signOut";
         }, 1000)
