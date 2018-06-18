@@ -40,17 +40,25 @@
                         <div class="col s12">
                             <div class="row">
                                 <div class="input-field col s6" style="position: relative;">
-                                    <input id="organization-name" name="organizationName" type="text" value="{{ currentOrganization.name }}">
+                                {% if currentUser.rights == 4 %}
+                                    <input id="organization-name" class="disabled" name="organizationName" type="text" value="{{ currentOrganization.name }}">
+                                {% else %}
+                                    <input id="organization-name" name="organizationName" type="text" value="{{ currentOrganization.name }}">                                  
+                                {% endif %}
                                     <label for="organization-name">Organization Name</label>
-                                    <i id="edit" class="material-icons">edit</i>
+                                    {% if currentUser.rights > 5 %}
+                                        <i id="edit" class="material-icons">edit</i>
+                                    {% endif %}
                                 </div>
-                                <div class="input-field col s5 push-s1">
-                                    <div class="input-field col s12">
-                                        <button class="btn btn-confirm cancel" type="submit" name="action">
-                                            Submit
-                                        </button>
+                                {% if currentUser.rights > 5 %}
+                                    <div class="input-field col s5 push-s1">
+                                        <div class="input-field col s12">
+                                            <button class="btn btn-normal" type="submit" name="action">
+                                                SAVE
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -76,9 +84,10 @@
             </div>
             <div id="quit">
                 {% if currentUser.rights == 6 %}
-                    <a id="delete-organization-wanted" class="btn outline-button">Delete the organization</a>
+                    <a id="delete-organization-wanted" class="btn btn-normal">Delete the organization</a>
+                    <span style="margin-left: 20px;"></span>
                 {% endif %}
-                <a id="leave-the-organization" class="btn outline-button">Leave the organization</a>
+                <a id="leave-the-organization" class="btn btn-normal">Leave the organization</a>
             </div>
 
             {% include 'modals/leaveTheOrganization.twig' %}

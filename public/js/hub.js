@@ -1,6 +1,7 @@
 (function ($) {
 
   $(function () {
+    $('select').material_select();
     // initialize all modals
     $('#show-social-space').on('click', () => {
       let displayValue = document.getElementById('social-space').style.getPropertyValue('display');

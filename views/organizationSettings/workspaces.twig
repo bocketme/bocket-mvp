@@ -40,7 +40,7 @@
                         <div id="{{ workspace._id }}-tabs" class="col s12">
                             <div class="overflow-content">
                                 <div class="container">
-                                    <div class="list-user">
+                                    <div class="list-user col s12">
                                         <form action="/workspace/{{ workspace._id }}/information" method="post">
                                             {#
                                                 <div id="organization-image" style="background-image: url('/organization/image/{{ currentOrganization._id }}')" class="col s4">
@@ -57,56 +57,62 @@
                                                     {% endif %}
                                                 </div>
                                             #}
-
+                                            {% set randomValue = random() %}
+                                            {% set random2Value = random() %}
                                             <div style="position: relative;margin-top: 49px; {#margin-left: 15px;#}">
-                                                <input id="workspace-name" name="name" type="text" value="{{ workspace.name }}" {% if not (currentUser.rights > 4 or workspace.isProductManager) %} disabled="disabled" style="color: black" {% endif %}>
+                                                <input id="workspace-name-{{randomValue}}" name="name" type="text" value="{{ workspace.name }}" {% if not (currentUser.rights > 4 or workspace.isProductManager) %} disabled="disabled" style="color: black" {% endif %}>
                                                 {% if (currentUser.rights > 4 or workspace.isProductManager) %}
                                                     <i id="edit" class="material-icons">edit</i>
                                                 {% endif %}
                                             </div>
                                             <div class="row">
                                                 <div class="input-field col s12">
-                                                    <textarea id="textarea1" name="description" class="materialize-textarea">{{ workspace.description }}</textarea>
-                                                    <label for="textarea1">Description</label>
+                                                    <textarea id="textarea-{{random2Value}}" name="description" class="materialize-textarea">{{ workspace.description }}</textarea>
+                                                    <label for="textarea-{{random2Value}}">Description</label>
                                                 </div>
                                                 {% if (currentUser.rights > 4 or workspace.isProductManager) %}
-                                                    <button class="btn btn-confirm cancel right" type="submit">Submit
+                                                    <button class="btn btn-normal cancel right" type="submit">SAVE
                                                     </button>
                                                 {% endif %}
                                             </div>
                                         </form>
-                                        <div id="workspace-{{workspace._id}}" class="bloc">
+                                        <div id="workspace-{{workspace._id}}" class="bloc col s12">
                                             {% include './workspaceUserList.twig' %}
                                         </div>
-                                        <div class="bloc col s12">
-                                            {% if currentUser.rights > 4 %}
-                                                <a class="btn outline-button modal-trigger separator col s12 m12 l5" workspaceId="{{workspace._id}}" href="#confirm-workspace-delete">Delete the workspace</a>
-                                            {% endif %}
-                                        </div>
+                                    </div>
+                                    <div class="bloc col s12">
+                                        {% if currentUser.rights > 4 %}
+                                            <a class="btn btn-normal modal-trigger separator col s12 m12 l5" workspaceid="{{workspace._id}}" href="#confirm-workspace-delete">Delete the workspace</a>
+                                        {% endif %}
+                                        {% if workspace.userRights %}
+                                            <a class="btn btn-normal modal-trigger separator col s12 m12 l5 push-l1" workspaceid="{{workspace._id}}" href="#confirm-workspace-leave">Leave The Workspace</a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>
+</div>
 
-    {% include 'modals/invitationWorkspace.twig' %}
-    {% include 'modals/confirmWorkspaceDeletion.twig' %}
+{% include 'modals/invitationWorkspace.twig' %}
+{% include 'modals/confirmWorkspaceLeave.twig' %}
+{% include 'modals/confirmWorkspaceDeletion.twig' %}
 
 {% endblock %}
 
 {% block css %}{% endblock %}
 
 {% block js %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
-    <script src="/js/settings/deleteWorkspace.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('ul.tabs').tabs();
-        });
-    </script>
-    <script src="/js/settings/invitationWorkspace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+<script src="/js/settings/deleteWorkspace.js"></script>
+<script>
+    $(document).ready(function () {
+        $('ul.tabs').tabs();
+    });
+</script>
+<script src="/js/settings/invitationWorkspace.js"></script>
 {% endblock %}

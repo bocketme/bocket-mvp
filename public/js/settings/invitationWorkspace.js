@@ -115,8 +115,6 @@ $(document).on('click', '#invite-member-submit', function (event) {
   const $form = $('#invite-member-form');
   if(_id.length === 0) return null;
   $.post($form.attr('action'), {_id, role},function() {
-    console.log('eeeererre')
     document.location.reload(true);    
-    console.log('eeeererre')
   })
 });
