@@ -16,7 +16,7 @@
             <a class="collection-item collection-item-workspace " href="/workspace/{{workspace._id}}">
                 <div class="container container-workspace">
                     <div
-                            {% if workspace._id == in_use.id %} class="circle-responsive-active"
+                            {% if in_use.id.equals(workspace._id) %} class="circle-responsive-active"
                             {% else %}  class="circle-responsive"
                             {% endif %}
                              data-tooltip="{{ workspace.name }}" data-delay="50" data-position="right" style="background-image: url('/workspace/image/{{ workspace._id }}') ">
