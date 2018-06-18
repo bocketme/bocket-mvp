@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const uniqueValidator = require('mongoose-unique-validator');
-const Schema =  mongoose.Schema
+const Schema = mongoose.Schema
 const configServer = require('../config/server');
 const TypeEnum = require('../enum/NodeTypeEnum');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
@@ -31,9 +31,9 @@ const PartSchema = mongoose.Schema({
   maturity: { type: String, default: TypeEnum.maturity[0] },
   quality: { type: Number, default: 0 },
   tags: { type: [], default: [] },
-
+  ownerOrganization: { type: NestedOrganization },
   //TODO: Script to fill the data
-  creator: { type: Schema.Types.ObjectId, require: true },
+  creator: { type: Schema.Types.ObjectId },
 
   annotation: { type: [NestedAnnotation], default: [] },
   activities: { type: [NestedComment], default: [] },
@@ -41,9 +41,8 @@ const PartSchema = mongoose.Schema({
   optionViewer: {
     activateCellShading: { type: Boolean, default: false },
   },
-  
-  Organization: {type: mongoose.SchemaTypes.ObjectId, required: true, ref:'Organization'}
-  // owners: {type: [nestedOwners], default: []}
+
+  Organization: { type: mongoose.SchemaTypes.ObjectId, required: true, ref: 'Organization' }
 });
 PartSchema.index({ name: 'text', description: 'text' });
 
@@ -59,11 +58,11 @@ function mkdirPromise(path) {
   });
 }
 
-PartSchema.pre('validate', function (next) {
+PartSchema.pre('validate', async function (next) {
 
   if (this.path) { return next(); }
 
-  this.path = `/${this.Organization}/${this.name} - ${this._id}`;
+  this.path = `/${this.Organization}/${this._id}`;
   const partPath = path.join(configServer.files3D, this.path);
 
   mkdirPromise(partPath)

@@ -264,9 +264,13 @@ OrganizationSchema.methods.userRights = function (userId) {
 }
 
 OrganizationSchema.pre('save', function (next) {
+
   const id = String(this._id);
+
   this.name = this.name.trim();
+
   let organizationPath = path.join(config.files3D, id);
+
   fs.access(organizationPath, (err) => {
     if (err) {
       fs.mkdir(path.join(organizationPath), (err) => {
