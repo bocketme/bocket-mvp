@@ -1,3 +1,4 @@
+        <div style="margin:20px 0px;">
 {% if users.length > 0 %}
 <form id="invite-member-form" action="/workspace/{{workspaceId}}/addOrganizationMember" method="post">
     {% for user in users %}
@@ -20,7 +21,9 @@
         </div>
     {% endfor %}
 </form>
-    <button class="modal-quit" id="invite-member-submit">Invite people</button>  
+    <button class="col s3 push-s1 modal-close btn btn-cancel">Cancel</button>  
+    <button class="col s4 push-s4 modal-close btn btn-valid" id="invite-member-submit">Invite people</button>  
 {% else %}
   <p> All the users are already invited </p>
 {% endif %}
+        </div>

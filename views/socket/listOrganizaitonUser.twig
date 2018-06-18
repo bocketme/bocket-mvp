@@ -1,6 +1,7 @@
 <div id="admins">
     <h5>
         <span class="title">Co-owner</span></h5>
+                            <div class="bloc-users">
     {% if (currentOrganization.Admins | length) == 0 %}
         There is no admin
     {% endif %}
@@ -33,9 +34,11 @@
     {% endfor %}
 
 </div>
+</div>
 <div id="members">
     <h5>
         <span class="title">Members</span></h5>
+                            <div class="bloc-users">
     {% if (currentOrganization.Members | length) == 0 %}
         There is no member
     {% endif %}
@@ -64,4 +67,5 @@
             {% endif %}
         </div>
     {% endfor %}
+</div>
 </div>
