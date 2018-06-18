@@ -18,9 +18,12 @@ router.post('/', controller.post.indexPost)
 router.post('/:workspaceId');
 
 //Add organization Member to a workspace
-router.post('/:workspaceId/addOrganizationMember', controller.post.addOrganizationMember );
+router.post('/:workspaceId/addOrganizationMember', controller.post.addOrganizationMember);
 //Update the workspace Information
 router.put('/:workpsaceId/information', controller.update.changeInformation);
+
+//The User wiil leave the Workspace  
+router.delete('/:workpsaceId/leave')
 
 //Delete the workspace
 router.delete('/:workspaceId', controller.delete.deleteWorkspace);
