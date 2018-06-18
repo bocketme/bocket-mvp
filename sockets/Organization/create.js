@@ -18,15 +18,7 @@ module.exports = (io, socket) => {
 
       await user.save();
 
-      const userRender = await userSchema.findOne(user._id).populate('Organization._id');
-      Twig.renderFile('./views/socket/listOrganization.twig',
-        { userOrganizations: userRender.Organization },
-        (err, html) => {
-          if (err)
-            throw (err);
-          else
-            return socket.emit('[Organization] - create', null, html);
-        });
+      return socket.emit('[Organization] - create', null, `/organization/${organization._id}/`);
     } catch (e) {
       console.error(e);
       return socket.emit('[Organization] - create', '[Error] - Error while treating the request');

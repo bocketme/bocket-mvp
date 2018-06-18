@@ -10,16 +10,15 @@ module.exports = (io, socket) => {
       const currentUserrights = organization.userRights(currentUser);
       const affectedUserRights = organization.userRights(affectedUserId);
 
-      switch (affectedUserId) {
+      switch (affectedUserRights) {
         case 6:
-          return socket.emit("[Organization] - remove", "you do not have the rights to remove that person")
+          return socket.emit("[Organization] - remove", "you do not have the rights to remove that person");
           break;
         case 5:
           if (currentUserrights === 6)
             await organization.removeUser(affectedUserId);
-          else {
-            return socket.emit("[Organization] - remove", "you do not have the rights to remove that person")
-          }
+          else
+            return socket.emit("[Organization] - remove", "you do not have the rights to remove that person");
           break;
         case 4:
           if (currentUserrights > 4)
@@ -40,8 +39,18 @@ module.exports = (io, socket) => {
         if (err) {
           console.error(err)
           return socket.emit('[Organization] - remove', 'Please recharge the page');
-        } else return socket.emit('[Organization] - remove', null, html, workspaceId);
-      })
+        } else socket.emit('[Organization] - remove', null, html, workspaceId);
+      });
+
+      twig.renderFile('./socket/OrganizationNonAccess.twig', {
+        title: "You no longer belong to this organization",
+        Manager: user.Manager
+      }, function (err, html) {
+        if (err)
+          log.error(err);
+        else
+          return io.to(workspace._id).emit('[User] - Not Access', userId, html);
+      });
     } catch (error) {
       console.error(error);
       socket.emit('[Organization] - remove', 'Intern Error - cannot remove this person from the organization')
