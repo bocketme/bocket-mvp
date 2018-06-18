@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="/css/hub/invitePeople.css">
     <link rel="stylesheet" href="/css/hub/manageWorkspace.css">
     <link rel="stylesheet" href="/css/hub/tchat.css">
-    <link rel="stylesheet" href="/css/hub/tchat.css">
+    <link rel="stylesheet" href="/css/modal.css">
 {% endblock %}
 
 {% block title %}{{ title }}
@@ -113,7 +113,11 @@
                 {% include "modals/import_assembly.twig" %}
                 {% include "modals/upload_files3d.twig" %}
                 {% include "modals/edit_part.twig" %}
-                {% include "modals/changePassword.twig" %}
+                {% include 'modals/organizationDeletion.twig' %}
+                {% include 'modals/organizationRemoved.twig' %}
+                {% include 'modals/workspaceRemoved.twig' %}
+                {% include 'modals/workspaceDeletion.twig' %}
+                {% include 'modals/noExitCreateOrganization.twig' %}
 
                 <div id="second_column_content" class="clear">
                     <a id="show-social-space" href="#" class="waves-effect waves-light btn" style="z-index: inherit">
@@ -174,10 +178,7 @@
         var ViewTypeEnum = {{ ViewTypeEnum }};
         const optionViewer = {{ optionViewer }};
         var view = ViewTypeEnum.location;
-        socket.emit("joinWorkspace", workspaceId);
-        $(".workspace-change").on("click", function () {
-            socket.emit("leaveWorkspace", workspaceId);
-        });
+        socket.emit("[USER] - join")
         const l = 42;
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
@@ -195,15 +196,14 @@
     <script src="/js/hub/specs.js"></script>
     <script src="/js/hub/notes.js"></script>
     <script src="/js/hub/invitePeople.js"></script>
-    <script src="/js/hub/manageWorkspace.js"></script>
     <script src="/js/contextMenu.js"></script>
     <script src="/js/hub/nodeTreeContextMenu.js"></script>
     <script src="/js/initial.js"></script>
-    <script src="/js/hub/createWorkspace.js"></script>
     <script src="/js/hub/actions.js"></script>
     <script src="/js/hub/changePassword.js"></script>
     <script src="/js/hub/tchat.js"></script>
     <script src="/js/settings/deleteAccount.js"></script>
+    <script type="application/javascript" src="/js/nonAccess.js"></script>
     <script type="application/javascript">
         $('.profile').initial();
     </script>

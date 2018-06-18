@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="/css/listWorkspaces.css">
         <link rel="stylesheet" href="/css/dropdown.css">
         <link rel="stylesheet" href="/css/settings/orga/main.css">
+        <link rel="stylesheet" href="/css/button.css">
         <link rel="stylesheet" href="/css/settings/orga/invite.css">
         {% block css %}{% endblock %}
     </head>
@@ -34,16 +35,15 @@
             var socket = io();
             const CurrentOrganization = "{{ currentOrganization._id }}";
             const userRights = {{currentUser.rights}};
-            $(document).ready(function(){
-              $('.modal').modal({
-                complete: function () {}
-              });
+            $(document).ready(function () {
+                $('.modal').modal({complete: function () {}});
             });
             $('.tooltipped').tooltip({delay: 50});
         </script>
         {% block js %}{% endblock %}
         <script type="application/javascript" src="/js/app/listWorkspace.js"></script>
-        <script type="application/javascript" src="/js/settings/organization.js"></script>   
-        <script type="application/javascript" src="/js/settings/workspace.js"></script>   
+        <script type="application/javascript" src="/js/settings/organization.js"></script>
+        <script type="application/javascript" src="/js/settings/workspace.js"></script>
+        <script src="/js/hub/changePassword.js"></script>
     </body>
 </html>
