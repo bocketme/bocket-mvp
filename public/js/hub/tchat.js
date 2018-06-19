@@ -17,22 +17,24 @@ $('#profile-img').click(() => {
   $('#status-options').toggleClass('active');
 });
 
-/*$('#addcontact').click(() => {
+/* $('#addcontact').click(() => {
   document.getElementById('new-tchat-form').style.display = 'flex';
   document.getElementById('new-tchat-form').classList.add('blurred');
-});*/
+}); */
 
 $('#addcontact').on({
-  mouseenter: function() {
+  mouseenter() {
     $('#addcontact img').attr('src', '/img/add-tchat-btn-hover.svg');
-  }, mouseleave: function () {
+  },
+  mouseleave() {
     $('#addcontact img').attr('src', '/img/add-tchat-btn-normal.svg');
-  }, click: function () {
+  },
+  click() {
     document.getElementById('new-tchat-form').style.display = 'flex';
     document.getElementById('new-tchat-form').classList.add('blurred');
     $('#addcontact img').attr('src', '/img/add-tchat-btn-selected.svg');
-    }
-},'img');
+  },
+}, 'img');
 
 $('#add-user').click(() => {
   if (missingUsers.length > 0) {
@@ -166,7 +168,7 @@ function addContactCard(tchat) {
     document.getElementById(`${tchat._id}`).style.color = '#FF2E63';
   });
   $(`#${tchat._id}`).on('mouseleave', () => {
-    document.getElementById(`${tchat._id}`).style.color = '#000000';    
+    document.getElementById(`${tchat._id}`).style.color = '#000000';
     if (selectedTchat._id === tchat._id) {
       $(`#${tchat._id} img`).attr('src', '/img/contact-selected.svg');
     } else {
@@ -204,11 +206,13 @@ function addContactCard(tchat) {
   });
 
   $('#add-user').on({
-    mouseenter: function() {
+    mouseenter() {
       $('#add-user img').attr('src', '/img/add-user-hover.svg');
-    }, mouseleave: function () {
+    },
+    mouseleave() {
       $('#add-user img').attr('src', '/img/add-user-normal.svg');
-    }, click: function () {
+    },
+    click() {
       const usersList = [];
       const listItems = $('#add-users-list li');
       listItems.each((idx, li) => {
@@ -221,8 +225,8 @@ function addContactCard(tchat) {
         socket.emit('[Tchat] - addUser', selectedTchat._id, usersList);
         document.getElementById('cancel-add-btn').click();
       }
-    }
-  },'img');
+    },
+  }, 'img');
 
   $('#add-user-btn').on('click', () => {
     const usersList = [];
@@ -379,10 +383,10 @@ function getUserAvatar(author, classes) {
 
 function getMessageHtml(message, date) {
   const imgHtml = getUserAvatar(message.author.completeName, 'circle');
-  return '<li class="sent">' + imgHtml +
-          '<p class="msg-info">' +
-        '<strong>' + message.author.completeName + '</strong>' +
-        '<span class="message-data-time">' + date + '</span></p>' +
-        '<p class="message-content">' + message.content + '</p>' +
+  return `<li class="sent">${imgHtml
+  }<p class="msg-info">` +
+        `<strong>${message.author.completeName}</strong>` +
+        `<span class="message-data-time">${date}</span></p>` +
+        `<p class="message-content">${message.content}</p>` +
         '</li>';
 }

@@ -6,6 +6,25 @@
     </div>
     <div class="modal-content container">
         <div class="modal-body">
+            <ul id='parts_list' class="collection">
+
+                {#<li>#}
+                    {#<div class="row">#}
+                        {#<div class="input-field col s6">#}
+                            {#<input id="part_name" type="text" class="validate">#}
+                            {#<label id="part_name_label" for="part_name"></label>#}
+                        {#</div>#}
+                        {#<div class="input-field col s12">#}
+                            {#<textarea id="part_description" class="materialize-textarea"></textarea>#}
+                            {#<label for="part_description">Description</label>#}
+                        {#</div>#}
+                        {#<ul id="import_files_list">#}
+                        {#</ul>#}
+
+                    {#</div>#}
+
+                {#</li>#}
+            </ul>
             <div class="file-field input-field col s12">
                 <div class="files-button btn upload_button">
                     <span>Add a Part</span>

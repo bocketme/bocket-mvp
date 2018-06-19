@@ -1,15 +1,30 @@
+
+$(document).ready(() => {
+    $('select').material_select();
+});
+
+var partIdx = 0;
+var partsArray = [];
+
 const defaultNodeValue = "Select a node";
 
 const extensions3d = [
-    'blend', 'dae', 'obj', 'stl',
-    '3ds', 'fbx', 'dxf', 'lwo',
-    'lxo', 'x3d', 'ply', 'ac3d',
-    'off', 'step', 'asm', 'prt',
-    'sld', 'cgr', 'catia', 'x_t',
+    'dae', 'obj', 'stl',
+    '3ds', 'fbx', 'lwo',
+    'lxo', 'x3d', 'off',
 ];
+
+const extensionsTextures = [
+    'bmp', 'gif', 'jpg', 'jpeg',
+    'png', 'tga', 'tif', 'mtl',
+]
 
 function getFileExtension(filename = '') {
     return filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
+}
+
+function getFileName(filename = '') {
+    return filename.slice(0, filename.lastIndexOf("."));
 }
 
 function parseFormFiles(files) {
@@ -22,10 +37,10 @@ function parseFormFiles(files) {
     for (var idx = 0; idx < files.length; idx++) {
         let fileExt = getFileExtension(files[idx].name);
         if (extensions3d.indexOf(fileExt.toLowerCase()) > -1) {
-            console.log('is in array', files[idx].name, fileExt);
             ret.files3d.push(files[idx]);
+        } else if (extensionsTextures.indexOf(fileExt.toLowerCase()) > -1) {
+            ret.textures.push(files[idx]);
         } else {
-            console.log('is not in array', files[idx].name, fileExt);
             ret.specs.push(files[idx]);
         }
     }
@@ -36,6 +51,96 @@ $('#import-part-files').on('change', (event) => {
     createPartInForm(event);
 })
 
+function appendFileToList(file, fileType) {
+    if (fileType === 'file3d') {
+        return '                <li class="file_list_item row" >' +
+            '                    <a class="material-icons col s1">close</a>' +
+            `                    <span class="part_file_name col s3">${file.name}</span>` +
+            `                    <span class="${partIdx}-file3d-error col s6" ></span>` +
+            '                    <div class="input-field col s2">' +
+            '                        <select>' +
+            '                            <option value="files3d" selected>3d file</option>' +
+            '                            <option value="specs">Spec file</option>' +
+            '                        </select>' +
+            '                    </div>' +
+            '                </li>'
+    } else if (fileType === 'textures') {
+        return '                <li class="file_list_item row" >' +
+            '                    <a class="material-icons col s1">close</a>' +
+            `                    <span class="part_file_name col s3">${file.name}</span>` +
+            `                    <span class="${partIdx}-texture-error col s6" ></span>` +
+            '                    <div class="input-field col s2">' +
+            '                        <select>' +
+            '                            <option value="textures" selected>Texture file</option>' +
+            '                            <option value="specs">Spec file</option>' +
+            '                        </select>' +
+            '                    </div>' +
+            '                </li>'
+    } else {
+        return '                <li class="file_list_item row">' +
+            '                    <a class="material-icons col s1">close</a>' +
+            `                    <span class="part_file_name col s3">${file.name}</span>` +
+            `                    <span class="${partIdx}-specs-error col s6" ></span>` +
+            '                    <div class="input-field col s2">' +
+            '                        <select disabled>' +
+            '                            <option value="specs" disabled selected>Spec file</option>' +
+            '                        </select>' +
+            '                    </div>' +
+            '                </li>'
+    }
+
+}
+
+function handlePartError(files) {
+    if (files.files3d.length === 0) {
+        $(`#${partIdx}-error`).text('Error: You must import at least 1 3d file');
+    } else if (files.files3d.length > 1) {
+        $(`.${partIdx}-file3d-error`).text('Error: You must have only 1 3d file by part');
+    } else {
+        console.log('CA MARCHE PASSS');
+    }
+}
+
+function addPartInModalList(files) {
+    console.log(files);
+    if (files) {
+        const html = `<li id="${partIdx}-part" class="collection-item">` +
+            '             <div class="row">' +
+            '                 <div class="input-field col s6">' +
+            (files.files3d.length ? `<input id="part_name" type="text" class="validate" value="${getFileName(files.files3d[0].name)}">` : `<input id="part_name" type="text" class="validate" value="">`) +
+            '                 </div>' +
+            `                 <span id="${partIdx}-error" class="part-error col s6"></span>` +
+            '                 <div class="input-field col s12">' +
+            '                     <textarea id="part_description" class="materialize-textarea"></textarea>' +
+            '                     <label for="part_description">Description</label>' +
+            '                 </div>' +
+            `                 <ul id="${partIdx}_files_list">` +
+            '                 </ul>' +
+            '             </div>' +
+            '        </li>';
+
+        $('#parts_list').append(html);
+
+        for (var idx = 0; idx < files.files3d.length; idx++) {
+            $(`#${partIdx}_files_list`).append(appendFileToList(files.files3d[idx], 'file3d'));
+        }
+        for (var idx = 0; idx < files.textures.length; idx++) {
+            $(`#${partIdx}_files_list`).append(appendFileToList(files.textures[idx], 'textures'));
+        }
+        for (var idx = 0; idx < files.specs.length; idx++) {
+            $(`#${partIdx}_files_list`).append(appendFileToList(files.specs[idx], 'specs'));
+        }
+        $('select').material_select();
+        console.log(partIdx);
+        handlePartError(files);
+
+        partsArray.push({ _id: partIdx, files }) // Keeps the files for te sending of datas
+        partIdx++;
+    } else {
+        console.error('Could not load files');
+    }
+}
+
 function createPartInForm(event) {
     event.preventDefault();
     console.log('Choosen Module: ' + idOfchoosenNode);
@@ -43,17 +148,20 @@ function createPartInForm(event) {
     if (cible !== defaultNodeValue.title) {
         const nodeId = idOfchoosenNode;
         const files = parseFormFiles(document.getElementById('import-part-files').files);
+        addPartInModalList(files);
         if (files.files3d.length) {
-
-            console.log(files.files3d, files.specs);
-
+            if (files.files3d.length !== 1) {
+                Materialize.toast("You can't have more than one 3d file", 1000);
+            }
             Materialize.toast("Loading File... Please Wait", 2000);
 
-            $("#import-part").modal("close");
-            $("#form-import-part").find("input").val("");
+            // $("#import-part").modal("close");
+            // $("#form-import-part").find("input").val("");
         }
-    } else
+    } else {
         Materialize.toast("You must select a node", 1000);
+    }
+    console.log('PART ARRAY', partsArray);
 }
 
 (function ($) {

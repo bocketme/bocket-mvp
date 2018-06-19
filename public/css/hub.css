@@ -766,3 +766,8 @@ ul#details-tab {
     padding-bottom: 4px;
     padding-right: 5px;
 }
+
+#import-part {
+    width: 80% !important;
+    position: absolute;
+}
