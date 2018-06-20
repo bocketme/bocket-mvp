@@ -69,3 +69,10 @@
   background-color: #9b9b9b !important; 
   color: #50677D !important;
 }
+
+.absolute-redirection {
+  position: absolute;
+  right: 5%;
+  font-weight: 600;
+  font-size: 12px;
+}
