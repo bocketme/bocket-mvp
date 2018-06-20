@@ -79,7 +79,7 @@ module.exports = {
         res.redirect(`/organization/${organizationId}/workspaces`);
       }).catch((err) => {
         log.error(err);
-        res.redirect('');
+        res.redirect(`/organization/${organizationId}/workspaces`);
       })
   },
   changeInformation: (req, res) => {
