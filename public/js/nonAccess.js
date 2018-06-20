@@ -21,9 +21,7 @@ $(document).ready(function () {
     outDuration: 200,
     ready: function (modal, trigger) {
       const child = $(modal).find(".membership-user");
-      console.log(child)
       const forcedReturn = $('.forced-return');
-
       forcedReturn.attr("href", `#${$(modal).attr("id")}`)
       const membershipReq = new XMLHttpRequest();
       membershipReq.open('GET', '/user/membership');
@@ -31,8 +29,8 @@ $(document).ready(function () {
       membershipReq.onreadystatechange = function (event) {
         if (this.readyState === XMLHttpRequest.DONE) {
           if (this.status === 200) {
-            console.log(this.response);
             child.html(this.response);
+            $('.collapsible').collapsible();
           } else {
             child.html('<p>Cannot Find the current user</p>');
           }
@@ -42,7 +40,6 @@ $(document).ready(function () {
   }
 
   organizationDeleted.modal(optionsModal);
-  organizationDeleted.modal("open");
   organizationRemoved.modal(optionsModal);
   workspaceDeleted.modal(optionsModal);
   workspaceRemoved.modal(optionsModal);
