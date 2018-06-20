@@ -17,7 +17,7 @@ module.exports = (io, socket) => {
         organization.isAdmin(currentUser) ||
         workspace.isProductManager(currentUser) ||
         currentUser._id.equals(userId))
-        await workspace.removeUser(userId);
+        await workspace.removeUser(userId, false);
       else return socket.emit('[Workspace] - remove', 'You have no right for this workspace');
 
       await workspace
@@ -44,7 +44,7 @@ module.exports = (io, socket) => {
       const user = await userSchema
         .findById(userId)
         .populate('Manager.Organization Manager.Workspaces')
-        .execPopulate();
+        .exec();
 
       twig.renderFile('./socket/OrganizationNonAccess.twig', {
         title: "You no longer belong to this workspace",

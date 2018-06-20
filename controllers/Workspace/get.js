@@ -15,8 +15,12 @@ const index = async (req, res, next) => {
 
     const user = await userSchema.findOne({ email: userMail });
 
-    await user.populate('Manager.Organization').populate('Manager.Workspaces', 'name').execPopulate();
     if (!user) throw new Error('[Workspace Controller] - Workspace not Found');
+
+    await user
+      .populate('Manager.Organization', 'name')
+      .populate('Manager.Workspaces', 'name')
+      .execPopulate();
 
     const workspace = await workspaceSchema.findById(workspaceId);
 

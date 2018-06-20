@@ -1,4 +1,6 @@
+const userSchema = require('../../../models/User');
 const organizationSchema = require('../../../models/Organization');
+const log = require('../../../utils/log')
 
 module.exports = async function userOwnership(req, res) {
   try {
