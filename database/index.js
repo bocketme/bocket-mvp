@@ -15,4 +15,9 @@ db.on('error', log.error.bind(console, 'MongoDB connection error:'));
 
 const corrector = require('./corrector');
 const co = require('co');
-co(corrector());
+co(corrector())
+  .then(() => mongoose.connection.close())
+.catch(err => {
+  log.error(err);
+  mongoose.connection.close()
+});

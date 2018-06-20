@@ -18,9 +18,13 @@ module.exports = function* () {
         yield doc.save();
       }
 
-      const directoryOrganization = path.join(config.files3D, `${doc.name}-${doc._id.toString()}`);
-      const newDirectoryOrganization = path.join(config.files3D, doc._id.toString());
-      yield renameDir(directoryOrganization, newDirectoryOrganization);
+      try {
+        const directoryOrganization = path.join(config.files3D, `${doc.name}-${doc._id.toString()}`);
+        const newDirectoryOrganization = path.join(config.files3D, doc._id.toString());
+        yield renameDir(directoryOrganization, newDirectoryOrganization);          
+      } catch (err) {
+        log.error(new Error('[Correction] - Organization : Cannot change the name of the directory ...skipping \n' + err))
+      }
 
       if (organization.node)
         doc.node = null;

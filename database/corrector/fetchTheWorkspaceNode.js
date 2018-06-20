@@ -17,22 +17,26 @@ module.exports = function* () {
 function* addWorkspace(workspaceId, nodeId) {
   const node = yield nodeSchema.findById(nodeId);
 
+  if(!node) return null
+
   const doc = node._doc
 
   node.Workspace = workspaceId;
 
-  yield changePathContent(content);
+  if(doc.ownerOrganization)
+  yield changePathContent(node.content, doc.ownerOrganization._id);
 
   node.path = `${node.Organization}/${node._id}`
   yield node.save();
   for (let i = 0; i < node.children.length; i++) {
-    yield addWorkspace(workspaceId, Wnode.children[i]._id);
+    yield addWorkspace(workspaceId, node.children[i]._id);
   }
 }
 
-function* changePathContent(content) {
+function* changePathContent(content, ownerOrganizationId) {
   
-  content.Organization = doc.ownerOrganization._id
+  log.info(ownerOrganizationId)
+  content.Organization = ownerOrganizationId
   const ancientPath = `/1${content.Organization}/${content.name} - ${content._id}`
   const newPath = `${content.Organization}/${content._id}`
   const directoryOrganization = path.join(config.files3D, ancientPath);

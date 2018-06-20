@@ -22,5 +22,4 @@ module.exports = function* () {
   yield fetchTheWorkspaceNode();
   log.info('[Correction] - FetchTheWorkspaceNode : Finised');
   log.info('[Correction] - Finished');
-  yield mongoose.connection.close();
 }
