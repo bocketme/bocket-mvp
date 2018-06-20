@@ -29,7 +29,10 @@ module.exports = (io, socket) => {
 
     if (!isMatch) return socket.emit('signinFailed');
 
-    if (invitationUid) return await emitWithInvitation(invitationUid, user, socket);
+    if (invitationUid) {
+      const newWorkspace = await acceptInvitation(invitationUid, user);
+      return socket.emit('signinSucced', newWorkspace.url)
+    }
 
     const { Manager } = user;
     console.info(Manager)
@@ -56,13 +59,7 @@ module.exports = (io, socket) => {
 
     return socket.emit('signinSucced', { workspaces: works, user: simplifiedUser, organization: organizations });
   });
+  async function emitWithInvitation(invitationUid, user, socket) {
+    
+  }
 };
-
-function emitWithInvitation(invitationUid, user, socket) {
-  acceptInvitation(invitationUid, user)
-    .then(res => socket.emit('signinSucced', res.workspaceId))
-    .catch((err) => {
-      console.log(err);
-      internalErrorEmitter(socket);
-    });
-}
