@@ -1,56 +1,68 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    {% block meta %}
-    {% endblock %}
-    <title>Bocket.me - {% block title %}{% endblock %}</title>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        {% block meta %}{% endblock %}
+        <title>Bocket.me -
+            {% block title %}{% endblock %}
+        </title>
 
-    <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <link rel="stylesheet" href="/css/global.css">
-    <link rel="stylesheet" href="/css/button.css">
-    {% block css %}
-    {% endblock %}
-</head>
-<body>
-    <nav class="home-nav">
-        <div class="nav-wrapper">
-            <a href="/" class="brand-logo"><img id="logo" src="/img/logo.png"></a>
-            <a href="#" data-activates="mobile-links" class="button-collapse"><i class="material-icons black-text">menu</i></a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a id="request-access-btn" class="btn waves-effect" href="#requestAccess">Request an account</a></li>
-                <li><a id="signIn" class="btn waves-effect" href="#">Sign In</a></li>
-                <li><a id="signUp" class="btn waves-effect" style="visibility: hidden" href="#">Sign Up</a></li>
-            </ul>
-            <ul id="mobile-links" class="side-nav collection">
-                <li class="collection-item"><a class="request-access-btn" href="#requestAccess">Request an account</a></li>
-                <li class="collection-item"><a id="signIn-nav" href="#">Sign In</a></li>
-            </ul>
-        </div>
-    </nav>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <link rel="stylesheet" href="/css/global.css">
+        <link rel="stylesheet" href="/css/global/button.css">
+        <link rel="stylesheet" href="/css/global/main.css">
+        <link rel="stylesheet" href="/css/global/modal.css">
+        <link rel="stylesheet" href="/css/global/sideNav.css">
+        <link rel="stylesheet" href="/css/settings/orga/invite.css">
+        {% block css %}{% endblock %}
+    </head>
+    <body>
+        <nav class="home-nav">
+            <div class="nav-wrapper">
+                <a href="/" class="brand-logo"><img id="logo" src="/img/logo.png"></a>
+                <a href="#" data-activates="mobile-links" class="button-collapse">
+                    <i class="material-icons black-text">menu</i>
+                </a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li>
+                        <a id="request-access-btn" class="btn waves-effect" href="#requestAccess">Request an account</a>
+                    </li>
+                    <li>
+                        <a id="signIn" class="btn waves-effect" href="#">Sign In</a>
+                    </li>
+                    <li>
+                        <a id="signUp" class="btn waves-effect" style="visibility: hidden" href="#">Sign Up</a>
+                    </li>
+                </ul>
+                <ul id="mobile-links" class="side-nav collection">
+                    <li class="collection-item">
+                        <a class="request-access-btn" href="#requestAccess">Request an account</a>
+                    </li>
+                    <li class="collection-item">
+                        <a id="signIn-nav" href="#">Sign In</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
-    {% block body %}
-    {% endblock %}
+        {% block body %}{% endblock %}
 
-    <!--Import jQuery before materialize.js-->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-    <script type="application/javascript">
-        var socket = io();
-        $(document).ready(() => {
-            $(".button-collapse").sideNav({
-                closeOnClick: true,
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+        <script type="application/javascript">
+            var socket = io();
+            $(document).ready(() => {
+                $(".button-collapse").sideNav({closeOnClick: true});
             });
-        });
-    </script>
-    {% block js %}
-    {% endblock %}
-</body>
+        </script>
+        {% block js %}{% endblock %}
+    </body>
 </html>

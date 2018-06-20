@@ -2,7 +2,11 @@
 
 {% block id %} id="workspace-removed" {% endblock %}
 
-{% block title %}You have no longer an access to this workspace{% endblock %}
+{% block title %}You no longer have access to this workspace{% endblock %}
+
+{% block titleStyle %}class="center-align"{% endblock %}
+
+{% block contentStyle %}{{ parent() }}{% endblock %}
 
 {% block content %}
 <div class="membership-user">

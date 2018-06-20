@@ -6,6 +6,10 @@
     Create An Organization
 {% endblock %}
 
+{% block titleStyle %}class="center-align"{% endblock %}
+
+{% block contentStyle %}{{ parent() }}{% endblock %}
+
 {% block content %}
     <div class="valign-wrapper input-field col s8 push-s2">
         <input id="organizationName" type="text" class="validate">

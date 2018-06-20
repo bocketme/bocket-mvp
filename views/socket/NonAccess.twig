@@ -1,22 +1,32 @@
+<p class="center-align" style="margin-bottom:33px;">
+    Please choose another organization or workspace, or create an organization
+</p>
 <ul class="collapsible" data-collapsible="accordion">
     {% for manager in Manager %}
         <li>
-            <div class="collapsible-header">
-                <div class="col s12">
-                    <h5 class="left">
-                        {{manager.Organization.name}}
-                    </h5>
-                    <a href="/organization/{{manager.Organization._id}}" class="btn btn-normal right">Access to this organization</a>
-                </div>
+            <div class="collapsible-header" style="position:relative">
+                <i class="material-icons left fix-icons">arrow_drop_down</i>
+                <p class="title-organization">
+                    {{manager.Organization.name}}
+                </p>
+                <a href="/organization/{{manager.Organization._id}}" class="absolute-redirection">Go</a>
             </div>
             <div class="collapsible-body">
                 <ul class="collection">
                     {% for Workspace in manager.Workspaces %}
-                        <li class="collection-item">
-                            {{Workspace.name}}
-                            <a href="/workspace/{{Workspace._id}}" class="secondary-contents">
-                                <a href="/workspace/{{Workspace._id}}" class="btn btn-normal fix">Go to this workspace</a>
-                            </a>
+                        <li class="inherit-background collection-item">
+                            <p>
+                                {{Workspace.name}}
+                                <a href="/workspace/{{Workspace._id}}" class="absolute-redirection">
+                                    Go
+                                </a>
+                            </p>
+                        </li>
+                    {% else %}
+                        <li class="inherit-background collection-item">
+                            <p>
+                                No workspace or access restricted.
+                            </p>
                         </li>
                     {% endfor %}
                 </ul>
