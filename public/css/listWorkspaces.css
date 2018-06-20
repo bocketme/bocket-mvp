@@ -1,30 +1,3 @@
-
-#list-workspace{
-    max-height: 100%;
-    overflow-x: hidden;
-    margin: 0;
-    overflow-y: scroll;
-    height: 100%;
-    width: 100%;
-}
-
-#organization-block{
-    height: 5%;
-    margin-bottom: 40%;
-    position: relative;
-}
-
-#user-block{
-    height: 50px;
-    position: relative;
-}
-
-#workspaces-block{
-    height: 85%;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
 .cube-responsive-active, .circle-responsive-active {
     background: transparent;
     box-shadow: 0 0 0 3px #F5F5F5;
@@ -36,8 +9,12 @@
     background: #F5F5F5;
     border-radius: 25%;
     height: 0;
-    padding-bottom: 100%;
     width: 100%;
+}
+
+.cube-responsive:last {
+  padding-bottom: 0%;
+  padding-top: 100%;
 }
 
 .absolute-container{
@@ -119,9 +96,4 @@
 
 .dropdown-content {
     z-index: 5 !important;
-}
-
-#side-nav>hr, #sideNav>hr{
-    margin: 0% 10%;
-    opacity: 0.5;
 }
