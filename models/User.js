@@ -55,7 +55,6 @@ UserSchema.pre('save', function (next) {
   user.active = true;
   if (!user.createDate) { user.createDate = new Date(); }
   // only hash the password if it has been modified (or is new)
-  console.log(user.isModified('password'));
   if (user.isModified('password')) {
     // generate a salt
     bcrypt.genSalt(serverConfiguration.saltRounds, (err, salt) => {
@@ -172,7 +171,7 @@ UserSchema.methods.removeOrganization = async function (organizationId) {
     for (let i = 0; i < Workspaces.length; i++) {
       const workspaceId = Workspaces[i];
       const workspace = await workspaceSchema.findById(workspaceId);
-      await workspace.removeUser(this._id)
+      await workspace.removeUser(this._id, true);
     }
 
     function filterOrganization({ Organization }) {

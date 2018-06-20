@@ -141,8 +141,11 @@ WorkspaceSchema.methods.addTeammate = async function (userId) {
 WorkspaceSchema.methods.changeRole = async function (userId, newRole) {
   try {
     const formerRole = this.hasRights(userId);
-    if (!formerRole) throw new Error('Cannot find the user');
-    if (formerRole === Number(newRole)) throw new Error('[Organization] the new role is the same before the changement, skipping changement ...')
+    if (!formerRole)
+      throw new Error('Cannot find the user');
+
+    if (formerRole === Number(newRole))
+      throw new Error('[Organization] the new role is the same before the changement, skipping changement ...')
 
     function idNotEqual(_id) {
       const isEqual = !_id.equals(userId);
@@ -210,20 +213,23 @@ WorkspaceSchema.methods.addObserver = async function (userId) {
   await this.save();
 }
 
-WorkspaceSchema.methods.removeUser = async function (userId) {
+/**
+ *
+ * Remove one user from the Workspace
+ * @param {*} userId - the user ID to be deleted
+ * @param {boolean} [cancelRequest=false] - Make another request to delete the user's workspace
+ */
+WorkspaceSchema.methods.removeUser =  async function (userId, cancelRequest = false) {
   const filter = String(userId);
 
-  const user = await userSchema.findById(userId);
-  if (!user) throw new Error('The user does not exist');
-
-  let role = this.hasRights(userId);
+  const userRole = this.hasRights(userId);
 
   function filterId(id) {
     const isEqual = id.equals(userId);
     return !isEqual;
   }
 
-  switch (role) {
+  switch (userRole) {
     case 3:
       this.ProductManagers = this.ProductManagers.filter(filterId);
       break;
@@ -234,13 +240,32 @@ WorkspaceSchema.methods.removeUser = async function (userId) {
       this.Observers = this.Observers.filter(filterId);
       break;
     default:
-      throw new Error('The user has no right in this workspace');
+      throw new Error('The user does not exist');
       break;
   }
 
-  await user.removeWorkspace(this.Organization, this._id);
+  if (!cancelRequest) {
+    const user = await userSchema.findById(userId);
+    if (!user) throw new Error('The user does not exist');
+    await user.removeWorkspace(this.Organization, this._id);
+  }
+
   await this.save();
 };
+
+/**
+ * Remove multiples user from the database
+ * @param {mongoose.Schema.ObjectId} usersId
+ * @param {boolean} [cancelRequest=false]
+ */
+
+WorkspaceSchema.methods.removeUsers = async function (usersId, cancelRequest = false) {
+  if (Array.isArray(usersId)) {
+    for (let i = 0; i < usersId.length; i++) {
+      await removeUser(usersId[i], cancelRequest);
+    }
+  } else await removeUser(usersId[i], cancelRequest);
+}
 
 WorkspaceSchema.pre('save', function (next) {
   if (this.isModified('name'))
@@ -256,7 +281,7 @@ WorkspaceSchema.pre('remove', async function () {
     const _id = this._id;
 
     const Invitation = require('./Invitation');
-    const invitations = Invitation.find({"workspace.id": this._id}).cursor();
+    const invitations = Invitation.find({ "workspace.id": this._id }).cursor();
 
     for (let doc = await invitations.next(); doc !== null; doc = await cursor.next()) {
       await doc.remove().catch(err => log.error(err));
@@ -289,6 +314,8 @@ WorkspaceSchema.pre('remove', async function () {
   }
 });
 
+
+//TODO: REMOVE that
 /**
  *
  *

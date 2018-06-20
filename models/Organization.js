@@ -213,7 +213,7 @@ OrganizationSchema.methods.changeOwner = async function (userId) {
   }
 
   const vaccantOwner = await userSchema.findById(this.Owner);
-  vaccantOwner.removeOrganization(this._id);
+  await vaccantOwner.removeOrganization(this._id);
 
   this.Owner = userId;
   await this.save();
@@ -287,18 +287,12 @@ OrganizationSchema.pre('remove', async function () {
   try {
 
     const Invitation = require('./Invitation');
-    const invitations = Invitation.find({"organization.id": this._id}).cursor();
+    const invitations = Invitation.find({ "organization.id": this._id }).cursor();
 
     for (let doc = await invitations.next(); doc !== null; doc = await cursor.next()) {
       await doc.remove().catch(err => log.error(err));
     }
 
-    for (let i = 0; i < this.Workspaces.length; i++) {
-      const workspaceId = this.Workspaces[i];
-      const workspace = await workspaceSchema.findById(workspaceId);
-      await workspace.remove();
-    }
-    
     const Owner = await userSchema.findById(this.Owner).catch();
     if (Owner)
       await Owner.removeOrganization(this._id);
@@ -312,6 +306,14 @@ OrganizationSchema.pre('remove', async function () {
       const member = this.Members[i];
       await this.deleteMember(member);
     }
+
+    for (let i = 0; i < this.Workspaces.length; i++) {
+      const workspaceId = this.Workspaces[i];
+      const workspace = await workspaceSchema.findById(workspaceId);
+      await workspace.removeUsers(workspace.users, true);
+      await workspace.remove();
+    }
+
     return null;
   } catch (err) {
     throw new Error(`[Organization] - Remove Cannot remove the workspace \n ${err}`);
