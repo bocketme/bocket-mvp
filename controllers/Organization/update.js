@@ -7,9 +7,9 @@ module.exports = { leaveOrganization, transfertOwnership };
 
 async function leaveOrganization(req, res, next) {
   try {
-    const { organizationId } = req.params;
+    console.log(req.body, req.query,)
+    const { organizationId, newOwner } = req.params;
     const { userId } = req.session;
-    const { newOwner } = req.body;
     const organization = await organizationSchema.findById(organizationId);
     if (!organization) throw new Error('[Organization] - Cannot Find the organization');
 
@@ -19,7 +19,7 @@ async function leaveOrganization(req, res, next) {
           log.error(new Error('[Organization] - Put - Cannot find the new owner'));
           return res.status(400).send('Bad Request');
         }
-        await organization.changeRole(newOwner);
+        await organization.changeOwner(newOwner);
         break;
       case 5:
         await organization.deleteAdmin(userId);

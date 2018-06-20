@@ -1,7 +1,7 @@
 $(document).on('click', '#send-the-new-owner', function (event) {
   const leaveOrganizationRequest = new XMLHttpRequest();
-  leaveOrganizationRequest.open('PUT', `/organization/${CurrentOrganization}/leave`);
-  leaveOrganizationRequest.send({ newOwner: $('select[name="organization-new-owner"]').parent().val() });
+  leaveOrganizationRequest.open('PUT', `/organization/${CurrentOrganization}/leave/${$('select[name="organization-new-owner"]').val()}`);
+  leaveOrganizationRequest.send(null);
   leaveOrganizationRequest.onreadystatechange = function (event) {
     if (this.readyState === XMLHttpRequest.DONE) {
       if (this.status === 200) {
@@ -11,6 +11,10 @@ $(document).on('click', '#send-the-new-owner', function (event) {
       }
     }
   }
+});
+
+$(document).on('change', 'select[name="organization-new-owner"]',function(event) {
+  $('#send-the-new-owner').removeClass('disabled');
 });
 
 $(document).on('click', '#delete-the-organization', function (event) {
