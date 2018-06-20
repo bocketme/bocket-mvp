@@ -90,9 +90,9 @@ function handleChangeTexture(event) {
     const partId = id.substr(elem.id.lastIndexOf('_') + 1);
     const value = event.target.value;
     var idxToChange = -1;
+    const part = partsArray.find((element) => { return element._id.toString() === partId });
 
     if (value === 'specs') {
-        const part = partsArray.find((element) => { return element._id.toString() === partId });
         idxToChange = part.files.textures.findIndex((element) => { return element.name === fileName;});
         if (idxToChange !== -1) {
             part.files.specs.push(part.files.textures[idxToChange])
@@ -102,7 +102,6 @@ function handleChangeTexture(event) {
         }
 
     } else if (value === 'textures') {
-        const part = partsArray.find((element) => { return element._id.toString() === partId });
         idxToChange = part.files.specs.findIndex((element) => { return element.name === fileName;});
         if (idxToChange !== -1) {
             part.files.textures.push(part.files.specs[idxToChange])
@@ -183,52 +182,78 @@ function addPartInModalList(files) {
             '                 </div>' +
             `                 <ul id="${partIdx}_files_list">` +
             '                 </ul>' +
-            '                 <div class="file-field input-field">' +
-            '                     <div class="files-button btn upload_button col s4">' +
-            '                         <span>Add a Part</span>' +
-            `                         <input type="file" multiple id="add-part-files-${partIdx}" name="textureFiles">` +
+            '                 <div class="file-field input-field col s4">' +
+            '                     <div class="files-button btn upload_button">' +
+            '                         <span>Add files</span>' +
+            `                         <input id="add-files-${partIdx}" type="file" multiple name="partFiles">` +
             '                     </div>' +
             '                 </div>' +
             '             </div>' +
             '        </li>';
 
         $('#parts_list').append(html);
-        $(`#add-part-files-${partIdx}`).on('change', (event) => {
-           console.log('J\'ai add a file');
+
+        $(`#add-files-${partIdx}`).on('change', (event) => {
+            const elem = event.target;
+            console.log(elem);
+            const idElem = elem.id;
+            const idPart = idElem.slice(idElem.lastIndexOf('-') + 1);
+            const files = parseFormFiles(document.getElementById(idElem).files);
+            console.log('J\'ai add a file', idPart, files);
+            linkFilesToList(idPart, files);
+            addFilesToPart(idPart, files);
         });
+
         $(`#${partIdx}-close`).on('click', (event) => {
             console.log('Je supprime la part ! ');
         });
 
-        for (var idx = 0; idx < files.files3d.length; idx++) {
-            $(`#${partIdx}_files_list`).append(appendFileToList(files.files3d[idx], 'file3d'));
-            $(`#${fileId}-close-${partIdx}`).on('click', (event) => {
-                console.log('Je supprime un file');
-            });
-            fileId++;
-        }
-        for (var idx = 0; idx < files.textures.length; idx++) {
-            $(`#${partIdx}_files_list`).append(appendFileToList(files.textures[idx], 'textures'));
-            $(`#${fileId}-close-${partIdx}`).on('click', (event) => {
-                console.log('Je supprime un file');
-            });
-            fileId++;
-        }
-        for (var idx = 0; idx < files.specs.length; idx++) {
-            $(`#${partIdx}_files_list`).append(appendFileToList(files.specs[idx], 'specs'));
-            $(`#${fileId}-close-${partIdx}`).on('click', (event) => {
-                console.log('Je supprime un file');
-            });
-            fileId++;
-        }
-        $('select').material_select();
-        console.log(partIdx);
+        linkFilesToList(partIdx, files);
         partsArray.push({ _id: partIdx, files }) // Keeps the files for te sending of datas
         handlePartError(partIdx);
         partIdx++;
     } else {
         console.error('Could not load files');
     }
+}
+
+function addFilesToPart(idPart, files) {
+    const part = partsArray.find((element) => { return element._id.toString() === idPart });
+    for (var idx = 0; idx < files.files3d.length; idx++) {
+        part.files.files3d.push(files.files3d[idx]);
+    }
+    for (var idx = 0; idx < files.textures.length; idx++) {
+        part.files.textures.push(files.textures[idx]);
+    }
+    for (var idx = 0; idx < files.specs.length; idx++) {
+        part.files.specs.push(files.specs[idx]);
+    }
+    console.log('PARTARRAY AFTER AJOUT', partsArray);
+}
+
+function linkFilesToList(idPart, files) {
+    for (var idx = 0; idx < files.files3d.length; idx++) {
+        $(`#${idPart}_files_list`).append(appendFileToList(files.files3d[idx], 'file3d'));
+        $(`#${fileId}-close-${idPart}`).on('click', (event) => {
+            console.log('Je supprime un file');
+        });
+        fileId++;
+    }
+    for (var idx = 0; idx < files.textures.length; idx++) {
+        $(`#${idPart}_files_list`).append(appendFileToList(files.textures[idx], 'textures'));
+        $(`#${fileId}-close-${idPart}`).on('click', (event) => {
+            console.log('Je supprime un file');
+        });
+        fileId++;
+    }
+    for (var idx = 0; idx < files.specs.length; idx++) {
+        $(`#${idPart}_files_list`).append(appendFileToList(files.specs[idx], 'specs'));
+        $(`#${fileId}-close-${idPart}`).on('click', (event) => {
+            console.log('Je supprime un file');
+        });
+        fileId++;
+    }
+    $('select').material_select();
 }
 
 function createPartInForm(event) {
