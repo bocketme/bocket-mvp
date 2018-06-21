@@ -9,10 +9,7 @@ const Organization = require('./Organization');
 const newActivityComment = require('./newActivityCommentListener');
 const getActivities = require('./getActivitiesListener');
 const addCommentListener = require('./addCommentToActivityListener');
-const joinWorkspaceListener = require('./joinWorkspaceListener');
-const leaveWorkspaceListener = require('./leaveWorkspaceListener');
 const fileUploaderListener = require('./fileUploaderListener');
-const SocketIOFile = require('socket.io-file');
 const getAllSpecListener = require('./getAllSpecListener');
 const removeSpecListener = require('./removeSpecListener');
 const renameSpecListener = require('./renameSpecListener');
@@ -28,6 +25,8 @@ const Workspace = require('./Workspace');
 const User = require('./User');
 
 const FSconfig = require('../config/FileSystemConfig');
+
+const SocketIOFile = require('socket.io-file');
 
 module.exports = function (io) {
   io.on('connection', (socket) => {
@@ -54,8 +53,6 @@ module.exports = function (io) {
     newActivityComment(socket, io);
     getActivities(socket);
     addCommentListener(socket, io);
-    joinWorkspaceListener(io, socket);
-    leaveWorkspaceListener(io, socket);
     getAllSpecListener(socket);
     removeSpecListener(io, socket);
     renameSpecListener(io, socket);
