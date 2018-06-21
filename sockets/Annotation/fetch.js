@@ -6,7 +6,7 @@ module.exports = (io, socket) => {
             .findById(socket.handshake.session.currentWorkspace)
             .populate('Annotations.creator', '')
             .then(({ Annotations }) => {
-                socket.emit('[Annotation] - fetch', Annotations, annotation ? false : true)
+                socket.emit('[Annotation] - fetch', Annotations, !annotation)
             });
     });
     socket.on('[Annotation] - fetchByName', (annotation = null) => {

@@ -159,8 +159,7 @@ async function renderOrganization(organizationId, userId) {
   const rights = organization.userRights(userId);
 
   const index = user.Manager.findIndex(manager => {
-    const res = String(manager.Organization._id) === String(organizationId);
-    return res
+    return manager.Orgnaization._id.equals(organizationId);
   });
 
   if (index === -1) throw new Error('Cannot find the organization');
@@ -230,8 +229,7 @@ async function renderWorkspaces(organizationId, userId) {
   const managerOrganization = user.get('Manager');
 
   const index = user.Manager.findIndex(manager => {
-    const res = String(manager.Organization._id) === String(organizationId);
-    return res
+    return manager.Orgnaization._id.equals(organizationId);
   });
 
   if (index === -1) throw new Error('Cannot find the organization');
@@ -288,8 +286,7 @@ async function renderMembers(organizationId, userId) {
   if (!user) throw new Error('[Organizaiton Manager] - Cannot find the user');
 
   const index = user.Manager.findIndex(manager => {
-    const res = String(manager.Organization._id) === String(organizationId);
-    return res
+    return manager.Orgnaization._id.equals(organizationId);
   });
 
   if (index === -1) throw new Error('Cannot find the organization');

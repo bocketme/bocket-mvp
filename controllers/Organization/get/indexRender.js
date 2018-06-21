@@ -35,8 +35,7 @@ async function index(req, res, next) {
     if (!organization) throw new Error('[Organization Manager] - Cannot Find the organization');
 
     const index = user.Manager.findIndex(manager => {
-      const res = String(manager.Organization._id) === String(organizationId);
-      return res
+      return String(manager.Organization._id) === String(organizationId)
     });
 
     if (index === -1) throw new Error('Cannot find the organization');

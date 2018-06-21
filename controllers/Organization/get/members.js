@@ -33,8 +33,7 @@ async function members(req, res, next) {
       .execPopulate();
 
     const index = user.Manager.findIndex(manager => {
-      const res = String(manager.Organization._id) === String(organizationId);
-      return res
+      return manager.Organization._id.equals(organizationId);
     });
 
     if (index === -1) throw new Error('Cannot find the organization');

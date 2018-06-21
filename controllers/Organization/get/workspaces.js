@@ -54,8 +54,7 @@ async function workspaces(req, res, next) {
     const managerOrganization = user.get('Manager');
 
     const index = user.Manager.findIndex(manager => {
-      const res = String(manager.Organization._id) === String(organizationId);
-      return res
+      return String(manager.Organization._id) === String(organizationId)
     });
 
     if (index === -1) throw new Error('Cannot find the organization');
