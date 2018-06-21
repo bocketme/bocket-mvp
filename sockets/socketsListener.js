@@ -17,7 +17,6 @@ const getAllSpecListener = require('./getAllSpecListener');
 const removeSpecListener = require('./removeSpecListener');
 const renameSpecListener = require('./renameSpecListener');
 const workspaceManagerListener = require('./workspaceListener');
-const GetSelectedItemsToAdd = require('./GetSelectedItemsToAdd');
 const createWorkspaceInSignIn = require('./createWorkspaceInSignIn');
 const duplicateNodeListener = require('./duplicateNodeListener');
 const changePassword = require('./changePasswordListener');
@@ -60,7 +59,6 @@ module.exports = function (io) {
     getAllSpecListener(socket);
     removeSpecListener(io, socket);
     renameSpecListener(io, socket);
-    GetSelectedItemsToAdd(socket);
     changePassword(socket);
     User(io, socket);
     Organization(io, socket);
