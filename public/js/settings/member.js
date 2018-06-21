@@ -1,5 +1,5 @@
 $(document).on('change', 'select[name=organizationManager]', function (event) {
-  console.log('socket emited')
+  console.log('socket emited');
   const selection = $(this);
   const role = selection.val(),
     userId = selection.attr('userId');

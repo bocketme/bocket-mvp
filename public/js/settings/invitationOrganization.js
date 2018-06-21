@@ -28,8 +28,8 @@ $(document).ready(function () {
     return false;
   });
 });
-socket.on('[Invitation] - orgnanization', (message) => { Materialize.toast(message, 1000) })
-socket.on('[Invitation] - error', (message) => { Materialize.toast(message, 1000) })
+socket.on('[Invitation] - orgnanization', (message) => { Materialize.toast(message, 1000) });
+socket.on('[Invitation] - error', (message) => { Materialize.toast(message, 1000) });
 
 
 function validateEmail(email) {

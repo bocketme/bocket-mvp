@@ -12,7 +12,7 @@ const defaultNodeValue = "Select a node";
             const node = $("#" + nodeId);
 
             const form = document.getElementById('form-edit-part');
-            const formdata = new FormData(form)
+            const formdata = new FormData(form);
             const postRequest = new XMLHttpRequest();
 
             postRequest.addEventListener('load',
@@ -58,7 +58,7 @@ const defaultNodeValue = "Select a node";
                     postRequest.addEventListener("load", (reqEvent) => {
                         if (postRequest.readyState === postRequest.DONE) {
                             if (postRequest.status === 200) {
-                                $('#' + nodeId + '-body').html(postRequest.response)
+                                $('#' + nodeId + '-body').html(postRequest.response);
                                 var element = document.querySelectorAll('.three-node');
                                 $(element).click(loadNodeInformation);
                                 Materialize.toast("File Uploaded Successfully", 1000);
@@ -147,7 +147,7 @@ const defaultNodeValue = "Select a node";
             let dataToSend = [];
             $('.add-existing-checkbox').each((index, element) => {
                 if ($(element).is(':checked')) {
-                    let id = $(element).attr('id')
+                    let id = $(element).attr('id');
                     console.log("checké  :", id);
 
                     dataToSend.push(id);

@@ -153,7 +153,7 @@
 
     socket.on('reload', () => {
       document.location.reload(true);
-    })
+    });
 
     socket.on('updateWorkspaceList', (html) => {
       const listWorkspace = $('#list-workspace');

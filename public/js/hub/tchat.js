@@ -369,8 +369,7 @@ function getAllUsers() {
 }
 
 function getUserAvatar(author, classes) {
-  const avatar = `<img data-name="${author}" class=" avatar profile ${classes}"/>`;
-  return avatar;
+  return `<img data-name="${author}" class=" avatar profile ${classes}"/>`;
 }
 
 function getMessageHtml(message, date) {

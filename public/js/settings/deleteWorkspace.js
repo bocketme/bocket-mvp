@@ -12,10 +12,10 @@ $(document).on('ready', function (event) {
           } else
             Materialize.toast(`Cannot delete the workspace`, 1000);
         }
-      }
+      };
       $("#workspaceIdDelete").val($(trigger).attr('workspaceId'));
     }
-  })
+  });
 
   $("#leave-the-workspace").click(() => {
     socket.emit('[Workspace] - remove user', $("#workspaceId").val(), $("#currentUserId").val() );
@@ -26,7 +26,7 @@ $(document).on('ready', function (event) {
     ready: (modal, trigger) => {
       $("#workspaceId").val($(trigger).attr('workspaceId'))
     }
-  })
+  });
 
   $(document).on('click', '#delete-the-workspace', () => {
     const workspaceId = $('#workspaceIdDelete').val();

@@ -22,7 +22,7 @@ $(document).ready(function () {
     ready: function (modal, trigger) {
       const child = $(modal).find(".membership-user");
       const forcedReturn = $('.forced-return');
-      forcedReturn.attr("href", `#${$(modal).attr("id")}`)
+      forcedReturn.attr("href", `#${$(modal).attr("id")}`);
       const membershipReq = new XMLHttpRequest();
       membershipReq.open('GET', '/user/membership');
       membershipReq.send();
@@ -37,7 +37,7 @@ $(document).ready(function () {
         }
       }
     }
-  }
+  };
 
   organizationDeleted.modal(optionsModal);
   organizationRemoved.modal(optionsModal);

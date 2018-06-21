@@ -6,7 +6,7 @@ $(document).ready(function () {
   resetMember();
   inviteWorkspace.modal({
     ready: function (modal, trigger) {
-      $('#content-workspace-invitation').html('')
+      $('#content-workspace-invitation').html('');
       const workspaceId = $(trigger).attr('workspaceId');
       hiddenWorkspace.val(workspaceId);
       const xhr = new XMLHttpRequest();
@@ -14,18 +14,18 @@ $(document).ready(function () {
       xhr.onreadystatechange = function (event) {
         if (this.readyState === XMLHttpRequest.DONE) {
           if (this.status === 200) {
-            $('#content-workspace-invitation').html(this.responseText)
+            $('#content-workspace-invitation').html(this.responseText);
             $('#workspace-invitation-tabs').tabs();
             $('select[name="role"]').material_select();
           } else {
             console.log("Status de la réponse: %d (%s)", this.status, this.statusText);
           }
         }
-      }
+      };
       xhr.send(null);
     },
     complete: function () {
-      $('#content-workspace-invitation').html('')
+      $('#content-workspace-invitation').html('');
       resetMember();
       hiddenWorkspace.val('');
       invitePeopleError.css("visibility", "hidden");
@@ -77,10 +77,8 @@ function lineUser() {
     '</div>\n' +
     '<i class="material-icons right deleteUser">highlight_off</i>\n' +
     '</div>\n';
-  const user = part1 + hasRights + part3;
-  return user;
-};
-
+  return part1 + hasRights + part3;
+}
 function resetMember() {
   const user = lineUser();
   const html = $(user);
@@ -101,7 +99,7 @@ function deleteUser() {
 
 socket.on('[Invitation] - workspace', (message) => Materialize.toast(message));
 $(document).on('click', '#invite-member-submit', function (event) {
-  console.log('emmm')
+  console.log('emmm');
   event.preventDefault();
   const forms = $('#invite-member-form').find('input');
   const _id = [];

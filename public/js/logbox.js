@@ -33,8 +33,7 @@ function checkUniqueField(modelName, uniqueFieldName, value, NotTakenCb, takenCb
     socket.on("uniqueFieldNotUsed", NotTakenCb);
     socket.on("uniqueFieldAlreadyUsed", takenCb);
     socket.emit("checkUniqueField", modelName, uniqueFieldName, value);
-};
-
+}
 function begin(lauchButtonId, boxId, toResetId) {
     var lauchButtonId = lauchButtonId;
     var boxId = boxId;

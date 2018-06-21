@@ -52,7 +52,7 @@ socket.on('[Workspace] - remove', (err, html, workspaceId) => {
     divWorkspace.html(html);
     $('select').material_select();
   }
-})
+});
 
 selectProductManager.on('change', () => {
   const inputVal = changeWorkspaceName.val(),
@@ -64,7 +64,7 @@ selectProductManager.on('change', () => {
     submitNewWorkspaces.addClass('disabled');
     submitNewWorkspaces.css('background-color', '#DFDFDF')
   }
-})
+});
 
 
 const deleteFromWorkspace = (rights, isProductManager) => {
