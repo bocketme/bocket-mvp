@@ -180,7 +180,7 @@ const newAssembly = async (req, res) => {
 /*****************************/
 
 
-var controllerPOST = {
+const controllerPOST = {
   newAssembly: newAssembly
 };
 
