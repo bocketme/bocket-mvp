@@ -15,13 +15,13 @@ function createArchive(partPath, partName){
 
     fs.readdir(path.join(partPath, PartFileSystem.rawFile), (err, files) => {
         if (err)
-            return (err)
+            return (err);
         for(let i = 0; i<files.length; i++){
             archive.append(fs.createReadStream(path.join(partPath, PartFileSystem.rawFile, files[i])), { name: files[i] });
         }
         archive.finalize();
     });
-    return;
+
 }
 
 module.exports = createArchive;

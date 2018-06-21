@@ -17,7 +17,7 @@ module.exports = (io, socket) => {
    */
   socket.on('[NodeManager] - create Node',
     async ({ workspaceId, node, parent }) => {
-      const { userMail } = socket.handshake.session
+      const { userMail } = socket.handshake.session;
       try {
         let userHaveRights = checkAuthorization(workspaceId, userMail)
       } catch(err) {
@@ -30,14 +30,14 @@ module.exports = (io, socket) => {
          
       })
     })
-}
+};
 
 const checkAuthorization = async (workspaceId, email) => {
   let workspace = await workspaceSchema.findById(workspaceId);
   if (!workspace) return console.log("Workspace Not Found");
 
-  let user = await userSchema.find({ email })
+  let user = await userSchema.find({ email });
 
   return workspace.users.find(({ _id }) => String(_id) === String(user._id)) !== null
     || workspace.owner.find(({ _id }) => String(_id) === String(user._id)) !== null;
-} 
+};

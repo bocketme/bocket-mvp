@@ -17,4 +17,4 @@ module.exports = (io, socket) => {
     }
     socket.emit("[User] - change Password", 'Cannot change the password ');
   });
-}
+};

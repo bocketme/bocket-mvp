@@ -53,7 +53,7 @@ async function members(req, res, next) {
         email: user.email,
         rights: rights
       }
-    }
+    };
 
     req.session.currentOrganization = organization._id;
     req.session.currentWorkpsace = null;

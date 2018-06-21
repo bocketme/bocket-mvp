@@ -21,4 +21,4 @@ module.exports = (io, socket) => {
                 socket.emit('[Annotation] - fetchByName', result);
             });
     });
-}
+};

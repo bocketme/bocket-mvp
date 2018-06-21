@@ -1,6 +1,6 @@
 const userSchema = require('../../../models/User');
 const organizationSchema = require('../../../models/Organization');
-const log = require('../../../utils/log')
+const log = require('../../../utils/log');
 
 module.exports = async function userOwnership(req, res) {
   try {
@@ -12,4 +12,4 @@ module.exports = async function userOwnership(req, res) {
     log.error(e);
     res.status(500).send('Intern Error');
   }
-}
+};

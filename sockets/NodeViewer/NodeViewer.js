@@ -59,19 +59,18 @@ module.exports = class NodeManager {
 
   async loadWorkspace(workspaceId) {
     const { _id, nodeMaster } = await workspaceSchema.findById(workspaceId).catch(errLog);
-    const start = await this.loadNode(nodeMaster, _id).catch(errLog);
-    return start;
+    return await this.loadNode(nodeMaster, _id).catch(errLog);
   }
 
   async loadNode(nodeId, parent, everyone) {
 
-    const emitPart = everyone ? 'emitPartForEveryOne' : loading.emit.part 
-    const emitAssembly = everyone ? 'emitAssemblyForEveryOne' : loading.emit.assembly 
+    const emitPart = everyone ? 'emitPartForEveryOne' : loading.emit.part;
+    const emitAssembly = everyone ? 'emitAssemblyForEveryOne' : loading.emit.assembly;
 
     const { _id, type, children, name, matrix } = await nodeSchema.findById(nodeId).catch(errLog);
 
     if (type === nodeTypeEnum.part)
-      return this.nodeEmitter.emit(emitPart, _id, name, matrix, parent._id)
+      return this.nodeEmitter.emit(emitPart, _id, name, matrix, parent._id);
     else if (type === nodeTypeEnum.assembly) {
       this.nodeEmitter.emit(emitAssembly, _id, matrix, parent._id);
       let promises = [];

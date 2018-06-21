@@ -1,7 +1,7 @@
 const mailTransporter = require('../utils/mailTransporter');
 const mailConfig = require('../config/welcomeEmail');
 const actionFailed = require('./emitter/actionFailed');
-const actionSucceeded = require('./emitter/actionSucceeded')
+const actionSucceeded = require('./emitter/actionSucceeded');
 
 const listenerName = 'reportIssue';
 

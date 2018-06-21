@@ -8,7 +8,7 @@ const configServer = require('../config/server');
 const fs = require('fs');
 const path = require('path');
 const AssemblyFileSystem = require('../config/AssemblyFileSystem');
-const Schema = mongoose.Schema
+const { Schema } = mongoose;
 const directories = Object.values(AssemblyFileSystem);
 
 /**
@@ -36,7 +36,7 @@ const AssemblyScheama = mongoose.Schema({
   tags: { type: [], default: [] },
 
   activities: { type: [NestedComment], default: [] },
-  Organization: {type: mongoose.SchemaTypes.ObjectId, required: true, ref:'Organization'}
+  Organization: { type: mongoose.SchemaTypes.ObjectId, required: true, ref: 'Organization' }
 });
 
 function mkdirPromise(chemin) {

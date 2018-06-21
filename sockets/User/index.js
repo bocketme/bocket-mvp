@@ -1,5 +1,5 @@
 const signIn = require('./signIn');
-const getUsersList = require('./getUserList')
+const getUsersList = require('./getUserList');
 const join = require('./join');
 const reload = require('./reload');
 

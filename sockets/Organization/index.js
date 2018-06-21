@@ -10,4 +10,4 @@ module.exports = (io, socket) => {
   changeRole(io, socket);
   joinRoom(io, socket);
   hasBeenRemoved(io, socket);
-}
+};

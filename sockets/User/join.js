@@ -15,4 +15,4 @@ module.exports = (io, socket) => {
     } else console.log(`Cannot find the workspace`)
     socket.join(userId);
   });
-}
+};

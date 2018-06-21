@@ -3,17 +3,17 @@ const router = Router();
 
 const workspaceController = require('../controllers/workspaceController');
 
-const controller = require('../controllers/Workspace')
+const controller = require('../controllers/Workspace');
 
 router.post('/:workspaceId/information', workspaceController.changeInfo);
 
-router.get('/image', (req, res) => res.status(404).send('Not Found'))
+router.get('/image', (req, res) => res.status(404).send('Not Found'));
 //Render the user page
 router.get('/:workspaceId', controller.update.changeOption, controller.get.index);
-router.get('/:workspaceId/listOrganization', controller.get.listOrganization)
+router.get('/:workspaceId/listOrganization', controller.get.listOrganization);
 
 //Index ????? logIn + workspace REDIRECTION 
-router.post('/', controller.post.indexPost)
+router.post('/', controller.post.indexPost);
 //Create a new Workspace
 router.post('/:workspaceId');
 
@@ -23,7 +23,7 @@ router.post('/:workspaceId/addOrganizationMember', controller.post.addOrganizati
 router.put('/:workpsaceId/information', controller.update.changeInformation);
 
 //The User wiil leave the Workspace  
-router.delete('/:workpsaceId/leave')
+router.delete('/:workpsaceId/leave');
 
 //Delete the workspace
 router.delete('/:workspaceId', controller.delete.deleteWorkspace);

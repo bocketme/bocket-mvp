@@ -109,7 +109,7 @@ async function findNodeByIdAndRemove(id) {
 
   for (let i = 0; i < parentNodes.length; i++) {
     const parentNode = parentNodes[i];
-    parentNode.children = parentNode.children.filter(filterChildId)
+    parentNode.children = parentNode.children.filter(filterChildId);
     await parentNode.save().catch(err => { throw err });
   }
 

@@ -28,7 +28,7 @@ module.exports = (io, socket) => {
         description: nodeMasterConfig.description,
         Organization: organization._id,
         creator: user._id
-      })
+      });
       await nodeMaster.save();
 
       const workspace = await workspaceSchema.create({
@@ -68,7 +68,7 @@ module.exports = (io, socket) => {
         break;
       case 'search':
         organization = await organizationSchema.findById(orga._id);
-        if (!organization) throw new Error('Cannot Find The Organization')
+        if (!organization) throw new Error('Cannot Find The Organization');
         break;
       default:
         throw new Error('Cannot understand the command');

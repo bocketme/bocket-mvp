@@ -1,5 +1,6 @@
 const listenerName = 'changePassword';
 const User = require('../models/User');
+const log = require('../utils/log');
 
 async function changePasswordListener(userMail, { lastPassword, newPassword, confirmPassword }) {
   const user = await User.findOne({ email: userMail });
@@ -21,8 +22,8 @@ module.exports = (socket) => {
     changePasswordListener(socket.handshake.session.userMail, data)
       .then(result => socket.emit(listenerName, result))
       .catch((err) => {
+        log.error(err);
         socket.emit(listenerName, { error: 'Internal Server Error, please try again' });
-        console.log('changePassword error:', err);
       });
   });
 };

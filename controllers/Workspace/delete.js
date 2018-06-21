@@ -7,9 +7,9 @@ async function deleteWorkspace(req, res, next) {
   try {
     console.log(req.params.workspaceId);
     const workspace = await workspaceSchema.findById(req.params.workspaceId);
-    const organization = await organizationSchema.findById(workspace.Organization)
+    const organization = await organizationSchema.findById(workspace.Organization);
 
-    const { userId } = req.session
+    const { userId } = req.session;
 
     if (workspace.isProductManager(userId) || organization.isOwner(userId) || organization.isAdmin(userId))
       await workspace.remove();

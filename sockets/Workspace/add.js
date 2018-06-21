@@ -23,10 +23,10 @@ module.exports = (io, socket) => {
       type: NodeTypeEnum.assembly,
       content: assembly._id,
       Workspaces: workspace._id
-    })
+    });
     
     await node.save();
     workspace.nodeMaser = node._id;
     await workpsace.save();
   });
-}
+};

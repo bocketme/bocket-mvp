@@ -13,4 +13,4 @@ module.exports = (io, socket) => {
       log.error(error)
     }
   });
-}
+};

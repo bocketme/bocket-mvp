@@ -4,4 +4,4 @@ const workspace = require('./workspace');
 module.exports = (io, socket) => {
   // organization(io, socket);
   workspace(io, socket);
-}
+};

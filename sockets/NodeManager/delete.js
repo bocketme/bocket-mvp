@@ -14,7 +14,7 @@ module.exports = async (io, socket) => {
       const workspace = await Workspace.findById(node.Workspace);
       if (!workspace) throw new Error('Cannot find the node');
 
-      const { session } = socket.handshake
+      const { session } = socket.handshake;
       const rights = workspace.hasRights(session.userId);
 
       if (!rights || rights === 1)

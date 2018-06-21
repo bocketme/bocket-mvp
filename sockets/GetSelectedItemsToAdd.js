@@ -20,10 +20,8 @@ let getSelectedItem = async (selection, nodeId, breadcrumb, sub_level, socket) =
         parentNode = await NodeSchema.findById(nodeId);
     } catch (e) {
         console.log("ParentNode :", e);
-    };
-
-
- //   console.log("Parent name :", parentNode.name);
+    }
+  //   console.log("Parent name :", parentNode.name);
  //   console.log("Parent type :", parentNode.type);
 
     if (parentNode.type === TypeEnum.part) {
@@ -40,15 +38,15 @@ let getSelectedItem = async (selection, nodeId, breadcrumb, sub_level, socket) =
 
         //find assembly
 
-        let fiston
+        let fiston;
         try {
             fiston = await AssemblySchema.findById(idcourant);
             if (fiston)
                 NodeType = TypeEnum.assembly;
         } catch (e) {
             console.log("reccup assy :", e);
-        };
-        // 0 - Regarder si le noeud parent est un assemblage 
+        }
+      // 0 - Regarder si le noeud parent est un assemblage
         //console.log('------------------------------');
         //console.log("fistonAssembly :", fiston);
         //console.log('------------------------------');
@@ -60,8 +58,8 @@ let getSelectedItem = async (selection, nodeId, breadcrumb, sub_level, socket) =
                     NodeType = TypeEnum.part;
             } catch (e) {
                 console.log("reccup part :", e);
-            };
-            //console.log('------------------------------');
+            }
+          //console.log('------------------------------');
             //console.log("fistonPart :", fiston);
             //console.log('------------------------------');
         }
@@ -94,9 +92,8 @@ let getSelectedItem = async (selection, nodeId, breadcrumb, sub_level, socket) =
             });
         } catch (e) {
             console.log("Node in DB :", e);
-        };
-
-        //console.log('------------------------------');
+        }
+      //console.log('------------------------------');
         //console.log("SubNode :", subNode);
         //console.log('------------------------------');
 
@@ -146,7 +143,7 @@ let getSelectedItem = async (selection, nodeId, breadcrumb, sub_level, socket) =
                 console.log("SubNode save err:", err);
             });
 
-    };//end of the loop    
+    }//end of the loop
 };
 
 module.exports = (socket) => {

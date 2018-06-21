@@ -8,4 +8,4 @@ module.exports = (io, socket) => {
   fetch(io, socket);
   remove(io, socket);
   update(io, socket);
-}
+};

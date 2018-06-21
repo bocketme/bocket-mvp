@@ -3,6 +3,7 @@ const organizationSchema = require('../../models/Organization');
 const userSchema = require('../../models/User');
 const _ = require('lodash');
 const twig = require('twig');
+const log = require('../../utils/log');
 
 module.exports = (io, socket) => {
   socket.on('[Workspace] - changeRoles', async (workspaceId, userAffected, newRole) => {
@@ -34,12 +35,12 @@ module.exports = (io, socket) => {
         currentUser: { rights }
       }, function (err, html) {
         if (err) {
-          console.error(err)
+          log.error(err);
           return socket.emit('[Workspace] - changeRoles', 'Please recharge the page');
         } else return socket.emit('[Workspace] - changeRoles', null, html, workspaceId);
       })
     } catch (err) {
-      console.error(err);
+      log.error(err);
       return socket.emit('[Workspace] - changeRoles', 'Cannot change the role');
     }
   });

@@ -19,4 +19,4 @@ module.exports = (io, socket) => {
           .emit('[Annotation] - remove', annotation);
       })
   });
-}
+};

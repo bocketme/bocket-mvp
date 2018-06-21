@@ -9,7 +9,7 @@ async function acceptInvitation(invitationUid, user) {
   if (!invitation) throw new Error('[Invitaiton] - Invitation Not Found');
   const { workspace, organization } = invitation;
 
-  const result = {}
+  const result = {};
 
   const Organization = await organisationSchema.findById(invitation.organization.id);
   if (organization) {
@@ -19,12 +19,12 @@ async function acceptInvitation(invitationUid, user) {
         await Organization.addAdmin(user._id).catch(err => log.warn('[Organization] - The user already exists. skipping... \n' + err));
         break;
       case 4:
-        await Organization.addMember(user._id).catch(err => log.warn('[Organization] - The user already exists. skipping...' + err))
+        await Organization.addMember(user._id).catch(err => log.warn('[Organization] - The user already exists. skipping...' + err));
         break;
       default:
         throw new Error(`The Organization has no role or the role is incorect, role = ${role}`);
     }
-  } else throw new Error('You cannot invite people without an organization')
+  } else throw new Error('You cannot invite people without an organization');
 
   if (workspace) {
     const Workspace = await workspaceSchema.findById(invitation.workspace.id);

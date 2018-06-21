@@ -137,7 +137,7 @@ server.on('listening', () => {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
-  log.info('Listening on ' + bind)
+  log.info('Listening on ' + bind);
 
   for (const dir in FSconfig.appDirectory) {
     if (Object.prototype.hasOwnProperty.call(dir, FSconfig.appDirectory)) {

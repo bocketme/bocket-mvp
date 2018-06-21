@@ -1,5 +1,5 @@
 const serverConfiguration = require("../config/server");
-const workspaceSchema = require('./Workspace')
+const workspaceSchema = require('./Workspace');
 const userSchema = require("./User");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
@@ -62,10 +62,10 @@ OrganizationSchema.virtual('users').get(function () {
 
 OrganizationSchema.methods.addAdmin = async function (userId) {
   try {
-    const rights = this.userRights(userId)
+    const rights = this.userRights(userId);
     if (rights) throw new Error('[User] - The user is already existing');
     const user = await userSchema.findById(userId);
-    if (!user) throw new Error('[User] - Cannot find the user')
+    if (!user) throw new Error('[User] - Cannot find the user');
 
     await user.addOrganization(this._id);
 
@@ -102,10 +102,10 @@ OrganizationSchema.methods.deleteAdmin = async function (userId) {
 
 OrganizationSchema.methods.addMember = async function (userId) {
   try {
-    const rights = this.userRights(userId)
+    const rights = this.userRights(userId);
     if (rights) throw new Error('[User] - The user is already existing');
     const user = await userSchema.findById(userId);
-    if (!user) throw new Error('[User] - Cannot find the user')
+    if (!user) throw new Error('[User] - Cannot find the user');
 
     await user.addOrganization(this._id);
 
@@ -120,7 +120,7 @@ OrganizationSchema.methods.addMember = async function (userId) {
 
 OrganizationSchema.methods.deleteMember = async function (userId) {
   try {
-    const rights = this.isMember(userId)
+    const rights = this.isMember(userId);
     if (!rights) throw new Error('[User] - The user is not a member');
     const user = await userSchema.findById(userId);
     if (!user) throw new Error('[User] - Cannot find the user');
@@ -161,11 +161,11 @@ OrganizationSchema.methods.changeRole = async function (userId, newRole) {
   switch (Number(newRole)) {
     case this.MEMBER:
       this.Members.push(userId);
-      log.info('User added to Members')
+      log.info('User added to Members');
       break;
     case this.ADMIN:
       this.Admins.push(userId);
-      log.info('User added to Admins')
+      log.info('User added to Admins');
       break;
     default:
       throw new Error(`Role not defined or not usable , role =  ${role}`);
@@ -174,7 +174,7 @@ OrganizationSchema.methods.changeRole = async function (userId, newRole) {
 
   await this.save();
   return this;
-}
+};
 
 OrganizationSchema.methods.transfertOwnership = async function (userId) {
   const role = this.userRights(userId);
@@ -184,10 +184,10 @@ OrganizationSchema.methods.transfertOwnership = async function (userId) {
       this.Members = this.Members.filter(_id => !_id.equals(userId));
       break;
     case 5:
-      this.Admins = this.Admins.filter(_id => !_id.equals(userId))
+      this.Admins = this.Admins.filter(_id => !_id.equals(userId));
       break;
     default:
-      throw new Error(`Cannot change the user, it has no rights inside the organization or he is already the owner, ${role}`)
+      throw new Error(`Cannot change the user, it has no rights inside the organization or he is already the owner, ${role}`);
       break;
   }
 
@@ -205,10 +205,10 @@ OrganizationSchema.methods.changeOwner = async function (userId) {
       this.Members = this.Members.filter(_id => !_id.equals(userId));
       break;
     case 5:
-      this.Admins = this.Admins.filter(_id => !_id.equals(userId))
+      this.Admins = this.Admins.filter(_id => !_id.equals(userId));
       break;
     default:
-      throw new Error(`Cannot change the user, it has no rights inside the organization or he is already the owner, ${role}`)
+      throw new Error(`Cannot change the user, it has no rights inside the organization or he is already the owner, ${role}`);
       break;
   }
 
@@ -227,7 +227,7 @@ OrganizationSchema.methods.changeOwner = async function (userId) {
  * @returns {Boolean} rights
  */
 OrganizationSchema.methods.isOwner = function (userId) {
-  const Owner = this.populated('Owner') || this.Owner
+  const Owner = this.populated('Owner') || this.Owner;
   return Owner.equals(userId);
 };
 /**
@@ -261,7 +261,7 @@ OrganizationSchema.methods.userRights = function (userId) {
   else if (this.isAdmin(userId)) return this.ADMIN;
   else if (this.isMember(userId)) return this.MEMBER;
   else return null;
-}
+};
 
 OrganizationSchema.pre('save', function (next) {
 

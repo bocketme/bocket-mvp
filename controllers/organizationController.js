@@ -100,7 +100,7 @@ async function createNewWorkspace(organizationId, body, userId) {
   const organization = await organizationSchema.findById(organizationId);
   if (!organization) throw new Error('Cannot find the organization');
 
-  const userAsking = await userSchema.findById(userId)
+  const userAsking = await userSchema.findById(userId);
   if (!userAsking) throw new Error('Cannot find the user');
 
   if (!(organization.isAdmin(userAsking._id) || organization.isOwner(userAsking._id)))
@@ -315,8 +315,8 @@ async function renderMembers(organizationId, userId) {
 async function changeNameOrganization(organizationId, userId, newName) {
   const organization = await organizationSchema.findById(organizationId);
 
-  const isOwner = organization.isOwner(userId)
-  const isAdmin = organization.isAdmin(userId)
+  const isOwner = organization.isOwner(userId);
+  const isAdmin = organization.isAdmin(userId);
 
   if (isOwner || isAdmin) {
     organization.name = newName;

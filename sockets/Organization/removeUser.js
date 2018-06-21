@@ -4,7 +4,7 @@ const twig = require('twig');
 module.exports = (io, socket) => {
   socket.on('[Organization] - remove', async function (organizaitonId, affectedUserId) {
     try {
-      const currentUser = socket.handshake.session.userId
+      const currentUser = socket.handshake.session.userId;
       const organization = await organizationSchema.findById(organizationId);
 
       const currentUserrights = organization.userRights(currentUser);
@@ -56,4 +56,4 @@ module.exports = (io, socket) => {
       socket.emit('[Organization] - remove', 'Intern Error - cannot remove this person from the organization')
     }
   })
-}
+};

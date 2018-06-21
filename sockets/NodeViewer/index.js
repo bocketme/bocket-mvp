@@ -1,5 +1,5 @@
 const NodeViewer = require('./NodeViewer');
-const loading = require('./Interface')
+const loading = require('./Interface');
 
 module.exports = (io, socket) => {
   const manager = new NodeViewer();
@@ -14,7 +14,7 @@ module.exports = (io, socket) => {
 
   manager.emitUpdateMatrix((id, matrix) => {
     socket.emit(loading.emit.updateMatrix, id, matrix);
-  })
+  });
 
   manager.emitAssemblyForEveryOne((id, matrix, parentId) => {
     const { currentWorkspace } = socket.handshake.session;
@@ -28,13 +28,13 @@ module.exports = (io, socket) => {
   socket.on(loading.on.start, (workspaceId) => {
     const { currentWorkspace } = socket.handshake.session;
     manager.loadWorkspace(workspaceId);
-  })
+  });
 
   socket.on(loading.on.save, (nodeId, matrix) => {
     const { currentWorkspace } = socket.handshake.session;
     manager.save(currentWorkspace, nodeId, matrix);
     socket.to(currentWorkspace).emit(loading.emit.updateMatrix, nodeId, [matrix]);
-  })
+  });
 
   socket.on(loading.on.cancel, () => {
     const { currentWorkspace } = socket.handshake.session;
@@ -44,4 +44,4 @@ module.exports = (io, socket) => {
   socket.on(loading.on.update, (nodeId, token) => {
     manager.update(nodeId)
   });
-}
+};

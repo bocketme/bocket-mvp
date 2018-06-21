@@ -7,7 +7,7 @@ const log = require('../../utils/log');
 module.exports = (io, socket) => {
   socket.on('[Workspace] - remove user', async (workspaceId, userId) => {
     try {
-      const currentUser = socket.handshake.session.userId
+      const currentUser = socket.handshake.session.userId;
       const workspace = await workspaceSchema.findById(workspaceId);
       const organization = await organizationSchema.findById(workspace.Organization);
 
@@ -36,7 +36,7 @@ module.exports = (io, socket) => {
         currentUser: { rights }
       }, function (err, html) {
         if (err) {
-          log.error(err)
+          log.error(err);
           return socket.emit('[Workspace] - remove', 'Please recharge the page');
         } return socket.emit('[Workspace] - remove', null, html, workspaceId);
       });
@@ -61,4 +61,4 @@ module.exports = (io, socket) => {
       socket.emit('[Workspace] - remove', 'Intern Error - Cannot remove the user');
     }
   });
-}
+};

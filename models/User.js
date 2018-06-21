@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 const uniqueValidator = require('mongoose-unique-validator');
 const util = require('util');
-const log = require('../utils/log')
+const log = require('../utils/log');
 const compare = util.promisify(bcrypt.compare);
 
 const ManagerSchema = new mongoose.Schema({
@@ -47,7 +47,7 @@ UserSchema.methods.organizationOwner = async function () {
     if (organization.isOwner(this._id)) owner.push(organization._id);
   }
   return owner
-}
+};
 
 UserSchema.pre('save', function (next) {
   const user = this;
@@ -107,9 +107,8 @@ UserSchema.methods.checkOrganization = function (organizationId) {
   function userHasRights(manager) {
     return manager.Organization.equals(organizationId);
   }
-  const hasRight = this.Manager.some(userHasRights);
-  return hasRight;
-}
+  return this.Manager.some(userHasRights);
+};
 
 /**
  * Returns the index organization in which the user is located, or otherwise returns nothing.
@@ -117,8 +116,7 @@ UserSchema.methods.checkOrganization = function (organizationId) {
  */
 UserSchema.methods.findIndexOrganization = function (organizationId) {
   function userOrganization({ Organization }) {
-    if (Organization.equals(organizationId)) return true;
-    else return false;
+    return !!Organization.equals(organizationId);
   }
   return this.Manager.findIndex(userOrganization);
 };
@@ -135,9 +133,8 @@ UserSchema.methods.checkWorkspace = function (workspaceId) {
     }
     return false;
   }
-  const hasRight = this.Manager.some(userHasRights);
-  return hasRight;
-}
+  return this.Manager.some(userHasRights);
+};
 
 /**
  * Returns the user with the new organization. If the organization exists, returns an error.
@@ -160,12 +157,11 @@ UserSchema.methods.removeOrganization = async function (organizationId) {
   const isExisting = this.checkOrganization(organizationId);
   const workspaceSchema = require('./Workspace');
 
-  if (!isExisting) throw new Error("[Database] - [User] - [Magnager] - Cannot delete an organization that does not exists")
+  if (!isExisting) throw new Error("[Database] - [User] - [Magnager] - Cannot delete an organization that does not exists");
   else {
     function findWorkspace({ Organization }) {
       return Organization.equals(organizationId);
-    };
-
+    }
     const { Workspaces } = this.Manager.find(findWorkspace);
 
     for (let i = 0; i < Workspaces.length; i++) {
@@ -208,7 +204,7 @@ UserSchema.methods.addWorkspace = async function (organizationId, workspaceId) {
  * @returns {UserSchema} User Document
  */
 UserSchema.methods.removeWorkspace = async function (organizationId, workspaceId) {
-  if (!organizationId || !workspaceId) ("[Database] - [User] - [Manager] - Cannot delete a workspace without an organizationId or workspaceId")
+  if (!organizationId || !workspaceId) ("[Database] - [User] - [Manager] - Cannot delete a workspace without an organizationId or workspaceId");
 
   const index = this.findIndexOrganization(organizationId);
 
@@ -219,12 +215,11 @@ UserSchema.methods.removeWorkspace = async function (organizationId, workspaceId
       const isEqual = id.equals(workspaceId);
       return !isEqual;
     }
-    const workspaces = this.Manager[index].Workspaces.filter(isNotEqual);
-    this.Manager[index].Workspaces = workspaces;
+    this.Manager[index].Workspaces = this.Manager[index].Workspaces.filter(isNotEqual);
   }
   this.save();
   return this;
-}
+};
 
 UserSchema.methods.fetchAllWorkspaces = function () {
   let workspaces = [];
@@ -247,16 +242,14 @@ UserSchema.methods.fetchAllWorkspacesByOrgaId = function (organizationId) {
 UserSchema.methods.authentification = async function (candidatePassword) {
   if (candidatePassword === null) { throw Error('need candidatePassword'); }
   else {
-    const b = await compare(candidatePassword, this.password);
-    return b;
+    return await compare(candidatePassword, this.password);
   }
-}
+};
 
 UserSchema.methods.comparePassword = async function (candidatePassword) {
   if (candidatePassword === null) { throw Error('need candidatePassword'); }
   else {
-    const b = await compare(candidatePassword, this.password);
-    return b;
+    return await compare(candidatePassword, this.password);
   }
 };
 

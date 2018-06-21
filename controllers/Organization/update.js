@@ -37,8 +37,7 @@ async function leaveOrganization(req, res, next) {
     log.error(e);
     res.status(500).send('Intern Error');
   }
-};
-
+}
 async function transfertOwnership(req, res, next) {
   try {
     const { organizationId } = req.params;

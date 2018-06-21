@@ -7,7 +7,7 @@ module.exports = main;
 async function main(req, res, next) {
   try {
     const { organizationId } = req.params;
-    const { userId } = req.session
+    const { userId } = req.session;
     const organization = await organizationSchema.findById(organizationId);
     if (!organization) throw new Error('[Organization] - Cannot Find the organization');
 

@@ -25,7 +25,7 @@ module.exports = (io, socket) => {
           });
           await invitation.save();
         } catch (e) {
-          console.error(e)
+          console.error(e);
           socket.emit('[Invitation] - workspace', `Cannot Invite ${people[i].email}`);
         }
       }

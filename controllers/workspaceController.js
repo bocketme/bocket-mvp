@@ -15,7 +15,7 @@ module.exports = {
         res.redirect('');
       });
   }
-}
+};
 
 const changeData = async (id, userId, name, description) => {
   const workspace = await workspaceSchema.findById(id);
@@ -37,4 +37,4 @@ const changeData = async (id, userId, name, description) => {
   } else throw new Error('Cannot make changes, you have no right');
 
   return organization._id;
-}
+};

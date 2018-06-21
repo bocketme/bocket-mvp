@@ -14,7 +14,7 @@ pretty.pipe(process.stdout);
 const log = pino({
   name: 'app',
   safe: true
-}, pretty)
+}, pretty);
 
 const nodeSchema = require("../../models/Node");
 const assemblySchema = require('../../models/Assembly');

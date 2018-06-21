@@ -5,6 +5,7 @@ const log = require('../utils/log');
 const NodeSchema = require('../models/Node');
 const Invitation = require('../models/Invitation');
 const Workspace = require('../models/Workspace');
+const log = require('../utils/log');
 const AssemblySchema = require('../models/Assembly');
 const NodeTypeEnum = require('../enum/NodeTypeEnum');
 const OrganizationSchema = require('../models/Organization');

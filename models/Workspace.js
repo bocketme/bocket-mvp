@@ -48,9 +48,9 @@ WorkspaceSchema.methods.isProductManager = function (userId) {
   const ProductManagers = this.populated('ProductManagers') || this.ProductManagers;
   const isManager = function (manager) {
     return manager.equals(userId);
-  }
+  };
   return ProductManagers.some(isManager);
-}
+};
 
 /**
   * Returns if the user is a Teammate or not
@@ -59,11 +59,11 @@ WorkspaceSchema.methods.isProductManager = function (userId) {
 WorkspaceSchema.methods.isTeammate = function (userId) {
   const Teammates = this.populated('Teammates') || this.Teammates;
   const even = function (teammate) {
-    const id = mongoose.Types.ObjectId(teammate)
+    const id = mongoose.Types.ObjectId(teammate);
     return id.equals(userId);
-  }
+  };
   return Teammates.some(even);
-}
+};
 
 /**
   * Returns if the user is an Observer or not
@@ -75,9 +75,9 @@ WorkspaceSchema.methods.isObserver = function (userId) {
   const even = function (observer) {
     const id = mongoose.Types.ObjectId(Observers);
     return id.equals(userId);
-  }
+  };
   return Observers.some(even);
-}
+};
 
 /**
   * Returns the user 'level access' 
@@ -135,7 +135,7 @@ WorkspaceSchema.methods.addTeammate = async function (userId) {
 
   this.Teammates.push(userId);
   await this.save();
-}
+};
 
 // noinspection JSAnnotator
 WorkspaceSchema.methods.changeRole = async function (userId, newRole) {
@@ -145,11 +145,10 @@ WorkspaceSchema.methods.changeRole = async function (userId, newRole) {
       throw new Error('Cannot find the user');
 
     if (formerRole === Number(newRole))
-      throw new Error('[Organization] the new role is the same before the changement, skipping changement ...')
+      throw new Error('[Organization] the new role is the same before the changement, skipping changement ...');
 
     function idNotEqual(_id) {
-      const isEqual = !_id.equals(userId);
-      return isEqual;
+      return !_id.equals(userId);
     }
 
     switch (formerRole) {
@@ -211,17 +210,15 @@ WorkspaceSchema.methods.addObserver = async function (userId) {
 
   this.Observers.push(userId);
   await this.save();
-}
+};
 
 /**
  *
  * Remove one user from the Workspace
- * @param {*} userId - the user ID to be deleted
- * @param {boolean} [cancelRequest=false] - Make another request to delete the user's workspace
+ * @param {*} userId the user ID to be deleted
+ * @param {boolean} [cancelRequest=false] Make another request to delete the user's workspace
  */
-WorkspaceSchema.methods.removeUser =  async function (userId, cancelRequest = false) {
-  const filter = String(userId);
-
+WorkspaceSchema.methods.removeUser = async function (userId, cancelRequest = false) {
   const userRole = this.hasRights(userId);
 
   function filterId(id) {
@@ -265,7 +262,7 @@ WorkspaceSchema.methods.removeUsers = async function (usersId, cancelRequest = f
       await removeUser(usersId[i], cancelRequest);
     }
   } else await removeUser(usersId[i], cancelRequest);
-}
+};
 
 WorkspaceSchema.pre('save', function (next) {
   if (this.isModified('name'))
@@ -290,9 +287,8 @@ WorkspaceSchema.pre('remove', async function () {
     function filterWorkspace(id) {
       const isEqual = id.equals(_id);
       return !isEqual;
-    };
-
-    const organizationSchema = require('./Organization')
+    }
+    const organizationSchema = require('./Organization');
     const organization = await organizationSchema.findById(this.Organization);
     organization.Workspaces = organization.Workspaces.filter(filterWorkspace);
     await organization.save();
@@ -302,7 +298,7 @@ WorkspaceSchema.pre('remove', async function () {
     await nodeMaster.remove();
 
     //Delete the user inside the workspace
-    const users = this.users
+    const users = this.users;
     for (let i = 0; i < users.length; i++) {
       const userId = users[i];
       await this.removeUser(userId);

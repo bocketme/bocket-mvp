@@ -122,4 +122,4 @@ module.exports = (socket) => {
 
 const readDir = util.promisify(fs.readdir);
 const copyFile = util.promisify(fs.copyFile);
-const renderFile = util.promisify(twig.renderFile)
+const renderFile = util.promisify(twig.renderFile);

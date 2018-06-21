@@ -11,4 +11,4 @@ module.exports = async (req, res) => {
     log.error(e);
     return res.status(500).send('Intern Error');
   }
-}
+};

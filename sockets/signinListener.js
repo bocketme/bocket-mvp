@@ -21,7 +21,7 @@ module.exports = function (socket) {
                 {
                     user.comparePassword(accountInformation.password, (err, isMatch) => {
                         if (err) throw err;
-                        console.log(isMatch)
+                        console.log(isMatch);
                         if (isMatch)
                         {
                             findAllWorkspaces(user.workspaces)

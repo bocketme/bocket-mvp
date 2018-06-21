@@ -73,7 +73,7 @@ module.exports = (socket, uploader) => {
     } else { // Upload specs
       getUploadir(fileInfo.name, fileInfo.data.nodeId, socket.handshake.session.currentWorkspace)
         .then((ret) => {
-          if (!uploadDir) return Promise.reject(new Error('Upload not found !'))
+          if (!uploadDir) return Promise.reject(new Error('Upload not found !'));
           log.info(uploadDir, ret);
           mv(uploadDir, ret, (err) => { if(err) log.error(err); });
           socket.emit('addSpec', fileInfo.name);

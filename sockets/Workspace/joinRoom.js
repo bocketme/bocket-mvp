@@ -13,4 +13,4 @@ module.exports = (io, socket) => {
       return socket.join(workspaceId);
     } catch (e) { log.error(e); }
   })
-}
+};
