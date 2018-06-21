@@ -36,7 +36,7 @@ const newPart = async (req, res) => {
   const nodeId = escape(req.params.nodeId);
   const name = escape(req.body.name);
   const description = escape(req.body.description);
-
+  console.log('Name: ', name, 'Description : ', description);
   return res.status(200).send('YOLOOO');
   // let sub_level = Number(req.body.sub_level);
   // const breadcrumb = escape(req.body.breadcrumb);

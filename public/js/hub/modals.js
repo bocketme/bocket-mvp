@@ -48,9 +48,66 @@ function parseFormFiles(files) {
     return ret;
 }
 
+function uploadParts() {
+    const cible = headerTitle.title;
+    var postRequest = [];
+    if (cible !== "Select a node") {
+        const nodeId = idOfchoosenNode;
+
+        var helperFunc=function(arrIndex,itemId) {
+            return function() {
+                if(postRequest[arrIndex].readyState === 4) {
+                    if (postRequest[arrIndex].status === 200) {
+                        console.log('REQUETE RECUE', arrIndex);
+                        // $('#' + nodeId + '-body').html(postRequest.response);
+                        // var element = document.querySelectorAll('.three-node');
+                        // $(element).click(loadNodeInformation);
+                    } else if (postRequest[arrIndex].status === 404) {
+                        Materialize.toast("Not Found", 1000);
+                    } else if (postRequest[arrIndex].status === 401) {
+                        Materialize.toast("The selected node is not an assembly", 1000);
+                    }
+                }
+            }
+        }
+
+        for (var i = 0; i < partsArray.length; i++) {
+
+            postRequest[i] = new XMLHttpRequest();
+            console.log(postRequest[i], 'REQUEST')
+            const partId = partsArray[i]._id;
+            postRequest[i].onreadystatechange=helperFunc(i,nodeId);
+
+            postRequest[i].addEventListener("error", function (event) {
+                Materialize.toast("The Part was not created", 1000);
+            }, false);
+            postRequest[i].addEventListener("abort", function (event) {
+                Materialize.toast("Network Error - The Part could not be created", 1000);
+            }, false);
+
+            postRequest[i].open('POST', '/part/' + nodeId, true);
+            postRequest[i].setRequestHeader("Content-Type", "application/json");
+            console.log(partsArray);
+            const name =  $(`#${partId}_part_name`).val();
+            const description = $(`#${partId}_part_description`).val();
+            console.log('Outputs: ', name, description);
+            postRequest[i].send(JSON.stringify({ name, description }));
+        }
+    } else {
+        Materialize.toast("You must select a node", 1000);
+
+    }
+}
+
 $('#import-part-files').on('change', (event) => {
     createPartInForm(event);
-})
+});
+
+$('#upload-parts-btn').on('click', (event) => {
+    event.preventDefault();
+    uploadParts();
+    console.log('Je CLick et j\'upload');
+});
 
 function handleChangeFile3d(event) {
     const elem = event.target;
@@ -79,7 +136,7 @@ function handleChangeFile3d(event) {
         }
 
     }
-    handlePartError(Number(partId));
+    handlePartsError();
 }
 
 function handleChangeTexture(event) {
@@ -88,7 +145,6 @@ function handleChangeTexture(event) {
     const fileName = id.substr(0, (elem.id.lastIndexOf('-')));
     const partId = id.substr(elem.id.lastIndexOf('_') + 1);
     const value = event.target.value;
-    console.log('ID', partId);
     var idxToChange = -1;
     const part = partsArray.find((element) => { return element._id.toString() === partId });
 
@@ -111,13 +167,13 @@ function handleChangeTexture(event) {
             console.error('Could not find file');
         }
     }
-    handlePartError(Number(partId));
+    handlePartsError();
 }
 
 function appendFileToList(idPart, file, fileType) {
     if (fileType === 'file3d') {
         return `<li id="${fileId}-file" class="file_list_item row file3d" >` +
-            `                    <a id="${fileId}-close-${idPart}" class="material-icons col s1">close</a>` +
+            `                    <a id="${fileId}-close-${idPart}" class="material-icons close-files col s1">close</a>` +
             `                    <span class="part_file_name col s3">${file.name}</span>` +
             `                    <span class="${idPart}-file3d-error col s6" ></span>` +
             '                    <div class="input-field col s2 select-file3d">' +
@@ -129,7 +185,7 @@ function appendFileToList(idPart, file, fileType) {
             '                </li>'
     } else if (fileType === 'textures') {
         return `                <li id="${fileId}-file" class="file_list_item row texture" >` +
-            `                    <a id="${fileId}-close-${idPart}" class="material-icons col s1">close</a>` +
+            `                    <a id="${fileId}-close-${idPart}" class="material-icons close-files col s1">close</a>` +
             `                    <span class="part_file_name col s3">${file.name}</span>` +
             `                    <span class="${idPart}-texture-error col s6" ></span>` +
             '                    <div class="input-field col s2 select-texture">' +
@@ -141,7 +197,7 @@ function appendFileToList(idPart, file, fileType) {
             '                </li>'
     } else {
         return `<li id="${fileId}-file" class="file_list_item row texture">` +
-            `                    <a id="${fileId}-close-${idPart}" class="material-icons col s1">close</a>` +
+            `                    <a id="${fileId}-close-${idPart}" class="material-icons close-files col s1">close</a>` +
             `                    <span class="part_file_name col s3">${file.name}</span>` +
             `                    <span class="${idPart}-specs-error col s6" ></span>` +
             '                    <div class="input-field col s2">' +
@@ -154,30 +210,56 @@ function appendFileToList(idPart, file, fileType) {
 
 }
 
-function handlePartError(idx) {
-    var files = partsArray.find((elem) => { return elem._id === idx }).files;
-    console.log('HandleError', files);
-    if (files.files3d.length === 0) {
-        $(`#${idx}-error`).text('Error: You must import at least 1 3d file');
-    } else if (files.files3d.length > 1) {
-        $(`.${idx}-file3d-error`).text('Error: You must have only 1 3d file by part');
+function handlePartsError() {
+    var isEnabled = true;
+    for (var i = 0; i < partsArray.length; i++) {
+        var idx = partsArray[i]._id;
+        var files = partsArray[i].files;
+        $(`#${idx}-part`).removeClass('red lighten-2');
+        if (files.files3d.length === 0) {
+
+            $(`#${idx}-error`).text('Error: You must import at least 1 3d file');
+            isEnabled = false;
+            $(`#${idx}-part`).addClass('red lighten-2')
+        } else if (files.files3d.length > 1) {
+            $(`.${idx}-file3d-error`).text('Error: You must have only 1 3d file by part');
+            isEnabled = false;
+            $(`#${idx}-part`).addClass('red lighten-2')
+        } else {
+            $(`#${idx}-error`).text('');
+            $(`.${idx}-file3d-error`).text('');
+        }
+    }
+    if (!isEnabled) {
+        $('#upload-parts-btn').addClass('disabled');
     } else {
-        $(`#${idx}-error`).text('');
-        $(`.${idx}-file3d-error`).text('');
+        $('#upload-parts-btn').removeClass('disabled');
     }
 }
+
+// function handlePartError(idx) {
+//     var files = partsArray.find((elem) => { return elem._id === idx }).files;
+//     if (files.files3d.length === 0) {
+//         $(`#${idx}-error`).text('Error: You must import at least 1 3d file');
+//     } else if (files.files3d.length > 1) {
+//         $(`.${idx}-file3d-error`).text('Error: You must have only 1 3d file by part');
+//     } else {
+//         $(`#${idx}-error`).text('');
+//         $(`.${idx}-file3d-error`).text('');
+//     }
+// }
 
 function addPartInModalList(files) {
     if (files) {
         const html = `<li id="${partIdx}-part" class="collection-item">` +
             '             <div class="row">' +
-            `             <a id="${partIdx}-close" class="material-icons col s1">close</a>` +
+            `             <a id="${partIdx}-close" class="material-icons close-files col s1">close</a>` +
             '                 <div class="input-field col s6">' +
-            (files.files3d.length ? `<input id="part_name" type="text" class="validate" value="${getFileName(files.files3d[0].name)}">` : `<input id="part_name" type="text" class="validate" value="">`) +
+            (files.files3d.length ? `<input id="${partIdx}_part_name" type="text" class="validate part_name" value="${getFileName(files.files3d[0].name)}">` : `<input id="${partIdx}_part_name" type="text" class="validate part_name" value="">`) +
             '                 </div>' +
             `                 <span id="${partIdx}-error" class="part-error col s4"></span>` +
             '                 <div class="input-field col s12">' +
-            '                     <textarea id="part_description" class="materialize-textarea"></textarea>' +
+            `                     <textarea id="${partIdx}_part_description" class="materialize-textarea"></textarea>` +
             '                     <label for="part_description">Description</label>' +
             '                 </div>' +
             `                 <ul id="${partIdx}_files_list">` +
@@ -198,7 +280,7 @@ function addPartInModalList(files) {
             const files = parseFormFiles(document.getElementById(idElem).files);
             console.log('J\'ai add a file', idPart, files);
             linkFilesToList(Number(idPart), files);
-            handlePartError(Number(idPart));
+            handlePartsError();
         });
 
         $(`#${partIdx}-close`).on('click', (event) => {
@@ -214,7 +296,7 @@ function addPartInModalList(files) {
             }
         }) // Keeps the files for the sending of datas
         linkFilesToList(partIdx, files);
-        handlePartError(partIdx);
+        handlePartsError();
         partIdx++;
     } else {
         console.error('Could not load files');
@@ -228,6 +310,7 @@ function removePart(event) {
     partsArray.splice(idx, 1);
     $(`#${partId}-part`).remove();
     console.log('After Remove', partsArray);
+    handlePartsError();
 }
 
 function removeFile(event) {
@@ -241,28 +324,25 @@ function removeFile(event) {
         console.log('TROUVEEE');
         part.files.files3d.splice(idx, 1);
         $(`#${idFile}-file`).remove();
-        handlePartError(Number(idPart));
+        handlePartsError();
         return;
     }
-    console.log('IDX', idx);
     idx = part.files.textures.findIndex((element) => { return element._id === Number(idFile) });
     if (idx !== -1) {
         console.log('TROUVEEE');
         part.files.textures.splice(idx, 1);
         $(`#${idFile}-file`).remove();
-        handlePartError(Number(idPart));
+        handlePartsError();
         return;
     }
-    console.log('IDX', idx);
     idx = part.files.specs.findIndex((element) => { return element._id === Number(idFile) });
     if (idx !== -1) {
         part.files.specs.splice(idx, 1);
         $(`#${idFile}-file`).remove();
-        handlePartError(Number(idPart));
+        handlePartsError();
         console.log('TROUVEEE');
         return;
     }
-    console.log('IDX', idx);
 }
 
 function addFileToPart(idPart, file, idFile, type) {
@@ -278,7 +358,6 @@ function addFileToPart(idPart, file, idFile, type) {
 }
 
 function linkFilesToList(idPart, files) {
-    console.log('FIIIIIILES', files);
     for (var idx = 0; idx < files.files3d.length; idx++) {
         $(`#${idPart}_files_list`).append(appendFileToList(idPart, files.files3d[idx], 'file3d'));
         addFileToPart(idPart, files.files3d[idx], fileId,'file3d');
