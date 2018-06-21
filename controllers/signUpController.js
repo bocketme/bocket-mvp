@@ -132,8 +132,7 @@ async function createAccount(req, res) {
 
     if (req.body.invitationUid) {
       const invitationInfo = await acceptInvitation(req.body.invitationUid, user);
-      log.info(invitationInfo);
-      req.session = signInUserSession(req.session, { email: user.email });
+      req.session.email = user.email;
       req.session.completeName = user.completeName;
       req.session.currentWorkspace = invitationInfo.workspaceId;
       req.session.currentOrganization = invitationInfo.organizationId;
@@ -175,7 +174,7 @@ async function createAccount(req, res) {
 
     await assembly.save();
 
-    req.session = signInUserSession(req.session, { email: user.email });
+    req.session.email = user.email;
     req.session.completeName = user.completeName;
     req.session.currentWorkspace = workspace._id;
     return res.redirect(`/workspace/${workspace._id}`);
