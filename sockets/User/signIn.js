@@ -35,7 +35,6 @@ module.exports = (io, socket) => {
     }
 
     const { Manager } = user;
-    console.info(Manager)
     let works = [], organizations = [];
 
     for (let i = 0; i < Manager.length; i++) {

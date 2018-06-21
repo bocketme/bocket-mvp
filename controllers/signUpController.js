@@ -29,7 +29,7 @@ const signUpController = {
     ];
     for (let i = 0; i < tasks.length; i++) {
       if (tasks[i](req.body) === false) {
-        console.log(`Error occured on signing up user on task[${i}]`);
+        log.error(`Error occured on signing up user on task[${i}]`);
         return res.redirect('/');
       }
     }
@@ -178,7 +178,6 @@ async function createAccount(req, res) {
     req.session = signInUserSession(req.session, { email: user.email });
     req.session.completeName = user.completeName;
     req.session.currentWorkspace = workspace._id;
-    console.log('ok')
     return res.redirect(`/workspace/${workspace._id}`);
   } catch (err) {
     log.error(err);

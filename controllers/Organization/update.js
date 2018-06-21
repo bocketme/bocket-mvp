@@ -7,7 +7,6 @@ module.exports = { leaveOrganization, transfertOwnership };
 
 async function leaveOrganization(req, res, next) {
   try {
-    console.log(req.body, req.query,)
     const { organizationId, newOwner } = req.params;
     const { userId } = req.session;
     const organization = await organizationSchema.findById(organizationId);

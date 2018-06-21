@@ -12,7 +12,6 @@ module.exports = {
     const { organizationId } = req.params;
     const { userId } = req.session;
     req.session.currentWorkspace = null;
-    log.info(req.session)
     renderOrganization(organizationId, userId)
       .then(params => res.render('organizationSettings/organization', params))
       .catch(err => {

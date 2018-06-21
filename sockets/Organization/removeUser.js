@@ -1,5 +1,6 @@
 const organizationSchema = require('../../models/Organization');
 const twig = require('twig');
+const log = require('../../utils/log');
 
 module.exports = (io, socket) => {
   socket.on('[Organization] - remove', async function (organizaitonId, affectedUserId) {
@@ -37,7 +38,7 @@ module.exports = (io, socket) => {
         currentUser: { currentUserrights }
       }, function (err, html) {
         if (err) {
-          console.error(err)
+          log.error(err);
           return socket.emit('[Organization] - remove', 'Please recharge the page');
         } else socket.emit('[Organization] - remove', null, html, workspaceId);
       });

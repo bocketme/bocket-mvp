@@ -63,11 +63,7 @@ function createNewNode(req, res) {
       Promise.all(types_mime)
         .then(() => Promise.all(createFiles))
         .then((paths) => {
-          console.log('chemin des fichiers crées : ', paths);
-          // TODO - Ajouter les chemins aux Node
           node.specpath = paths;
-
-          // TODO - Ajouter le noeud au workspace
           return addNodetoWorkspace(workspace, nodeParent, { _id: node._id, title: node.name, children: [] });
         })
         .then((workspace) => {

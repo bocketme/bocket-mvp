@@ -5,7 +5,6 @@ module.exports = (io, socket) => {
     Workspace
       .findById(socket.handshake.session.currentWorkspace)
       .then(workspaces => {
-        console.log(annotation)
         workspaces.Annotations =
           workspaces
             .Annotations
