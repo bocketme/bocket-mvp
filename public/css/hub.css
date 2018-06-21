@@ -293,19 +293,20 @@ input[type='text']#branch:focus{
 *
 */
 
-.modal-body{
+.modal-content {
     color: black;
 }
-.modal-header{
+.titre-modal {
+    position: absolute !important;
+    top: 0 !important;
     text-align: center;
-    margin-top: 2% !important;
+    vertical-align: middle;
 }
 
 .files-button {
     color: rgb(161, 160, 160);
     float: right !important;
     background-color: #727171;
-    color: #fff;
 }
 .files-button:hover, .files-button:focus {
     transition: none;
@@ -383,9 +384,9 @@ p{
     background-color: #9b9b9b !important;
 }
 
-.modal {
-    width: 35%;
-}
+/*.modal {*/
+    /*width: 35%;*/
+/*}*/
 
 .clear {
     clear: both;
@@ -767,7 +768,6 @@ ul#details-tab {
     padding-right: 5px;
 }
 
-#import-part {
-    width: 80% !important;
-    position: absolute;
+#import-part ul.parts_list {
+    height: 90%;
 }

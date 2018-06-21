@@ -3,9 +3,9 @@ $(document).ready(() => {
     $('select').material_select();
 });
 
-var partIdx = 0;
-var fileId = 0;
-var partsArray = [];
+var partIdx = 0 // USED TO DIFFERENTIATE PARTS IN PartsArray;
+var fileId = 0; // USED TO DIFFERENTIATE FILES IN PartsArray
+var partsArray = []; // USED TO MANAGE PARTS AND FILES BEFORE SENDING THEM TO THE SERVER
 
 const defaultNodeValue = "Select a node";
 
@@ -59,10 +59,10 @@ function handleChangeFile3d(event) {
     const partId = id.substr(elem.id.lastIndexOf('_') + 1);
     const value = event.target.value;
     var idxToChange = -1;
+    const part = partsArray.find((element) => { return element._id.toString() === partId });
 
     if (value === 'specs') {
-        const part = partsArray.find((element) => { return element._id.toString() === partId });
-        idxToChange = part.files.files3d.findIndex((element) => { return element.name === fileName;});
+        idxToChange = part.files.files3d.findIndex((element) => { return element.file.name === fileName;});
         if (idxToChange !== -1) {
             part.files.specs.push(part.files.files3d[idxToChange])
             part.files.files3d.splice(idxToChange, 1);
@@ -70,8 +70,7 @@ function handleChangeFile3d(event) {
             console.error('COuld not find file');
         }
     } else if (value === 'files3d') {
-        const part = partsArray.find((element) => { return element._id.toString() === partId });
-        idxToChange = part.files.specs.findIndex((element) => { return element.name === fileName;});
+        idxToChange = part.files.specs.findIndex((element) => { return element.file.name === fileName;});
         if (idxToChange !== -1) {
             part.files.files3d.push(part.files.specs[idxToChange])
             part.files.specs.splice(idxToChange, 1);
@@ -89,11 +88,13 @@ function handleChangeTexture(event) {
     const fileName = id.substr(0, (elem.id.lastIndexOf('-')));
     const partId = id.substr(elem.id.lastIndexOf('_') + 1);
     const value = event.target.value;
+    console.log('ID', partId);
     var idxToChange = -1;
     const part = partsArray.find((element) => { return element._id.toString() === partId });
 
     if (value === 'specs') {
-        idxToChange = part.files.textures.findIndex((element) => { return element.name === fileName;});
+        console.log(part.files);
+        idxToChange = part.files.textures.findIndex((element) => { return element.file.name === fileName;});
         if (idxToChange !== -1) {
             part.files.specs.push(part.files.textures[idxToChange])
             part.files.textures.splice(idxToChange, 1);
@@ -102,7 +103,7 @@ function handleChangeTexture(event) {
         }
 
     } else if (value === 'textures') {
-        idxToChange = part.files.specs.findIndex((element) => { return element.name === fileName;});
+        idxToChange = part.files.specs.findIndex((element) => { return element.file.name === fileName;});
         if (idxToChange !== -1) {
             part.files.textures.push(part.files.specs[idxToChange])
             part.files.specs.splice(idxToChange, 1);
@@ -113,38 +114,38 @@ function handleChangeTexture(event) {
     handlePartError(Number(partId));
 }
 
-function appendFileToList(file, fileType) {
+function appendFileToList(idPart, file, fileType) {
     if (fileType === 'file3d') {
-        return '                <li class="file_list_item row" >' +
-            `                    <a id="${fileId}-close-${partIdx}" class="material-icons col s1">close</a>` +
+        return `<li id="${fileId}-file" class="file_list_item row file3d" >` +
+            `                    <a id="${fileId}-close-${idPart}" class="material-icons col s1">close</a>` +
             `                    <span class="part_file_name col s3">${file.name}</span>` +
-            `                    <span class="${partIdx}-file3d-error col s6" ></span>` +
+            `                    <span class="${idPart}-file3d-error col s6" ></span>` +
             '                    <div class="input-field col s2 select-file3d">' +
-            `                        <select id="${file.name}-${fileId}_${partIdx}" onchange="handleChangeFile3d(event)">` +
+            `                        <select id="${file.name}-${fileId}_${idPart}" onchange="handleChangeFile3d(event)">` +
             '                            <option value="files3d" selected>3d file</option>' +
             '                            <option value="specs">Spec file</option>' +
             '                        </select>' +
             '                    </div>' +
             '                </li>'
     } else if (fileType === 'textures') {
-        return '                <li class="file_list_item row" >' +
-            `                    <a id="${fileId}-close-${partIdx}" class="material-icons col s1">close</a>` +
+        return `                <li id="${fileId}-file" class="file_list_item row texture" >` +
+            `                    <a id="${fileId}-close-${idPart}" class="material-icons col s1">close</a>` +
             `                    <span class="part_file_name col s3">${file.name}</span>` +
-            `                    <span class="${partIdx}-texture-error col s6" ></span>` +
+            `                    <span class="${idPart}-texture-error col s6" ></span>` +
             '                    <div class="input-field col s2 select-texture">' +
-            `                        <select id="${file.name}-${fileId}_${partIdx}" onchange="handleChangeTexture(event)">` +
+            `                        <select id="${file.name}-${fileId}_${idPart}" onchange="handleChangeTexture(event)">` +
             '                            <option value="textures" selected>Texture file</option>' +
             '                            <option value="specs">Spec file</option>' +
             '                        </select>' +
             '                    </div>' +
             '                </li>'
     } else {
-        return '                <li class="file_list_item row">' +
-            `                    <a id="${fileId}-close-${partIdx}" class="material-icons col s1">close</a>` +
+        return `<li id="${fileId}-file" class="file_list_item row texture">` +
+            `                    <a id="${fileId}-close-${idPart}" class="material-icons col s1">close</a>` +
             `                    <span class="part_file_name col s3">${file.name}</span>` +
-            `                    <span class="${partIdx}-specs-error col s6" ></span>` +
+            `                    <span class="${idPart}-specs-error col s6" ></span>` +
             '                    <div class="input-field col s2">' +
-            `                        <select id="${file.name}-${fileId}_${partIdx}" disabled>` +
+            `                        <select id="${file.name}-${fileId}_${idPart}" disabled>` +
             '                            <option value="specs" disabled selected>Spec file</option>' +
             '                        </select>' +
             '                    </div>' +
@@ -155,7 +156,7 @@ function appendFileToList(file, fileType) {
 
 function handlePartError(idx) {
     var files = partsArray.find((elem) => { return elem._id === idx }).files;
-    console.log(files);
+    console.log('HandleError', files);
     if (files.files3d.length === 0) {
         $(`#${idx}-error`).text('Error: You must import at least 1 3d file');
     } else if (files.files3d.length > 1) {
@@ -167,7 +168,6 @@ function handlePartError(idx) {
 }
 
 function addPartInModalList(files) {
-    console.log(files);
     if (files) {
         const html = `<li id="${partIdx}-part" class="collection-item">` +
             '             <div class="row">' +
@@ -182,11 +182,9 @@ function addPartInModalList(files) {
             '                 </div>' +
             `                 <ul id="${partIdx}_files_list">` +
             '                 </ul>' +
-            '                 <div class="file-field input-field col s4">' +
-            '                     <div class="files-button btn upload_button">' +
-            '                         <span>Add files</span>' +
-            `                         <input id="add-files-${partIdx}" type="file" multiple name="partFiles">` +
-            '                     </div>' +
+            '                 <div class="btn btn-normal file-field input-field col s4">' +
+            '                     <span>Add files</span>' +
+            `                     <input id="add-files-${partIdx}" type="file" multiple name="partFiles">` +
             '                 </div>' +
             '             </div>' +
             '        </li>';
@@ -195,21 +193,27 @@ function addPartInModalList(files) {
 
         $(`#add-files-${partIdx}`).on('change', (event) => {
             const elem = event.target;
-            console.log(elem);
             const idElem = elem.id;
             const idPart = idElem.slice(idElem.lastIndexOf('-') + 1);
             const files = parseFormFiles(document.getElementById(idElem).files);
             console.log('J\'ai add a file', idPart, files);
-            linkFilesToList(idPart, files);
-            addFilesToPart(idPart, files);
+            linkFilesToList(Number(idPart), files);
+            handlePartError(Number(idPart));
         });
 
         $(`#${partIdx}-close`).on('click', (event) => {
-            console.log('Je supprime la part ! ');
+            removePart(event);
         });
 
+        partsArray.push({
+            _id: partIdx,
+            files: {
+              files3d: [],
+              textures: [],
+              specs: []
+            }
+        }) // Keeps the files for the sending of datas
         linkFilesToList(partIdx, files);
-        partsArray.push({ _id: partIdx, files }) // Keeps the files for te sending of datas
         handlePartError(partIdx);
         partIdx++;
     } else {
@@ -217,40 +221,92 @@ function addPartInModalList(files) {
     }
 }
 
-function addFilesToPart(idPart, files) {
+function removePart(event) {
+    const id = event.target.id;
+    const partId = id.slice(0, id.indexOf('-'));
+    const idx = partsArray.findIndex((element) => { return element._id.toString() === partId });
+    partsArray.splice(idx, 1);
+    $(`#${partId}-part`).remove();
+    console.log('After Remove', partsArray);
+}
+
+function removeFile(event) {
+    const id = event.target.id;
+    const idFile = id.slice(0, id.indexOf('-'));
+    const idPart = id.slice(id.lastIndexOf('-') + 1);
+    const filename = $(`#${idFile}-file span.part_file_name`).text();
     const part = partsArray.find((element) => { return element._id.toString() === idPart });
-    for (var idx = 0; idx < files.files3d.length; idx++) {
-        part.files.files3d.push(files.files3d[idx]);
+    var idx = part.files.files3d.findIndex((element) => { return element._id === Number(idFile) });
+    if (idx !== -1) {
+        console.log('TROUVEEE');
+        part.files.files3d.splice(idx, 1);
+        $(`#${idFile}-file`).remove();
+        handlePartError(Number(idPart));
+        return;
     }
-    for (var idx = 0; idx < files.textures.length; idx++) {
-        part.files.textures.push(files.textures[idx]);
+    console.log('IDX', idx);
+    idx = part.files.textures.findIndex((element) => { return element._id === Number(idFile) });
+    if (idx !== -1) {
+        console.log('TROUVEEE');
+        part.files.textures.splice(idx, 1);
+        $(`#${idFile}-file`).remove();
+        handlePartError(Number(idPart));
+        return;
     }
-    for (var idx = 0; idx < files.specs.length; idx++) {
-        part.files.specs.push(files.specs[idx]);
+    console.log('IDX', idx);
+    idx = part.files.specs.findIndex((element) => { return element._id === Number(idFile) });
+    if (idx !== -1) {
+        part.files.specs.splice(idx, 1);
+        $(`#${idFile}-file`).remove();
+        handlePartError(Number(idPart));
+        console.log('TROUVEEE');
+        return;
     }
-    console.log('PARTARRAY AFTER AJOUT', partsArray);
+    console.log('IDX', idx);
+}
+
+function addFileToPart(idPart, file, idFile, type) {
+    console.log(typeof idPart, idPart);
+    const part = partsArray.find((element) => { return element._id === idPart });
+    if (type === "file3d") {
+        part.files.files3d.push({ _id: idFile, file })
+    } else if (type === "texture") {
+        part.files.textures.push({ _id: idFile, file })
+    } else {
+        part.files.specs.push({ _id: idFile, file })
+    }
 }
 
 function linkFilesToList(idPart, files) {
+    console.log('FIIIIIILES', files);
     for (var idx = 0; idx < files.files3d.length; idx++) {
-        $(`#${idPart}_files_list`).append(appendFileToList(files.files3d[idx], 'file3d'));
+        $(`#${idPart}_files_list`).append(appendFileToList(idPart, files.files3d[idx], 'file3d'));
+        addFileToPart(idPart, files.files3d[idx], fileId,'file3d');
+
         $(`#${fileId}-close-${idPart}`).on('click', (event) => {
-            console.log('Je supprime un file');
+            removeFile(event);
         });
+
         fileId++;
     }
     for (var idx = 0; idx < files.textures.length; idx++) {
-        $(`#${idPart}_files_list`).append(appendFileToList(files.textures[idx], 'textures'));
+        $(`#${idPart}_files_list`).append(appendFileToList(idPart, files.textures[idx], 'textures'));
+        addFileToPart(idPart, files.textures[idx], fileId,'texture');
+
         $(`#${fileId}-close-${idPart}`).on('click', (event) => {
-            console.log('Je supprime un file');
+            removeFile(event);
         });
+
         fileId++;
     }
     for (var idx = 0; idx < files.specs.length; idx++) {
-        $(`#${idPart}_files_list`).append(appendFileToList(files.specs[idx], 'specs'));
+        $(`#${idPart}_files_list`).append(appendFileToList(idPart, files.specs[idx], 'specs'));
+        addFileToPart(idPart, files.specs[idx], fileId,'spec')
+
         $(`#${fileId}-close-${idPart}`).on('click', (event) => {
-            console.log('Je supprime un file');
+            removeFile(event);
         });
+
         fileId++;
     }
     $('select').material_select();

@@ -1,79 +1,17 @@
 <!-- Modal Structure -->
-<div id="import-part" class="modal">
-    <div class="modal-header">
+<div id="import-part" class="modal modal-fixed-footer">
+    <div class="modal-content">
         <h4 class="title-modal">Import a new Part</h4>
-
+        <ul id='parts_list' class="collection col s12">
+        </ul>
     </div>
-    <div class="modal-content container">
-        <div class="modal-body">
-            <ul id='parts_list' class="collection">
-
-                {#<li>#}
-                    {#<div class="row">#}
-                        {#<div class="input-field col s6">#}
-                            {#<input id="part_name" type="text" class="validate">#}
-                            {#<label id="part_name_label" for="part_name"></label>#}
-                        {#</div>#}
-                        {#<div class="input-field col s12">#}
-                            {#<textarea id="part_description" class="materialize-textarea"></textarea>#}
-                            {#<label for="part_description">Description</label>#}
-                        {#</div>#}
-                        {#<ul id="import_files_list">#}
-                        {#</ul>#}
-
-                    {#</div>#}
-
-                {#</li>#}
-            </ul>
-            <div class="file-field input-field col s12">
-                <div class="files-button btn upload_button">
-                    <span>Add a Part</span>
-                    <input type="file" multiple id="import-part-files" name="textureFiles">
-                </div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="btn btn-normal file-field input-field col s3">
+                <span>Add a Part</span>
+                <input type="file" multiple id="import-part-files" name="textureFiles">
             </div>
-            {#<form id="form-import-part" method="post" action="/test">#}
-            {#<div class="input-field col s12">#}
-            {#<input type="text" id="import-part-name" name="name" class="validate">#}
-            {#<label for="name">Part Name</label>#}
-            {#</div>#}
-
-            {#<div class="input-field col s12">#}
-            {#<input type="text" id="import-part-description" name="description" class="validate">#}
-            {#<label for="description">Description</label>#}
-            {#</div>#}
-
-            {#<div class="file-field input-field col s12">#}
-            {#<div class="files-button btn upload_button">#}
-            {#<span>...</span>#}
-            {#<input type="file" id="import-part-file3D" name="file3D" @change="chargefile">#}
-            {#</div>#}
-            {#<div class="file-path-wrapper">#}
-            {#<input class="file-path validate" type="text" placeholder="Upload your 3D Model">#}
-            {#</div>#}
-            {#</div>#}
-
-            {#<div class="file-field input-field col s12">#}
-            {#<div class="files-button btn upload_button">#}
-            {#<span>...</span>#}
-            {#<input type="file" multiple id="import-part-texture-files" name="textureFiles" @change="chargefile">#}
-            {#</div>#}
-            {#<div class="file-path-wrapper">#}
-            {#<input class="file-path validate" type="text" placeholder="Upload your Texture">#}
-            {#</div>#}
-            {#</div>#}
-
-            {#<div class="file-field input-field col s12">#}
-            {#<div class="files-button btn upload_button">#}
-            {#<span>...</span>#}
-            {#<input type="file" multiple id="import-part-specFiles" name="specFiles" @change="chargespecFiles">#}
-            {#</div>#}
-            {#<div class="file-path-wrapper">#}
-            {#<input class="file-path validate" type="text" placeholder="Upload your Specs File">#}
-            {#</div>#}
-            {#</div>#}
-            {#<br>#}
-            {#<button id="submit-import-part" class="btn button-form-validate" type="submit">Import a Part</button>#}
-            {#</form>#}
+            <a id="upload-parts-btn" class="btn btn-valid right col s3">Upload Parts</a>
         </div>
     </div>
 </div>
