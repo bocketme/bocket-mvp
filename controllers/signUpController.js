@@ -12,7 +12,6 @@ const OrganizationSchema = require('../models/Organization');
 const UserSchema = require('../models/User');
 const WorkspaceSchema = require('../models/Workspace');
 const acceptInvitation = require('../utils/Invitations/acceptInvitation');
-const signInUserSession = require('../utils/signInUserSession');
 const asyncForEach = require('../utils/asyncForeach');
 
 const signUpController = {
