@@ -1,6 +1,6 @@
 const userSchema = require('../../models/User');
-const organizationSchema = require('../../models/Organization')
-const log = require('../../utils/log')
+const organizationSchema = require('../../models/Organization');
+const log = require('../../utils/log');
 
 const changeOption = async (req, res, next) => {
   try {
@@ -60,6 +60,6 @@ const changeInformation = async (req, res, next) => {
     log.error(e);
     next(e);
   }
-}
+};
 
 module.exports = { changeOption, changeInformation };

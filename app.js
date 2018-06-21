@@ -132,8 +132,8 @@ app.use('/assembly', assembly);
 
 // TODO: Bouton "connectez vous" ne fonctionne pas
 server.on('listening', () => {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
+  const addr = server.address();
+  const bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);

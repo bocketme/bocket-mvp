@@ -9,7 +9,7 @@ module.exports = function* () {
   for (let doc = yield cursor.next(); doc !== null; doc = yield cursor.next()) {
     const workspace = doc._id;
     if (workspace.node_master) {
-      const nodeMaster = doc.get('node_master._id');
+      const nodeMaster = workspace.node_master._id;
       doc.nodeMaster = nodeMaster;
       doc.node_master = null;
       yield doc.save();

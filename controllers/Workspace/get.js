@@ -94,6 +94,6 @@ const listOrganization = async function (req, res, next) {
     log.error(e);
     next(e);
   }
-}
+};
 
-module.exports = { index, listOrganization }
+module.exports = { index, listOrganization };

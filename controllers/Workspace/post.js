@@ -2,7 +2,7 @@ const userSchema = require('../../models/User');
 const organizationSchema = require('../../models/Organization');
 const workspaceSchema = require('../../models/Workspace');
 const log = require('../../utils/log');
-const isMongoId = require('validator/lib/isMongoId')
+const isMongoId = require('validator/lib/isMongoId');
 const Twig = require('twig');
 const mailTransporter = require('../../utils/mailTransporter');
 const mailConfig = require('../../config/welcomeEmail');
@@ -36,7 +36,7 @@ const addOrganizationMember = async (req, res, next) => {
     const { workspaceId } = req.params;
 
     console.log(req.body);
-    const organization = await organizationSchema.findById(currentOrganization)
+    const organization = await organizationSchema.findById(currentOrganization);
     if (!organization) throw new Error('Cannot find the organization');
 
     const workspace = await workspaceSchema.findById(workspaceId);
@@ -50,7 +50,7 @@ const addOrganizationMember = async (req, res, next) => {
 
     for (let i = 0; i < _id.length; i++) {
       const user = { _id: _id[i], role: role[i] };
-      if (!isMongoId(user._id)) throw new Error('Cannot invite this user')
+      if (!isMongoId(user._id)) throw new Error('Cannot invite this user');
       switch (Number(user.role)) {
         case 3:
           await workspace.addProductManager(user._id);
@@ -69,7 +69,7 @@ const addOrganizationMember = async (req, res, next) => {
       const realUser = await userSchema.findById(user._id);
       Twig.renderFile('./views/mail/invitationWorkspace.twig', { user: realUser.completeName, organization: organization.name, workspace: workspace.name }, function (err, html) {
         if (err)
-          log.error(err)
+          log.error(err);
         else {
           let mailOptions = {
             from: mailConfig.email,
@@ -102,7 +102,7 @@ const createWorkspace = async (req, res, next) => {
     const organization = await organizationSchema.findById(organizationId);
     if (!organization) throw new Error('Cannot find the organization');
 
-    const userAsking = await userSchema.findById(userId)
+    const userAsking = await userSchema.findById(userId);
     if (!userAsking) throw new Error('Cannot find the user');
 
     if (!(organization.isAdmin(userAsking._id) || organization.isOwner(userAsking._id)))
@@ -143,6 +143,6 @@ const createWorkspace = async (req, res, next) => {
     log.error(e);
     next(e);
   }
-}
+};
 
 module.exports = { indexPost, createWorkspace, addOrganizationMember };
