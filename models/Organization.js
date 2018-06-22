@@ -161,11 +161,9 @@ OrganizationSchema.methods.changeRole = async function (userId, newRole) {
   switch (Number(newRole)) {
     case this.MEMBER:
       this.Members.push(userId);
-      log.info('User added to Members');
       break;
     case this.ADMIN:
       this.Admins.push(userId);
-      log.info('User added to Admins');
       break;
     default:
       throw new Error(`Role not defined or not usable , role =  ${role}`);
