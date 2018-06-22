@@ -13,8 +13,6 @@ const PartFileSytemConfig = require('../config/PartFileSystem');
 const succeededEmitter = require('../sockets/emitter/actionSucceeded');
 const failedEmitter = require('../sockets/emitter/actionFailed');
 
-const appDir = path.dirname(require.main.filename);
-const FSconfig = require('../config/FileSystemConfig');
 const log = require('../utils/log');
 
 /**

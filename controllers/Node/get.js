@@ -1,22 +1,12 @@
 const nodeSchema = require('../../models/Node');
-const nodeTypeEnum = require('../../enum/NodeTypeEnum');
 const partSchema = require('../../models/Part');
-const workspaceSchema = require('../../models/Workspace');
 const fs = require('fs');
 const path = require('path');
 const config = require('../../config/server');
 const PartFileSystem = require('../../config/PartFileSystem');
 const log = require('../../utils/log');
 const util = require('util');
-const mongoose = require('mongoose');
-const promisifyReadFile = util.promisify(fs.readFile);
 const promisifyReaddir = util.promisify(fs.readdir);
-const streamOptions = {
-  flags: 'r',
-  encoding: null,
-  mode: 0o666,
-  autoClose: true,
-};
 
 async function getFile3D(nodeId, workspaceId) {
   const node = await nodeSchema.findById(nodeId)
@@ -37,7 +27,7 @@ async function getFile3D(nodeId, workspaceId) {
       throw (err)
     });
   for (let i = 0; i < files.length; i++) {
-    if (path.extname(files[i]) == '.json') {
+    if (path.extname(files[i]) === '.json') {
       return path.join(file3Ddirectory, files[i]);
       break;
     }
@@ -48,7 +38,7 @@ async function getFile3D(nodeId, workspaceId) {
 async function getTextureFile(nodeId, workspaceId, textureName) {
   const node = await nodeSchema.findById(nodeId)
     .catch(err => {
-      console.error(err);
+      log.error(err);
       throw (err)
     });
   if (!node) return null;
@@ -73,6 +63,7 @@ module.exports = {
         else res.status(404).send('Not Found')
       })
       .catch(err => {
+        log.error(err);
         res.status(404).send('Not Found');
       })
   },
@@ -88,6 +79,7 @@ module.exports = {
         else res.status(403).send('Bad Request')
       })
       .catch(err => {
+        log.error(err);
         res.status(404).send('Not Found');
       })
   }

@@ -1,6 +1,5 @@
 const workspaceSchema = require('../../models/Workspace');
 const organizationSchema = require('../../models/Organization');
-const { isMongoId } = require('validator');
 const log = require('../../utils/log');
 
 async function deleteWorkspace(req, res, next) {

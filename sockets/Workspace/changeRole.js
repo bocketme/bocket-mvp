@@ -1,7 +1,6 @@
 const workspaceSchema = require('../../models/Workspace');
 const organizationSchema = require('../../models/Organization');
 const userSchema = require('../../models/User');
-const _ = require('lodash');
 const twig = require('twig');
 const log = require('../../utils/log');
 
@@ -11,7 +10,6 @@ module.exports = (io, socket) => {
       const userId = socket.handshake.session.userId;
       const workspace = await workspaceSchema.findById(workspaceId);
       const organization = await organizationSchema.findOne({ 'Workspaces': workspaceId });
-      const user = await userSchema.findById(userId);
 
       const rights = organization.userRights(userId);
 

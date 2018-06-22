@@ -1,9 +1,6 @@
 /* DEFAULT EMITTERS */
 let internalErrorEmitter = require("./emitter/internalErrorEmitter");
 
-/* MODELS */
-let User = require("../models/User");
-
 let listenerName = "checkUniqueField";
 
 module.exports = function (socket) {

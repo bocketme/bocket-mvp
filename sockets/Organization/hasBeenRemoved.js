@@ -1,6 +1,4 @@
 const organizationSchema = require('../../models/Organization');
-const userSchema = require('../../models/User');
-const twig = require('twig');
 const log = require('../../utils/log');
 
 module.exports = (io, socket) => {

@@ -3,8 +3,6 @@ const workspaceSchema = require('../models/Workspace');
 const organizationSchema = require('../models/Organization');
 const assemblySchema = require('../models/Assembly');
 const nodeSchema = require('../models/Node');
-const teamSchema = require('../models/Team');
-const NodeTypeEnum = require('../enum/NodeTypeEnum');
 const log = require('../utils/log');
 const nodeMasterConfig = require('../config/nodeMaster');
 

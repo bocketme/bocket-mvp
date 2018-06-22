@@ -1,26 +1,11 @@
 //TODO Destroy this file or reuse it elsewhere
-let escape = require('escape-html');
-let internalErrorEmitter = require("./emitter/internalErrorEmitter");
 let serverConfig = require('../config/server');
-let User = require("../models/User");
 let Node = require("../models/Node");
 let typeEnum = require("../enum/NodeTypeEnum.js");
 let Part = require("../models/Part");
-let Assembly = require("../models/Assembly");
 let fs = require('fs');
 let crypto = require('crypto');
-const sign = crypto.createSign('SHA256');
 
-let files = {};
-let construct = {
-    name: null,
-    type: null,
-    size: 0,
-    data: [],
-    slice: 0,
-};
-
-//TODO
 module.exports = (socket) => {
     socket.on("createFile", (nodeId, access) => {
         //Verify the user rights

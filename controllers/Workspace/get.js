@@ -2,10 +2,8 @@ let workspaceSchema = require('../../models/Workspace');
 let userSchema = require('../../models/User');
 let nodeSchema = require('../../models/Node');
 let Organization = require('../../models/Organization');
-let fs = require('fs');
 let NodeTypeEnum = require('../../enum/NodeTypeEnum');
 let ViewTypeEnum = require('../../enum/ViewTypeEnum');
-let path = require('path');
 const log = require('../../utils/log');
 
 const index = async (req, res, next) => {

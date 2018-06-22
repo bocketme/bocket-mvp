@@ -1,6 +1,5 @@
 const organizationSchema = require('../../models/Organization');
 const userSchema = require('../../models/User');
-const Twig = require('twig');
 
 module.exports = (io, socket) => {
   socket.on('[Organization] - create', async (name) => {

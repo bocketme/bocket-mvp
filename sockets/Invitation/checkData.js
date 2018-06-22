@@ -1,5 +1,4 @@
 const validateEmail = require('../../utils/validate/validateEmail');
-const validateCompleteName = require('../../utils/validate/validateCompleteName');
 
 const checkData = function(socket, data) {
   const ret = [];

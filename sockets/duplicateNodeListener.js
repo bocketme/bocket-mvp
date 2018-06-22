@@ -1,7 +1,5 @@
 const duplicateNode = "duplicateNode";
 const Node = require("../models/Node");
-const Workspace = require("../models/Workspace");
-const mongoose = require('mongoose');
 const FSconfig = require('../config/FileSystemConfig');
 const partSchema = require('../models/Part');
 const assemblySchema = require('../models/Assembly');
@@ -14,7 +12,6 @@ const twig = require('twig');
 /**
  *
  * @param userEmail
- * @param data : {{nodeId: String}}
  * @returns Promise
  */
 async function duplicateNodeListener(socket, data) {

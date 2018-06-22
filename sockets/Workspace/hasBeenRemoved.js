@@ -1,5 +1,4 @@
 const workspaceSchema = require('../../models/Workspace');
-const twig = require('twig');
 const log = require('../../utils/log');
 
 module.exports = (io, socket) => {
