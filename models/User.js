@@ -164,9 +164,12 @@ UserSchema.methods.removeOrganization = async function (organizationId) {
     }
     const { Workspaces } = this.Manager.find(findWorkspace);
 
-    for (let i = 0; i < Workspaces.length; i++) {
-      const workspaceId = Workspaces[i];
-      const workspace = await workspaceSchema.findById(workspaceId);
+    const workspaceCursor = workspaceSchema
+      .find({ _id: { $in: Workspaces } }).cursor();
+
+    const next = workspaceCursor.next;
+
+    for (workspace = await next(); workspace !== null; workspace = await next()) {
       await workspace.removeUser(this._id, true);
     }
 
