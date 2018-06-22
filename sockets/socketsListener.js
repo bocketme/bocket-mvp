@@ -10,7 +10,6 @@ const newActivityComment = require('./newActivityCommentListener');
 const getActivities = require('./getActivitiesListener');
 const addCommentListener = require('./addCommentToActivityListener');
 const fileUploaderListener = require('./fileUploaderListener');
-const getAllSpecListener = require('./getAllSpecListener');
 const removeSpecListener = require('./removeSpecListener');
 const renameSpecListener = require('./renameSpecListener');
 const workspaceManagerListener = require('./workspaceListener');
@@ -53,7 +52,6 @@ module.exports = function (io) {
     newActivityComment(socket, io);
     getActivities(socket);
     addCommentListener(socket, io);
-    getAllSpecListener(socket);
     removeSpecListener(io, socket);
     renameSpecListener(io, socket);
     changePassword(socket);
