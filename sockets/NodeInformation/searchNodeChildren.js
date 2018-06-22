@@ -1,5 +1,5 @@
-const Node = require('../models/Node');
-let TypeEnum = require('../enum/NodeTypeEnum');
+const Node = require('../../models/Node');
+let TypeEnum = require('../../enum/NodeTypeEnum');
 let twig = require('twig');
 
 module.exports = (socket) => {
