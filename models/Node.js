@@ -7,20 +7,13 @@ const THREE = require('three');
 
 const NestedNode = require('./nestedSchema/NestedNodeSchema');
 const uniqueValidator = require('mongoose-unique-validator');
-const NestedUser = require('./nestedSchema/NestedUserSchema');
 const NestedComment = require('./nestedSchema/NestedActivitySchema');
 const NodeTypeEnum = require('../enum/NodeTypeEnum');
 const NestedTeam = require('./nestedSchema/NestedTeamSchema');
 const PartSchema = require('./Part');
 const AssemblySchema = require('./Assembly');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
-const asyncForEach = require('../utils/asyncForeach');
 const log = require('../utils/log');
-
-const NestedWorkspace = mongoose.Schema({
-  _id: { type: mongoose.SchemaTypes.ObjectId, require: true },
-  name: { type: String, require: true },
-});
 
 const NodeSchema = mongoose.Schema({
   // The core Information of the node
@@ -72,11 +65,11 @@ NodeSchema.plugin(uniqueValidator);
  * @param nodeInformation.owners - The owners of the node
  */
 NodeSchema.statics.newDocument = (nodeInformation) => {
-  if (!nodeInformation.name) { console.error(new Error('The Name of the Node is missing')); }
+  if (!nodeInformation.name) { log.error(new Error('The Name of the Node is missing')); }
 
-  if (!nodeInformation.type) { console.error(new Error('The Type of the Node is missing')); }
+  if (!nodeInformation.type) { log.error(new Error('The Type of the Node is missing')); }
 
-  if (!nodeInformation.content) { console.error(new Error('The Content of the Node is missing')); }
+  if (!nodeInformation.content) { log.error(new Error('The Content of the Node is missing')); }
 
   return new Node(nodeInformation);
 };
