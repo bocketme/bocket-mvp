@@ -1,7 +1,6 @@
 const Invitation = require('../../models/Invitation');
 const organisationSchema = require('../../models/Organization');
 const workspaceSchema = require('../../models/Workspace');
-const _ = require('lodash');
 const log = require('../../utils/log');
 
 async function acceptInvitation(invitationUid, user) {
