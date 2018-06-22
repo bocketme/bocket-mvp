@@ -18,7 +18,7 @@ module.exports = function* () {
         const workspace = yield workspaceSchema.findById(nestedWorkspace[i]._id);
         const organization = yield organizationSchema.findOne({ 'Workspaces': doc._id });
         const isExisting = manager.findIndex(({ Organization }) => Organization.equals(organization._id));
-        if (isExisting == -1) {
+        if (isExisting === -1) {
           doc.Manager.push({
             _id: organization._id,
             workspaces: [workspace._id],

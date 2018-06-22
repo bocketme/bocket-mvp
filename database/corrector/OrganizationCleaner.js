@@ -1,4 +1,6 @@
 const organizationSchema = require('../../models/Organization');
+const { OrganizationBackup } = require('../backupdDatabase');
+
 const log = require('../../utils/log');
 const fs = require('fs');
 const util = require('util');
@@ -10,11 +12,10 @@ module.exports = function* () {
   try {
     const cursor = organizationSchema.find().cursor();
     for (let doc = yield cursor.next(); doc !== null; doc = yield cursor.next()) {
-      const organization = doc._doc;
+      const organization = yield OrganizationBackup.findById(doc._id);
       if (organization.workspaces) {
-        const workspaces = organization.workspaces;
+        const {workspaces} = organization;
         doc.Workspaces = workspaces.map(({ _id }) => _id);
-        doc.workspaces = null;
         yield doc.save();
       }
 
@@ -35,12 +36,10 @@ module.exports = function* () {
       if (organization.owner) {
         const owner = organization.owner[0]._id;
         doc.Owner = owner;
-        doc.owner = null;
       }
 
       if (organization.members) {
         const members = organization.members;
-        doc.members = null;
         doc.Members =
           members.filter((member) => {
             const id1 = String(member);

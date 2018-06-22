@@ -2,7 +2,6 @@
 //const fetchTheCreationOrga = require('./fetchThecreationOrga');
 const organizationCleaner = require('./OrganizationCleaner');
 const workspaceCleaner = require('./WorkspaceCleaner');
-const mongoose = require('mongoose');
 const userCleaner = require('./UserCleaner');
 const fetchTheWorkspaceNode = require('./fetchTheWorkspaceNode');
 const log = require('../../utils/log');

@@ -1,7 +1,10 @@
-const co = require('co');
 const workspaceSchema = require('../../models/Workspace');
 const nodeSchema = require('../../models/Node');
 const log = require('../../utils/log');
+const fs = require('fs');
+const util = require('util');
+const path = require('path');
+const renameDir = util.promisify(fs.rename);
 
 module.exports = function* () {
   const cursor = workspaceSchema.find().cursor();
