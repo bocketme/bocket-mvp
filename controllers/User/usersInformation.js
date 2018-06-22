@@ -31,8 +31,6 @@ let userImage = async (req, res) => {
   });
 };
 
-let get = {
-  userImage: userImage,
-};
+let get = {userImage};
 
 module.exports = get;

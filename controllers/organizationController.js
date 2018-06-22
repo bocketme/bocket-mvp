@@ -54,18 +54,15 @@ module.exports = {
         const userid = String(userId);
         if (owner === userid)
           await organization.remove();
-
-        return '/'
       })
-      .then(link => {
-        res.status(200).send();
-      })
+      .then(() => { res.status(200).send() })
       .catch(err => {
         log.error(err);
         res.status(500).send(err);
       });
   },
   leaveOrganization: (req, res) => {
+    //TODO: Need Rework
     const { organizationId } = req.params;
     const { userId } = req.session;
   },

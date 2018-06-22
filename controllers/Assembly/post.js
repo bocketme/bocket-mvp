@@ -50,10 +50,8 @@ const newAssembly = async (req, res) => {
   try {
     creator = await UserSchema.findOne({ email: userEmail });
   } catch (err) {
-    let message = err.message ? err.message : "Error intern";
-    let status = err.status ? err.status : "500";
-    log.error("[ Post Part Controller ] creator  :" + message + "\n" + new Error(err));
-    return res.status(status).send(message);
+    log.error("[ Post Part Controller ] creator  :" + (err.message || "Error intern") + "\n" + new Error(err));
+    return res.status(err.status || "500").send(err.message || "Error intern");
   }
 
   let parentNode;

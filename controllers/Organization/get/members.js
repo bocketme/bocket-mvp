@@ -2,7 +2,7 @@ const organizationSchema = require('../../../models/Organization');
 const userSchema = require('../../../models/User');
 const log = require('../../../utils/log');
 
-async function members(req, res, next) {
+async function members(req, res) {
   try {
     const { organizationId } = req.params;
     const { userId } = req.session;
