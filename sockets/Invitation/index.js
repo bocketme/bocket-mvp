@@ -1,4 +1,4 @@
-const organization = require('./organization');
+// const organization = require('./organization');
 const workspace = require('./workspace');
 
 module.exports = (io, socket) => {
