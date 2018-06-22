@@ -65,7 +65,7 @@ module.exports = (io, socket) => {
 
   socket.on('[Tchat] - addUser', (tchatId, users) => {
     const { currentWorkspace } = socket.handshake.session;
-    if (tchatId != null && tchatId != undefined && users.length > 0) {
+    if (tchatId != null &&  users.length > 0) {
       Workspace
         .findById(currentWorkspace)
         .then(workspace => addNewUser(workspace, tchatId, users))
