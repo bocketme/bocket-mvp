@@ -9,7 +9,6 @@ const fileUploaderListener = require('./fileUploaderListener');
 const removeSpecListener = require('./removeSpecListener');
 const renameSpecListener = require('./renameSpecListener');
 const workspaceManagerListener = require('./workspaceListener');
-const createWorkspaceInSignIn = require('./createWorkspaceInSignIn');
 const duplicateNodeListener = require('./duplicateNodeListener');
 const reportIssueListener = require('./reportIssueListener');
 const Tchat = require('./Tchat');
@@ -37,7 +36,6 @@ module.exports = function (io) {
     Annotation(io, socket);
     Tchat(io, socket);
     duplicateNodeListener(socket);
-    createWorkspaceInSignIn(io, socket);
     fileUploaderListener(socket, uploader);
     checkUniqueField(socket);
     newNodeListener(socket);
