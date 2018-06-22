@@ -10,21 +10,21 @@ const NodeTypeEnum = require('../../enum/NodeTypeEnum');
  * @return {Promise<{content: *, type}>}
  */
 async function getContentOfNode(nodeId, workspaceId = null) {
-  let node = null;
-  //if(!workspaceId)
-    node = await Node.findById(nodeId).catch(err => {throw err});
-  //else
-  //  node = await Node.findOne({'_id': nodeId, "Workspaces._id": workspaceId}).catch(err => {throw err});
+  const node = await Node.findById(nodeId).catch(err => {throw err});
+
   let content = null;
+
   if (!node) { throw Error(`[getContentNode] Unknown node: ${nodeId}`); }
-  if (node.type === NodeTypeEnum.part) {
+
+  if (node.type === NodeTypeEnum.part)
     content = await Part.findById(node.content);
-  } else if (node.type === NodeTypeEnum.assembly) {
+  else if (node.type === NodeTypeEnum.assembly)
     content = await Assembly.findById(node.content);
-  } else {
+  else
     throw Error('[getContentNode] Unknown type node');
-  }
+
   if (!content) { throw Error(`[getContentNode] Unknown content: ${node.content}`); }
+
   return { content, type: node.type, node };
 }
 
