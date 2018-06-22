@@ -6,7 +6,6 @@ const searchNodeChildren = require('./searchNodeChildren');
 const NodeViewer = require('./NodeViewer');
 const NodeManager = require('./NodeManager');
 const Organization = require('./Organization');
-const addCommentListener = require('./addCommentToActivityListener');
 const fileUploaderListener = require('./fileUploaderListener');
 const removeSpecListener = require('./removeSpecListener');
 const renameSpecListener = require('./renameSpecListener');
@@ -47,7 +46,6 @@ module.exports = function (io) {
     NodeInformation(io, socket);
     searchNodeChildren(socket);
     NodeViewer(io, socket);
-    addCommentListener(socket, io);
     removeSpecListener(io, socket);
     renameSpecListener(io, socket);
     changePassword(socket);
