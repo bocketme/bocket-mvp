@@ -50,7 +50,7 @@ module.exports = (io, socket) => {
       });
 
     } catch (error) {
-      console.error(error);
+      log.error(error);
     }
   });
 
