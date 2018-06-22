@@ -88,10 +88,10 @@ OrganizationSchema.methods.deleteAdmin = async function (userId) {
     await user.removeOrganization(this._id);
 
     function filterAdmin(admin) {
-      const isEqual = admin.equals(userId);
-      return !isEqual;
+      return !admin.equals(userId);
     }
-    this.Admins = this.Admins.filter(filter);
+
+    this.Admins = this.Admins.filter(filterAdmin);
 
     await this.save();
   } catch (e) {
@@ -127,8 +127,7 @@ OrganizationSchema.methods.deleteMember = async function (userId) {
     await user.removeOrganization(this._id);
 
     function filterMember(_id) {
-      const isEqual = _id.equals(userId);
-      return !isEqual;
+      return !_id.equals(userId);
     }
 
     this.Members = this.Members.filter(filterMember);

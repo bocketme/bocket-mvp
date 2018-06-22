@@ -6,18 +6,19 @@ let NodeTypeEnum = require('../../enum/NodeTypeEnum');
 let ViewTypeEnum = require('../../enum/ViewTypeEnum');
 const log = require('../../utils/log');
 
-const index = async (req, res, next) => {
+const index = async (req, res) => {
   try {
     const { workspaceId } = req.params;
     const { userMail } = req.session;
 
     const user = await userSchema.findOne({ email: userMail });
 
-    if (!user) throw new Error('[Workspace Controller] - Workspace not Found');
+    if (!user) throw new Error('[Workspace Controller] - User not Found');
 
     await user
-      .populate('Manager.Organization', 'name')
-      .populate('Manager.Workspaces', 'name')
+      .populate('Manager.Workspaces')
+      .populate('Manager.Organization')
+      .populate({ path: 'Manager.Organization', populate: { path: 'Owner Admins Members' } })
       .execPopulate();
 
     const workspace = await workspaceSchema.findById(workspaceId);
@@ -38,9 +39,15 @@ const index = async (req, res, next) => {
     req.session.currentWorkspace = workspaceId;
     req.session.currentOrganization = workspace.Organization._id;
 
+    const currentOrganization = {
+      _id: Manager.Organization._id,
+      name: Manager.Organization.name,
+      users: Manager.Organization.users
+    }
+
     const options = {
       currentUser: { completeName: user.completeName, email: user.email },
-      currentOrganization: Manager.Organization,
+      currentOrganization,
       title: workspace.name,
       in_use: { name: workspace.name, id: workspace._id },
       user: user.completeName,

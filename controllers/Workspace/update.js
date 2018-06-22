@@ -4,7 +4,7 @@ const log = require('../../utils/log');
 
 const changeOption = async (req, res, next) => {
   try {
-    if (!req.query || req.query == {})
+    if (!req.query || req.query === {})
       return next();
 
     const { celShading, unit } = req.query;

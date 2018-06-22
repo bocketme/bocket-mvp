@@ -222,11 +222,7 @@ async function renderWorkspaces(organizationId, userId) {
 
   if (!user) throw new Error('[Organizaiton Manager] - Cannot find the user');
 
-  const managerOrganization = user.get('Manager');
-
-  const index = user.Manager.findIndex(manager => {
-    return manager.Orgnaization._id.equals(organizationId);
-  });
+  const index = user.Manager.findIndex(manager => manager.Orgnaization._id.equals(organizationId));
 
   if (index === -1) throw new Error('Cannot find the organization');
 

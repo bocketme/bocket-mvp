@@ -3,12 +3,9 @@ const uniqueValidator = require('mongoose-unique-validator');
 const uid = require('uid-safe');
 const mailTransporter = require('../utils/mailTransporter');
 const Twig = require('twig');
-const serverConfig = require('../config/server');
 
 const mailConfig = require('../config/welcomeEmail');
 const log = require('../utils/log');
-
-const logValidate = log.child({ type: '' });
 
 const nestedPeopleSchema = mongoose.Schema({
   completeName: String,
@@ -36,52 +33,42 @@ const InvitationSchema = mongoose.Schema({
   people: nestedPeopleSchema,
 });
 
-InvitationSchema.pre('save', async function (next) {
-
+InvitationSchema.pre('save', async function () {
   this.uid = await uid(42);
 
   if (!(this.organization.role > 3 && this.organization.role < 7))
     throw new Error('Cannot save an incorrect invitaiton');
+
   return this;
 });
 
 InvitationSchema.post('save', (invitation) => {
-  let value, isWorkspace;
-  if (invitation.workspace) {
-    isWorkspace = true;
-    value = invitation.workspace.name
-  } else {
-    isWorkspace = false;
-    value = invitation.organization.name
-  }
-
   const renderVar = {
     user: invitation.people.completeName,
     author: invitation.author,
     type: {
-      isWorkspace,
-      value,
+      isWorkspace: invitation.workspace ? true : false,
+      value: invitation.workspace ? invitation.workspace.name : invitation.organization.name,
     },
     invitationUid: invitation.uid
   };
 
   Twig.renderFile('./views/mail/invitation.twig', renderVar, (err, html) => {
     if (err) {
-      console.error(err);
+      log.error(`[Invitation] - send a mail \n ${err}`);
       return null;
-    }
-    else {
+    } else {
       let mailOptions = {
         from: mailConfig.email,
         to: invitation.people.email,
         subject: 'Une personne vous a invité a collaborer dans un espace de travail Bocket.',
-        html,
+        html
       };
       mailTransporter.sendMail(mailOptions, (error, info) => {
         if (error)
           reject(error);
         else
-          console.log(`Email sent: ${info.response}`);
+          log.info(`Email sent: ${info.response}`);
       });
     }
   });
