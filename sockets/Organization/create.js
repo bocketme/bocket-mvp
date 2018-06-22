@@ -12,7 +12,7 @@ module.exports = (io, socket) => {
 
       await organization.save();
 
-      const user = await userSchema.findById(socket.handshake.session.userId);
+      const user = await userSchema.findById(userId);
       await user.addOrganization(organization._id);
 
       await user.save();
