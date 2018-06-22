@@ -1,25 +1,13 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const TypeEnum = require('../enum/NodeTypeEnum');
-const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const NestedComment = require('./nestedSchema/NestedActivitySchema');
-const NestedUser = require('./nestedSchema/NestedUserSchema');
 const configServer = require('../config/server');
 const fs = require('fs');
 const path = require('path');
 const AssemblyFileSystem = require('../config/AssemblyFileSystem');
 const { Schema } = mongoose;
 const directories = Object.values(AssemblyFileSystem);
-
-/**
- * Mongoose Schema for
- * @param {number} _id - The id of the nested organization
- * @param {string} name - The name of the organization
- */
-const NestedOrganization = mongoose.Schema({
-  _id: { type: mongoose.SchemaTypes.ObjectId, require: true },
-  name: { type: String, require: true },
-});
 
 const AssemblyScheama = mongoose.Schema({
   name: { type: String, require: true, index: true },
