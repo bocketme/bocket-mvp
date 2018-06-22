@@ -1,6 +1,5 @@
 const organizationSchema = require('../../models/Organization');
 const userSchema = require('../../models/User');
-const _ = require('lodash');
 const twig = require('twig');
 const log = require('../../utils/log');
 
@@ -9,7 +8,6 @@ module.exports = (io, socket) => {
     try {
       const userId = socket.handshake.session.userId;
       const organization = await organizationSchema.findById(organizationId);
-      const user = await userSchema.findById(userId);
 
       const rights = organization.userRights(userId);
 

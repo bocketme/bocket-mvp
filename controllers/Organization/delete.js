@@ -1,10 +1,7 @@
 const organizationSchema = require('../../models/Organization');
-const userSchema = require('../../models/User');
-
 const log = require('../../utils/log');
 
-module.exports = main;
-async function main(req, res, next) {
+async function main(req, res) {
   try {
     const { organizationId } = req.params;
     const { userId } = req.session;
@@ -21,3 +18,5 @@ async function main(req, res, next) {
     res.status(500).send('Intern Error');
   }
 }
+
+module.exports = main;

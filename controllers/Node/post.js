@@ -125,7 +125,7 @@ function verificationWriteInWorkspace(req, res, next) {
 
   Workspaces.findById({ _id: workspaceId })
     .then((workspace) => new Promise((resolve, reject) => {
-          if (workspace.User.email == userMail)
+          if (workspace.User.email === userMail)
             resolve();
           else {
             if(workspace.users && workspace.users.length !== 0){
@@ -216,7 +216,7 @@ function addNodetoWorkspace(workspace, cible, data) {
     node.children.forEach((child) => {
       node.children = createNode(node);
     });
-    if (node.title == cible) {
+    if (node.title === cible) {
       node.children.push(data);
     }
     return node;
