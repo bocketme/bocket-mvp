@@ -1,6 +1,5 @@
 const userSchema = require('../../../models/User');
 const httpErrors = require("http-errors");
-const { renderFile } = require('twig');
 const log = require('../../../utils/log');
 module.exports = async (req, res, next) => {
   try {

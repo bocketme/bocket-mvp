@@ -4,7 +4,6 @@ const userSchema = require('../models/User');
 const assemblySchema = require('../models/Assembly');
 const NodeTypeEnum = require('../enum/NodeTypeEnum');
 const nodeSchema = require('../models/Node');
-const querystring = require('querystring');
 const log = require('../utils/log');
 
 module.exports = {
