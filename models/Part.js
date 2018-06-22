@@ -1,17 +1,13 @@
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
-const util = require('util');
 const uniqueValidator = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
 const configServer = require('../config/server');
 const TypeEnum = require('../enum/NodeTypeEnum');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const NestedComment = require('./nestedSchema/NestedActivitySchema');
-const NestedAssembly = require('./nestedSchema/NestedAssemblySchema');
-const NestedUser = require('./nestedSchema/NestedUserSchema');
 const PartFileSystem = require('../config/PartFileSystem');
-const asyncForEach = require('./utils/asyncForeach');
 
 const log = require('../utils/log');
 

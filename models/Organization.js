@@ -1,18 +1,12 @@
-const serverConfiguration = require("../config/server");
 const workspaceSchema = require('./Workspace');
 const userSchema = require("./User");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const log = require('../utils/log');
 const uniqueValidator = require('mongoose-unique-validator');
-const Workspace = require("./nestedSchema/NestedWorkspaceSchema");
 const config = require('../config/server');
 const fs = require('fs');
 const path = require('path');
-
-let Node = new mongoose.Schema({
-  name: { type: String, required: true }
-});
 
 let OrganizationSchema = new mongoose.Schema({
   name: { type: String, required: true, index: { unique: true } },
