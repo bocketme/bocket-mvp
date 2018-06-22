@@ -1,13 +1,12 @@
-const socketName = '[Node] - Delete';
 const Node = require('../../models/Node');
-const User = require('../../models/User');
+//TODO: ADD USER VERIFICATION !! const User = require('../../models/User');
 const Workspace = require('../../models/Workspace');
 
 const log = require('../../utils/log');
 
 module.exports = async (io, socket) => {
 
-  socket.on(socketName, async function (nodeId) {
+  socket.on('[Node] - Delete', async function (nodeId) {
     try {
       const node = await Node.findById(nodeId);
       if (!node) throw new Error('Cannot find the node');

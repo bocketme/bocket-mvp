@@ -17,9 +17,9 @@ module.exports = (io, socket) => {
    */
   socket.on('[NodeManager] - create Node',
     async ({ workspaceId, node, parent }) => {
-      const { userMail } = socket.handshake.session;
+      const { userId } = socket.handshake.session;
       try {
-        let userHaveRights = checkAuthorization(workspaceId, userMail)
+        let userHaveRights = checkAuthorization(workspaceId, userId);
       } catch(err) {
         socket.emit('error', "Cannot create the node - You don't have the rights");
         return log.error(err);
@@ -36,8 +36,6 @@ const checkAuthorization = async (workspaceId, email) => {
   let workspace = await workspaceSchema.findById(workspaceId);
   if (!workspace) return console.log("Workspace Not Found");
 
-  let user = await userSchema.find({ email });
-
-  return workspace.users.find(({ _id }) => String(_id) === String(user._id)) !== null
-    || workspace.owner.find(({ _id }) => String(_id) === String(user._id)) !== null;
+  let rights = workspace.userRights(userId);
+  return rights === 2 && rights === 3;
 };
