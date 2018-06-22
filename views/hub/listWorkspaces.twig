@@ -1,6 +1,6 @@
 <div id="organization-block">
     <a href="/organization/{{currentOrganization._id}}">
-        <div class="cube-container active">
+        <div class="cube-container">
             <div class="text-container">
                 {{ currentOrganization.name|first |capitalize }}
             </div>
@@ -13,15 +13,24 @@
         {% for workspace in workspaces %}
             <div class="round-separator">
                 <a href="/workspace/{{workspace._id}}" data-tooltip="{{ workspace.name }}" data-delay="50" data-position="right">
-                    <div {% if in_use.id.equals(workspace._id) %} class="round-container" {% else %} {% endif %}>
-                        <div class="text-container">
-                            {{ workspace.name|first |capitalize }}
+                    {% if in_use.id.equals(workspace._id) %}
+                        <div class="round-container active">
+                            <div class="text-container">
+                                {{ workspace.name|first |capitalize }}
+                            </div>
                         </div>
-                    </div>
+                    {% else %}
+                        <div class="round-container">
+                            <div class="text-container">
+                                {{ workspace.name|first |capitalize }}
+                            </div>
+                        </div>
+                    {% endif %}
                 </a>
             </div>
         {% endfor %}
     </div>
+    {#
     <a id="trigger-creation-workspace" class=" modal-trigger" href="#workspace-creation">
         <div class="round-container">
             <div class="text-container">
@@ -29,6 +38,8 @@
             </div>
         </div>
     </a>
+    {% include 'modals/createWorkspace.twig' %}
+    #}
 </div>
 <div id="user-block">
     <hr>
@@ -41,4 +52,3 @@
     </a>
 </div>
 {% include 'modals/userSettings.twig' %}
-{% include 'modals/createWorkspace.twig' %}

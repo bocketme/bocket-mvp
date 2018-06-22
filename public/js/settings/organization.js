@@ -1,6 +1,6 @@
 const leaveTheOrganization = $('#leave-the-organization');
 leaveTheOrganization.on('click', () => {
-  if (userRights === 6) 
+  if (userRights === 6)
     $('#confirm-leave-organization').modal('open');
   else
     socket.emit('[Organization] - leave');
@@ -17,11 +17,11 @@ deleteOrganizationWanted.on('click', () => {
 const organizationNameInput = $('#organizationName');
 const organizationNameSubmit = $('#new-organization-submit');
 organizationNameInput.on('input', () => {
-  const inputVal = organizationNameInput.val(); 
+  const inputVal = organizationNameInput.val();
   if (inputVal !== "") {
     organizationNameSubmit.removeClass('disabled');
     organizationNameSubmit.css('background-color', '#00cca0')
-  }  else {
+  } else {
     organizationNameSubmit.addClass('disabled');
     organizationNameSubmit.css('background-color', '#DFDFDF')
   }
@@ -31,12 +31,17 @@ organizationNameSubmit.on('click', () => {
   socket.emit('[Organization] - create', organizationNameInput.val());
   organizationNameInput.val('');
 });
-
 socket.on('[Organization] - create', (err, redirection) => {
-  if(err) {
+  if (err) {
     console.error(err);
-    Materialize.toast('Cannot create the organization');        
+    Materialize.toast('Cannot create the organization');
   } else {
     document.location.href = redirection;
   }
 });
+
+socket.on("[Organization] - deleted",
+  () => $("#organization-deleted").modal('open'));
+
+socket.on("[Organization] - removed",
+  () => $("#organization-removed").modal('open'));

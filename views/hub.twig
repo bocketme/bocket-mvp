@@ -49,6 +49,12 @@
                     </li>
                     <li class="divider"></li>
                     <li class="option-node">
+                        <a class="dropdown-menu" href="/organization/{{currentOrganization._id}}/workspaces#{{in_use.id}}-tabs">
+                            Manage Workspace
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li class="option-node">
                         <a class="dropdown-menu modal-trigger" href="#report-issue-modal">Report an issue</a>
                     </li>
                     <!-- display panel create new assemby US2 -->
@@ -60,7 +66,9 @@
 
                 <ul id="dropdown-settings-viewer" class="dropdown-content dropdown-nested">
                     <li class="option-node" id="cell-shading-button">
-                        <a class="dropdown-menu" href='?celShading={{optionViewer.celShading ? false : true}}'>Cel Shading{% if optionViewer.celShading == true %}
+                        <a class="dropdown-menu" href='?celShading={{optionViewer.celShading ? false : true}}'>
+                            Cel Shading
+                            {% if optionViewer.celShading == true %}
                                 <i class='material-icons' style="margin: 0;">check</i>
                             {% endif %}
                         </a>

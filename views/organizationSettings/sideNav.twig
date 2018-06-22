@@ -22,6 +22,7 @@
             </div>
         {% endfor %}
     </div>
+    {% if currentUser.rights > 4 %}    
     <a id="trigger-creation-workspace" class=" modal-trigger" href="#workspace-creation">
         <div class="round-container">
             <div class="text-container">
@@ -29,6 +30,7 @@
             </div>
         </div>
     </a>
+    {% endif %}
 </div>
 <div id="user-block">
     <hr>

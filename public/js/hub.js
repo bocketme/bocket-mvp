@@ -29,8 +29,7 @@
       ready(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
         const context = `#${modal.context.id}`;
         const form = $(context).find('form');
-        if (form[0] && modal.context.id !== 'edit-part')
-        { form[0].reset(); }
+        if (form[0] && modal.context.id !== 'edit-part') { form[0].reset(); }
       },
     });
     $('.collapsible').collapsible();
@@ -53,8 +52,7 @@
         } else {
           const context = `#${modal.context.id}`;
           const form = $(context).find('form');
-          if (form[0] && modal.context.id !== 'edit-part')
-          { form[0].reset(); }
+          if (form[0] && modal.context.id !== 'edit-part') { form[0].reset(); }
         }
       },
     });
@@ -70,27 +68,27 @@
       stopPropagation: false, // Stops event propagation
     });
 
-/*
-    $('.dropdown-button').dropdown({
-      inDuration: 300,
-      outDuration: 225,
-      constrainWidth: false, // Does not change width of dropdown to that of the activator
-      hover: false, // Activate on hover
-      gutter: 0, // Spacing from edge
-      belowOrigin: true, // Displays dropdown below the button
-      alignment: 'left', // Displays dropdown with edge aligned to the left of button
-      stopPropagation: false, // Stops event propagation
-    });
-    $('#dropdown-settings-viewer').dropdown({
-      inDuration: 300,
-      outDuration: 225,
-      constrainWidth: true, // Does not change width of dropdown to that of the activator
-      hover: true, // Activate on hover
-      gutter: 0, // Spacing from edge
-      alignment: 'left', // Displays dropdown with edge aligned to the left of button
-      stopPropagation: true, // Stops event propagation
-    });
-*/
+    /*
+        $('.dropdown-button').dropdown({
+          inDuration: 300,
+          outDuration: 225,
+          constrainWidth: false, // Does not change width of dropdown to that of the activator
+          hover: false, // Activate on hover
+          gutter: 0, // Spacing from edge
+          belowOrigin: true, // Displays dropdown below the button
+          alignment: 'left', // Displays dropdown with edge aligned to the left of button
+          stopPropagation: false, // Stops event propagation
+        });
+        $('#dropdown-settings-viewer').dropdown({
+          inDuration: 300,
+          outDuration: 225,
+          constrainWidth: true, // Does not change width of dropdown to that of the activator
+          hover: true, // Activate on hover
+          gutter: 0, // Spacing from edge
+          alignment: 'left', // Displays dropdown with edge aligned to the left of button
+          stopPropagation: true, // Stops event propagation
+        });
+    */
     $('.pref-option-style').dropdown({
       inDuration: 300,
       outDuration: 225,
@@ -134,6 +132,12 @@
       alignment: 'left', // Displays dropdown with edge aligned to the left of button
       stopPropagation: false, // Stops event propagation
     });
+    
+    socket.on('[Workspace] - removed',
+      () => $("#workspace-deleted").modal('open'));
+
+    socket.on('[Workspace] - user removed',
+      () => $("#workspace-removed").modal('open'))
 
     $('#dropdown-trigger-file-spec-menu').on('click', (event) => {
       event.preventDefault();
@@ -230,7 +234,7 @@ function collapseOwners(owners) {
  * @type {Detail}
  */
 const detail = new (class Detail {
-  constructor() {
+  constructor () {
     this.title = $('#info-name');
     this.description = $('#info-description');
     this.creator = $('#info-creator');

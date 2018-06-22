@@ -13,9 +13,11 @@
             <div class="input-field col s12">
                 <select name="productManager" id='new-workspace-manager'>
                     <option value="" disabled="disabled" selected="selected">Choose your product manager</option>
-                    {% for user in currentOrganization.users %}
-                        <option value="{{ user._id }}">{{ user.completeName }}</option>
-                    {% endfor %}
+                    {% if (currentOrganization) %}
+                        {% for user in currentOrganization.users %}
+                            <option value="{{ user._id }}">{{ user.completeName }}</option>
+                        {% endfor %}
+                    {% endif %}
                 </select>
                 <label>Product Manager</label>
             </div>

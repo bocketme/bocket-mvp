@@ -41,7 +41,7 @@ socket.on("[Workspace] - changeRoles", (err, html, workspaceId) => {
     divWorkspace.html('');
     divWorkspace.html(html);
     $('select').material_select();
-  } 
+  }
 });
 
 socket.on('[Workspace] - remove', (err, html, workspaceId) => {

@@ -17,10 +17,23 @@ $(document).on('ready', function (event) {
     }
   });
 
+  function nonAccess() {
+    setImmediate(() => {
+      Materialize.toast('You can no longer access to this workspace, the page will reload')
+      //TODO: Catch another href or make another thing
+      document.location.reload(true);
+    }, 500);
+  }
+
   $("#leave-the-workspace").click(() => {
-    socket.emit('[Workspace] - remove user', $("#workspaceId").val(), $("#currentUserId").val() );
-    document.location.reload(true);    
+    socket.emit('[Workspace] - remove user', $("#workspaceId").val(), $("#currentUserId").val());
+    nonAccess();
   });
+
+  socket.on('[Workspace] -  removed user', function () {
+    //TODO: I don't know what to do ?
+    nonAccess();
+  })
 
   $("#confirm-workspace-leave").modal({
     ready: (modal, trigger) => {
@@ -30,13 +43,7 @@ $(document).on('ready', function (event) {
 
   $(document).on('click', '#delete-the-workspace', () => {
     const workspaceId = $('#workspaceIdDelete').val();
-  
-    function deleteWorkspace(workspaceId) {
-      workspaceDeleteReq.open("DELETE", `/workspace/${workspaceId}`);
-      workspaceDeleteReq.send(null);
-    }
-  
-    deleteWorkspace(workspaceId);
-  
+    workspaceDeleteReq.open("DELETE", `/workspace/${workspaceId}`);
+    workspaceDeleteReq.send(null);
   });
 });

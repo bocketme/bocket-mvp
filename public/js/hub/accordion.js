@@ -153,19 +153,6 @@ function loadNodeInformation(event) {
 
   const buttonNativeDownload = $('#download-native');
   buttonNativeDownload.attr('href', '#!');
-  /*
-    TODO: Location...
-    clearComments($("#activity-comments-location"));
-    socket.emit("getActivities", {
-        nodeId: idOfchoosenNode,
-        viewType: ViewTypeEnum.location
-    });
-    */
-  clearComments($('#activity-comments-content'));
-  socket.emit('getActivities', {
-    nodeId: idOfchoosenNode,
-    viewType: ViewTypeEnum.content,
-  });
 }
 
 socket.on('[Node] - Delete', (nodeId) => {
