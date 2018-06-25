@@ -8,10 +8,10 @@
 
     <div class="row" id="main">
         <div id="left-pannel" class="col s12 m4 l4 xl3 row">
-            <div id="side-nav" class="col s3 m3 l3 xl3">
+            <div id="side-nav" class="col s2 m2 l2 xl2">
                 {% include './sideNav.twig' %}
             </div>
-            <div id="options" class="col s9 m9 l9 xl9">
+            <div id="options" class="col s10 m10 l10 xl10">
                 <div>
                     <a href="/organization/{{ currentOrganization._id }}">Organization</a>
                     <hr style="margin: 0% 5%;">
@@ -88,7 +88,7 @@
                                                 </select>
                                             </div>
                                             <div class="col s4 push-s2">
-                                                <a href="#!" class="right" style="display: inline-block; margin-top: 10px">Remove</a>
+                                                <a onclick="removeOrganization({{currentOrganization._id}}, {{admin._id}})" href="#!" class="right" style="display: inline-block; margin-top: 10px">Remove</a>
                                             </div>
                                         {% endif %}
                                     </div>
@@ -125,7 +125,7 @@
                                         {% endif %}
                                         {% if currentUser.rights > 4 %}
                                             <div class="col s4 push-s2">
-                                                <a href="#!" class="right" style="display: inline-block; margin-top: 10px">Remove</a>
+                                                <a onclick="removeOrganization({{currentOrganization._id}}, {{admin._id}})" href="#!" class="right" style="display: inline-block; margin-top: 10px">Remove</a>
                                             </div>
                                         {% endif %}
                                     </div>
