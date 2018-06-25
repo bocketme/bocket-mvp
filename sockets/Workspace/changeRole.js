@@ -21,7 +21,7 @@ module.exports = (io, socket) => {
         .populate({ path: 'ProductManagers', select: 'completeName' })
         .populate({ path: 'Teammates', select: 'completeName' })
         .populate({ path: 'Observers', select: 'completeName' })
-        .exec();
+        .execPopulate();
 
       const ProductManagers = workspace.get('ProductManagers'),
         _id = workspace.get('_id'),
