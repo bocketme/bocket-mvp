@@ -20,6 +20,19 @@ const extensionsTextures = [
     'png', 'tga', 'tif', 'mtl',
 ]
 
+function nodeChildrenLoad(element, html) {
+    const nodeId = element.attr('id');
+    if (element.hasClass('search_child')) {
+        const breadcrumbs_value = element.contents().filter('span.p-node').attr('data-breadcrumbs');
+        const sub_level = element.contents().filter('span.p-node').attr('data-sublevel');
+        element.removeClass('search_child');
+        socket.emit('nodeChildren', nodeId, breadcrumbs_value, sub_level);
+    } else {
+        $(`#${nodeId}-body`).html(html);
+    }
+}
+
+
 function getFileExtension(filename = '') {
     return filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
 }
@@ -48,18 +61,81 @@ function parseFormFiles(files) {
     return ret;
 }
 
+function sendFilesToPart(nodeId, partId, files) {
+    if (files) {
+        console.log('FILES to send', files, nodeId, partId);
+        var request = [];
+
+        var handleErrorsFct = function(idx) {
+            return function() {
+                if(request[idx].readyState === 4) {
+                    if (request[idx].status === 200) {
+                        const res = JSON.parse(request[idx].response);
+                        console.log('REQUETE DES FICHIERS RECUE', res);
+                    } else if (request[idx].status === 404) {
+                        Materialize.toast("Not Found", 1000);
+                    } else if (request[idx].status === 401) {
+                        Materialize.toast("The selected node is not an assembly", 1000);
+                    }
+                } else if (request[idx].readyState === 3) {
+                    console.log('LOADING', idx);
+                }
+            }
+        }
+
+        function getUrl(file, idx) {
+            var form = new FormData();
+            form.append('sentFile', file);
+            for (var p of form) {
+                console.log('FOorm', p);
+            }
+            request[idx].send(form);
+        }
+
+        var idx = 0;
+        for (var i = 0; i < files.specs.length; i++) {
+            request[idx] = new XMLHttpRequest();
+            request[idx].open('POST', `/part/${nodeId}/specs/${partId}/${files.specs[i].file.name}`, true);
+            request[idx].onreadystatechange = handleErrorsFct(idx);
+            getUrl(files.specs[i].file, idx);
+            idx++;
+        }
+        for (var i = 0; i < files.textures.length; i++) {
+            request[idx] = new XMLHttpRequest();
+            request[idx].open('POST', `/part/${nodeId}/textures/${partId}/${files.textures[i].file.name}`, true);
+            request[idx].onreadystatechange = handleErrorsFct(idx);
+            getUrl(files.textures[i].file, idx);
+            idx++;
+        }
+        for (var i = 0; i < files.files3d.length; i++) {
+            request[idx] = new XMLHttpRequest();
+            request[idx].open('POST', `/part/${nodeId}/files3d/${partId}/${files.files3d[i].file.name}`, true);
+            request[idx].onreadystatechange = handleErrorsFct(idx);
+            getUrl(files.files3d[i].file, idx);
+            idx++;
+        }
+    } else {
+        console.error('UUUUUH, There are no files there');
+    }
+}
+
 function uploadParts() {
     const cible = headerTitle.title;
     var postRequest = [];
     if (cible !== "Select a node") {
         const nodeId = idOfchoosenNode;
+        var sub_level = $("#" + nodeId).contents().filter("span.p-node").attr("data-sublevel");
+        var breadcrumb = $("#" + nodeId).contents().filter("span.p-node").attr("data-breadcrumbs");
 
         var helperFunc=function(arrIndex,itemId) {
             return function() {
                 if(postRequest[arrIndex].readyState === 4) {
                     if (postRequest[arrIndex].status === 200) {
-                        console.log('REQUETE RECUE', arrIndex);
-                        // $('#' + nodeId + '-body').html(postRequest.response);
+                        const res = JSON.parse(postRequest[arrIndex].response);
+                        const { nodeId, partId } = res;
+                        sendFilesToPart(nodeId, partId, partsArray[arrIndex].files);
+                        console.log(nodeId, partId);
+                        nodeChildrenLoad($('#' + nodeId), res.body);
                         // var element = document.querySelectorAll('.three-node');
                         // $(element).click(loadNodeInformation);
                     } else if (postRequest[arrIndex].status === 404) {
@@ -67,6 +143,8 @@ function uploadParts() {
                     } else if (postRequest[arrIndex].status === 401) {
                         Materialize.toast("The selected node is not an assembly", 1000);
                     }
+                } else if (postRequest[arrIndex].readyState === 3) {
+                    console.log('LOADING');
                 }
             }
         }
@@ -91,7 +169,7 @@ function uploadParts() {
             const name =  $(`#${partId}_part_name`).val();
             const description = $(`#${partId}_part_description`).val();
             console.log('Outputs: ', name, description);
-            postRequest[i].send(JSON.stringify({ name, description }));
+            postRequest[i].send(JSON.stringify({ name, description, sub_level, breadcrumb }));
         }
     } else {
         Materialize.toast("You must select a node", 1000);
@@ -272,6 +350,7 @@ function addPartInModalList(files) {
             '        </li>';
 
         $('#parts_list').append(html);
+
 
         $(`#add-files-${partIdx}`).on('change', (event) => {
             const elem = event.target;
