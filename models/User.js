@@ -43,8 +43,8 @@ UserSchema.methods.organizationOwner = async function () {
   const owner = [];
   for (let i = 0; i < this.Manager.length; i++) {
     const manager = this.Manager[i];
-    const organization = await organizationSchema.findById(manager.Organization);
-    if (organization.isOwner(this._id)) owner.push(organization._id);
+    const organization = await organizationSchema.findById(manager.Organization)
+    if (organization.isOwner(this._id)) owner.push({_id: organization._id, name: organization.name});
   }
   return owner
 };
