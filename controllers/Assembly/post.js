@@ -85,6 +85,7 @@ const newAssembly = async (req, res) => {
       name: name,
       creator: creator._id,
       description: description,
+      Organization: parentAssembly.Organization
     });
 
     await assembly.save();
@@ -139,11 +140,12 @@ const newAssembly = async (req, res) => {
   if (specFiles) {
     for (let specFile in specFiles) {
       try {
-        await type_mime(1, spec.type_mime);
-        await createFile(chemin, spec);
+        await type_mime(1, specFiles[specFile].type_mime);
+        console.log(specFiles[specFile]);
+        await createFile(chemin, specFiles[specFile]);
       }
       catch (err) {
-        fileNotcreated.push(spec.originalName);
+        fileNotcreated.push(specFiles[specFile].originalName);
         log.error("[ Post Assembly Controller ] \n" + new Error(err));
       }
     }
