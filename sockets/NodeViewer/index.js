@@ -25,23 +25,24 @@ module.exports = (io, socket) => {
     io.in(currentWorkspace).emit(loading.emit.part, id, name, matrix, parentId);
   });
 
-  socket.on(loading.on.start, (workspaceId) => {
+  socket.on(loading.on.start, () => {
     const { currentWorkspace } = socket.handshake.session;
-    manager.loadWorkspace(workspaceId);
+    manager.loadWorkspace(currentWorkspace);
   });
 
   socket.on(loading.on.save, (nodeId, matrix) => {
     const { currentWorkspace } = socket.handshake.session;
-    manager.save(currentWorkspace, nodeId, matrix);
-    socket.to(currentWorkspace).emit(loading.emit.updateMatrix, nodeId, [matrix]);
+    manager.save(currentWorkspace, nodeId, matrix)
+    return socket.to(currentWorkspace).emit(loading.emit.updateMatrix, nodeId, [matrix]);
   });
 
   socket.on(loading.on.cancel, () => {
     const { currentWorkspace } = socket.handshake.session;
     manager.cancel(currentWorkspace)
+    return false;
   });
 
-  socket.on(loading.on.update, (nodeId, token) => {
+  socket.on(loading.on.update, (nodeId) => {
     manager.update(nodeId)
-  });
+  })
 };
