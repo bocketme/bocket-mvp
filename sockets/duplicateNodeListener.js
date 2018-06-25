@@ -1,3 +1,4 @@
+//TODO: ADD USER VERIFICATION
 const duplicateNode = "duplicateNode";
 const Node = require("../models/Node");
 const FSconfig = require('../config/FileSystemConfig');
@@ -15,13 +16,13 @@ const twig = require('twig');
  * @returns Promise
  */
 async function duplicateNodeListener(socket, data) {
-    let userMail = socket.handshake.session.userMail;
-    let node = await Node.findById(data.nodeId).catch(err => {
+    const {nodeId} = data;
+    let node = await Node.findById(nodeId).catch(err => {
         throw err
     });
 
     let parentNode = await Node.findOne({
-        "children._id": data.nodeId
+        "children._id": nodeId
     }).catch(err => {
         throw err
     });
@@ -62,7 +63,7 @@ async function duplicateNodeListener(socket, data) {
     });
 
     let tasks = [];
-    if (node.type == NodeTypeEnum.part) {
+    if (node.type === NodeTypeEnum.part) {
         tasks.push({
             oldPath: path.join(FSconfig.appDirectory.files3D, originalPath, FSconfig.content.data),
             newPath: path.join(FSconfig.appDirectory.files3D, content.path, FSconfig.content.data),
