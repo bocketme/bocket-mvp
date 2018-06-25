@@ -5,6 +5,7 @@ module.exports = async function userOwnership(req, res) {
   try {
     const { userId } = req.session;
     const user = await userSchema.findById(userId);
+    //TODO: POPULATE THE ORGANIZATION
     const organizations = await user.organizationOwner();
     return res.render('socket/userOwnership.twig', { organizations });
   } catch (e) {
