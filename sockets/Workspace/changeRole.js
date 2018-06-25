@@ -13,7 +13,7 @@ module.exports = (io, socket) => {
 
       const rights = organization.userRights(userId);
 
-      if (organization.isOwner(userId) || organization.isAdmin(userId) || workspace.isProductManager(userId))
+      if (organization.isOwner(userId) || organization.isAdmin(userId))
         await workspace.changeRole(userAffected, newRole);
       else throw new Error('You have no rights');
 
