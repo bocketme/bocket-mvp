@@ -1,3 +1,4 @@
+//TODO: NEED REWORK
 const mv = require('mv');
 const fsPart = require('../config/PartFileSystem');
 const config = require('../config/server');
@@ -41,7 +42,7 @@ async function getUploadir(fileName, nodeId, workspaceId) {
   return ret;
 }
 
-async function edit3DFile(fileInfo, data, workspaceId) {
+async function edit3DFile(fileInfo, data) {
   const { nodeId } = data;
   const { content, type } = await getContentOfNode(nodeId);
   if (!content) { throw Error(''); }
