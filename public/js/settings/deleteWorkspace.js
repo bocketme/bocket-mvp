@@ -11,6 +11,7 @@ $(document).on('ready', function (event) {
             setTimeout(document.location.reload(true), 500)
           } else
             Materialize.toast(`Cannot delete the workspace`, 1000);
+            setTimeout(document.location.reload(true), 5000)
         }
       };
       $("#workspaceIdDelete").val($(trigger).attr('workspaceId'));
