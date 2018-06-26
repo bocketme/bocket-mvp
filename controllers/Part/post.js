@@ -36,7 +36,6 @@ const newPart = async (req, res) => {
   const nodeId = escape(req.params.nodeId);
   const name = escape(req.body.name);
   const description = escape(req.body.description);
-  console.log('Name: ', name, 'Description : ', description);
 
   let sub_level = Number(req.body.sub_level);
   const breadcrumb = escape(req.body.breadcrumb);
@@ -167,15 +166,7 @@ const addFileToPart = async (req, res) => {
   const partId = escape(req.params.partId);
   const nodeId = escape(req.params.nodeId);
   const type = escape(req.params.type);
-  const name = escape(req.params.name);
   var { sentFile } = req.files;
-
-  // file = getArrayBuffer(file);
-
-  // if (!file.includes('Error'))
-  //   return res.status(400).send('Error while uploading the file');
-
-  console.log('ICIIIIIIIIIIIII', partId, nodeId, type, sentFile[0]);
 
   let part;
   try {
@@ -198,6 +189,7 @@ const addFileToPart = async (req, res) => {
     } catch (err) {
       sendError.push(`Could'nt import the file : ${sentFile[0].originalname}`);
       log.warn(err);
+      return res.status(400).send({ nodeId, partId, sendError, name: sentFile[0].originalname  });
     }
   } else if (type === 'textures') {
     try {
@@ -205,6 +197,7 @@ const addFileToPart = async (req, res) => {
     } catch (err) {
       sendError.push(`Could'nt import the file : ${sentFile[0].originalname}`);
       log.warn(err);
+      return res.status(400).send({ nodeId, partId, sendError, name: sentFile[0].originalname });
     }
   } else if (type === 'files3d') {
     try {
@@ -212,11 +205,12 @@ const addFileToPart = async (req, res) => {
     } catch (err) {
       sendError.push(`Could'nt import the 3DFile : ${sentFile[0].originalname}`);
       log.warn(err);
+      return res.status(400).send({ nodeId, partId, sendError, name: sentFile[0].originalname });
     }
   }
 
   sendError.forEach(err => log.error(err));
-  return res.status(200).send({ nodeId, partId, sendError });
+  return res.status(200).send({ nodeId, partId, sendError, name: sentFile[0].originalname });
 };
 
 // /**

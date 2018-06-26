@@ -20,12 +20,11 @@ const extensionsTextures = [
     'png', 'tga', 'tif', 'mtl',
 ]
 
-function nodeChildrenLoad(element, html) {
-    const nodeId = element.attr('id');
-    if (element.hasClass('search_child')) {
-        const breadcrumbs_value = element.contents().filter('span.p-node').attr('data-breadcrumbs');
-        const sub_level = element.contents().filter('span.p-node').attr('data-sublevel');
-        element.removeClass('search_child');
+function nodeChildrenLoad(nodeId, html) {
+    if ($(`#${nodeId}`).hasClass('search_child')) {
+        const breadcrumbs_value = $(`#${nodeId}`).contents().filter('span.p-node').attr('data-breadcrumbs');
+        const sub_level = $(`#${nodeId}`).contents().filter('span.p-node').attr('data-sublevel');
+        $(`#${nodeId}`).removeClass('search_child');
         socket.emit('nodeChildren', nodeId, breadcrumbs_value, sub_level);
     } else {
         $(`#${nodeId}-body`).html(html);
@@ -61,23 +60,30 @@ function parseFormFiles(files) {
     return ret;
 }
 
-function sendFilesToPart(nodeId, partId, files) {
+function sendFilesToPart(nodeId, partId, files, arrIdx) {
     if (files) {
-        console.log('FILES to send', files, nodeId, partId);
         var request = [];
 
-        var handleErrorsFct = function(idx) {
+        var handleErrorsFct = function(idx, type, fileId) {
             return function() {
                 if(request[idx].readyState === 4) {
                     if (request[idx].status === 200) {
                         const res = JSON.parse(request[idx].response);
+                        fileUploaded(arrIdx, type, fileId);
+                        checkIfAllUploaded();
                         console.log('REQUETE DES FICHIERS RECUE', res);
                     } else if (request[idx].status === 404) {
                         Materialize.toast("Not Found", 1000);
                     } else if (request[idx].status === 401) {
+                        fileUploadFailed(fileId);
                         Materialize.toast("The selected node is not an assembly", 1000);
+                    } else if (request[idx].status === 400) {
                     }
                 } else if (request[idx].readyState === 3) {
+                    $(`${fileId}-file > upload-div`).css('visibility', 'visible');
+                    $(`${fileId}-file > upload-div > .preloader-wrapper`).show();
+                    $(`${fileId}-file > upload-div > .reload-btn`).hide();
+                    $(`${fileId}-file > upload-div > .upload-completed`).hide();
                     console.log('LOADING', idx);
                 }
             }
@@ -86,36 +92,105 @@ function sendFilesToPart(nodeId, partId, files) {
         function getUrl(file, idx) {
             var form = new FormData();
             form.append('sentFile', file);
-            for (var p of form) {
-                console.log('FOorm', p);
-            }
             request[idx].send(form);
         }
 
         var idx = 0;
         for (var i = 0; i < files.specs.length; i++) {
             request[idx] = new XMLHttpRequest();
-            request[idx].open('POST', `/part/${nodeId}/specs/${partId}/${files.specs[i].file.name}`, true);
-            request[idx].onreadystatechange = handleErrorsFct(idx);
+            request[idx].open('POST', `/part/${nodeId}/specs/${partId}`, true);
+            request[idx].onreadystatechange = handleErrorsFct(idx, 'specs', files.specs[i]._id);
             getUrl(files.specs[i].file, idx);
             idx++;
         }
         for (var i = 0; i < files.textures.length; i++) {
             request[idx] = new XMLHttpRequest();
-            request[idx].open('POST', `/part/${nodeId}/textures/${partId}/${files.textures[i].file.name}`, true);
-            request[idx].onreadystatechange = handleErrorsFct(idx);
+            request[idx].open('POST', `/part/${nodeId}/textures/${partId}`, true);
+            request[idx].onreadystatechange = handleErrorsFct(idx, 'textures', files.textures[i]._id);
             getUrl(files.textures[i].file, idx);
             idx++;
         }
         for (var i = 0; i < files.files3d.length; i++) {
             request[idx] = new XMLHttpRequest();
-            request[idx].open('POST', `/part/${nodeId}/files3d/${partId}/${files.files3d[i].file.name}`, true);
-            request[idx].onreadystatechange = handleErrorsFct(idx);
+            request[idx].open('POST', `/part/${nodeId}/files3d/${partId}`, true);
+            request[idx].onreadystatechange = handleErrorsFct(idx, 'files3d', files.files3d[i]._id);
             getUrl(files.files3d[i].file, idx);
             idx++;
         }
     } else {
         console.error('UUUUUH, There are no files there');
+    }
+}
+
+function fileUploadFailed(fileId) {
+    $(`#${fileId}-upload-div`).css('visibility', 'visible');
+    $(`#${fileId}-upload-div > .preloader-wrapper`).hide();
+    $(`#${fileId}-upload-div > .reload-btn`).show();
+    $(`#${fileId}-upload-div > .upload-completed`).hide();
+}
+
+function partUploaded(idx) {
+    if (idx < partsArray.length) {
+        partsArray[idx].isUpload = true;
+        const id = partsArray[idx]._id;
+        $(`#${id}-close`).prop('disabled', true);
+        $(`#${id}_part_name`).prop('disabled', true);
+        $(`#${id}_part_description`).prop('disabled', true);
+        $(`#add-files-${id}`).prop('disabled', true);
+    }
+}
+
+function checkIfAllUploaded() {
+    for (let i = 0; i < partsArray.length; i++) {
+        console.log('LOOOP')
+        let isUploaded = true;
+        isUploaded = partsArray[i].isUpload;
+        for (let idx = 0; idx < partsArray[i].files.specs.length; idx++) {
+            if (!partsArray[i].files.specs[idx].isUpload)
+                isUploaded = false;
+        }
+        for (let idx = 0; idx < partsArray[i].files.files3d.length; idx++) {
+            if (!partsArray[i].files.files3d[idx].isUpload)
+                isUploaded = false;
+        }
+        for (let idx = 0; idx < partsArray[i].files.textures.length; idx++) {
+            if (!partsArray[i].files.textures[idx].isUpload)
+                isUploaded = false;
+        }
+        if (isUploaded) {
+            console.log('IsUploaded');
+            $(`#${partsArray[i]._id}-part`).remove();
+            partsArray.splice(i, 1);
+        }
+    }
+    if (partsArray.length === 0) {
+        $("#import-part").modal("close");
+    }
+}
+
+function fileUploaded(idx, type, fileId) {
+    console.log('FILE UPLOADED', idx, type, fileId, partsArray);
+    if (idx < partsArray.length) {
+        if (type === 'specs') {
+            const file = partsArray[idx].files.specs.find((elem) => { return elem._id === fileId });
+            file.isUpload = true;
+            $(`#${file._id}-close-${partsArray[idx]._id}`).css('visibility', 'hidden');
+            $(`#${file._id}-file > .select-spec`).css('visibility', 'hidden');
+        } else if (type === 'textures') {
+            const file = partsArray[idx].files.textures.find((elem) => { return elem._id === fileId });
+            file.isUpload = true;
+            $(`#${file._id}-close-${partsArray[idx]._id}`).css('visibility', 'hidden');
+            $(`#${file._id}-file > .select-texture`).css('visibility', 'hidden');
+        } else if (type === 'files3d'){
+            const file = partsArray[idx].files.files3d.find((elem) => { return elem._id === fileId });
+            file.isUpload = true;
+            $(`#${file._id}-close-${partsArray[idx]._id}`).css('visibility', 'hidden');
+            $(`#${file._id}-file > .select-file3d`).css('visibility', 'hidden');
+        }
+        $(`#${fileId}-upload-div`).css('visibility', 'visible');
+        $(`#${fileId}-upload-div > .preloader-wrapper`).hide();
+        $(`#${fileId}-upload-div > .reload-btn`).hide();
+        $(`#${fileId}-upload-div > .upload-completed`).show();
     }
 }
 
@@ -133,9 +208,10 @@ function uploadParts() {
                     if (postRequest[arrIndex].status === 200) {
                         const res = JSON.parse(postRequest[arrIndex].response);
                         const { nodeId, partId } = res;
-                        sendFilesToPart(nodeId, partId, partsArray[arrIndex].files);
+                        sendFilesToPart(nodeId, partId, partsArray[arrIndex].files, arrIndex);
                         console.log(nodeId, partId);
-                        nodeChildrenLoad($('#' + nodeId), res.body);
+                        nodeChildrenLoad(nodeId, res.html);
+                        partUploaded(arrIndex);
                         // var element = document.querySelectorAll('.three-node');
                         // $(element).click(loadNodeInformation);
                     } else if (postRequest[arrIndex].status === 404) {
@@ -151,25 +227,26 @@ function uploadParts() {
 
         for (var i = 0; i < partsArray.length; i++) {
 
-            postRequest[i] = new XMLHttpRequest();
-            console.log(postRequest[i], 'REQUEST')
-            const partId = partsArray[i]._id;
-            postRequest[i].onreadystatechange=helperFunc(i,nodeId);
+            if (!partsArray[i].isUpload) {
+                postRequest[i] = new XMLHttpRequest();
+                console.log(postRequest[i], 'REQUEST')
+                const partId = partsArray[i]._id;
+                postRequest[i].onreadystatechange=helperFunc(i,nodeId);
 
-            postRequest[i].addEventListener("error", function (event) {
-                Materialize.toast("The Part was not created", 1000);
-            }, false);
-            postRequest[i].addEventListener("abort", function (event) {
-                Materialize.toast("Network Error - The Part could not be created", 1000);
-            }, false);
+                postRequest[i].addEventListener("error", function (event) {
+                    Materialize.toast("The Part was not created", 1000);
+                }, false);
+                postRequest[i].addEventListener("abort", function (event) {
+                    Materialize.toast("Network Error - The Part could not be created", 1000);
+                }, false);
 
-            postRequest[i].open('POST', '/part/' + nodeId, true);
-            postRequest[i].setRequestHeader("Content-Type", "application/json");
-            console.log(partsArray);
-            const name =  $(`#${partId}_part_name`).val();
-            const description = $(`#${partId}_part_description`).val();
-            console.log('Outputs: ', name, description);
-            postRequest[i].send(JSON.stringify({ name, description, sub_level, breadcrumb }));
+                postRequest[i].open('POST', '/part/' + nodeId, true);
+                postRequest[i].setRequestHeader("Content-Type", "application/json");
+                const name =  $(`#${partId}_part_name`).val();
+                const description = $(`#${partId}_part_description`).val();
+                console.log('Outputs: ', name, description);
+                postRequest[i].send(JSON.stringify({ name, description, sub_level, breadcrumb }));
+            }
         }
     } else {
         Materialize.toast("You must select a node", 1000);
@@ -196,6 +273,8 @@ function handleChangeFile3d(event) {
     var idxToChange = -1;
     const part = partsArray.find((element) => { return element._id.toString() === partId });
 
+    if (part.isUpload)
+        return;
     if (value === 'specs') {
         idxToChange = part.files.files3d.findIndex((element) => { return element.file.name === fileName;});
         if (idxToChange !== -1) {
@@ -226,6 +305,8 @@ function handleChangeTexture(event) {
     var idxToChange = -1;
     const part = partsArray.find((element) => { return element._id.toString() === partId });
 
+    if (part.isUpload)
+        return;
     if (value === 'specs') {
         console.log(part.files);
         idxToChange = part.files.textures.findIndex((element) => { return element.file.name === fileName;});
@@ -253,36 +334,81 @@ function appendFileToList(idPart, file, fileType) {
         return `<li id="${fileId}-file" class="file_list_item row file3d" >` +
             `                    <a id="${fileId}-close-${idPart}" class="material-icons close-files col s1">close</a>` +
             `                    <span class="part_file_name col s3">${file.name}</span>` +
-            `                    <span class="${idPart}-file3d-error col s6" ></span>` +
+            `                    <span class="${idPart}-file3d-error col s5" ></span>` +
             '                    <div class="input-field col s2 select-file3d">' +
             `                        <select id="${file.name}-${fileId}_${idPart}" onchange="handleChangeFile3d(event)">` +
             '                            <option value="files3d" selected>3d file</option>' +
             '                            <option value="specs">Spec file</option>' +
             '                        </select>' +
             '                    </div>' +
+            `                    <div id="${fileId}-upload-div" class="upload-div col s1">` +
+            '                       <div class="upload-completed"><i class="material-icons">check</i></div>\n' +
+            '                       <div class="preloader-wrapper small active">' +
+            '                       <div class="spinner-layer spinner-blue-only">' +
+            '                       <div class="circle-clipper left">' +
+            '                       <div class="circle"></div>' +
+            '                           </div><div class="gap-patch">' +
+            '                           <div class="circle"></div>' +
+            '                           </div><div class="circle-clipper right">' +
+            '                               <div class="circle"></div>' +
+            '                               </div>' +
+            '                           </div>' +
+            '                       </div>' +
+            '                       <a class="reload-btn material-icons">cached</a>' +
+            '                   </div>' +
             '                </li>'
     } else if (fileType === 'textures') {
         return `                <li id="${fileId}-file" class="file_list_item row texture" >` +
             `                    <a id="${fileId}-close-${idPart}" class="material-icons close-files col s1">close</a>` +
             `                    <span class="part_file_name col s3">${file.name}</span>` +
-            `                    <span class="${idPart}-texture-error col s6" ></span>` +
+            `                    <span class="${idPart}-texture-error col s5" ></span>` +
             '                    <div class="input-field col s2 select-texture">' +
             `                        <select id="${file.name}-${fileId}_${idPart}" onchange="handleChangeTexture(event)">` +
             '                            <option value="textures" selected>Texture file</option>' +
             '                            <option value="specs">Spec file</option>' +
             '                        </select>' +
             '                    </div>' +
+            `                    <div id="${fileId}-upload-div" class="upload-div col s1">` +
+            '                       <div class="upload-completed"><i class="material-icons">check</i></div>' +
+            '                       <div class="preloader-wrapper small active">' +
+            '                       <div class="spinner-layer spinner-blue-only">' +
+            '                       <div class="circle-clipper left">' +
+            '                       <div class="circle"></div>' +
+            '                           </div><div class="gap-patch">' +
+            '                           <div class="circle"></div>' +
+            '                           </div><div class="circle-clipper right">' +
+            '                               <div class="circle"></div>' +
+            '                               </div>' +
+            '                           </div>' +
+            '                       </div>' +
+            '                       <a class="reload-btn material-icons ">cached</a>' +
+            '                   </div>' +
             '                </li>'
     } else {
         return `<li id="${fileId}-file" class="file_list_item row texture">` +
             `                    <a id="${fileId}-close-${idPart}" class="material-icons close-files col s1">close</a>` +
             `                    <span class="part_file_name col s3">${file.name}</span>` +
-            `                    <span class="${idPart}-specs-error col s6" ></span>` +
-            '                    <div class="input-field col s2">' +
+            `                    <span class="${idPart}-specs-error col s5" ></span>` +
+            '                    <div class="input-field col s2 select-spec">' +
             `                        <select id="${file.name}-${fileId}_${idPart}" disabled>` +
             '                            <option value="specs" disabled selected>Spec file</option>' +
             '                        </select>' +
             '                    </div>' +
+            `                    <div id="${fileId}-upload-div" class="upload-div col s1">` +
+            '                       <div class="upload-completed"><i class="material-icons">check</i></div>' +
+            '                       <div class="preloader-wrapper small active">' +
+            '                       <div class="spinner-layer spinner-blue-only">' +
+            '                       <div class="circle-clipper left">' +
+            '                       <div class="circle"></div>' +
+            '                           </div><div class="gap-patch">' +
+            '                           <div class="circle"></div>' +
+            '                           </div><div class="circle-clipper right">' +
+            '                               <div class="circle"></div>' +
+            '                               </div>' +
+            '                           </div>' +
+            '                       </div>' +
+            '                       <a class="reload-btn material-icons ">cached</a>' +
+            '                   </div>' +
             '                </li>'
     }
 
@@ -315,17 +441,9 @@ function handlePartsError() {
     }
 }
 
-// function handlePartError(idx) {
-//     var files = partsArray.find((elem) => { return elem._id === idx }).files;
-//     if (files.files3d.length === 0) {
-//         $(`#${idx}-error`).text('Error: You must import at least 1 3d file');
-//     } else if (files.files3d.length > 1) {
-//         $(`.${idx}-file3d-error`).text('Error: You must have only 1 3d file by part');
-//     } else {
-//         $(`#${idx}-error`).text('');
-//         $(`.${idx}-file3d-error`).text('');
-//     }
-// }
+function handlePartsUpload() {
+
+}
 
 function addPartInModalList(files) {
     if (files) {
@@ -368,6 +486,7 @@ function addPartInModalList(files) {
 
         partsArray.push({
             _id: partIdx,
+            isUpload: false,
             files: {
               files3d: [],
               textures: [],
@@ -399,7 +518,7 @@ function removeFile(event) {
     const filename = $(`#${idFile}-file span.part_file_name`).text();
     const part = partsArray.find((element) => { return element._id.toString() === idPart });
     var idx = part.files.files3d.findIndex((element) => { return element._id === Number(idFile) });
-    if (idx !== -1) {
+    if (idx !== -1 && !part.files.files3d[idx].isUpload) {
         console.log('TROUVEEE');
         part.files.files3d.splice(idx, 1);
         $(`#${idFile}-file`).remove();
@@ -407,7 +526,7 @@ function removeFile(event) {
         return;
     }
     idx = part.files.textures.findIndex((element) => { return element._id === Number(idFile) });
-    if (idx !== -1) {
+    if (idx !== -1 && !part.files.textures[idx].isUpload) {
         console.log('TROUVEEE');
         part.files.textures.splice(idx, 1);
         $(`#${idFile}-file`).remove();
@@ -415,7 +534,7 @@ function removeFile(event) {
         return;
     }
     idx = part.files.specs.findIndex((element) => { return element._id === Number(idFile) });
-    if (idx !== -1) {
+    if (idx !== -1 && !part.files.specs[idx].isUpload) {
         part.files.specs.splice(idx, 1);
         $(`#${idFile}-file`).remove();
         handlePartsError();
@@ -428,11 +547,11 @@ function addFileToPart(idPart, file, idFile, type) {
     console.log(typeof idPart, idPart);
     const part = partsArray.find((element) => { return element._id === idPart });
     if (type === "file3d") {
-        part.files.files3d.push({ _id: idFile, file })
+        part.files.files3d.push({ _id: idFile, isUpload: false, file })
     } else if (type === "texture") {
-        part.files.textures.push({ _id: idFile, file })
+        part.files.textures.push({ _id: idFile, isUpload: false, file })
     } else {
-        part.files.specs.push({ _id: idFile, file })
+        part.files.specs.push({ _id: idFile, isUpload: false, file })
     }
 }
 
@@ -440,6 +559,7 @@ function linkFilesToList(idPart, files) {
     for (var idx = 0; idx < files.files3d.length; idx++) {
         $(`#${idPart}_files_list`).append(appendFileToList(idPart, files.files3d[idx], 'file3d'));
         addFileToPart(idPart, files.files3d[idx], fileId,'file3d');
+        $(`#${fileId}-upload-div`).css('visibility', 'hidden');
 
         $(`#${fileId}-close-${idPart}`).on('click', (event) => {
             removeFile(event);
@@ -450,6 +570,7 @@ function linkFilesToList(idPart, files) {
     for (var idx = 0; idx < files.textures.length; idx++) {
         $(`#${idPart}_files_list`).append(appendFileToList(idPart, files.textures[idx], 'textures'));
         addFileToPart(idPart, files.textures[idx], fileId,'texture');
+        $(`#${fileId}-upload-div`).css('visibility', 'hidden');
 
         $(`#${fileId}-close-${idPart}`).on('click', (event) => {
             removeFile(event);
@@ -459,7 +580,9 @@ function linkFilesToList(idPart, files) {
     }
     for (var idx = 0; idx < files.specs.length; idx++) {
         $(`#${idPart}_files_list`).append(appendFileToList(idPart, files.specs[idx], 'specs'));
-        addFileToPart(idPart, files.specs[idx], fileId,'spec')
+        addFileToPart(idPart, files.specs[idx], fileId,'spec');
+        $(`#${fileId}-upload-div`).css('visibility', 'hidden');
+
 
         $(`#${fileId}-close-${idPart}`).on('click', (event) => {
             removeFile(event);

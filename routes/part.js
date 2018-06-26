@@ -11,7 +11,7 @@ router.put('/update/:nodeId', upload.fields([{ name: 'file3D', maxCount: 1 }, { 
 router.post('/:nodeId', upload.fields([{ name: 'files3d', maxCount: 1 }, { name: 'specs' }, { name: 'textures' }]), (req, res, next) => {
   postController.newPart(req, res).catch(err => next(err));
 });
-router.post('/:nodeId/:type/:partId/:fileName', upload.fields([{ name: 'sentFile', maxCount: 1 }]), (req, res, next) => {
+router.post('/:nodeId/:type/:partId', upload.fields([{ name: 'sentFile', maxCount: 1 }]), (req, res, next) => {
   postController.addFileToPart(req, res).catch(err => next(err))
 });
 router.get('/:nodeId/modeler', getController.modeler);
