@@ -1,0 +1,34 @@
+<div id="user-options" class="modal" style="width: 75% !important;">
+    <div class="modal-content">
+        <h5 class="col s12">
+            User Settings
+            <a class="modal-close" style="color: black;">
+                <i class="material-icons right">highlight_off</i>
+            </a>
+        </h5>
+        <div class="col s12">
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col s3"></div>
+                <div class="col s9">
+                    <p style="height: 45px">Name:
+                        {{ currentUser.completeName }}</p>
+                    <p style="height: 45px">E-mail:
+                        {{ currentUser.email }}</p>
+                    <div class="col s12" style="padding-left: 0px">
+                        <div class="input-field inline col s12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer" style="margin-left: 5px">
+            <button class="btn btn-normal modal-close modal-trigger left" href="#change-password">
+                Change Password
+            </button>
+            <a class="modal-close btn btn-cancel right" id="delete-account">Delete Account</a>
+            <a class="modal-close btn btn-cancel right" style="margin-right: 5px" href="/logout">Log Out</a>
+        </div>
+    </div>
+</div>
+{% include 'modals/confirmDeleteAccount.twig' %}
+{% include "modals/changePassword.twig" %}

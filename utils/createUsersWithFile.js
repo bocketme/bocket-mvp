@@ -91,9 +91,8 @@ async function createUsersWithFile(line) {
       html
     };
     mailTransporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
+      if (error)
         console.log('error while sending mail:', error);
-      }
     })
   });
 }

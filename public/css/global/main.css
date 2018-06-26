@@ -1,0 +1,15 @@
+.inherit-background {
+  background-color: inherit !important;
+}
+
+
+.collapsible-header.list-organization::before { 
+  font-family: "Material Icons"; 
+  content: "\E876";
+}
+
+.title-organization {
+  margin: 0%;
+  font-weight: 600;
+  text-transform: capitalize;
+}

@@ -12,7 +12,7 @@ module.exports = (io, socket) => {
               {
                 ...nestedAnnotation, annotation
               } : nestedAnnotation
-            )
+            );
         return workspaces.save();
       })
       .then(() => {
@@ -22,4 +22,4 @@ module.exports = (io, socket) => {
           .emit('[Annotation] - fetch', nestedAnnotation);
       })
   });
-}
+};

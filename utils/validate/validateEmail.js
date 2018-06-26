@@ -1,6 +1,5 @@
-const regex = require("../regex");
+const { email } = require("../regex");
 
-module.exports = (email) => {
-    var re = regex.email;
-    return re.test(email.toLowerCase());
+module.exports = (emailTested) => {
+  return email.test(emailTested.toLowerCase());
 };

@@ -11,7 +11,6 @@ module.exports = (io, socket) => {
           email: user.email,
           avatar: user.avatar,
         };
-        console.log(newUser);
         socket.emit('[User] - getCurrentUser', newUser);
       }
     });

@@ -1,18 +1,15 @@
 const fs = require('fs');
 const path = require('path');
-const file_accepted = require('../../utils/extension_file');
 const converter = require("../../converter/converter");
 const partFileSystem = require("../../config/PartFileSystem");
-const util = require('util');
 const log = require('../../utils/log');
-const exclude = require('./excludeConverter')
 const optionStream = {
   flags: 'w',
   encoding: 'utf8',
   fd: null,
   mode: 0o666,
   autoClose: true
-}
+};
 
 let converterInfo = log.child({ type: converter });
 

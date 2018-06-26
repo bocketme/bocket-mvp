@@ -1,7 +1,6 @@
+//TODO: ADD USER VERIFICATION
 const duplicateNode = "duplicateNode";
 const Node = require("../models/Node");
-const Workspace = require("../models/Workspace");
-const mongoose = require('mongoose');
 const FSconfig = require('../config/FileSystemConfig');
 const partSchema = require('../models/Part');
 const assemblySchema = require('../models/Assembly');
@@ -14,17 +13,16 @@ const twig = require('twig');
 /**
  *
  * @param userEmail
- * @param data : {{nodeId: String}}
  * @returns Promise
  */
 async function duplicateNodeListener(socket, data) {
-    let userMail = socket.handshake.session.userMail;
-    let node = await Node.findById(data.nodeId).catch(err => {
+    const {nodeId} = data;
+    let node = await Node.findById(nodeId).catch(err => {
         throw err
     });
 
     let parentNode = await Node.findOne({
-        "children._id": data.nodeId
+        "children._id": nodeId
     }).catch(err => {
         throw err
     });
@@ -65,7 +63,7 @@ async function duplicateNodeListener(socket, data) {
     });
 
     let tasks = [];
-    if (node.type == NodeTypeEnum.part) {
+    if (node.type === NodeTypeEnum.part) {
         tasks.push({
             oldPath: path.join(FSconfig.appDirectory.files3D, originalPath, FSconfig.content.data),
             newPath: path.join(FSconfig.appDirectory.files3D, content.path, FSconfig.content.data),
@@ -122,4 +120,4 @@ module.exports = (socket) => {
 
 const readDir = util.promisify(fs.readdir);
 const copyFile = util.promisify(fs.copyFile);
-const renderFile = util.promisify(twig.renderFile)
+const renderFile = util.promisify(twig.renderFile);

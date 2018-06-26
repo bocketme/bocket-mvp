@@ -1,0 +1,78 @@
+.btn-cancel {
+  border: 1px solid #ff2e63;
+  color: #ff2e63;
+  background-color: white;
+  font-weight: bolder;
+}
+
+.btn{
+  border-radius: 0px !important;
+}
+
+.btn-cancel:hover{
+  border: 1px solid #223241;
+  background-color: white;
+  color: #223241;
+  font-weight: bolder;
+}
+
+.btn-cancel:focus, .btn-cancel:active  {
+  background-color: #ff2e63;
+  color: white;
+  font-weight: bolder;
+}
+
+.btn-valid {
+  background-color: #29B335;
+  color: white;
+  font-weight: bolder;
+}
+
+.btn-valid:hover {
+  background-color: #29B335;
+  box-shadow: 0px 3px #218a2a;
+  color: white;
+  font-weight: bolder;
+}
+
+.btn-valid:focus, .btn-valid:active  {
+  background-color: #218a2a;
+  box-shadow: 0px 3px #218a2a;
+  font-weight: bolder;
+}
+
+.btn.fix {
+  float: right;
+  margin-top: -8px; 
+}
+
+.btn-normal {
+  background-color: #223241;
+  box-shadow: 0px 3px #B6C0C1;
+  color: white;
+  font-weight: bolder;
+}
+
+.btn-normal:hover {
+  background-color: #ff2e63;
+  box-shadow: 0px 3px #D72653;
+  color: white;
+}
+
+.btn-normal:focus, .btn-normal:active  {
+  background-color: #B6C0C1;
+  color: #223241;
+  box-shadow: 0px 3px #223241;
+}
+
+.btn.disabled, .btn.disabled:hover, .btn.disabled:focus, .btn.disabled:active  {
+  background-color: #9b9b9b !important; 
+  color: #50677D !important;
+}
+
+.absolute-redirection {
+  position: absolute;
+  right: 5%;
+  font-weight: 600;
+  font-size: 12px;
+}

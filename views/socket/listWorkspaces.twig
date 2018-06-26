@@ -1,6 +1,6 @@
 <div class='add-workspace'></div>
 {% for workspace in workspaces %}
-    <a class="collection-item collection-item-workspace " href="/project/{{workspace._id}}">
+    <a class="collection-item collection-item-workspace " href="/workspace/{{workspace._id}}">
         {% if (workspace.image) %}
         {% else %}
             <div class="container">

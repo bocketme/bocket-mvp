@@ -14,7 +14,7 @@ jQuery(function(){
         var desc = ret.desc;
 
         if (desc === 'Please, try again.')
-            Materialize.toast('Invalid Email', 4000, 'rounded red')
+            Materialize.toast('Invalid Email', 4000, 'rounded red');
         else
             Materialize.toast('Thank you for your interest ! we will keep you in touch very soon', 4000, 'rounded');
     }

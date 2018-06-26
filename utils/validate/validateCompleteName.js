@@ -1,6 +1,5 @@
-const regex = require("../regex");
+const { completeName } = require("../regex");
 
 module.exports = (email) => {
-    var re = regex.completeName;
-    return re.test(email.toLowerCase());
+    return completeName.test(email.toLowerCase());
 };

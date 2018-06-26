@@ -5,8 +5,7 @@ jQuery(function() {
         socket.on("checkIfEmailAlreadyExist", cb);
         socket.emit("checkIfEmailAlreadyExist", email);
         cb();
-    };
-
-    $("#email").focusout(function () {
+    }
+  $("#email").focusout(function () {
     });
 });
