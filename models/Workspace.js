@@ -17,6 +17,13 @@ let WorkspaceSchema = new mongoose.Schema({
 
   //Node Master of the product
   nodeMaster: { type: Schema.Types.ObjectId, ref: 'Node' },
+  AccessNode: [{
+    Node: { type: Schema.Types.ObjectId, ref: 'Node' },
+    assignements: [{
+      User: { type: Schema.Types.ObjectId, ref: 'User' },
+      //rights: null
+    }]
+  }],
 
   //Team
   ProductManagers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
@@ -39,6 +46,28 @@ let WorkspaceSchema = new mongoose.Schema({
 WorkspaceSchema.virtual('users').get(function () {
   return [...this.ProductManagers, ...this.Teammates, ...this.Observers];
 });
+
+/*
+WorkspaceSchema.methods.hasUserAccess = async function (nodeId) {
+
+}
+
+WorkspaceSchema.methods.userAccessToNode = async function (nodeId) {
+  
+}
+
+WorkspaceSchema.methods.addAnAccessToAUser = async function (nodeId, userId) {
+
+}
+
+WorkspaceSchema.methods.removeAn = async function (nodeId, userId) {
+
+}
+
+WorkspaceSchema.methods.removeAllAccess =  async function (userId) {
+
+}
+*/
 
 /**
   * Returns if the user is the Product Manager or not
