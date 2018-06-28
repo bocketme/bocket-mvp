@@ -184,6 +184,7 @@ const addFileToPart = async (req, res) => {
   const chemin = path.join(config.files3D, part.path);
 
   if (type === 'specs') {
+    // return res.status(400).send({ nodeId, partId, sendError, name: sentFile[0].originalname  });
     try {
       await createFile(chemin, sentFile[0]);
     } catch (err) {
