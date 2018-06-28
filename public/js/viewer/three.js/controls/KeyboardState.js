@@ -20,7 +20,7 @@ KeyboardState = function()
 	// bind keyEvents
 	document.addEventListener("keydown", KeyboardState.onKeyDown, false);
 	document.addEventListener("keyup",   KeyboardState.onKeyUp,   false);	
-}
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -33,7 +33,7 @@ KeyboardState.k =
     45: "insert",   46: "delete",   186: ";",       187: "=",
     188: ",",      189: "-",        190: ".",       191: "/",
     219: "[",      220: "\\",       221: "]",       222: "'"
-}
+};
 
 KeyboardState.status = {};
 
@@ -42,21 +42,21 @@ KeyboardState.keyName = function ( keyCode )
 	return ( KeyboardState.k[keyCode] != null ) ? 
 		KeyboardState.k[keyCode] : 
 		String.fromCharCode(keyCode);
-}
+};
 
 KeyboardState.onKeyUp = function(event)
 {
 	var key = KeyboardState.keyName(event.keyCode);
 	if ( KeyboardState.status[key] )
 		KeyboardState.status[key].pressed = false;
-}
+};
 
 KeyboardState.onKeyDown = function(event)
 {
 	var key = KeyboardState.keyName(event.keyCode);
 	if ( !KeyboardState.status[key] )
 		KeyboardState.status[key] = { down: false, pressed: false, up: false, updatedPreviously: false };
-}
+};
 
 KeyboardState.prototype.update = function()
 {
@@ -84,22 +84,22 @@ KeyboardState.prototype.update = function()
 		if ( !KeyboardState.status[key].pressed ) // key released
 			KeyboardState.status[key].up = true;
 	}
-}
+};
 
 KeyboardState.prototype.down = function(keyName)
 {
 	return (KeyboardState.status[keyName] && KeyboardState.status[keyName].down);
-}
+};
 
 KeyboardState.prototype.pressed = function(keyName)
 {
 	return (KeyboardState.status[keyName] && KeyboardState.status[keyName].pressed);
-}
+};
 
 KeyboardState.prototype.up = function(keyName)
 {
 	return (KeyboardState.status[keyName] && KeyboardState.status[keyName].up);
-}
+};
 
 KeyboardState.prototype.debug = function()
 {
@@ -107,6 +107,6 @@ KeyboardState.prototype.debug = function()
 	for (var arg in KeyboardState.status)
 		list += " " + arg
 	console.log(list);
-}
+};
 
 ///////////////////////////////////////////////////////////////////////////////

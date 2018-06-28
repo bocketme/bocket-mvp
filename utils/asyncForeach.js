@@ -8,6 +8,5 @@ async function asyncForEach(array, promise) {
     for (let index = 0; index < array.length; index++) {
         await promise(array[index], index, array)
     }
-};
-
+}
 module.exports = asyncForEach;

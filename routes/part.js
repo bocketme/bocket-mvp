@@ -7,7 +7,7 @@ const putController = require('../controllers/Part/put');
 
 const router = express.Router();
 
-router.put('/update/:nodeId', upload.fields([{ name: 'file3D', maxCount: 1 }, { name: 'textureFiles' }]), putController.updatePart)
+router.put('/update/:nodeId', upload.fields([{ name: 'file3D', maxCount: 1 }, { name: 'textureFiles' }]), putController.updatePart);
 router.post('/:nodeId', upload.fields([{ name: 'file3D', maxCount: 1 }, { name: 'specFiles' }, { name: 'textureFiles' }]), (req, res, next) => {
   postController.newPart(req, res).catch(err => next(err));
 });
@@ -17,4 +17,5 @@ router.use((err, req, res, next) => {
   log.error(err);
   res.status(500).send('Intern Error');
 });
+
 module.exports = router;

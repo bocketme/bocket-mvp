@@ -1,7 +1,3 @@
-button {
-    border-radius: 5px !important;
-}
-
 input {
     border-bottom: 1px solid #9b9b9b !important;
     -webkit-box-shadow: 0 1px 0 0 #9b9b9b !important;
@@ -56,14 +52,6 @@ input::placeholder {
 
 .bocket-nav {
     background: #262626;
-}
-
-.btn:hover {
-    background: #ff2e78 !important;
-}
-
-.btn {
-    background: #FF2E63 !important;
 }
 
 .display-none {

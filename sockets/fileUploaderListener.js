@@ -1,3 +1,4 @@
+//TODO: NEED REWORK
 const mv = require('mv');
 const fsPart = require('../config/PartFileSystem');
 const config = require('../config/server');
@@ -13,8 +14,6 @@ const PartFileSytemConfig = require('../config/PartFileSystem');
 const succeededEmitter = require('../sockets/emitter/actionSucceeded');
 const failedEmitter = require('../sockets/emitter/actionFailed');
 
-const appDir = path.dirname(require.main.filename);
-const FSconfig = require('../config/FileSystemConfig');
 const log = require('../utils/log');
 
 /**
@@ -43,7 +42,7 @@ async function getUploadir(fileName, nodeId, workspaceId) {
   return ret;
 }
 
-async function edit3DFile(fileInfo, data, workspaceId) {
+async function edit3DFile(fileInfo, data) {
   const { nodeId } = data;
   const { content, type } = await getContentOfNode(nodeId);
   if (!content) { throw Error(''); }
@@ -73,7 +72,7 @@ module.exports = (socket, uploader) => {
     } else { // Upload specs
       getUploadir(fileInfo.name, fileInfo.data.nodeId, socket.handshake.session.currentWorkspace)
         .then((ret) => {
-          if (!uploadDir) return Promise.reject(new Error('Upload not found !'))
+          if (!uploadDir) return Promise.reject(new Error('Upload not found !'));
           log.info(uploadDir, ret);
           mv(uploadDir, ret, (err) => { if(err) log.error(err); });
           socket.emit('addSpec', fileInfo.name);

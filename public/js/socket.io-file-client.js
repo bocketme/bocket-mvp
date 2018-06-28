@@ -205,7 +205,7 @@
   }
   SocketIOFileClient.prototype.getUploadId = function() {
     return 'u_' + this.uploadId++;
-  }
+  };
   SocketIOFileClient.prototype.upload = function(fileEl, options) {
     if(this.isDestroyed) {
       throw new Error('SocketIOFileClient is closed.');

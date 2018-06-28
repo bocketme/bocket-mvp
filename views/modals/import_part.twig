@@ -1,11 +1,11 @@
 <!-- Modal Structure -->
 <div id="import-part" class="modal">
-    <div class="modal-header">
-        <h4 class="title-modal">Import a new Part</h4>
-
-    </div>
-    <div class="modal-content container">
-        <div class="modal-body">
+    <div class="modal-content">
+      <div class="modal-header">
+            <span class="left">Import a new Part</span>
+            <i class="material-icons right modal-close">highlight_off</i>
+        </div>
+        <div class="modal-body container">
             <form id="form-import-part" method="post" action="/test">
                 <div class="input-field col s12">
                     <input type="text" id="import-part-name" name="name" class="validate">
@@ -17,6 +17,7 @@
                     <label for="description">Description</label>
                 </div>
 
+                <div class="separator col s12">
                 <div class="file-field input-field col s12">
                     <div class="files-button btn upload_button">
                         <span>...</span>
@@ -46,8 +47,10 @@
                         <input class="file-path validate" type="text" placeholder="Upload your Specs File">
                     </div>
                 </div>
+                </div>
                 <br>
-                <button id="submit-import-part" class="btn button-form-validate" type="submit">Import a Part</button>
+                <a class="modal-close btn btn-cancel">Cancel</a>
+                <button id="submit-import-part" class="btn btn-valid right" type="submit">Import a Part</button>
             </form>
         </div>
     </div>

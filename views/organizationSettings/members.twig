@@ -1,0 +1,148 @@
+{% extends './layout.twig' %}
+
+{% block css %}
+    <link rel="stylesheet" href="/css/settings/orga/members.css">
+{% endblock %}
+
+{% block body %}
+
+    <div class="row" id="main">
+        <div id="left-pannel" class="col s12 m4 l4 xl3 row">
+            <div id="side-nav" class="col s2 m2 l2 xl2">
+                {% include './sideNav.twig' %}
+            </div>
+            <div id="options" class="col s10 m10 l10 xl10">
+                <div>
+                    <a href="/organization/{{ currentOrganization._id }}">Organization</a>
+                    <hr style="margin: 0% 5%;">
+                    <a href="/organization/{{ currentOrganization._id }}/workspaces">Workspaces</a>
+                    <hr style="margin: 0% 5%;">
+                    <a class="disabled" href="/organization/{{ currentOrganization._id }}/members">Members</a>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m8 l8 xl9">
+
+            {% include './header.twig' %}
+
+            <div class="col s12">
+                <h5 class="title-page col s12" style="margin-bottom: 30px; margin-top:20px;">
+                    Members of the organization
+                    {% if currentUser.rights > 4 %}
+                        {#
+                        <a href="#invite-organisation" class="modal-trigger icons-main-button">
+                            <i class="material-icons">group_add</i>
+                        </a>
+
+                        {% include 'modals/invitationOrganisation.twig' %}                    
+                    #}
+                    {% endif %}
+                </h5>
+
+                <div class="information">
+                    <div id="owner">
+                        <h6>
+                            <span class="title">Owner</span>
+                        </h6>
+                        <div class="bloc-users">
+                            <div class="valign-wrapper">
+                                <div class="user-block" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
+                                    <div style="width: 40px; height: 40px;">
+                                        <div class="circle-responsive">
+                                            <div class="circle-content">
+                                                {{ currentOrganization.Owner.completeName| first }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="user-name">{{ currentOrganization.Owner.completeName }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="adminsAndMembers">
+                        <div id="admins">
+                            <h6>
+                                <span class="title">Co-owner</span>
+                            </h6>
+                            <div class="bloc-users">
+                                {% if (currentOrganization.Admins | length) == 0 %}
+                                    There is no co-owner
+                                {% endif %}
+                                {% for admin in currentOrganization.Admins %}
+                                    <div class="row">
+                                        <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
+                                            <div style="width: 40px; height: 40px;">
+                                                <div class="circle-responsive">
+                                                    <div class="circle-content" style="color: black!important;">
+                                                        {{ admin.completeName |first |capitalize }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="user-name left">{{ admin.completeName }}</p>
+                                        {% if (currentUser.rights == 6) %}
+                                            <div class="input-field col s3 push-s2" style="height: 21.75px; margin: 0">
+                                                <select name="organizationManager" userid="{{admin._id}}">
+                                                    <option value="value" selected="selected" disabled="disabled">Change the role</option>
+                                                    <option value="4">Member</option>
+                                                </select>
+                                            </div>
+                                            <div class="col s4 push-s2">
+                                                <a onclick="removeOrganization({{currentOrganization._id}}, {{admin._id}})" href="#!" class="right" style="display: inline-block; margin-top: 10px">Remove</a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                        <div id="members">
+                            <h6>
+                                <span class="title">Members</span></h6>
+                            <div class="bloc-users">
+                                {% if (currentOrganization.Members | length) == 0 %}
+                                    There is no member
+                                {% endif %}
+                                {% for member in currentOrganization.Members %}
+                                    <div class="row">
+                                        <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
+                                            <div style="width: 40px; height: 40px;">
+                                                <div class="circle-responsive">
+                                                    <div class="circle-content" style="color: black!important;">
+                                                        {{ member.completeName |first |capitalize }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="user-name left">{{ member.completeName }}</p>
+                                        {% if currentUser.rights == 6 %}
+                                            <div class="input-field col s3 push-s2" style="height: 21.75px; margin: 0">
+                                                <select name="organizationManager" userid="{{member._id}}">
+                                                    <option value="value" selected="selected" disabled="disabled">Change the role</option>
+                                                    <option value="5">Co-Owner</option>
+                                                </select>
+                                            </div>
+                                        {% endif %}
+                                        {% if currentUser.rights > 4 %}
+                                            <div class="col s4 push-s2">
+                                                <a onclick="removeOrganization({{currentOrganization._id}}, {{admin._id}})" href="#!" class="right" style="display: inline-block; margin-top: 10px">Remove</a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block js %}
+    <script type="application/javascript" src="/js/settings/invitationOrganization.js"></script>
+    <script src="/js/settings/member.js"></script>
+{% endblock %}

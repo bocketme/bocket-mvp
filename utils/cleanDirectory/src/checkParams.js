@@ -12,10 +12,6 @@ function checkPath(path) {
   }
 }
 
-function checkFirstCb(path, cb1) {
-
-}
-
 const errors = [
   checkPath,
 ];

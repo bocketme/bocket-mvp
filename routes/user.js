@@ -1,6 +1,16 @@
-const express = require("express");
-let router = express.Router();
-const controller = require("../controllers/User/usersInformation");
+const userSchema = require('../models/User');
+const organizationSchema = require('../models/Organization');
+const path = require('path');
+const fs = require('fs');
+const FileSystemConfig = require('../config/FileSystemConfig');
+const log = require('../utils/log');
+const router = require('express').Router();
 
-router.get('/photo/:userId', controller.userImage);
+const { GET, DELETE } = require('../controllers/User');
+
+router.get('/image', GET.image);
+router.get('/membership', GET.membership);
+router.get('/ownership', GET.ownership);
+router.delete('/', DELETE);
+
 module.exports = router;

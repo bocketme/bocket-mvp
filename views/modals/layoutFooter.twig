@@ -1,0 +1,15 @@
+<div class="modal modal-fixed-footer" {% block id %} {% endblock %}>
+    <div class="modal-content"> 
+        <h5 {% block titleStyle %}{% endblock %} >
+            {% block title %}{% endblock %}
+        </h5>
+
+        <div {% block contentStyle %} class="container modal-information" {% endblock %}> 
+        {% block content %}        
+        {% endblock %}
+        </div>        
+    </div>
+    <div class="modal-footer">
+        {% block footer %}{% endblock %}
+    </div>
+</div>

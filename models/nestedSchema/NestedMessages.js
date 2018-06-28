@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 const NestedMessage = mongoose.Schema({
   content: { type: String, require: true },

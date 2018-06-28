@@ -1,0 +1,99 @@
+.cube-responsive-active, .circle-responsive-active {
+    background: transparent;
+    box-shadow: 0 0 0 3px #F5F5F5;
+    color: #F5F5F5;
+}
+
+.cube-responsive {
+    color: #3c3c3c;
+    background: #F5F5F5;
+    border-radius: 25%;
+    height: 0;
+    width: 100%;
+}
+
+.cube-responsive:last {
+  padding-bottom: 0%;
+  padding-top: 100%;
+}
+
+.absolute-container{
+    margin: 0;
+    position: absolute;
+    top: 77%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cube-content {
+    padding-top: 50%;
+    color: #3c3c3c;
+    float: left;
+    line-height: 1;
+    font-size: 14px;
+    margin-top: -0.5em;
+    text-align: center;
+    width: 100%;
+    font-weight: 600;
+    background-repeat: no-repeat;
+}
+
+.circle-responsive-active {
+    border-radius: 50%;
+    height: 0;
+    padding-bottom: 100%;
+    width: 100%;
+}
+
+.circle-responsive, .circle-user-responsive, .circle-responsive-add {
+    color: #3c3c3c;
+    background: #F5F5F5;
+    border-radius: 50%;
+    height: 0;
+    padding-bottom: 100%;
+    width: 100%;
+}
+
+.collection-item-workspace{
+    margin-top: 3%;
+}
+
+.container-workspace{
+    margin-top: 15%;
+}
+
+/*
+.circle-responsive-active:hover {
+}
+*/
+
+.cube-responsive:hover,
+.circle-user-responsive:hover,
+.circle-responsive:hover,
+.circle-responsive-add:hover,
+.circle-responsive-active:hover,
+.cube-responsive-active:hover {
+    color: #FF2E63;
+    box-shadow: 0 0 0 3px #FF2E63;
+}
+
+.cube-content, .circle-content{
+    color: inherit;
+}
+
+.circle-content, .circle-user-content {
+    color: inherit;
+    float: left;
+    line-height: 1;
+    font-size: 14px;
+    margin-top: -0.5em;
+    padding-top: 50%;
+    text-align: center;
+    width: 100%;
+    font-weight: 600;
+    background-repeat: no-repeat;
+}
+
+.dropdown-content {
+    z-index: 5 !important;
+}

@@ -63,11 +63,7 @@ function createNewNode(req, res) {
       Promise.all(types_mime)
         .then(() => Promise.all(createFiles))
         .then((paths) => {
-          console.log('chemin des fichiers crées : ', paths);
-          // TODO - Ajouter les chemins aux Node
           node.specpath = paths;
-
-          // TODO - Ajouter le noeud au workspace
           return addNodetoWorkspace(workspace, nodeParent, { _id: node._id, title: node.name, children: [] });
         })
         .then((workspace) => {
@@ -129,7 +125,7 @@ function verificationWriteInWorkspace(req, res, next) {
 
   Workspaces.findById({ _id: workspaceId })
     .then((workspace) => new Promise((resolve, reject) => {
-          if (workspace.User.email == userMail)
+          if (workspace.User.email === userMail)
             resolve();
           else {
             if(workspace.users && workspace.users.length !== 0){
@@ -220,7 +216,7 @@ function addNodetoWorkspace(workspace, cible, data) {
     node.children.forEach((child) => {
       node.children = createNode(node);
     });
-    if (node.title == cible) {
+    if (node.title === cible) {
       node.children.push(data);
     }
     return node;

@@ -1,9 +1,6 @@
 const Node = require('../../models/Node');
 const Part = require('../../models/Part');
 const TypeEnum = require('../../enum/NodeTypeEnum');
-const fs = require('fs');
-const config = require('../../config/server');
-const path = require('path');
 
 let modeler = (req, res) => {
     let nodeId = req.params.nodeId;

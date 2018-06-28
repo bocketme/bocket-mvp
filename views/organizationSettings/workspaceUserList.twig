@@ -1,0 +1,117 @@
+<div class="col s12" style="margin-bottom: 20px;">
+    <h5 class="col s12">
+        Teammates
+        {% if (currentUser.rights > 4 or workspace.isProductManager) %}
+            <a href="#invite-workspace" workspaceid="{{ workspace._id }}" class="modal-trigger">
+                <i class="material-icons right" style="color: #000;">person_add</i>
+            </a>
+        {% endif %}
+    </h5>
+</div>
+<div class="col s11 push-s1">
+    <h6>Product Manager</h6>
+    <div class="bloc-users">
+        {% if (workspace.ProductManagers | length) == 0 %}
+            <p class="wrapper-user-list">There is no product manager</p>
+        {% endif %}
+
+        {% for manager in workspace.ProductManagers %}
+            <div class="row">
+                <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ manager._id }}')">
+                    <div style="width: 40px; height: 40px;">
+                        <div class="circle-responsive">
+                            <div class="circle-content" style="color: black!important;">
+                                {{manager.completeName | first}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="user-name left">{{manager.completeName}}</p>
+                {% if currentUser.rights > 4 %}
+                    <div class="input-field col s3 push-s2" style="height: 21.75px; margin: 0">
+                        <select name="workspaceManager" workspaceid="{{workspace._id}}" userid="{{manager._id}}">
+                            <option value="value" selected="selected" disabled="disabled">Change the role</option>
+                            <option value="2">Member</option>
+                            {#
+                        <option value="1">Observer</option>
+                       #}
+                        </select>
+                    </div>
+                    <div class="col s4 push-s2">
+                        <a href="#!" class="right" style="display: inline-block; margin-top: 10px" onclick="removeWorkspaceUser('{{workspace._id}}','{{manager._id}}') ">Remove</a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+<h6>Members</h6>
+<div class="bloc-users">
+    {% if (workspace.Teammates | length) == 0 %}
+        <p class="wrapper-user-list">There is no Member</p>
+    {% endif %}
+        {% for teammate in workspace.Teammates %}
+            <div class="row">
+                <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ teammate._id }}')">
+                    <div style="width: 40px; height: 40px;">
+                        <div class="circle-responsive">
+                            <div class="circle-content" style="color: black!important;">
+                                {{ teammate.completeName |first |capitalize }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="user-name left">{{ teammate.completeName }}</p>
+                {% if (currentUser.rights > 4) %}
+                    <div class="input-field col s3 push-s2" style="height: 21.75px; margin: 0">
+                        <select name="workspaceManager" workspaceid="{{workspace._id}}" userid="{{teammate._id}}">
+                            <option value="value" selected="selected" disabled="disabled">Change the role</option>
+                            <option value="3">Product Manager</option>
+                            {#                        
+                        <option value="Observers">Observer</option>
+                        #}
+                        </select>
+                    </div>
+                {% endif %}
+                {% if (currentUser.rights > 4 or workspace.isProductManager) %}
+                    <div class="col s4 push-s2">
+                        <a href="#!" class="right" style="display: inline-block; margin-top: 10px" onclick="removeWorkspaceUser('{{workspace._id}}','{{teammate._id}}')">Remove</a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+</div>
+{#
+<h6>Observers</h6>
+{% if (workspace.Observers | length) == 0 %}
+    <p>There is no Observer</p>
+{% endif %}
+<div class="col s12">
+    {% for observer in workspace.Observers %}
+        <div class="row">
+            <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
+                <div style="width: 40px; height: 40px;">
+                    <div class="circle-responsive">
+                        <div class="circle-content" style="color: black!important;">
+                            {{ observer.completeName |first |capitalize }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="user-name left">{{ observer.completeName }}</p>
+            {% if (user.rights > 4 or workspace.isProductManager) %}
+                <div class="input-field col s3 push-s2" style="height: 21.75px; margin: 0">
+                    <select name="workspaceManager" userId="{{observer._id}}">
+                        <option value="" disabled="disabled">Choose your option</option>
+                        <option value="ProductManagers">Product Manager</option>
+                        <option value="Teammates">Member</option>
+                        <option value="Observers" selected>Observer</option>
+                    </select>
+                </div>
+                <div class="col s4 push-s2">
+                    <a href="#!" class="right" style="display: inline-block; margin-top: 10px" onclick="removeWorkspaceUser('{{workspace._id}}','{{observer._id}}')">Remove</a>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+#}
