@@ -10,7 +10,7 @@ module.exports = function* () {
   let i = 0;
   for (let doc = yield cursor.next(); doc !== null; doc = yield cursor.next()) {
     log.info(`(${i + 1}/${length}) - [UserCleaner] Started`);
-    const user = doc._doc;
+    const user = doc.toObject();
     if (user.workspaces) {
       let nestedWorkspace = user.workspaces;
       for (let i = 0; i < nestedWorkspace.length; i++) {

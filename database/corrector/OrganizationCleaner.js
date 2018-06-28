@@ -1,5 +1,4 @@
 const organizationSchema = require('../../models/Organization');
-const { OrganizationBackup } = require('../backupdDatabase');
 
 const log = require('../../utils/log');
 const fs = require('fs');
@@ -12,7 +11,7 @@ module.exports = function* () {
   try {
     const cursor = organizationSchema.find().cursor();
     for (let doc = yield cursor.next(); doc !== null; doc = yield cursor.next()) {
-      const organization = yield OrganizationBackup.findById(doc._id);
+      const organization = doc.toObject();
       if (organization.workspaces) {
         const {workspaces} = organization;
         doc.Workspaces = workspaces.map(({ _id }) => _id);
