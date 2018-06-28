@@ -21,13 +21,11 @@ const extensionsTextures = [
 ]
 
 function nodeChildrenLoad(nodeId, html) {
-    if ($(`#${nodeId}`).hasClass('search_child')) {
-        const breadcrumbs_value = $(`#${nodeId}`).contents().filter('span.p-node').attr('data-breadcrumbs');
-        const sub_level = $(`#${nodeId}`).contents().filter('span.p-node').attr('data-sublevel');
-        $(`#${nodeId}`).removeClass('search_child');
-        socket.emit('nodeChildren', nodeId, breadcrumbs_value, sub_level);
+    if ($(`#${nodeId}-body`).has('div.progress').length !== 0) {
+        $(`#${nodeId}-body`).html('<div class="row colla"><ul class="collapsible" data-collapsible="expandable"></ul></div>');
+        $(`#${nodeId}-body`).find('ul:first').append(html);
     } else {
-        $(`#${nodeId}-body`).html(html);
+        $(`#${nodeId}-body`).find('ul:first').append(html);
     }
 }
 
@@ -76,7 +74,6 @@ function uploadFileToPart(nodeId, type, partId, file, arrId) {
                 } else if (request.status === 401) {
                     Materialize.toast("The selected node is not an assembly", 1000);
                 } else if (request.status === 400) {
-                    console.error('FILE FAILED TO UPLOAAAD', fileId);
                     const res = JSON.parse(request.response);
                     const { nodeId, partId } = res;
                     fileUploadFailed(fileId);
@@ -86,7 +83,6 @@ function uploadFileToPart(nodeId, type, partId, file, arrId) {
                 $(`${fileId}-file > upload-div > .preloader-wrapper`).show();
                 $(`${fileId}-file > upload-div > .reload-btn`).hide();
                 $(`${fileId}-file > upload-div > .upload-completed`).hide();
-                    console.log('LOADING', idx);
             }
         }
     }
@@ -148,6 +144,7 @@ function checkIfAllUploaded() {
                 }
             });
             if (isUpload) {
+                Materialize.toast(`Upload for ${partsArray[i].name}: Completed`, 1000, 'teal rounded');
                 $(`#${partsArray[i]._id}-part`).remove();
                 partsArray.splice(i, 1);
             }
@@ -159,12 +156,9 @@ function checkIfAllUploaded() {
 }
 
 function fileUploaded(arrId, type, idFile) {
-    console.log('PAAAARTS', partsArray, arrId);
     const idx = partsArray.findIndex((elem) => { return elem._id === arrId});
-    if (idx === -1) {
-        console.log('YA PAS DE PART');
-        return ;
-    }
+    if (idx === -1) { return }
+
     if (type === 'specs') {
         const file = partsArray[idx].files.specs.find((elem) => { return elem._id === idFile });
         file.isUpload = true;
@@ -181,6 +175,7 @@ function fileUploaded(arrId, type, idFile) {
         $(`#${idFile}-close-${partsArray[idx]._id}`).css('visibility', 'hidden');
         $(`#${idFile}-file > .select-file3d`).css('visibility', 'hidden');
     }
+
     $(`#${idFile}-upload-div`).css('visibility', 'visible');
     $(`#${idFile}-upload-div > .preloader-wrapper`).hide();
     $(`#${idFile}-upload-div > .reload-btn`).hide();
@@ -201,6 +196,7 @@ function uploadParts() {
                     if (postRequest[arrIndex].status === 200) {
                         const res = JSON.parse(postRequest[arrIndex].response);
                         const { nodeId, partId } = res;
+                        console.log('Resp Html', res.html);
                         sendFilesToPart(nodeId, partId, partsArray[arrIndex].files, arrIndex);
                         nodeChildrenLoad(nodeId, res.html);
                         partUploaded(arrIndex);
@@ -234,6 +230,7 @@ function uploadParts() {
                 postRequest[i].setRequestHeader("Content-Type", "application/json");
                 const name =  $(`#${partId}_part_name`).val();
                 const description = $(`#${partId}_part_description`).val();
+                partsArray[i].name = name;
                 console.log('Outputs: ', name, description);
                 postRequest[i].send(JSON.stringify({ name, description, sub_level, breadcrumb }));
             }
@@ -473,6 +470,7 @@ function addPartInModalList(files) {
         partsArray.push({
             _id: partIdx,
             isUpload: false,
+            name: '',
             files: {
               files3d: [],
               textures: [],

@@ -145,7 +145,7 @@ const newPart = async (req, res) => {
   }
 
   const options = {
-    node: parentNode,
+    node: subNode,
     TypeEnum: NodeTypeEnum,
     sub_level,
     breadcrumb,
@@ -156,7 +156,7 @@ const newPart = async (req, res) => {
     }],
   };
 
-  const html = await asyncTwigRenderFile('./views/socket/three_child.twig', options).catch(error => throwError(error));
+  const html = await asyncTwigRenderFile('./views/socket/three_list_child.twig', options).catch(error => throwError(error));
   return res.status(200).send({ partId: part._id, nodeId, html });
 
   // return res.status(200).send(part._id);
@@ -184,7 +184,6 @@ const addFileToPart = async (req, res) => {
   const chemin = path.join(config.files3D, part.path);
 
   if (type === 'specs') {
-    // return res.status(400).send({ nodeId, partId, sendError, name: sentFile[0].originalname  });
     try {
       await createFile(chemin, sentFile[0]);
     } catch (err) {
