@@ -37,10 +37,9 @@ div#organization-block>hr, div#user-block>hr {
    color: #3c3c3c;
    position: relative;
    background: #F5F5F5;
-   margin-left: 5%;
-   margin-right: 5%;
-   width: 90%;
-   padding-top: 95%; /* 1:1 Aspect Ratio */
+   margin-left: 15%;
+   width: 70%;
+   padding-top: 70%; /* 1:1 Aspect Ratio */
    border-radius: 50%;
 }
 
@@ -64,12 +63,18 @@ div#organization-block>hr, div#user-block>hr {
   box-shadow: 0 0 0 2px #FF2E63;
 }
 
+#nom-user{
+  text-align: center;
+  color: white;
+  font-size: 11px;
+  margin-top: 5px;
+}
+
 .text-container{
   color: inherit;
   margin: 0 auto;
   position: absolute;
-  top: calc(50% - 14px);
-  bottom: calc(50% - 14px);
+  top: calc(50% - 10px);
   left: 0; 
   right: 0;
   text-align: center;

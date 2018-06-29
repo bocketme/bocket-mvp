@@ -3,7 +3,7 @@ const organisationSchema = require('../../models/Organization');
 const workspaceSchema = require('../../models/Workspace');
 const log = require('../../utils/log');
 
-async function acceptInvitation(invitationUid, user) {
+async function acceptInvitation (invitationUid, user) {
   const invitation = await Invitation.findOne({ uid: invitationUid });
   if (!invitation) throw new Error('[Invitaiton] - Invitation Not Found');
   const { workspace, organization } = invitation;
@@ -28,21 +28,27 @@ async function acceptInvitation(invitationUid, user) {
   if (workspace) {
     const Workspace = await workspaceSchema.findById(invitation.workspace.id);
     result.workspaceId = Workspace._id;
-    switch (workspace.role) {
-      case 3:
-        await Workspace.addProductManager(user._id);
-        break;
-      case 2:
-        await Workspace.addTeammate(user._id);
-        break;
-      case 1:
-        throw new Error('Cannot use Observer');
-      /*
-        Workspace.addObserver(user._id);
-        break;
-      */
-      default:
-        throw new Error('The Workspace has no role');
+    try {
+      switch (workspace.role) {
+        case 3:
+          await Workspace.addProductManager(user._id);
+          break;
+        case 2:
+          await Workspace.addTeammate(user._id);
+          break;
+        case 1:
+          throw new Error('Cannot use Observer');
+        /*
+          await Workspace.addObserver(user._id);
+          break;
+        */
+        default:
+          throw new Error('The Workspace has no role');
+      }
+    } catch (error) {
+      await invitation.remove();
+      result.url = `/organization/${Organization._id}`;
+      return result;
     }
     await invitation.remove();
     result.url = `/workspace/${Workspace._id}`;
