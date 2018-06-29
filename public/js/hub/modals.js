@@ -196,7 +196,6 @@ function uploadParts() {
                     if (postRequest[arrIndex].status === 200) {
                         const res = JSON.parse(postRequest[arrIndex].response);
                         const { nodeId, partId } = res;
-                        console.log('Resp Html', res.html);
                         sendFilesToPart(nodeId, partId, partsArray[arrIndex].files, arrIndex);
                         nodeChildrenLoad(nodeId, res.html);
                         partUploaded(arrIndex);
@@ -206,7 +205,6 @@ function uploadParts() {
                         Materialize.toast("The selected node is not an assembly", 1000);
                     }
                 } else if (postRequest[arrIndex].readyState === 3) {
-                    console.log('LOADING');
                 }
             }
         }
@@ -215,7 +213,6 @@ function uploadParts() {
 
             if (!partsArray[i].isUpload) {
                 postRequest[i] = new XMLHttpRequest();
-                console.log(postRequest[i], 'REQUEST')
                 const partId = partsArray[i]._id;
                 postRequest[i].onreadystatechange=helperFunc(i,nodeId);
 
@@ -231,7 +228,6 @@ function uploadParts() {
                 const name =  $(`#${partId}_part_name`).val();
                 const description = $(`#${partId}_part_description`).val();
                 partsArray[i].name = name;
-                console.log('Outputs: ', name, description);
                 postRequest[i].send(JSON.stringify({ name, description, sub_level, breadcrumb }));
             }
         }
@@ -248,7 +244,6 @@ $('#import-part-files').on('change', (event) => {
 $('#upload-parts-btn').on('click', (event) => {
     event.preventDefault();
     uploadParts();
-    console.log('Je CLick et j\'upload');
 });
 
 function handleChangeFile3d(event) {
@@ -295,7 +290,6 @@ function handleChangeTexture(event) {
     if (part.isUpload)
         return;
     if (value === 'specs') {
-        console.log(part.files);
         idxToChange = part.files.textures.findIndex((element) => { return element.file.name === fileName;});
         if (idxToChange !== -1) {
             part.files.specs.push(part.files.textures[idxToChange])
@@ -458,7 +452,6 @@ function addPartInModalList(files) {
             const idElem = elem.id;
             const idPart = idElem.slice(idElem.lastIndexOf('-') + 1);
             const files = parseFormFiles(document.getElementById(idElem).files);
-            console.log('J\'ai add a file', idPart, files);
             linkFilesToList(Number(idPart), files);
             handlePartsError();
         });
@@ -491,7 +484,6 @@ function removePart(event) {
     const idx = partsArray.findIndex((element) => { return element._id.toString() === partId });
     partsArray.splice(idx, 1);
     $(`#${partId}-part`).remove();
-    console.log('After Remove', partsArray);
     handlePartsError();
 }
 
@@ -503,7 +495,6 @@ function removeFile(event) {
     const part = partsArray.find((element) => { return element._id.toString() === idPart });
     var idx = part.files.files3d.findIndex((element) => { return element._id === Number(idFile) });
     if (idx !== -1 && !part.files.files3d[idx].isUpload) {
-        console.log('TROUVEEE');
         part.files.files3d.splice(idx, 1);
         $(`#${idFile}-file`).remove();
         handlePartsError();
@@ -511,7 +502,6 @@ function removeFile(event) {
     }
     idx = part.files.textures.findIndex((element) => { return element._id === Number(idFile) });
     if (idx !== -1 && !part.files.textures[idx].isUpload) {
-        console.log('TROUVEEE');
         part.files.textures.splice(idx, 1);
         $(`#${idFile}-file`).remove();
         handlePartsError();
@@ -522,13 +512,11 @@ function removeFile(event) {
         part.files.specs.splice(idx, 1);
         $(`#${idFile}-file`).remove();
         handlePartsError();
-        console.log('TROUVEEE');
         return;
     }
 }
 
 function addFileToPart(idPart, file, idFile, type) {
-    console.log(typeof idPart, idPart);
     const part = partsArray.find((element) => { return element._id === idPart });
     if (type === "file3d") {
         part.files.files3d.push({ _id: idFile, isUpload: false, file })
@@ -579,7 +567,6 @@ function linkFilesToList(idPart, files) {
 
 function createPartInForm(event) {
     event.preventDefault();
-    console.log('Choosen Module: ' + idOfchoosenNode);
     const cible = headerTitle.title;
     if (cible !== defaultNodeValue.title) {
         const nodeId = idOfchoosenNode;
@@ -597,7 +584,6 @@ function createPartInForm(event) {
     } else {
         Materialize.toast("You must select a node", 1000);
     }
-    console.log('PART ARRAY', partsArray);
 }
 
 (function ($) {
@@ -655,8 +641,6 @@ function createPartInForm(event) {
                     sub_level = $("#" + nodeId).contents().filter("span").attr("data-sublevel"),
                     breadcrumb = $("#" + nodeId).contents().filter("span").attr("data-breadcrumbs");
 
-                console.log(sub_level);
-                console.log(breadcrumb);
                 formdata.append("sub_level", sub_level);
                 formdata.append("breadcrmb", breadcrumb);
 
@@ -693,17 +677,14 @@ function createPartInForm(event) {
         ////////////////////////////
         $('#submit-search-existing').click((event) => {
 
-            //    console.log ("submit-search-existing trigger");
             event.preventDefault();
             var cible = headerTitle.title;
 
             if (cible !== "Select a node") {
                 var nodeId = idOfchoosenNode;
                 var form = document.getElementById("form-add-existing");
-                //        console.log ("submit-search-existing sur node", nodeId);
 
                 var saisie = document.getElementById('full-text-search').value;
-                console.log("submit-search-existing entrée", saisie);
 
                 socket.emit("GetSearchCriteria", nodeId, saisie);
 
@@ -737,7 +718,6 @@ function createPartInForm(event) {
             $('.add-existing-checkbox').each((index, element) => {
                 if ($(element).is(':checked')) {
                     let id = $(element).attr('id')
-                    console.log("checké  :", id);
 
                     dataToSend.push(id);
 
