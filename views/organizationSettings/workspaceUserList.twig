@@ -17,7 +17,7 @@
 
         {% for manager in workspace.ProductManagers %}
             <div class="row">
-                <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ manager._id }}')">
+                <div class="user-block left" style="display: inline-block">
                     <div style="width: 40px; height: 40px;">
                         <div class="circle-responsive">
                             <div class="circle-content" style="color: black!important;">
@@ -51,7 +51,7 @@
     {% endif %}
         {% for teammate in workspace.Teammates %}
             <div class="row">
-                <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ teammate._id }}')">
+                <div class="user-block left" style="display: inline-block">
                     <div style="width: 40px; height: 40px;">
                         <div class="circle-responsive">
                             <div class="circle-content" style="color: black!important;">
@@ -88,7 +88,7 @@
 <div class="col s12">
     {% for observer in workspace.Observers %}
         <div class="row">
-            <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
+            <div class="user-block left" style="display: inline-block">
                 <div style="width: 40px; height: 40px;">
                     <div class="circle-responsive">
                         <div class="circle-content" style="color: black!important;">

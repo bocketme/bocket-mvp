@@ -81,7 +81,7 @@ OrganizationSchema.methods.deleteAdmin = async function (userId) {
     if (!user) throw new Error('[User] - Cannot find the user');
     await user.removeOrganization(this._id);
 
-    function filterAdmin(admin) {
+    function filterAdmin (admin) {
       return !admin.equals(userId);
     }
 
@@ -120,7 +120,7 @@ OrganizationSchema.methods.deleteMember = async function (userId) {
     if (!user) throw new Error('[User] - Cannot find the user');
     await user.removeOrganization(this._id);
 
-    function filterMember(_id) {
+    function filterMember (_id) {
       return !_id.equals(userId);
     }
 
@@ -288,14 +288,18 @@ OrganizationSchema.pre('remove', async function () {
     if (Owner)
       await Owner.removeOrganization(this._id);
 
-    for (let i = 0; i < this.Admins.length; i++) {
-      const admin = this.Admins[i];
-      await this.deleteAdmin(admin);
+    if (this.Admins) {
+      for (let i = 0; i < this.Admins.length; i++) {
+        const admin = this.Admins[i];
+        await this.deleteAdmin(admin);
+      }
     }
 
-    for (let i = 0; i < this.Members.length; i++) {
-      const member = this.Members[i];
-      await this.deleteMember(member);
+    if (this.Members) {
+      for (let i = 0; i < this.Members.length; i++) {
+        const member = this.Members[i];
+        await this.deleteMember(member);
+      }
     }
 
     for (let i = 0; i < this.Workspaces.length; i++) {
@@ -307,7 +311,8 @@ OrganizationSchema.pre('remove', async function () {
 
     return null;
   } catch (err) {
-    throw new Error(`[Organization] - Remove Cannot remove the workspace \n ${err}`);
+    log.error(err);
+    throw new Error(`[Organization] - Remove Cannot remove the Organizaiton`);
   }
 });
 

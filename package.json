@@ -65,6 +65,7 @@
     "mv": "^2.1.1",
     "nodemailer": "^4.6.7",
     "nodemon": "^1.17.5",
+    "node": "8.11.3",
     "pino": "^4.17.3",
     "postprocessing": "4.3.0",
     "promise": "^8.0.1",
