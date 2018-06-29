@@ -36,8 +36,9 @@
   "dependencies": {
     "archiver": "^2.1.1",
     "bcrypt": "^2.0.1",
-    "body-parser": "^1.18.3",
+    "bocket_converter": "file:converter",
     "bocket_viewer": "file:viewer",
+    "body-parser": "^1.18.3",
     "co": "^4.6.0",
     "connect-mongo": "^2.0.1",
     "cookie-parser": "^1.4.3",
