@@ -3,10 +3,13 @@ const twig = require('twig');
 const log = require('../../utils/log');
 
 module.exports = (io, socket) => {
-  socket.on('[Organization] - remove', async function (organizaitonId, affectedUserId) {
+  socket.on('[Organization] - remove', async function (organizationId, affectedUserId) {
     try {
       const currentUser = socket.handshake.session.userId;
       const organization = await organizationSchema.findById(organizationId);
+
+      if (!organization)
+        throw new Error('Cannot find an organization');
 
       const currentUserrights = organization.userRights(currentUser);
       const affectedUserRights = organization.userRights(affectedUserId);
@@ -16,14 +19,14 @@ module.exports = (io, socket) => {
           return socket.emit("[Organization] - remove", "you do not have the rights to remove that person");
           break;
         case 5:
-          if (currentUserrights === 6)
-            await organization.removeUser(affectedUserId);
+          if (currentUserrights === 6 || currentUser === affectedUserId)
+            await organization.deleteAdmin(affectedUserId);
           else
             return socket.emit("[Organization] - remove", "you do not have the rights to remove that person");
           break;
         case 4:
-          if (currentUserrights > 4)
-            await organization.removeUser(affectedUserId);
+          if (currentUserrights > 4 || currentUser === affectedUserId)
+            await organization.deleteMember(affectedUserId);
           else {
             return socket.emit("[Organization] - remove", "you do not have the rights to remove that person")
           }
@@ -33,6 +36,8 @@ module.exports = (io, socket) => {
           break;
       }
 
+      console.log('ok')
+
       twig.renderFile('./views/socket/listOrganizaitonUser.twig', {
         currentOrganization: organization,
         currentUser: { currentUserrights }
@@ -40,7 +45,7 @@ module.exports = (io, socket) => {
         if (err) {
           log.error(err);
           return socket.emit('[Organization] - remove', 'Please recharge the page');
-        } else socket.emit('[Organization] - remove', null, html, workspaceId);
+        } else socket.emit('[Organization] - remove', null, html, organizationId);
       });
 
       twig.renderFile('./socket/OrganizationNonAccess.twig', {

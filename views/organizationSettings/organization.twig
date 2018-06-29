@@ -23,7 +23,7 @@
 
             <div id="organization-settings" class="row">
                 {#
-                <div id="organization-image" style="background-image: url('/organization/image/{{ currentOrganization._id }}')" class="col s4">
+                <div id="organization-image" class="col s4">
                     <div class="file-field input-field">
                         <div class="change-organization">
                             <span>Edit</span>
@@ -40,11 +40,11 @@
                         <div class="col s12">
                             <div class="row">
                                 <div class="input-field col s6" style="position: relative;">
-                                {% if currentUser.rights == 4 %}
-                                    <input id="organization-name" class="disabled" name="organizationName" type="text" value="{{ currentOrganization.name }}">
-                                {% else %}
-                                    <input id="organization-name" name="organizationName" type="text" value="{{ currentOrganization.name }}">                                  
-                                {% endif %}
+                                    {% if currentUser.rights == 4 %}
+                                        <input id="organization-name" class="disabled" name="organizationName" type="text" value="{{ currentOrganization.name }}">
+                                    {% else %}
+                                        <input id="organization-name" name="organizationName" type="text" value="{{ currentOrganization.name }}">
+                                    {% endif %}
                                     <label for="organization-name">Organization Name</label>
                                     {% if currentUser.rights > 5 %}
                                         <i id="edit" class="material-icons">edit</i>
@@ -89,9 +89,8 @@
                 {% endif %}
                 <a id="leave-the-organization" class="btn btn-normal">Leave the organization</a>
             </div>
-
+            
             {% include 'modals/leaveTheOrganization.twig' %}
-
             {% if currentUser.rights == 6 %}
                 {% include 'modals/deleteAnOrganization.twig' %}
             {% endif %}

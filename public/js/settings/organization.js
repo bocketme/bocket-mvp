@@ -1,10 +1,11 @@
 const leaveTheOrganization = $('#leave-the-organization');
 leaveTheOrganization.on('click', () => {
-  if (userRights === 6)
-    $('#confirm-leave-organization').modal('open');
-  else
-    socket.emit('[Organization] - leave');
+  $('#confirm-leave-organization').modal('open');
 });
+
+$('#quit-the-organization').on('click', () => {
+  socket.emit('[Organization] - remove', CurrentOrganization, CurrentUser);
+})
 
 const deleteOrganizationWanted = $('#delete-organization-wanted');
 deleteOrganizationWanted.on('click', () => {

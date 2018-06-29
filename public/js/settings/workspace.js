@@ -31,7 +31,7 @@ $(document).on('change', 'select[name=workspaceManager]', function (event) {
 
 function removeWorkspaceUser(workspaceId, userId) {
   Materialize.toast('Ongoing deletion', 1000);
-  socket.emit('[Workspace] - remove user', workspaceId, userId);
+  socket.emit('[Workspace] - remove', workspaceId, userId);
 }
 
 socket.on("[Workspace] - changeRoles", (err, html, workspaceId) => {

@@ -43,7 +43,7 @@
                                     <div class="list-user col s12">
                                         <form action="/workspace/{{ workspace._id }}/information" method="post">
                                             {#
-                                                <div id="organization-image" style="background-image: url('/organization/image/{{ currentOrganization._id }}')" class="col s4">
+                                                <div id="organization-image" class="col s4">
                                                     {% if (user.rights > 4 or workspace.isProductManager) %}
                                                     <div class="file-field input-field">
                                                         <div class="change-organization">
