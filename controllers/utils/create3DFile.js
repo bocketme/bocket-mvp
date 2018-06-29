@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const converter = require("../../converter/converter");
+const converter = require('bocket_converter');
 const partFileSystem = require("../../config/PartFileSystem");
 const log = require('../../utils/log');
 const optionStream = {

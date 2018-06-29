@@ -1,0 +1,15 @@
+{
+  "name": "bocket_converter",
+  "version": "1.0.1",
+  "description": "THe converter of the bocket application",
+  "main": "converter.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "install": "node-gyp --directory=SharedObjectLoader configure build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

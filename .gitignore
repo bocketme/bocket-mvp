@@ -76,3 +76,5 @@ public/js/viewer/bocket/
 .vscode/
 tsconfig.json
 jsconfig.json
+
+converter/build/
