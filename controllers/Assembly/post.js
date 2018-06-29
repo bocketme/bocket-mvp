@@ -14,7 +14,7 @@ pretty.pipe(process.stdout);
 const log = pino({
   name: 'app',
   safe: true
-}, pretty)
+}, pretty);
 
 const nodeSchema = require("../../models/Node");
 const assemblySchema = require('../../models/Assembly');
@@ -50,10 +50,8 @@ const newAssembly = async (req, res) => {
   try {
     creator = await UserSchema.findOne({ email: userEmail });
   } catch (err) {
-    let message = err.message ? err.message : "Error intern";
-    let status = err.status ? err.status : "500";
-    log.error("[ Post Part Controller ] creator  :" + message + "\n" + new Error(err));
-    return res.status(status).send(message);
+    log.error("[ Post Part Controller ] creator  :" + (err.message || "Error intern") + "\n" + new Error(err));
+    return res.status(err.status || "500").send(err.message || "Error intern");
   }
 
   let parentNode;
@@ -85,14 +83,9 @@ const newAssembly = async (req, res) => {
   try {
     assembly = await assemblySchema.create({
       name: name,
-      creator: {
-        _id: creator._id,
-        completeName: creator.completeName,
-        email: creator.email,
-      },
-      Workspaces: parentAssembly.Workspaces,
+      creator: creator._id,
       description: description,
-      ownerOrganization: parentAssembly.ownerOrganization,
+      Organization: parentAssembly.Organization
     });
 
     await assembly.save();
@@ -112,7 +105,7 @@ const newAssembly = async (req, res) => {
       description: description,
       type: NodeTypeEnum.assembly,
       content: assembly._id,
-      Workspaces: parentNode.Workspaces,
+      Workspace: parentNode.Workspace,
       team: parentNode.team,
     });
 
@@ -140,18 +133,19 @@ const newAssembly = async (req, res) => {
       subNode.remove();
   }
 
-  let fileNotcreated;
+  let fileNotcreated = [];
 
   //TODO: Affichage d'erreur specFiles
   let chemin = path.join(config.files3D, assembly.path);
   if (specFiles) {
     for (let specFile in specFiles) {
       try {
-        await type_mime(1, spec.type_mime);
-        await createFile(chemin, spec);
+        await type_mime(1, specFiles[specFile].type_mime);
+        console.log(specFiles[specFile]);
+        await createFile(chemin, specFiles[specFile]);
       }
       catch (err) {
-        fileNotcreated.push(spec.originalName);
+        fileNotcreated.push(specFiles[specFile].originalName);
         log.error("[ Post Assembly Controller ] \n" + new Error(err));
       }
     }
@@ -161,7 +155,12 @@ const newAssembly = async (req, res) => {
     node: parentNode,
     TypeEnum: NodeTypeEnum,
     sub_level: sub_level,
-    breadcrumb: breadcrumb
+    breadcrumb: breadcrumb,
+    sockets:[{
+      message: 'Update File 3D',
+      order: '[Viewer] - Update',
+      dataToSend: [subNode._id],
+    }]
   }, (err, html) => {
     if (err) {
       log.error("[ Post Assembly Controller ] \n" + new Error(err));
@@ -181,7 +180,7 @@ const newAssembly = async (req, res) => {
 /*****************************/
 
 
-var controllerPOST = {
+const controllerPOST = {
   newAssembly: newAssembly
 };
 

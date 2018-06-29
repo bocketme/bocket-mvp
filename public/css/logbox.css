@@ -25,10 +25,7 @@
 }
 
 .closeBox {
-    position: relative;
-    top: 100px;
-    left: 290px;
-    color: #9b9b9b;
+    color: black;
 }
 
 .closeBox:hover {

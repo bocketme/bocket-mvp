@@ -1,9 +1,10 @@
 <!-- Modal Structure -->
 <div id="import-assembly" class="modal">
-    <div class="modal-header">
-        <h4 class="title-modal">Import a new Assembly</h4>
-    </div>
-    <div class="modal-content container">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="left">Import a new Assembly</span>
+            <i class="material-icons right modal-close">highlight_off</i>
+        </div>
         <div class="modal-body">
             <form id="form-import-assembly" method="post" action="/test">
                 <div class="input-field col s12" style="padding-top: 5%">
@@ -28,7 +29,7 @@
                 </div>
 
                 #}
-
+                <div class="separator col s12">
                 <div class="file-field input-field col s12" style="padding-top: 5%">
                     <div class="files-button btn upload_button">
                         <span>...</span>
@@ -43,7 +44,11 @@
                 <p>Tags</p>
                 <div id="tags-import-assembly" class="chips"></div>
                 #}
-                <button id="submit-import-assembly" class="btn button-form-validate" type="submit" style="padding-top: 5%">Import an Assembly</button>
+                </div>
+                <div class="modal-footer">
+                <a class="modal-close btn btn-cancel col s4">Cancel</a>
+                <button id="submit-import-assembly" class=" col s6 push-s2 btn btn-valid" type="submit">Import</button>
+                </div>
             </form>
         </div>
     </div>

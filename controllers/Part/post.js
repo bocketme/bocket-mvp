@@ -44,63 +44,45 @@ const newPart = async (req, res) => {
 
   sub_level++;
 
-  let creator;
-  try {
-    creator = await UserSchema.findOne({
-      email,
-    });
-  } catch (err) {
+  const creator = await UserSchema.findOne({ email }).catch(err => {
     const message = err.message ? err.message : 'Error intern';
     const status = err.status ? err.status : '500';
     log.error(`[ Post Part Controller ] creator : ${message}  \n`, new Error(err));
     return res.status(status).send(message);
-  }
+  });
 
-  let parentNode;
-  try {
-    parentNode = await NodeSchema.findById(nodeId);
-
-    if (!parentNode) throw new AppError('Not Found', 404);
-    else if (parentNode.type !== NodeTypeEnum.assembly)
-      throw new AppError(`The node is a ${parentNode.type}, it should be an ${NodeTypeEnum.assembly}`, 401);
-  } catch (err) {
+  const parentNode = await NodeSchema.findById(nodeId).catch(err => {
     const message = err.message ? err.message : 'Error intern';
     const status = err.status ? err.status : '500';
     log.error(`[ Post Part Controller ] - ${message} \n`, err);
     return res.status(status).send(message);
-  }
+  });
 
-  let parentAssembly;
-  try {
-    parentAssembly = await Assembly.findById(parentNode.content);
-  } catch (err) {
+  if (!parentNode) return res.status(404).send('Not Found');
+  else if (parentNode.type !== NodeTypeEnum.assembly)
+    return res.status(401).send(`The node is a ${parentNode.type}, it should be an ${NodeTypeEnum.assembly}`);
+
+  const parentAssembly = await Assembly.findById(parentNode.content).catch(err => {
     const message = "Couldn't find the parent Node";
     const status = 500;
     log.error(`[ Post Part Controller ] - ${message} \n`, err);
     return res.status(status).send(message);
-  }
+  });
 
   let part;
   try {
-    part = await Part.newDocument({
+    part = await Part.create({
       name,
       description,
-      ownerOrganization: parentAssembly.ownerOrganization,
-      ParentAssemblies: [{
-        _id: parentAssembly._id,
-        name: parentAssembly.name,
-      }],
-      creator: {
-        _id: creator._id,
-        completeName: creator.completeName,
-        email: creator.email,
-      },
+      creator: creator._id,
+      Organization: parentAssembly.Organization
     });
 
     part = await part.save();
   } catch (err) {
     const message = 'Intern Error';
     const status = 500;
+    console.error(err);
     await part.remove().catch(error => log.fatal(error));
     log.error('[ Post Part Controller ] - Cannot create the Part \n', new Error(err));
     return res.status(status).send(message);
@@ -113,8 +95,7 @@ const newPart = async (req, res) => {
       description,
       type: NodeTypeEnum.part,
       content: part._id,
-      Workspaces: parentNode.Workspaces,
-      team: parentNode.team,
+      Workspace: parentNode.Workspace,
     });
 
     subNode = await subNode.save();
@@ -189,7 +170,7 @@ const addFileToPart = async (req, res) => {
     } catch (err) {
       sendError.push(`Could'nt import the file : ${sentFile[0].originalname}`);
       log.warn(err);
-      return res.status(400).send({ nodeId, partId, sendError, name: sentFile[0].originalname  });
+      return res.status(400).send({ nodeId, partId, sendError, name: sentFile[0].originalname });
     }
   } else if (type === 'textures') {
     try {

@@ -8,7 +8,7 @@
                             <span style="padding-left:{{ sub_level * 20 }}px"></span>
                             <i class="arrow_drop_down material-icons">keyboard_arrow_right</i>
                             <img class="pad-right" src="/img/07-Assembly icon.svg">
-                            <span class="p-node" data-node="{{ TypeEnum.assembly }}" data-breadcrumbs="{{ child.breadcrumb }}" data-sublevel="{{ sub_level }}">{{ child.name }}</span>
+                            <span class="p-node truncate" data-node="{{ TypeEnum.assembly }}" data-breadcrumbs="{{ child.breadcrumb }}" data-sublevel="{{ sub_level }}">{{ child.name }}</span>
                             <i class="hide-show is-visible material-icons right">visibility</i>
                         </div>
                         <div id="{{ child._id }}-body" class="collapsible-body container valign-wrapper">
@@ -22,7 +22,7 @@
                         <div id="{{ child._id }}" class="collapsible-header three-node valign-wrapper">
                             <span style="padding-left:{{ 30 + sub_level * 20 }}px"></span>
                             <img class="pad-right" src="/img/07-Part icon.svg">
-                            <span class="p-node" data-node="{{ TypeEnum.part }}" data-breadcrumbs="{{ child.breadcrumb }}" data-sublevel="{{ sub_level }}">{{ child.name }}</span>
+                            <span class="p-node truncate" data-node="{{ TypeEnum.part }}" data-breadcrumbs="{{ child.breadcrumb }}" data-sublevel="{{ sub_level }}">{{ child.name }}</span>
                             <i class="hide-show is-visible material-icons right">visibility</i>
                         </div>
                     </li>

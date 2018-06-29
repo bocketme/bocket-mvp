@@ -21,7 +21,7 @@ let TeamSchema = new mongoose.Schema({
 
 TeamSchema.statics.newDocument = (teamInformation) => {
     return new Team(teamInformation);
-}
+};
 
 let Team = mongoose.model("Team", TeamSchema, "Teams");
 

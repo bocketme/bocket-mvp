@@ -1,0 +1,24 @@
+<div id="confirm-workspace-leave" class="modal">
+    <div class="modal-content">
+        <h5 class="col s12">
+            Leave The Workspace
+            <a class="modal-close" style="color: black;">
+                <i class="material-icons right">highlight_off</i>
+            </a>
+        </h5>
+    <div class="center-align col s12" style="margin-top: 20px;">
+        <p>Are you sure?
+            <br>
+            If you leave the workspace, you will be no longer able to see the content of this workspace.
+        </p>
+            </div>
+          <input type="hidden" id="currentUserId" value="{{currentUser._id}}" name="currentUserId">
+          <input type="hidden" id="workspaceId" name="workspaceId">
+        <div class="row">
+            <div class="row col s12" style="margin-top: 60px">
+                <a class="modal-close cancel btn btn-valid col s12 l3 push-l2 truncate">cancel</a>
+                <a id="leave-the-workspace" class="modal-close btn-cancel btn col s12 l3 push-l4 truncate">Leave</a>
+            </div>
+        </div>
+    </div>
+</div>

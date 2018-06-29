@@ -10,11 +10,11 @@
     <link rel="stylesheet" href="/css/viewer.css">
     <link rel="stylesheet" href="/css/hub/content.css">
     <link rel="stylesheet" href="/css/hub/location.css">
+    <link rel="stylesheet" href="/css/listWorkspaces.css">
     <link rel="stylesheet" href="/css/hub/activity.css">
     <link rel="stylesheet" href="/css/hub/specs.css">
     <link rel="stylesheet" href="/css/hub/invitePeople.css">
     <link rel="stylesheet" href="/css/hub/manageWorkspace.css">
-    <link rel="stylesheet" href="/css/hub/tchat.css">
     <link rel="stylesheet" href="/css/hub/tchat.css">
 {% endblock %}
 
@@ -23,8 +23,6 @@
 
 {% block body %}
     <div id="hub" class="row">
-        {% include "./hub/invitePeople.twig" %}
-        {% include "./hub/manageWorkspace/manageWorkspace.twig" %}
 
         <div id="second_column" class="col s12 m4 l4 xl3">
             <div id="side-nav" class="col s2 m2 l2 xl2">
@@ -50,17 +48,10 @@
                         </a>
                     </li>
                     <li class="divider"></li>
-                    <li class="option-node" id="manage-workspace-btn">
-                        <a class="dropdown-menu">Settings</a>
-                    </li>
-                    <li class="option-node" id="invite-people-btn">
-                        <a class="dropdown-menu">Invite people</a>
-                    </li>
-                    <li class="option-node" id="change-pwd-btn">
-                        <a class="dropdown-menu">Change password</a>
-                    </li>
                     <li class="option-node">
-                        <a class="dropdown-menu" href="/signOut">Sign Out</a>
+                        <a class="dropdown-menu" href="/organization/{{currentOrganization._id}}/workspaces#{{in_use.id}}-tabs">
+                            Manage Workspace
+                        </a>
                     </li>
                     <li class="divider"></li>
                     <li class="option-node">
@@ -75,7 +66,9 @@
 
                 <ul id="dropdown-settings-viewer" class="dropdown-content dropdown-nested">
                     <li class="option-node" id="cell-shading-button">
-                        <a class="dropdown-menu" href='?celShading={{optionViewer.celShading ? false : true}}'>Cel Shading{% if optionViewer.celShading == true %}
+                        <a class="dropdown-menu" href='?celShading={{optionViewer.celShading ? false : true}}'>
+                            Cel Shading
+                            {% if optionViewer.celShading == true %}
                                 <i class='material-icons' style="margin: 0;">check</i>
                             {% endif %}
                         </a>
@@ -126,23 +119,19 @@
                 {% include "modals/import_part.twig"%}
                 {% include "modals/import_assembly.twig" %}
                 {% include "modals/upload_files3d.twig" %}
-                {% include "modals/createWorkspace.twig" %}
                 {% include "modals/edit_part.twig" %}
-                {% include "modals/changePassword.twig" %}
+                {% include 'modals/organizationDeletion.twig' %}
+                {% include 'modals/organizationRemoved.twig' %}
+                {% include 'modals/workspaceRemoved.twig' %}
+                {% include 'modals/workspaceDeletion.twig' %}
+                {% include 'modals/noExitCreateOrganization.twig' %}
 
                 <div id="second_column_content" class="clear">
                     <a id="show-social-space" href="#" class="waves-effect waves-light btn" style="z-index: inherit">
                         <i class="material-icons ">people</i>Social Space
                     </a>
-                    {#
-                        {% include "hub/search.twig" %}
-                        {% include "hub/location.twig" %}
-                        {% include "hub/content.twig" %}
-                    #}
                     {% include "hub/nodeThree.twig" %}
                     {% include "hub/fileThree.twig" %}
-                    {#{% include "hub/notesThree.twig" %}#}
-
                 </div>
             </div>
         </div>
@@ -196,10 +185,7 @@
         var ViewTypeEnum = {{ ViewTypeEnum }};
         const optionViewer = {{ optionViewer }};
         var view = ViewTypeEnum.location;
-        socket.emit("joinWorkspace", workspaceId);
-        $(".workspace-change").on("click", function () {
-            socket.emit("leaveWorkspace", workspaceId);
-        });
+        socket.emit("[USER] - join");
         const l = 42;
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
@@ -213,18 +199,17 @@
     <script src="/js/hub/content.js"></script>
     <script src="/js/hub/location.js"></script>
     <script src="/js/hub/modals.js"></script>
-    <script src="/js/hub/activity.js"></script>
     <script src="/js/hub/specs.js"></script>
     <script src="/js/hub/notes.js"></script>
     <script src="/js/hub/invitePeople.js"></script>
-    <script src="/js/hub/manageWorkspace.js"></script>
     <script src="/js/contextMenu.js"></script>
     <script src="/js/hub/nodeTreeContextMenu.js"></script>
     <script src="/js/initial.js"></script>
-    <script src="/js/hub/createWorkspace.js"></script>
     <script src="/js/hub/actions.js"></script>
     <script src="/js/hub/changePassword.js"></script>
     <script src="/js/hub/tchat.js"></script>
+    <script src="/js/settings/deleteAccount.js"></script>
+    <script type="application/javascript" src="/js/nonAccess.js"></script>
     <script type="application/javascript">
         $('.profile').initial();
     </script>

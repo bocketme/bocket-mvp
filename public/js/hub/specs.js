@@ -36,11 +36,6 @@ $(document).ready(function() {
       }, native);
   });
 
-  $("#loadSpecs").on("click", function () {
-    console.log("loadSpecs.onClick : ", idOfchoosenNode);
-    socket.emit("getAllSpec", idOfchoosenNode);
-  });
-
   uploader.on('change', function() {
     for (let i = 0 ; i < this.files.length ; i++) {
       const file = this.files[i];

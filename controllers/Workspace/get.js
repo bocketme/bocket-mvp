@@ -1,132 +1,104 @@
-let project = require('../../models/project'),
-Workspace = require("../../models/Workspace"),
-User = require("../../models/User");
+let workspaceSchema = require('../../models/Workspace');
+let userSchema = require('../../models/User');
+let nodeSchema = require('../../models/Node');
+let Organization = require('../../models/Organization');
+let NodeTypeEnum = require('../../enum/NodeTypeEnum');
+let ViewTypeEnum = require('../../enum/ViewTypeEnum');
+const log = require('../../utils/log');
 
-let get = {
-    index : (req, res) => {
-        let workspaceId = req.params.workspaceId;
-        getRenderInformation(workspaceId, req.session.userMail, "Last Updates")
-        .then(context => res.render("hub", context))
-        .catch(err => {
-            if (err == 400 || err == 500)
-                res.sendStatus(err);
-            else
-                res.redirect(err);
-        });
-    },
-    last_updates : (req, res) => {
-        let workspaceId = req.params.workspaceId;
-        getRenderInformation(workspaceId, req.session.userMail, "Last Updates")
-        .then(context => res.render("hub", context))
-        .catch(err => {
-            if (err == 400 || err == 500)
-                res.sendStatus(err);
-            else
-                res.redirect(err);
-        });
-    },
-    duplicates : (req, res) => {
-        let workspaceId = req.params.workspaceId;
-        getRenderInformation(workspaceId, req.session.userMail, "Last Updates")
-        .then(context => res.render("hub", context))
-        .catch(err => {
-            if (err == 400 || err == 500)
-                res.sendStatus(err);
-            else
-                res.redirect(err);
-        });
-    },
-    indexredirect : (req, res) => {
-         console.log(req.body);
-        if (!req.body.email || !req.body.password || !req.body.workspaceId) {
-            console.log("Nice try");
-            res.redirect("/");
-            return ;
-        }
-        if (!req.session.userMail) {
-            console.log("User n'a pas de session");
-            User.findOne({email: req.body.email})
-                .then(result => {
-                    result.comparePassword(req.body.password, (err, isMatch) => {
-                        if (err) {
-                            console.log("[projectController.indexPOST] :", err);
-                            res.sendStatus(500);
-                        }
-                        else if (!isMatch) {
-                            console.log("result not matches !");
-                            res.redirect("/sigin");
-                        }
-                        else {
-                            req.session.userMail = result.email;
-                            res.redirect(req.originalUrl + "/" + req.body.workspaceId);
-                        }
-                    });
-                })
-                .catch(err => {
-                    console.log("[projectController.indexPOST] : ", err);
-                });
-        }
-        else {
-            console.log("User a une session");
-            res.redirect(req.originalUrl + "/" + req.body.workspaceId);
-        }
+const index = async (req, res) => {
+  try {
+    const { workspaceId } = req.params;
+    const { userMail } = req.session;
+
+    const user = await userSchema.findOne({ email: userMail });
+
+    if (!user) throw new Error('[Workspace Controller] - User not Found');
+
+    await user
+      .populate('Manager.Workspaces')
+      .populate('Manager.Organization')
+      .populate({ path: 'Manager.Organization', populate: { path: 'Owner Admins Members' } })
+      .execPopulate();
+
+    const workspace = await workspaceSchema.findById(workspaceId);
+
+    if (!workspace) throw new Error('[Workspace Controller] - Workspace not Found');
+
+    const nodeMaster = await nodeSchema.findById(workspace.nodeMaster);
+    if (!nodeMaster) throw new Error('[Workspace Controller] - Node Master Not Found');
+
+    function findWorkspace({ Workspaces }) {
+      function even({ _id }) {
+        return _id.equals(workspaceId);
+      }
+      return Workspaces.some(even);
     }
-}
 
-function getRenderInformation(workspaceId, userMail, title) {
-    //console.log("getRenderInformation", workspaceId, userMail);
-    return new Promise((resolve, reject) => {
-        Workspace.findById({_id: workspaceId})
-            .then(workspace => {
-                if (workspace !== null)
-                {
-                    User.findOne({email: userMail})
-                        .then(user => {
-                            if (user !== null)
-                            {
-                                console.log("RESOLVE");
-                                resolve({
-                                    title: workspace.name + ' - ' + title,
-                                    in_use: {name: workspace.name, id: workspace._id},
-                                    data_header: 'All Parts',
-                                    user: user.completeName,
-                                    workspaces: user.workspaces,
-                                    node: JSON.stringify(workspace.node_master),
-                                    all_parts: 100,
-                                    last_updates: 10,
-                                    duplicates: 35
-                                });
-                            }
-                            else
-                                console.log("[projectController.indexPOST] : ", "User not found");
-                                reject("/signin")
-                        })
-                        .catch(err => {
-                            console.log("[projectController.indexPOST] :", err);
-                            reject(500);
-                        });
-                }
-                else {
-                    console.log("[projectController.indexPOST] : ", "Workspace not found1");
-                    reject(404);
-                }
-            })
-            .catch(err => {
-                if (err.name === "CastError") // Workspace not found
-                {
-                    console.log("[projectController.indexPOST] : ", "Workspace not found2");
-                    reject(404);
-                }
-                else {
-                    console.log("[projectController.indexPOST] : ", err);
-                    reject(500);
-                }
-            });
-    });
-}
+    const Manager = user.Manager.find(findWorkspace);
+    req.session.currentWorkspace = workspaceId;
+    req.session.currentOrganization = workspace.Organization._id;
 
-function countNode(node_master) {
+    const currentOrganization = {
+      _id: Manager.Organization._id,
+      name: Manager.Organization.name,
+      users: Manager.Organization.users
+    }
 
-}
+    const options = {
+      currentUser: { completeName: user.completeName, email: user.email },
+      currentOrganization,
+      title: workspace.name,
+      in_use: { name: workspace.name, id: workspace._id },
+      user: user.completeName,
+      workspaces: Manager.Workspaces,
+      node: nodeMaster,
+      optionViewer: user.options,
 
-module.exports = get;
+      /* Const for front end */
+      NodeTypeEnum: JSON.stringify(NodeTypeEnum),
+      ViewTypeEnum: JSON.stringify(ViewTypeEnum)
+    };
+
+    return res.render('hub', options);
+  } catch (err) {
+    log.error(err);
+    if (req.session.currentOrganization) {
+      res.redirect(`/organization/${req.session.currentOrganization}`);
+    } else res.redirect('/signOut');
+  }
+};
+
+const listOrganization = async function (req, res, next) {
+  try {
+    const organization = await Organization
+      .findById(req.session.currentOrganization)
+      .populate({ path: 'Owner', select: 'completeName' })
+      .populate({ path: 'Admins', select: 'completeName' })
+      .populate({ path: 'Members', select: 'completeName' })
+      .exec();
+
+    if (!organization) throw new Error('Cannot find the organization');
+
+    const workspace = await workspaceSchema
+      .findById(req.params.workspaceId);
+    if (!workspace) throw new Error('Cannot find the workspace');
+
+    const organizationUsers = organization.users;
+    const workspaceUsers = workspace.users;
+
+    function filterOrganization({ _id }) {
+      function someinWorkspace(id) {
+        return _id.equals(id);
+      }
+      return !workspaceUsers.some(someinWorkspace)
+    }
+    const users = organizationUsers.filter(filterOrganization);
+    res.render('socket/addOrganizationMember.twig', { users, workspaceId: req.params.workspaceId });
+  } catch (e) {
+    log.error(e);
+    next(e);
+  }
+};
+
+module.exports = { index, listOrganization };

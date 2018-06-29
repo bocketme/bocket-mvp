@@ -20,4 +20,5 @@ router.use((err, req, res, next) => {
   log.error(err);
   res.status(500).send('Intern Error');
 });
+
 module.exports = router;

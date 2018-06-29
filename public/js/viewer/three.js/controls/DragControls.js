@@ -180,7 +180,7 @@ THREE.DragControls = function ( _objects, _camera, _domElement ) {
 
 			scope.dispatchEvent( { type: 'drag', object: _selected } );
 
-			return;
+
 
 		}
 

@@ -23,7 +23,7 @@ $('#profile-img').click(() => {
 }); */
 
 $('#addcontact').on({
-  mouseenter() {
+  mouseenter: function () {
     $('#addcontact img').attr('src', '/img/add-tchat-btn-hover.svg');
   },
   mouseleave() {
@@ -33,7 +33,7 @@ $('#addcontact').on({
     document.getElementById('new-tchat-form').style.display = 'flex';
     document.getElementById('new-tchat-form').classList.add('blurred');
     $('#addcontact img').attr('src', '/img/add-tchat-btn-selected.svg');
-  },
+  }
 }, 'img');
 
 $('#add-user').click(() => {
@@ -137,14 +137,14 @@ function addContactCard(tchat) {
   if (tchat !== undefined) {
     const lastMessage = (tchat.messages.length > 0 ? tchat.messages[tchat.messages.length - 1].content : 'No previous messages..');
     $('#contacts-list').append(`<li id="${tchat._id}" class="contact">` +
-        '                    <div class="wrap">' +
-        '                        <img src="/img/contact-normal.svg"/>' +
-        `<a id="${tchat._id}-delete" href=#  style="float: right;cursor: pointer"><i class="material-icons" style="color: black">clear</i></a>\n` +
-        '                        <div class="meta">' +
-        `                            <p class="name">${tchat.title}</p>` +
-        '                        </div>' +
-        '                    </div>' +
-        '                </li>');
+      '                    <div class="wrap">' +
+      '                        <img src="/img/contact-normal.svg"/>' +
+      `<a id="${tchat._id}-delete" href=#  style="float: right;cursor: pointer"><i class="material-icons" style="color: black">clear</i></a>\n` +
+      '                        <div class="meta">' +
+      `                            <p class="name">${tchat.title}</p>` +
+      '                        </div>' +
+      '                    </div>' +
+      '                </li>');
   }
 
   $(`#${tchat._id}`).on('click', () => {
@@ -206,7 +206,7 @@ function addContactCard(tchat) {
   });
 
   $('#add-user').on({
-    mouseenter() {
+    mouseenter: function () {
       $('#add-user img').attr('src', '/img/add-user-hover.svg');
     },
     mouseleave() {
@@ -225,7 +225,7 @@ function addContactCard(tchat) {
         socket.emit('[Tchat] - addUser', selectedTchat._id, usersList);
         document.getElementById('cancel-add-btn').click();
       }
-    },
+    }
   }, 'img');
 
   $('#add-user-btn').on('click', () => {
@@ -284,11 +284,6 @@ socket.on('[Tchat] - fetchById', (tchat) => {
   }
 });
 
-socket.on('[Users] - fetchById', (user) => {
-  if (user !== null && user !== undefined)
-    $('#social-users-list').append(`<li id="${user._id}-contact"><a href="#!"><input type="checkbox" class="check-with-label" id="${user._id}-check"/><label class="label-for-check" for="${user._id}-check">${user.completeName}</label></a></li>`);
-});
-
 socket.on('[Tchat] - confirmUserAdd', (tchat) => {
   $('#add-users-list').empty();
   socket.emit('[Users] - fetchFromWorkspace');
@@ -314,6 +309,7 @@ socket.on('[Users] - fetchFromWorkspace', (users) => {
     missingUsers.pop();
   }
   $('#add-users-list').empty();
+  console.log(jQuery.isEmptyObject(selectedTchat));
   if (!jQuery.isEmptyObject(selectedTchat)) {
     for (const user of users) {
       if (!selectedTchat.users.includes(String(user._id))) {
@@ -324,7 +320,7 @@ socket.on('[Users] - fetchFromWorkspace', (users) => {
   } else {
     $('#social-users-list').empty();
     users.forEach((user) => {
-      socket.emit('[Users] - fetchById', user._id);
+      $('#social-users-list').append(`<li id="${user._id}-contact"><a href="#!"><input type="checkbox" class="check-with-label" id="${user._id}-check"/><label class="label-for-check" for="${user._id}-check">${user.completeName}</label></a></li>`);
     });
   }
 });
@@ -377,8 +373,7 @@ function getAllUsers() {
 }
 
 function getUserAvatar(author, classes) {
-  const avatar = `<img data-name="${author}" class=" avatar profile ${classes}"/>`;
-  return avatar;
+  return `<img data-name="${author}" class=" avatar profile ${classes}"/>`;
 }
 
 function getMessageHtml(message, date) {

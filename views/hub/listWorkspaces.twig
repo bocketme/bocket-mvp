@@ -1,34 +1,54 @@
-<div id="list-workspace" class="collection collection-manager bocket-scrollbar">
-    <div class='add-workspace'></div>
-    {% for workspace in workspaces %}
-        <a class="collection-item collection-item-workspace " href="/project/{{workspace._id}}">
-            {% if (workspace.image) %}
-            {% else %}
-                <div class="container">
-                    <div class={% if workspace.id == in_use.id %} {{ "circle-responsive-active" }} {% else %} {{ "circle-responsive" }} {% endif %} 
-                        data-tooltip={{ workspace.name }}
-                        data-delay="50"
-                        data-position="right"
-                        >
-                        <div id="{{ workspace.id }}" class="circle-content">
-                            {{ workspace.name|first |capitalize }}
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
-            <p style="height:20px"></p>
-        </a>
-    {% endfor %}
-    <div class="icon-list-workspace">
-        <a id="trigger-creation-workspace" class=" modal-trigger" href="#workspace-creation" style="min-height: auto !important; padding: 0px !important;" alt="Add Workspace">
-            <div class="container">
-                <div class="circle-responsive-add">
-                    <div class="circle-content">
-                    +
-                    </div>
-                </div>
+<div id="organization-block">
+    <a href="/organization/{{currentOrganization._id}}">
+        <div class="cube-container">
+            <div class="text-container">
+                {{ currentOrganization.name|first |capitalize }}
             </div>
-        </a>
-    </div>
-    <div class='add-workspace'></div>
+        </div>
+    </a>
+    <hr>
 </div>
+<div id="workspaces-block" class="side-nav-scrollbar">
+    <div id="list-workspaces-user">
+        {% for workspace in workspaces %}
+            <div class="round-separator">
+                <a href="/workspace/{{workspace._id}}" data-tooltip="{{ workspace.name }}" data-delay="50" data-position="right">
+                    {% if in_use.id.equals(workspace._id) %}
+                        <div class="round-container active">
+                            <div class="text-container">
+                                {{ workspace.name|first |capitalize }}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="round-container">
+                            <div class="text-container">
+                                {{ workspace.name|first |capitalize }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    {#
+    <a id="trigger-creation-workspace" class=" modal-trigger" href="#workspace-creation">
+        <div class="round-container">
+            <div class="text-container">
+                +
+            </div>
+        </div>
+    </a>
+    {% include 'modals/createWorkspace.twig' %}
+    #}
+</div>
+<div id="user-block">
+    <hr>
+    <a href="#user-options" class="modal-trigger">
+        <div class="round-container">
+            <div class="text-container">
+                <i class="material-icons">person_outline</i>
+            </div>
+        </div>
+    </a>
+</div>
+{% include 'modals/userSettings.twig' %}

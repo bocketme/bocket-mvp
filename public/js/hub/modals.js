@@ -599,7 +599,7 @@ function createPartInForm(event) {
             const node = $("#" + nodeId);
 
             const form = document.getElementById('form-edit-part');
-            const formdata = new FormData(form)
+            const formdata = new FormData(form);
             const postRequest = new XMLHttpRequest();
 
             postRequest.addEventListener('load',
@@ -626,7 +626,6 @@ function createPartInForm(event) {
 
         // Submit the insertion of a new part
         $('#submit-import-part').click((event) => {
-
         });
 
         // Submit the insert of
@@ -674,7 +673,8 @@ function createPartInForm(event) {
         });
         /////////////////////////////
         // Search for existing items
-        ////////////////////////////
+        //////////////////////////// 
+        // TODO: DEPRECATED
         $('#submit-search-existing').click((event) => {
 
             event.preventDefault();

@@ -6,8 +6,7 @@ async function saveandpopulate(workspace, tchat, email) {
   tchat.users.push(user._id);
   workspace.Tchats.push(tchat);
   await workspace.save();
-  const completedWorkspace = await Workspace.findById(workspace._id);
-  return completedWorkspace;
+  return await Workspace.findById(workspace._id);
 }
 
 async function addGeneralTchat(workspace) {
@@ -20,8 +19,7 @@ async function addGeneralTchat(workspace) {
   const tchat = { title: 'General', messages: [], users: newUsers };
   workspace.Tchats.push(tchat);
   await workspace.save();
-  const completedWorkspace = await Workspace.findById(workspace._id);
-  return completedWorkspace;
+  return await Workspace.findById(workspace._id);
 }
 
 async function addNewUser(workspace, tchatId, addedUsers) {
@@ -30,10 +28,8 @@ async function addNewUser(workspace, tchatId, addedUsers) {
     workspace.Tchats[index].users.push(user);
   }
   await workspace.save();
-  const completedWorkspace = await Workspace.findById(workspace._id);
-  return completedWorkspace;
-};
-
+  return await Workspace.findById(workspace._id);
+}
 module.exports = (io, socket) => {
   socket.on('[Tchat] - add', (tchat) => {
     const { userMail, currentWorkspace } = socket.handshake.session;
@@ -69,7 +65,7 @@ module.exports = (io, socket) => {
 
   socket.on('[Tchat] - addUser', (tchatId, users) => {
     const { currentWorkspace } = socket.handshake.session;
-    if (tchatId != null && tchatId != undefined && users.length > 0) {
+    if (tchatId != null &&  users.length > 0) {
       Workspace
         .findById(currentWorkspace)
         .then(workspace => addNewUser(workspace, tchatId, users))

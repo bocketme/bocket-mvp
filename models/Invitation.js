@@ -3,12 +3,9 @@ const uniqueValidator = require('mongoose-unique-validator');
 const uid = require('uid-safe');
 const mailTransporter = require('../utils/mailTransporter');
 const Twig = require('twig');
-const serverConfig = require('../config/server');
 
 const mailConfig = require('../config/welcomeEmail');
 const log = require('../utils/log');
-
-const logValidate = log.child({ type: '' });
 
 const nestedPeopleSchema = mongoose.Schema({
   completeName: String,
@@ -16,70 +13,64 @@ const nestedPeopleSchema = mongoose.Schema({
 });
 
 const nestedWorkspaceSchema = mongoose.Schema({
-  name: { type: String, required: true },
   id: { type: String, required: true },
+  name: { type: String, required: true },
+  role: { type: Number, required: true, default: 2 },
 });
 
 const nestedOrganization = mongoose.Schema({
-  name: { type: String, required: true },
   id: { type: String, required: true },
+  name: { type: String, required: true },
+  role: { type: Number, required: true, default: 4 },
 });
 
 const InvitationSchema = mongoose.Schema({
   uid: { type: String, default: '' },
   author: { type: String, required: true },
-  workspace: { type: nestedWorkspaceSchema, required: true },
-  organization: { type: nestedWorkspaceSchema, required: true },
-  people: { type: nestedPeopleSchema },
+  authorId: mongoose.SchemaTypes.ObjectId,
+  workspace: nestedWorkspaceSchema,
+  organization: { type: nestedOrganization, required: true },
+  people: nestedPeopleSchema,
 });
 
-InvitationSchema.pre('save', function (next) {
-  const invitation = this;
-  uid(42)
-    .then((uid) => {
-      invitation.uid = uid;
-      log.info('UID = ', invitation.uid);
-      next();
-    })
-    .catch(err => next(err));
+InvitationSchema.pre('save', async function () {
+  this.uid = await uid(42);
+
+  if (!(this.organization.role > 3 && this.organization.role < 7))
+    throw new Error('Cannot save an incorrect invitaiton');
+
+  return this;
 });
 
 InvitationSchema.post('save', (invitation) => {
-  log.info('ici');
-  log.info('serverConfig url :', serverConfig.url);
-
-  // httpURL = serverConfig.protocol+ "://www.bocket.me:" + serverConfig.port;
-  //const httpURL = `${serverConfig.protocol}://localhost:${serverConfig.port}`;
-  //log.info('http url :', httpURL);
-
   const renderVar = {
-    completeName: invitation.people.completeName,
-    workspace: invitation.workspace,
+    user: invitation.people.completeName,
     author: invitation.author,
-    bocketUrl: serverConfig.fullUrl,
-    // url: serverConfig.url + "/" + invitation.uid
-    url: `${serverConfig.fullUrl}/${invitation.uid}`,
-
+    type: {
+      isWorkspace: invitation.workspace ? true : false,
+      value: invitation.workspace ? invitation.workspace.name : invitation.organization.name,
+    },
+    invitationUid: invitation.uid
   };
-    // http://localhost:8080/project/5a4f4a87488d0c0770f8bef0
-  Twig.renderFile('./views/invitation.twig', renderVar, (err, html) => {
-    const mailOptions = {
-      from: mailConfig.email,
-      to: invitation.people.email,
-      subject: 'Someone invited you to collaborate into a bocket 3D workspace',
-      html,
-      // html: `uid = <a href="google.com">${invitation.uid}</a>`
-    };
 
-    log.info('mailOptions = ', mailOptions);
-
-    mailTransporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        log.info(error);
-      } else {
-        log.info(`Email sent: ${info.response}`);
-      }
-    });
+  Twig.renderFile('./views/mail/invitation.twig', renderVar, (err, html) => {
+    if (err) {
+      log.error(`[Invitation] - send a mail \n ${err}`);
+      return null;
+    } else {
+      let mailOptions = {
+        from: mailConfig.email,
+        to: invitation.people.email,
+        subject: 'Une personne vous a invité a collaborer dans un espace de travail Bocket.',
+        html
+      };
+      mailTransporter.sendMail(mailOptions, (error, info) => {
+        if (error)
+          reject(error);
+        else
+          log.info(`Email sent: ${info.response}`);
+      });
+    }
   });
 });
 

@@ -7,8 +7,7 @@ async function saveandpopulate(workspace, message, email, tchatId) {
   let tchatIndex =  workspace.Tchats.findIndex(elem => String(elem._id) === tchatId);
   workspace.Tchats[tchatIndex].messages.push({ content: message, author: author, date: new Date() });
   await workspace.save();
-  const completedWorkspace = await Workspace.findById(workspace._id).populate('Message.author', 'completeName');
-  return completedWorkspace;
+  return await Workspace.findById(workspace._id).populate('Message.author', 'completeName');
 }
 
 module.exports = (io, socket) => {

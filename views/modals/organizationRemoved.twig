@@ -1,0 +1,18 @@
+{% extends './layoutFooter.twig' %}
+
+{% block id %} id="organization-removed" {% endblock %}
+
+{% block title %}You no longer have access to this organization{% endblock %}
+
+{% block titleStyle %}class="center-align"{% endblock %}
+
+{% block contentStyle %}{{ parent() }}{% endblock %}
+
+{% block content %}
+<div class="membership-user"></div>
+{% endblock %}
+
+{% block footer %}
+<a href="/logOut" class="btn btn-cancel modal-close right">Log Out</a>
+<a href="#forced-create-organization" class="modal-trigger btn btn-normal modal-close left">Create an Organiaztion</a>
+{% endblock %}

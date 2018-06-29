@@ -7,20 +7,13 @@ const THREE = require('three');
 
 const NestedNode = require('./nestedSchema/NestedNodeSchema');
 const uniqueValidator = require('mongoose-unique-validator');
-const NestedUser = require('./nestedSchema/NestedUserSchema');
 const NestedComment = require('./nestedSchema/NestedActivitySchema');
 const NodeTypeEnum = require('../enum/NodeTypeEnum');
 const NestedTeam = require('./nestedSchema/NestedTeamSchema');
 const PartSchema = require('./Part');
 const AssemblySchema = require('./Assembly');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
-const asyncForEach = require('../utils/asyncForeach');
 const log = require('../utils/log');
-
-const NestedWorkspace = mongoose.Schema({
-  _id: { type: mongoose.SchemaTypes.ObjectId, require: true },
-  name: { type: String, require: true },
-});
 
 const NodeSchema = mongoose.Schema({
   // The core Information of the node
@@ -33,8 +26,7 @@ const NodeSchema = mongoose.Schema({
   type: { type: String, require: true },
   content: { type: mongoose.SchemaTypes.ObjectId, require: true },
   matrix: { type: [], default: new THREE.Matrix4() },
-  Workspaces: { type: [NestedWorkspace], require: true },
-
+  Workspace: { type: mongoose.SchemaTypes.ObjectId, require: true },
   // The system Information of the Node
   created: { type: Date, default: Date.now() },
   modified: { type: Date, default: Date.now() },
@@ -46,8 +38,7 @@ const NodeSchema = mongoose.Schema({
   children: { type: [NestedNode], default: [] },
   notes: { type: [NestedAnnotation], default: [] },
 
-  team: { type: NestedTeam, required: true },
-  owners: { type: [NestedUser], default: [] },
+  team: NestedTeam,
 });
 
 let Node = mongoose.model('Node', NodeSchema, 'Nodes');
@@ -74,11 +65,11 @@ NodeSchema.plugin(uniqueValidator);
  * @param nodeInformation.owners - The owners of the node
  */
 NodeSchema.statics.newDocument = (nodeInformation) => {
-  if (!nodeInformation.name) { console.error(new Error('The Name of the Node is missing')); }
+  if (!nodeInformation.name) { log.error(new Error('The Name of the Node is missing')); }
 
-  if (!nodeInformation.type) { console.error(new Error('The Type of the Node is missing')); }
+  if (!nodeInformation.type) { log.error(new Error('The Type of the Node is missing')); }
 
-  if (!nodeInformation.content) { console.error(new Error('The Content of the Node is missing')); }
+  if (!nodeInformation.content) { log.error(new Error('The Content of the Node is missing')); }
 
   return new Node(nodeInformation);
 };
@@ -93,10 +84,11 @@ async function deleteContent(id, type) {
     content = await AssemblySchema.findById(id).catch((err) => { throw err; });
   } else throw new Error('The type of the node is not specified');
 
+  if (!content) throw new Error('There is no content');
+
   await deleteNode(path.join(Fsconfig.appDirectory.files3D, content.path)).catch((err) => { throw err; });
 
-  if (!content) throw new Error('There is no content');
-  content.remove();
+  await content.remove();
 }
 
 async function findNodeByIdAndRemove(id) {
@@ -104,20 +96,24 @@ async function findNodeByIdAndRemove(id) {
 
   const parentNodes = await Node.find({ 'children._id': id });
 
+  function filterChildId({_id}) {
+    return ! _id.equals(node._id);
+  }
+
   for (let i = 0; i < parentNodes.length; i++) {
     const parentNode = parentNodes[i];
-    parentNode.children = parentNode
-      .children
-      // DO NOT TOUCH THE CONSOLE.LOG !!! ELSE IT WONT SAVE THE CHANGEMENT
-      .filter(child => child._id !== node._id && console.log(child._id !== node._id));
+    parentNode.children = parentNode.children.filter(filterChildId);
     await parentNode.save().catch(err => { throw err });
   }
 
   if (!node) throw new Error('Node not Found');
 
   for (let i = 0; i < node.children.length; i++) {
-    const child = await node.findById(child._id).catch((err) => { throw err; });
-    await child.remove().catch((err) => { throw err; });
+    const child = await Node
+      .findById(node.children[i]._id).catch((err) => { throw err; });
+    await child
+      .remove()
+      .catch((err) => { throw err; });
   }
   return null;
 }

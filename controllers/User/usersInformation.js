@@ -11,8 +11,6 @@ const log = pino({
   safe: true
 }, pretty);
 
-const options = {};
-
 let userImage = async (req, res) => {
   let user;
 
@@ -25,14 +23,14 @@ let userImage = async (req, res) => {
 
   if (!user)
     return res.status(400).send('Not Found');
-  return res.sendFile(path.join(serverConfig.avatar, options, (err) => {
+  let file = path.join(serverConfig.avatar, user.avatar);
+  return res.sendFile(file, (err) => {
     if (err)
       log.error(err);
-  }));
+    res.status(400).send('Not Found');
+  });
 };
 
-let get = {
-  userImage: userImage,
-};
+let get = {userImage};
 
 module.exports = get;

@@ -1,0 +1,28 @@
+<div class="center-align">
+    {% if organizations.length != 0 %}
+        <div class="inline-wrapper bloc">
+            <p>
+                You will delete Your account.
+                <br>
+                By deleting your account, you will leave all workspaces related to your account and delete the following organizations:
+            </p>
+        </div>
+        <div class="col s8 push-s2">
+            {% for organization in organizations %}
+                <p class="left-align line" style="margin-top:20px ">
+                    {{organization.name}}
+                    <a href="/organization/{{organization._id}}" class="btn btn-normal right">Manage Organization</a>
+                </p>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="col s12 inline-wrapper bloc">
+            <p>
+                You will delete Your account.
+                <br>
+                <i class="material-icons">warning</i>
+                By deleting your account, you will leave all workspaces related to your account.
+            </p>
+        </div>
+    {% endif %}
+</div>
