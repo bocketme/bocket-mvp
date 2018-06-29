@@ -706,6 +706,7 @@ ul#details-tab {
 }
 
 .close-files {
+    padding-top: 2.5% !important;
     color: #223241;
 }
 
@@ -715,6 +716,9 @@ ul#details-tab {
 
 .part-collection-item {
     margin:0 0 10px 0 !important;
-    vertical-align: baseline !important;
+}
+
+.part_file_name, .error-msg {
+    padding-top: 2.5% !important;
 }
 

@@ -325,7 +325,7 @@ function appendFileToList(idPart, file, fileType) {
         return `<li id="${fileId}-file" class="file_list_item row file3d" >` +
             `                    <a id="${fileId}-close-${idPart}" class="material-icons close-files col s1">highlight_off</a>` +
             `                    <span class="part_file_name col s3">${file.name}</span>` +
-            `                    <span class="${idPart}-file3d-error col s5 red-text text-darken-2" ></span>` +
+            `                    <span class="${idPart}-file3d-error error-msg col s5 red-text text-darken-2" ></span>` +
             '                    <div class="input-field col s2 select-file3d">' +
             `                        <select id="${file.name}-${fileId}_${idPart}" onchange="handleChangeFile3d(event)">` +
             '                            <option value="files3d" selected>3d file</option>' +
@@ -352,7 +352,7 @@ function appendFileToList(idPart, file, fileType) {
         return `                <li id="${fileId}-file" class="file_list_item row texture" >` +
             `                    <a id="${fileId}-close-${idPart}" class="material-icons close-files col s1">highlight_off</a>` +
             `                    <span class="part_file_name col s3">${file.name}</span>` +
-            `                    <span class="${idPart}-texture-error col s5 red-text text-darken-2" ></span>` +
+            `                    <span class="${idPart}-texture-error error-msg col s5 red-text text-darken-2" ></span>` +
             '                    <div class="input-field col s2 select-texture">' +
             `                        <select id="${file.name}-${fileId}_${idPart}" onchange="handleChangeTexture(event)">` +
             '                            <option value="textures" selected>Texture file</option>' +
@@ -379,7 +379,7 @@ function appendFileToList(idPart, file, fileType) {
         return `<li id="${fileId}-file" class="file_list_item row texture">` +
             `                    <a id="${fileId}-close-${idPart}" class="material-icons close-files col s1">highlight_off</a>` +
             `                    <span class="part_file_name col s3">${file.name}</span>` +
-            `                    <span class="${idPart}-specs-error col s5 red-text text-darken-2" ></span>` +
+            `                    <span class="${idPart}-specs-error error-msg col s5 red-text text-darken-2" ></span>` +
             '                    <div class="input-field col s2 select-spec">' +
             `                        <select id="${file.name}-${fileId}_${idPart}" disabled>` +
             '                            <option value="specs" disabled selected>Spec file</option>' +
@@ -447,7 +447,7 @@ function addPartInModalList(files) {
             '                 <div class="input-field col s6">' +
             (files.files3d.length ? `<input id="${partIdx}_part_name" type="text" class="validate part_name" value="${getFileName(files.files3d[0].name)}">` : `<input id="${partIdx}_part_name" type="text" class="validate part_name" value="">`) +
             '                 </div>' +
-            `                 <span id="${partIdx}-error" class="part-error col s4 red-text text-darken-2"></span>` +
+            `                 <span id="${partIdx}-error" class="part-error error-msg col s4 red-text text-darken-2"></span>` +
             '                 <div class="input-field col s12">' +
             `                     <textarea id="${partIdx}_part_description" class="materialize-textarea"></textarea>` +
             '                     <label for="part_description">Description</label>' +
