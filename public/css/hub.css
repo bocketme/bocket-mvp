@@ -684,6 +684,18 @@ ul#details-tab {
     padding-right: 5px;
 }
 
+#import-part-infos {
+    padding-top: 10%;
+    font-size: larger;
+}
+
+#cancel-parts-btn {
+    margin-right: 2%;
+}
+
+.tooltipped {
+    cursor: default;
+}
 .separator {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -692,3 +704,17 @@ ul#details-tab {
 .p-node{
   margin-right: 30px;
 }
+
+.close-files {
+    color: #223241;
+}
+
+.close-files:hover {
+    cursor: pointer;
+}
+
+.part-collection-item {
+    margin:0 0 10px 0 !important;
+    vertical-align: baseline !important;
+}
+

@@ -1,8 +1,22 @@
 <!-- Modal Structure -->
 <div id="import-part" class="modal modal-fixed-footer">
     <div class="modal-content">
-        <h4 class="title-modal">Import a new Part</h4>
-        <ul id='parts_list' class="collection col s12">
+        <div class="center-align">
+            <h4 class="title-modal" style="display: inline;">Import new Parts</h4>
+            <a class="tooltipped left" data-position="right" data-html="true" data-delay="50" data-tooltip="To add a part, click on 'add a part' and select all the files of your part.</br> You may repeat the process as many time as needed. You may rename and add a description. </br>And when you are done, press the 'upload' button to upload it to your workspace.">
+                <i class="material-icons">help_outline</i>
+            </a>
+            <a class="modal-close right"><i class="material-icons small">close</i></a>
+        </div>
+        <div id="import-part-infos">
+            <p class="container left-align ">
+                Please select your file(s) for your part (native, texture, specs...).<br><br>
+                To add a part, click on "add a part" and select all the files of your part.<br>
+                You may repeat the process as many time as needed. You may rename and add a description.<br>
+                And when you are done, presse the "upload" button to upload it to your workspace.
+            </p>
+        </div>
+        <ul id='parts_list' class="collection col s12 striped">
         </ul>
     </div>
     <div class="modal-footer">
@@ -11,7 +25,8 @@
                 <span>Add a Part</span>
                 <input type="file" multiple id="import-part-files" name="textureFiles">
             </div>
-            <a id="upload-parts-btn" class="btn btn-valid right col s3">Upload Parts</a>
+            <a id="upload-parts-btn" class="btn btn-valid right col s2">Upload Parts</a>
+            <a id="cancel-parts-btn" class="btn btn-cancel right col s2">Cancel</a>
         </div>
     </div>
 </div>
