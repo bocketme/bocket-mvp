@@ -1,4 +1,4 @@
-modal$(document).ready(() => {
+$(document).ready(() => {
   const has = Object.prototype.hasOwnProperty;
   $('#submit-change-pwd').on('click', () => {
     const changePassword = $('#change-password');

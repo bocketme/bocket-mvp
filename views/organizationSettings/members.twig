@@ -26,23 +26,23 @@
             {% include './header.twig' %}
 
             <div class="col s12">
-                <h5 class="title-page col s12" style="margin-bottom: 30px; margin-top:20px;">
+                <h5 class="title-page col s12" style="margin-bottom: 30px; margin-top:20px; margin-left:10px">
                     Members of the organization
+                    {#
                     {% if currentUser.rights > 4 %}
-                        {#
                         <a href="#invite-organisation" class="modal-trigger icons-main-button">
                             <i class="material-icons">group_add</i>
                         </a>
 
                         {% include 'modals/invitationOrganisation.twig' %}                    
-                    #}
                     {% endif %}
+                    #}
                 </h5>
 
                 <div class="information">
                     <div id="owner">
-                        <h6>
-                            <span class="title">Owner</span>
+                        <h6 class="sub-title-workspace">
+                            Owner
                         </h6>
                         <div class="bloc-users">
                             <div class="valign-wrapper">
@@ -61,8 +61,8 @@
                     </div>
                     <div id="adminsAndMembers">
                         <div id="admins">
-                            <h6>
-                                <span class="title">Co-owner</span>
+                            <h6 class="sub-title-workspace">
+                                Co-owner
                             </h6>
                             <div class="bloc-users">
                                 {% if (currentOrganization.Admins | length) == 0 %}
@@ -97,8 +97,9 @@
 
                         </div>
                         <div id="members">
-                            <h6>
-                                <span class="title">Members</span></h6>
+                            <h6 class="sub-title-workspace">
+                                Members
+                            </h6>
                             <div class="bloc-users">
                                 {% if (currentOrganization.Members | length) == 0 %}
                                     There is no member

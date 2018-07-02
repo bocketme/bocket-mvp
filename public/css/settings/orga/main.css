@@ -67,7 +67,7 @@ body, html{
 }
 
 #organization-settings{
-  padding: 10% 0% 10% 5%;
+  padding: 4% 0% 2% 5%;
   width: 100%;
   margin: 0;
 }
@@ -118,7 +118,7 @@ body, html{
 
 .information{
   padding-top: 20px;
-  padding-left: 60px;
+  padding-left: 5%;
 }
 
 #button-align-dropdown{
@@ -238,6 +238,5 @@ a.disabled{
 }
 
 .bloc-users {
-  padding-left: 5%;
-  padding-top: 2%;
+  padding: 2% 0% 3% 5%
 }

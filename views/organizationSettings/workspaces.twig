@@ -23,7 +23,7 @@
             <div class="col s12">
                 <div class="row overflow-hide">
                     <div class="col s12">
-                        <ul class="tabs">
+                        <ul class="tabs tabs-workspaces">
                             {% for workspace in workspaces %}
                                 <li class="tab">
                                     <a href="#{{ workspace._id }}-tabs" class="active workspace-list truncate">{{ workspace.name }}</a>
@@ -39,7 +39,7 @@
                     {% for workspace in workspaces %}
                         <div id="{{ workspace._id }}-tabs" class="col s12">
                             <div class="overflow-content">
-                                <div class="container">
+                                <div style="padding:0% 5%;">
                                     <div class="list-user col s12">
                                         <form action="/workspace/{{ workspace._id }}/information" method="post">
                                             {#
@@ -59,14 +59,13 @@
                                             #}
                                             {% set randomValue = random() %}
                                             {% set random2Value = random() %}
-                                            <div style="position: relative;margin-top: 49px; {#margin-left: 15px;#}">
+                                            <div style="position: relative;margin-top: 4%; {#margin-left: 15px;#}">
                                                 <input id="workspace-name-{{randomValue}}" name="name" type="text" value="{{ workspace.name }}" {% if not (currentUser.rights > 4 or workspace.isProductManager) %} disabled="disabled" style="color: black" {% endif %}>
                                                 {% if (currentUser.rights > 4 or workspace.isProductManager) %}
                                                     <i id="edit" class="material-icons">edit</i>
                                                 {% endif %}
                                             </div>
-                                            <div class="row">
-                                                <div class="input-field col s12">
+                                                <div class="input-field">
                                                     <textarea id="textarea-{{random2Value}}" name="description" class="materialize-textarea">{{ workspace.description }}</textarea>
                                                     <label for="textarea-{{random2Value}}">Description</label>
                                                 </div>
@@ -74,7 +73,6 @@
                                                     <button class="btn btn-normal cancel right" type="submit">SAVE
                                                     </button>
                                                 {% endif %}
-                                            </div>
                                         </form>
                                         <div id="workspace-{{workspace._id}}" class="bloc col s12">
                                             {% include './workspaceUserList.twig' %}
