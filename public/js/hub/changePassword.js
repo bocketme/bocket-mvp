@@ -13,7 +13,7 @@ $(document).ready(() => {
   });
 
   socket.on('changePassword', (data) => {
-    if (has.call(data, 'error'))
+    if(data)
       $('#change-password').find('#error').text(data.error);
     else
       $('#change-password').modal('close');

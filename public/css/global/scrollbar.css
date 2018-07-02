@@ -1,0 +1,43 @@
+.side-nav-scrollbar::-webkit-scrollbar-thumb{
+  background-color: rgba(245, 245, 245, 0.5);
+  opacity: 0;
+  -webkit-border-radius: 60px;
+  border-radius: 60px;
+}
+
+.side-nav-scrollbar::-webkit-scrollbar
+{
+  background-color: transparent;
+}
+
+.side-nav-scrollbar::-webkit-scrollbar{
+  width: 5px;
+}
+
+.side-nav-scrollbar{
+  border-right: #3c3c3c solid 2px;
+}
+
+.tabs-workspaces::-webkit-scrollbar-thumb{
+  background-color: rgb(60, 60, 60, 0.5);
+  -webkit-border-radius: 60px;
+  border-radius: 60px;
+}
+
+.tabs-workspaces > .indicator {
+  margin-bottom: 5px;
+}
+
+.tabs-workspaces::-webkit-scrollbar
+{
+  background-color: transparent;
+}
+
+.tabs-workspaces::-webkit-scrollbar{
+  padding-top: 3px;
+  height: 5px;
+}
+
+.tabs-workspaces{
+  border-right: #3c3c3c solid 2px;
+}
