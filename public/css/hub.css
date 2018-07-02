@@ -722,6 +722,10 @@ ul#details-tab {
     padding-top: 2.5% !important;
 }
 
+.error-msg {
+    font-weight: bolder;
+}
+
 .files-list {
     margin-top: 1%;
 }

@@ -449,11 +449,11 @@ function addPartInModalList(files) {
             '                 <div class="input-field col s6" style="display: inline-block">' +
             (files.files3d.length ? `<input id="${partIdx}_part_name" type="text" class="validate part_name" value="${getFileName(files.files3d[0].name)}">` : `<input id="${partIdx}_part_name" type="text" class="validate part_name" value="">`) +
             '                 </div>' +
-            `                 <div class="part-content"><span id="${partIdx}-error" class="part-error error-msg col s4 red-text text-darken-2"></span>` +
-            '                 <div class="input-field col s12">' +
+            '                 <div class="part-content"><div class="input-field col s12">' +
             `                     <textarea id="${partIdx}_part_description" class="materialize-textarea"></textarea>` +
             '                     <label for="part_description">Description</label>' +
             '                 </div>' +
+            `                 <div class="center-align"><span id="${partIdx}-error" class="part-error error-msg col s12 red-text text-darken-2"></span></div>` +
             `                 <ul id="${partIdx}_files_list" class="files-list">` +
             '                 </ul>' +
             '                 <div class="btn btn-file file-field input-field col s2 hoverable">' +
