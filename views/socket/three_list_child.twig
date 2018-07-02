@@ -1,0 +1,16 @@
+<li>
+    <div id="{{ node._id }}" class="collapsible-header three-node valign-wrapper">
+        <span style="padding-left:{{ 30 + sub_level * 20 }}px"></span>
+        <img class="pad-right" src="/img/07-Part icon.svg">
+        <span class="p-node" data-node="{{ TypeEnum.part }}" data-breadcrumbs="{{ node.breadcrumb }}" data-sublevel="{{ sub_level }}">{{ node.name }}</span>
+        <i class="hide-show is-visible material-icons right">visibility</i>
+    </div>
+</li>
+{% if sockets %}
+    {% for socket in sockets %}
+        <script>
+            console.log("{{ socket.message }}");
+            socket.emit("{{ socket.order }}"{% for data in socket.dataToSend %}, "{{ data }}"{% endfor %});
+        </script>
+    {% endfor %}
+{% endif %}

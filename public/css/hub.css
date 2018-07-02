@@ -293,19 +293,20 @@ input[type='text']#branch:focus{
 *
 */
 
-.modal-body{
+.modal-content {
     color: black;
 }
-.modal-header{
+.titre-modal {
+    position: absolute !important;
+    top: 0 !important;
     text-align: center;
-    margin-top: 2% !important;
+    vertical-align: middle;
 }
 
 .files-button {
     color: rgb(161, 160, 160);
     float: right !important;
     background-color: #727171;
-    color: #fff;
 }
 .files-button:hover, .files-button:focus {
     transition: none;
@@ -683,6 +684,18 @@ ul#details-tab {
     padding-right: 5px;
 }
 
+#import-part-infos {
+    padding-top: 10%;
+    font-size: larger;
+}
+
+#cancel-parts-btn {
+    margin-right: 2%;
+}
+
+.tooltipped {
+    cursor: default;
+}
 .separator {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -690,4 +703,42 @@ ul#details-tab {
 
 .p-node{
   margin-right: 30px;
+}
+
+.close-files {
+    padding-top: 2.5% !important;
+    color: #223241;
+}
+
+.close-files:hover {
+    cursor: pointer;
+}
+
+.part-collection-item {
+    margin:0 0 10px 0 !important;
+}
+
+.part_file_name, .error-msg {
+    padding-top: 2.5% !important;
+}
+
+.error-msg {
+    font-weight: bolder;
+}
+
+.files-list {
+    margin-top: 1%;
+}
+
+.part_name {
+    font-weight: bolder;
+}
+
+.part-head a {
+    display: inline-block;
+    margin-right: 10%;
+}
+
+.part-content {
+    padding-left: 3%;
 }

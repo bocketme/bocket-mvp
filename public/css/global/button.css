@@ -76,3 +76,15 @@
   font-weight: 600;
   font-size: 12px;
 }
+
+.btn-file {
+  border: 1px solid #223241;
+  color: #223241;
+  background-color: white;
+}
+
+.btn-file:hover {
+  border: 1px solid #223241;
+  color: #223241;
+  background-color: white !important;
+}

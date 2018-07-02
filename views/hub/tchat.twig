@@ -42,9 +42,9 @@
         </div>
         <div id="new-tchat-form" class="modal">
             <div class="modal-form" >
-                <div class="modal-header">
-                    <h5 style="display: inline-block;font-weight: bolder !important;">Create group Chat</h5>
-                    <a id="close-add-modal" href="#" style="float: right;cursor: pointer"><i class="material-icons">clear</i></a>
+                <div class="center-align modal-title-div">
+                    <h5 class="modal-title">Create group Chat</h5>
+                    <a id="close-add-modal" href="#" class="close-modal right"><i class="material-icons">highlight_off</i></a>
                 </div>
                 <div class="modal-content container tchat-modal-content">
                     <div class="modal-body modal-part">
@@ -62,30 +62,34 @@
                         </div>
                     </div>
                 </div>
-                <button id="cancel-tchat-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
-                <button id="create-tchat-btn" class="btn waves-effect waves-light" type="submit">Create</button>
+                <div class="modal-footer">
+                    <button id="cancel-tchat-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
+                    <button id="create-tchat-btn" class="btn waves-effect waves-light" type="submit">Create</button>
+                </div>
             </div>
         </div>
         <div id="confirm-tchat-modal" class="modal">
             <div class="modal-form">
-                <div class="modal-header">
-                    <h5 style="display: inline-block;font-weight: bolder !important;">Delete Selected Tchat</h5>
-                    <a id="close-confirm-modal" href="#" style="float: right;cursor: pointer"><i class="material-icons">clear</i></a>
+                <div class="center-align modal-title-div">
+                    <h5 class="modal-title">Delete Selected Tchat</h5>
+                    <a id="close-confirm-modal" class="close-modal right" href="#" ><i class="material-icons">highlight_off</i></a>
                 </div>
                 <div class="modal-content container tchat-modal-content">
                     <div class="modal-body modal-part">
                         <span >Are you sure you want to delete selected tchat ?</span>
                     </div>
                 </div>
-                <button id="cancel-tchat-rm-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
-                <button id="confirm-tchat-rm-btn" class="btn waves-effect waves-light" type="submit">Confirm</button>
+                <div class="modal-footer">
+                    <button id="cancel-tchat-rm-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
+                    <button id="confirm-tchat-rm-btn" class="btn waves-effect waves-light" type="submit">Confirm</button>
+                </div>
             </div>
         </div>
         <div id="add-user-form" class="modal">
             <div class="modal-form" >
-                <div class="modal-header">
-                    <h5 style="display: inline-block;font-weight: bolder !important;">Add users to chat</h5>
-                    <a id="close-add-modal" href="#" style="float: right;cursor: pointer"><i class="material-icons">clear</i></a>
+                <div class="center-align modal-title-div">
+                    <h5 class="modal-title">Add users to chat</h5>
+                    <a id="close-add-modal" href="#" class="close-modal right"><i class="material-icons">highlight_off</i></a>
                 </div>
                 <div class="modal-content container tchat-modal-content">
                     <div class="modal-body modal-part">
@@ -99,8 +103,10 @@
                         </div>
                     </div>
                 </div>
-                <button id="cancel-add-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
-                <button id="add-user-btn" class="btn waves-effect waves-light" type="submit">Add users</button>
+                <div class="modal-footer">
+                    <button id="cancel-add-btn" class="btn waves-effect waves-light" type="cancel">Cancel</button>
+                    <button id="add-user-btn" class="btn waves-effect waves-light" type="submit">Add users</button>
+                </div>
             </div>
         </div>
     </div>
