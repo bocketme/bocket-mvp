@@ -89,13 +89,11 @@ function getPosition(e) {
   if (e.pageX || e.pageY) {
     posx = e.pageX;
     posy = e.pageY;
-    console.log("e.pageX:", posx, " e.pageY:", posy);
   } else if (e.clientX || e.clientY) {
     posx = e.clientX + document.body.scrollLeft +
       document.documentElement.scrollLeft;
     posy = e.clientY + document.body.scrollTop +
       document.documentElement.scrollTop;
-    console.log("e.clientX:", posx, " e.clientY:", posy);
   }
 
   return {

@@ -1,5 +1,6 @@
 const nodeSchema = require('../../models/Node');
 const partSchema = require('../../models/Part');
+const userSchema = require('../../models/User');
 const assemblySchema = require('../../models/Assembly');
 const fs = require('fs');
 const path = require('path');
@@ -31,13 +32,15 @@ module.exports = (io, socket) => {
           throw new Error("[Node] - Information : The node's type is not defined");
       }
 
+      const creator = await userSchema.findById(content.creator);
+
       //Send the information Node
       socket.emit("[Node] - Details", {
         name: node.name,
         description: node.description,
         created: node.created,
         organization: content.Organization.name,
-        creator: content.creator,
+        creator: creator ? creator.completeName : "Information Not Available",
       });
 
       if(node.type === NodeTypeEnum.part){
