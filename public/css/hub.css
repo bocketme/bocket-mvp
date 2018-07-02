@@ -722,3 +722,19 @@ ul#details-tab {
     padding-top: 2.5% !important;
 }
 
+.files-list {
+    margin-top: 1%;
+}
+
+.part_name {
+    font-weight: bolder;
+}
+
+.part-head a {
+    display: inline-block;
+    margin-right: 10%;
+}
+
+.part-content {
+    padding-left: 3%;
+}

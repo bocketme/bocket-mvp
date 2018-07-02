@@ -98,17 +98,17 @@ function uploadFileToPart(nodeId, type, partId, file, arrId) {
     request.send(form);
 }
 
-function sendFilesToPart(nodeId, partId, files, arrIdx) {
+function sendFilesToPart(nodeId, partId, files, id) {
     if (files) {
 
         for (let i = 0; i < files.specs.length; i++) {
-            uploadFileToPart(nodeId, 'specs', partId, files.specs[i], partsArray[arrIdx]._id);
+            uploadFileToPart(nodeId, 'specs', partId, files.specs[i], id);
         }
         for (let i = 0; i < files.textures.length; i++) {
-            uploadFileToPart(nodeId, 'textures', partId, files.textures[i], partsArray[arrIdx]._id);
+            uploadFileToPart(nodeId, 'textures', partId, files.textures[i], id);
         }
         for (let i = 0; i < files.files3d.length; i++) {
-            uploadFileToPart(nodeId, 'files3d', partId, files.files3d[i], partsArray[arrIdx]._id);
+            uploadFileToPart(nodeId, 'files3d', partId, files.files3d[i], id);
         }
     } else {
         console.error('UUUUUH, There are no files there');
@@ -122,8 +122,9 @@ function fileUploadFailed(idFile) {
     $(`#${idFile}-upload-div > .upload-completed`).hide();
 }
 
-function partUploaded(idx) {
-    if (idx < partsArray.length) {
+function partUploaded(id) {
+    const idx = partsArray.findIndex((elem) => { return elem._id === id });
+    if (idx !== -1 && idx < partsArray.length) {
         partsArray[idx].isUpload = true;
         const id = partsArray[idx]._id;
         $(`#${id}-close`).prop('disabled', true);
@@ -192,15 +193,16 @@ function uploadParts() {
         var sub_level = $("#" + nodeId).contents().filter("span.p-node").attr("data-sublevel");
         var breadcrumb = $("#" + nodeId).contents().filter("span.p-node").attr("data-breadcrumbs");
 
-        var helperFunc=function(arrIndex,itemId) {
+        var helperFunc=function(arrIndex, files, itemId) {
             return function() {
                 if(postRequest[arrIndex].readyState === 4) {
                     if (postRequest[arrIndex].status === 200) {
                         const res = JSON.parse(postRequest[arrIndex].response);
                         const { nodeId, partId } = res;
-                        sendFilesToPart(nodeId, partId, partsArray[arrIndex].files, arrIndex);
+                        sendFilesToPart(nodeId, partId, files, itemId);
                         nodeChildrenLoad(nodeId, res.html);
-                        partUploaded(arrIndex);
+                        partUploaded(itemId);
+                        checkIfAllUploaded();
                     } else if (postRequest[arrIndex].status === 404) {
                         Materialize.toast("Not Found", 1000);
                     } else if (postRequest[arrIndex].status === 401) {
@@ -216,7 +218,7 @@ function uploadParts() {
             if (!partsArray[i].isUpload) {
                 postRequest[i] = new XMLHttpRequest();
                 const partId = partsArray[i]._id;
-                postRequest[i].onreadystatechange=helperFunc(i,nodeId);
+                postRequest[i].onreadystatechange=helperFunc(i, partsArray[i].files, partsArray[i]._id);
 
                 postRequest[i].addEventListener("error", function (event) {
                     Materialize.toast("The Part was not created", 1000);
@@ -443,21 +445,21 @@ function addPartInModalList(files) {
     if (files) {
         const html = `<li id="${partIdx}-part" class="collection-item part-collection-item">` +
             '             <div class="row">' +
-            `             <a id="${partIdx}-close" class="material-icons close-files col s1">highlight_off</a>` +
-            '                 <div class="input-field col s6">' +
+            `             <a id="${partIdx}-close" class="material-icons close-files left" >highlight_off</a>` +
+            '                 <div class="input-field col s6" style="display: inline-block">' +
             (files.files3d.length ? `<input id="${partIdx}_part_name" type="text" class="validate part_name" value="${getFileName(files.files3d[0].name)}">` : `<input id="${partIdx}_part_name" type="text" class="validate part_name" value="">`) +
             '                 </div>' +
-            `                 <span id="${partIdx}-error" class="part-error error-msg col s4 red-text text-darken-2"></span>` +
+            `                 <div class="part-content"><span id="${partIdx}-error" class="part-error error-msg col s4 red-text text-darken-2"></span>` +
             '                 <div class="input-field col s12">' +
             `                     <textarea id="${partIdx}_part_description" class="materialize-textarea"></textarea>` +
             '                     <label for="part_description">Description</label>' +
             '                 </div>' +
-            `                 <ul id="${partIdx}_files_list">` +
+            `                 <ul id="${partIdx}_files_list" class="files-list">` +
             '                 </ul>' +
             '                 <div class="btn btn-file file-field input-field col s2 hoverable">' +
             '                     <span>Add files</span>' +
             `                     <input id="add-files-${partIdx}" type="file" multiple name="partFiles">` +
-            '                 </div>' +
+            '                 </div></div>' +
             '             </div>' +
             '        </li>';
 
