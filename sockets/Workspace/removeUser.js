@@ -20,9 +20,9 @@ module.exports = (io, socket) => {
 
       const rights = organization.userRights(currentUser._id);
 
-      if (organization.isOwner(currentUser) ||
-        organization.isAdmin(currentUser) ||
-        workspace.isProductManager(currentUser) ||
+      if (organization.isOwner(currentUser._id) ||
+        organization.isAdmin(currentUser._id) ||
+        workspace.isProductManager(currentUser._id) ||
         currentUser._id.equals(userId))
         await workspace.removeUser(userId, false);
       else return socket.emit('[Workspace] - remove', 'You have no right for this workspace');

@@ -8,8 +8,15 @@
   flex-grow: 0;
 }
 
+#container-organization, #container-user{
+  padding: 0% 8px;
+}
+
+.round-separator{
+  padding: 8% 0%;
+}
+
 #user-block{
-  margin-bottom: 10%;
   flex-grow: 0;
 }
 
@@ -17,6 +24,7 @@
   flex-grow: 2;
   overflow-x: hidden;
   overflow-y: scroll;
+  padding-left: 8px;
   height: 100%;
   width: 100%;
 }

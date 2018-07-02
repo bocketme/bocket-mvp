@@ -1,12 +1,10 @@
 .side-nav-scrollbar::-webkit-scrollbar-thumb{
   background-color: rgba(245, 245, 245, 0.5);
-  opacity: 0;
   -webkit-border-radius: 60px;
   border-radius: 60px;
 }
 
-.side-nav-scrollbar::-webkit-scrollbar
-{
+.side-nav-scrollbar::-webkit-scrollbar {
   background-color: transparent;
 }
 
@@ -28,8 +26,7 @@
   margin-bottom: 5px;
 }
 
-.tabs-workspaces::-webkit-scrollbar
-{
+.tabs-workspaces::-webkit-scrollbar {
   background-color: transparent;
 }
 
@@ -38,6 +35,24 @@
   height: 5px;
 }
 
-.tabs-workspaces{
-  border-right: #3c3c3c solid 2px;
+.overflow-content{
+  margin-right: 5px;
+}
+
+.overflow-content::-webkit-scrollbar-thumb{
+  background-color: rgb(60, 60, 60, 0.5);
+  -webkit-border-radius: 60px;
+  border-radius: 60px;
+}
+
+.overflow-content > .indicator {
+  margin-bottom: 5px;
+}
+
+.overflow-content::-webkit-scrollbar {
+  background-color: transparent;
+}
+
+.overflow-content::-webkit-scrollbar{
+  width: 8px;
 }

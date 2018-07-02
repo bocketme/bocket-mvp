@@ -3,11 +3,11 @@
 {% block body %}
 
     <div class="row" id="main">
-        <div id="left-pannel" class="col s12 m4 l4 xl3 row">
-            <div id="side-nav" class="col s2 m2 l2 xl2">
+        <div id="left-pannel" class="col s12 m2 l2 xl2 row">
+            <div id="side-nav" class="col s3 m3 l3 xl3">
                 {% include './sideNav.twig' %}
             </div>
-            <div id="options" class="col s10 m10 l10 xl10">
+            <div id="options" class="col s9 m9 l9 xl9">
                 <div>
                     <a href="/organization/{{ currentOrganization._id }}">Organization</a>
                     <hr style="margin: 0% 5%;">
@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-        <div class="col s12 m8 l8 xl9" style="height: 100%">
+        <div class="col s12 m10 l10 xl10" style="height: 100%">
 
             {% include './header.twig' %}
             <div class="col s12">
@@ -59,20 +59,26 @@
                                             #}
                                             {% set randomValue = random() %}
                                             {% set random2Value = random() %}
-                                            <div style="position: relative;margin-top: 4%; {#margin-left: 15px;#}">
-                                                <input id="workspace-name-{{randomValue}}" name="name" type="text" value="{{ workspace.name }}" {% if not (currentUser.rights > 4 or workspace.isProductManager) %} disabled="disabled" style="color: black" {% endif %}>
-                                                {% if (currentUser.rights > 4 or workspace.isProductManager) %}
-                                                    <i id="edit" class="material-icons">edit</i>
-                                                {% endif %}
-                                            </div>
+                                            {% if (currentUser.rights > 4 or workspace.isProductManager) %}
                                                 <div class="input-field">
-                                                    <textarea id="textarea-{{random2Value}}" name="description" class="materialize-textarea">{{ workspace.description }}</textarea>
-                                                    <label for="textarea-{{random2Value}}">Description</label>
+                                                    <input value="{{ workspace.name }}" id="workspace-name-{{randomValue}}" name="name" type="text">
+                                                    <label for="workspace-name-{{randomValue}}">Workspace Name</label>
+                                                    <i id="edit" class="material-icons">edit</i>
                                                 </div>
-                                                {% if (currentUser.rights > 4 or workspace.isProductManager) %}
-                                                    <button class="btn btn-normal cancel right" type="submit">SAVE
-                                                    </button>
-                                                {% endif %}
+                                            {% else %}
+                                                <div class="input-field">
+                                                    <label for="workspace-name-{{randomValue}}">Name</label>
+                                                    <input value="{{ workspace.name }}" id="workspace-name-{{randomValue}}" name="workspace-name" type="text" class="validate" disabled="disabled" style="color:black">
+                                                </div>
+                                            {% endif %}
+                                            <div class="input-field">
+                                                <textarea id="textarea-{{random2Value}}" name="description" class="materialize-textarea">{{ workspace.description }}</textarea>
+                                                <label for="textarea-{{random2Value}}">Description</label>
+                                            </div>
+                                            {% if (currentUser.rights > 4 or workspace.isProductManager) %}
+                                                <button class="btn btn-normal cancel right" type="submit">SAVE
+                                                </button>
+                                            {% endif %}
                                         </form>
                                         <div id="workspace-{{workspace._id}}" class="bloc col s12">
                                             {% include './workspaceUserList.twig' %}
