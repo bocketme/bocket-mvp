@@ -133,7 +133,6 @@ function loadNodeInformation(event) {
 
   if (nodeId === undefined) { Materialize.toast('Error, The node selected has no ID', 2000); }
 
-  console.log('SUUUUUUUU');
   if (!element.hasClass('hide-show')) {
     // CSS EFFECT
     if (!element.hasClass('selected-accordion')) {
