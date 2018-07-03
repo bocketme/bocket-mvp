@@ -1,5 +1,5 @@
 const co = require('co');
-const {WorkspaceModel, OrganizationModel} = require('../backup')
+const { WorkspaceModel, OrganizationModel } = require('../backup')
 const log = require('../../utils/log');
 
 module.exports = function* () {
@@ -12,12 +12,18 @@ module.exports = function* () {
         doc.nodeMaster = workspace.node_master._id;
         yield doc.save();
       }
-      
+
+      if (workspace.organization)
+        workspace.Organization = workspace.organization._id
+
       if (workspace.users) {
         const users = workspace.users;
         if (workspace.owner) {
           const owner = workspace.owner[0];
-          doc.ProductManagers = [owner._id];
+          if (owner._id) {
+            const organization = yield OrganizationModel.findOne({ "Workspaces": doc._id });
+            doc.ProductManagers = [organization.Owner];
+          }
         } else {
           const organization = yield OrganizationModel.findOne({ "Workspaces": doc._id });
           doc.ProductManagers = [organization.Owner];
@@ -25,7 +31,7 @@ module.exports = function* () {
         const usersId = users.map(user => user._id);
         doc.Teammates = usersId.filter(user => {
           const id = String(user);
-          const filter = String(owner._id);
+          const filter = String(doc.ProductManagers[0]._id);
           return id !== filter;
         });
         yield doc.save();
