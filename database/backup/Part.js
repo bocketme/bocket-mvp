@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 const TypeEnum = require('../../enum/NodeTypeEnum');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const NestedComment = require('./nestedSchema/NestedActivitySchema');
+const NestedUser = require('./nestedSchema/NestedUserSchema');
 
 const NestedOrganization = mongoose.Schema({
   _id: { type: Schema.Types.ObjectId, require: true },

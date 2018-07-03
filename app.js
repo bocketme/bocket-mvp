@@ -140,17 +140,15 @@ server.on('listening', () => {
   log.info('Listening on ' + bind);
 
   for (const dir in FSconfig.appDirectory) {
-    if (Object.prototype.hasOwnProperty.call(dir, FSconfig.appDirectory)) {
-      fs.access(FSconfig.appDirectory[dir], err => {
-        if (err) {
-          log.error(err);
-          fs.mkdir(FSconfig.appDirectory[dir], (error) => {
-            if (error)
-              return log.fatal(error);
-            return log.info(`Directory ${dir} ==> ok`);
-          });
-        } else log.info(`Directory ${dir} ==> ok`);
-      });
-    }
+    fs.access(FSconfig.appDirectory[dir], err => {
+      if (err) {
+        log.error(err);
+        fs.mkdir(FSconfig.appDirectory[dir], (error) => {
+          if (error)
+            return log.fatal(error);
+          return log.info(`Directory ${dir} ==> ok`);
+        });
+      } else log.info(`Directory ${dir} ==> ok`);
+    });
   }
 });
