@@ -74,7 +74,7 @@ const newPart = async (req, res) => {
     part = await Part.create({
       name,
       description,
-      creator: creator._id,
+      Creator: creator._id,
       Organization: parentAssembly.Organization
     });
 

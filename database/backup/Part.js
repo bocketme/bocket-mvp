@@ -20,7 +20,8 @@ const PartSchema = mongoose.Schema({
   tags: { type: [], default: [] },
   ownerOrganization: { type: NestedOrganization },
   //TODO: Script to fill the data
-  creator: { type: Schema.Types.ObjectId, require: true, ref: 'User' },
+  Creator: { type: Schema.Types.ObjectId, ref: 'User' },
+  creator: { type: NestedUser },
 
   annotation: { type: [NestedAnnotation], default: [] },
   activities: { type: [NestedComment], default: [] },

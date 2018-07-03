@@ -38,9 +38,15 @@ function* changePathContent(content, ownerOrganizationId) {
 
   log.info(ownerOrganizationId);
   content.Organization = ownerOrganizationId;
+  if (content.creator)
+    content.Creator = content.creator._id
+  content.creator = null;
+
   const ancientPath = `/1${content.Organization}/${content.name} - ${content._id}`;
   const newPath = `${content.Organization}/${content._id}`;
   const directoryOrganization = path.join(config.files3D, ancientPath);
   const newDirectoryOrganization = path.join(config.files3D, newPath);
   yield renameDir(directoryOrganization, newDirectoryOrganization);
+  content.path = newPath;
+  yield content.save();
 }

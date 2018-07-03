@@ -160,6 +160,7 @@ async function createAccount (req, res) {
       name: req.body.workspaceName,
       description: nodeMasterConfig.description,
       Organization: organization._id,
+      Creator: user._id,
     });
 
     await assembly.save();

@@ -25,7 +25,7 @@ const AssemblyScheama = mongoose.Schema({
   ownerOrganization: { type: NestedOrganization },
   quality: { type: Number, default: 0 },
   //TODO: Script to fill the data
-  Creator: { type: Schema.Types.ObjectId, require: true, ref: 'User' },
+  Creator: { type: Schema.Types.ObjectId, ref: 'User' },
   creator: { type: NestedUser },
 
   // Update tags unused for the 1.0
