@@ -12,7 +12,7 @@ module.exports = function* () {
     if (user.workspaces) {
       let nestedWorkspace = user.workspaces;
       for (let i = 0; i < nestedWorkspace.length; i++) {
-        const manager = user.get('Manager');
+        const manager = user.Manager
         const workspace = yield WorkspaceModel.findById(nestedWorkspace[i]._id);
         const organization = yield OrganizationModel.findOne({ 'Workspaces': doc._id });
         const isExisting = manager.findIndex(({ Organization }) => Organization.equals(organization._id));
