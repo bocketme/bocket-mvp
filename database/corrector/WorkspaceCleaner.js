@@ -10,7 +10,6 @@ module.exports = function* () {
 
       if (workspace.node_master) {
         doc.nodeMaster = workspace.node_master._id;
-        yield doc.save();
       }
 
       if (workspace.organization)
