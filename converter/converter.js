@@ -1,5 +1,5 @@
 
-let	sharedObjectLoader = require("./lib/sharedObjectLoader.node"); 
+let	sharedObjectLoader = require("./SharedObjectLoader/build/Release/sharedObjectLoader.node"); 
 
 /**
  * JSimport	Call converter from c++
@@ -12,6 +12,4 @@ function	JSimport(file_path) {
 	return sharedObjectLoader.converter("module", file_path);
 }
 
-module.exports = {
-	"JSimport" : JSimport
-};
+exports.JSimport = JSimport;

@@ -50,7 +50,6 @@
     background: #E6EAEA;
     width: inherit;
     height: inherit;
-    z-index: 9999;
 }
 
 #news-feed {
@@ -513,13 +512,12 @@
 
 #confirm-tchat-modal .modal-form {
     width: 20% !important;
-    height: 20% !important;
+    height: 25% !important;
 }
 
 #confirm-tchat-modal h5 {
     font-weight: bolder;
     font-size: larger;
-    padding: 10px;
 }
 
 #new-tchat-form h5 {
@@ -528,6 +526,21 @@
 }
 
 #new-tchat-form i, #confirm-tchat-modal i  {
-    padding-top: 9px;
-    padding-right: 10px;
+    padding-top: 1%;
+    padding-right: 1%;
+}
+
+.modal-title  {
+    display: inline-block;
+    font-weight: bolder !important;
+}
+
+.modal-title-div {
+    vertical-align: baseline;
+}
+
+.close-modal {
+    color: #223241;
+    padding-right: 2%;
+    padding-top: 2%;
 }

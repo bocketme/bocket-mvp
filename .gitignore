@@ -78,3 +78,4 @@ tsconfig.json
 jsconfig.json
 
 \.data\.backup/
+converter/build/
