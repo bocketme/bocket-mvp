@@ -15,6 +15,10 @@ module.exports = function* () {
       if (doc.organization)
         workspace.Organization = workspace.organization._id;
 
+      const organization = yield OrganizationModel.findOne({ "Workspaces": doc._id });
+      log.info(organization !== null);
+      doc.ProductManagers = [organization.Owner];
+
       if (doc.users) {
         const users = workspace.users;
         const usersId = users.map(user => user._id);
@@ -25,8 +29,6 @@ module.exports = function* () {
         });
       }
 
-      const organization = yield OrganizationModel.findOne({ "Workspaces": doc._id });
-      doc.ProductManagers = [organization.Owner];
 
       yield doc.save();
     } catch (error) { log.error(error) }
