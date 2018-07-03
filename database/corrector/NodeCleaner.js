@@ -1,10 +1,10 @@
-const workspaceSchema = require('../../models/Workspace');
+const { WorkspaceModel } = require('../backup');
 const log = require('../../utils/log');
 
 
 //Need Rework
 module.exports = function* () {
-  const cursor = workspaceSchema.find().cursor();
+  const cursor = WorkspaceModel.find().cursor();
   for (let doc = yield cursor.next(); doc !== null; doc = yield cursor.next()) {
     const workspace = doc.toObject();
 
