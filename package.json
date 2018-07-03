@@ -68,6 +68,7 @@
     "nodemailer": "^4.6.7",
     "nodemon": "^1.17.5",
     "pino": "^4.17.3",
+    "pino-tee": "^0.2.2",
     "postprocessing": "4.3.0",
     "promise": "^8.0.1",
     "rimraf": "^2.6.2",
