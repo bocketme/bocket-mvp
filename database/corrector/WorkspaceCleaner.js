@@ -16,8 +16,8 @@ module.exports = function* () {
         workspace.Organization = workspace.organization._id;
 
       const organization = yield OrganizationModel.findOne({ "Workspaces": doc._id });
-      log.info(organization !== null);
-      doc.ProductManagers = [organization.Owner];
+      if (organization)
+        doc.ProductManagers = [organization.Owner];
 
       if (doc.users) {
         const users = workspace.users;

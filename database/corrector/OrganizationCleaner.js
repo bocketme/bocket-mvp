@@ -32,7 +32,7 @@ module.exports = function* () {
       if (organization.team)
         doc.team = null;
 
-      if (organization.owner) {
+      if (organization.owner.length > 0) {
         const owner = organization.owner[0]._id;
         doc.Owner = owner;
       }

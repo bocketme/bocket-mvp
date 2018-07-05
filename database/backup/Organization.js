@@ -33,3 +33,4 @@ OrganizationSchema.plugin(uniqueValidator);
 const Organization = mongoose.model("Organization", OrganizationSchema, "Organizations");
 
 module.exports = Organization;
+
