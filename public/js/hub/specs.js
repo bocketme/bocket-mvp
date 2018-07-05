@@ -2,6 +2,7 @@ $(document).ready(function() {
   let specs = $("#specs");
   let li = null;
   const uploader = $("#specs-uploader");
+  var pointedElem;
 
   /*
   specs.on("contextmenu", function (e) {
@@ -48,18 +49,18 @@ $(document).ready(function() {
     }
   });
 
-  let specsContextMenu = $('#specs-context-menu');
-  let specContextMenu = $('#spec-context-menu');
+  var specsContextMenu = $('#specs-context-menu');
+  var specContextMenu = $('#spec-context-menu');
 
   specsContextMenu.on("click", "#new_file", function (){
     $("#specs-uploader").click();
   });
 
-  specContextMenu.on("click", "#remove", function (){
+  $('#spec-context-menu').on('click', '#remove', () => {
     console.log('Remove');
     console.log($(pointedElem).closest('li').attr('filename'));
     socket.emit("removeSpec", { nodeId: idOfchoosenNode, filename: $(pointedElem).closest('li').attr('filename') });
-    toggleMenuContextOff("#spec-context-menu");
+    toggleMenuContextOff();
   });
 
   /*

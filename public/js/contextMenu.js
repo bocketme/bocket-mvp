@@ -13,13 +13,13 @@ $(document).ready(function () {
   $('#header-specs').on("contextmenu", function (e) {
     e.preventDefault();
     toggleMenuContextOff();
-    toggleMenuContextOn('#specs-context-menu');
+    toggleMenuContextOn('#specs-context-menu', e);
   });
 
   $('#native').on('contextmenu', function (e) {
     e.preventDefault();
     toggleMenuContextOff();
-    toggleMenuContextOn('#native-files');
+    toggleMenuContextOn('#native-files', e);
   });
 
   $('.node-tree').on('contextmenu', 'li', function (e) {
@@ -27,7 +27,7 @@ $(document).ready(function () {
     e.preventDefault();
     $(pointedElem).trigger('click');
     toggleMenuContextOff();
-    toggleMenuContextOn('#node-tree-context-menu');
+    toggleMenuContextOn('#node-tree-context-menu', e);
   });
 });
 
@@ -35,19 +35,21 @@ $(document).ready(function () {
  * Open the menuContext
  * @param selectorId : JQuery id of the dropdown context menu
  */
-function toggleMenuContextOn(selectorId) {
+function toggleMenuContextOn(selectorId, event) {
     var selector = $(selectorId);
 
     gSelector = selector;
     gSelectorId = selectorId;
     selector.addClass(activeClass);
     selector.addClass("active"); // add active class of materialize for dropdown behavior
+    if (event) {
         var pos = getPosition(event);
         if (pos.x + selector.width() > $(window).width()) // move the dropdown to the left if he's too wide
             pos.x = $(window).width() - selector.width() - 10;
         if (pos.y + selector.height() > $(window).height()) // move the dropdown to the up if he's too wide
-            pos.y =  $(window).height() - selector.height() - 10;
+            pos.y = $(window).height() - selector.height() - 10;
         selector.css("left", pos.x + "px").css("top", pos.y + "px");
+    }
     menuState = true;
 }
 

@@ -25,6 +25,12 @@ async function create3DFile(chemin, file) {
       return converter.JSimport(filePath);
     }
   });
+  file3D.on('finish', () => {
+    console.log('in the if ');
+    if (converter) {
+      return converter.JSimport(filePath);
+    }
+  });
 }
 
 module.exports = create3DFile;
