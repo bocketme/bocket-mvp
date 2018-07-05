@@ -22,9 +22,7 @@ async function create3DFile(chemin, file) {
   file3D.on('close', () => {
     console.log('in the if ');
     if (converter) {
-      const resultImport = converter.JSimport(filePath);
-      console.log('Import File 3D : ', resultImport);
-      converterInfo.info(resultImport);
+      return converter.JSimport(filePath);
     }
   });
 }

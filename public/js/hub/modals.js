@@ -326,15 +326,15 @@ function appendFileToList(idPart, file, fileType) {
     if (fileType === 'file3d') {
         return `<li id="${fileId}-file" class="file_list_item row file3d" >` +
             `                    <a id="${fileId}-close-${idPart}" class="material-icons close-files col s1">highlight_off</a>` +
-            `                    <span class="part_file_name col s3">${file.name}</span>` +
+            `                    <span class="part_file_name col s5 l3 truncate">${file.name}</span>` +
             `                    <span class="${idPart}-file3d-error error-msg col s5 red-text text-darken-2" ></span>` +
-            '                    <div class="input-field col s2 select-file3d">' +
+            '                    <div class="input-field col s4 l2 select-file3d">' +
             `                        <select id="${file.name}-${fileId}_${idPart}" onchange="handleChangeFile3d(event)">` +
             '                            <option value="files3d" selected>3d file</option>' +
             '                            <option value="specs">Spec file</option>' +
             '                        </select>' +
             '                    </div>' +
-            `                    <div id="${fileId}-upload-div" class="upload-div col s1">` +
+            `                    <div id="${fileId}-upload-div" class="upload-div col s3 l1">` +
             '                       <div class="upload-completed"><i class="material-icons">check</i></div>\n' +
             '                       <div class="preloader-wrapper small active">' +
             '                       <div class="spinner-layer spinner-blue-only">' +
@@ -353,15 +353,15 @@ function appendFileToList(idPart, file, fileType) {
     } else if (fileType === 'textures') {
         return `                <li id="${fileId}-file" class="file_list_item row texture" >` +
             `                    <a id="${fileId}-close-${idPart}" class="material-icons close-files col s1">highlight_off</a>` +
-            `                    <span class="part_file_name col s3">${file.name}</span>` +
+            `                    <span class="part_file_name col s5 l3 truncate">${file.name}</span>` +
             `                    <span class="${idPart}-texture-error error-msg col s5 red-text text-darken-2" ></span>` +
-            '                    <div class="input-field col s2 select-texture">' +
+            '                    <div class="input-field col s4 l2 select-texture">' +
             `                        <select id="${file.name}-${fileId}_${idPart}" onchange="handleChangeTexture(event)">` +
             '                            <option value="textures" selected>Texture file</option>' +
             '                            <option value="specs">Spec file</option>' +
             '                        </select>' +
             '                    </div>' +
-            `                    <div id="${fileId}-upload-div" class="upload-div col s1">` +
+            `                    <div id="${fileId}-upload-div" class="upload-div col s3 l1">` +
             '                       <div class="upload-completed"><i class="material-icons">check</i></div>' +
             '                       <div class="preloader-wrapper small active">' +
             '                       <div class="spinner-layer spinner-blue-only">' +
@@ -380,14 +380,14 @@ function appendFileToList(idPart, file, fileType) {
     } else {
         return `<li id="${fileId}-file" class="file_list_item row texture">` +
             `                    <a id="${fileId}-close-${idPart}" class="material-icons close-files col s1">highlight_off</a>` +
-            `                    <span class="part_file_name col s3">${file.name}</span>` +
+            `                    <span class="part_file_name col s5 l3">${file.name}</span>` +
             `                    <span class="${idPart}-specs-error error-msg col s5 red-text text-darken-2" ></span>` +
-            '                    <div class="input-field col s2 select-spec">' +
+            '                    <div class="input-field col s4 l2 select-spec">' +
             `                        <select id="${file.name}-${fileId}_${idPart}" disabled>` +
             '                            <option value="specs" disabled selected>Spec file</option>' +
             '                        </select>' +
             '                    </div>' +
-            `                    <div id="${fileId}-upload-div" class="upload-div col s1">` +
+            `                    <div id="${fileId}-upload-div" class="upload-div col s3 l1">` +
             '                       <div class="upload-completed"><i class="material-icons">check</i></div>' +
             '                       <div class="preloader-wrapper small active">' +
             '                       <div class="spinner-layer spinner-blue-only">' +
@@ -456,7 +456,7 @@ function addPartInModalList(files) {
             `                 <div class="center-align"><span id="${partIdx}-error" class="part-error error-msg col s12 red-text text-darken-2"></span></div>` +
             `                 <ul id="${partIdx}_files_list" class="files-list">` +
             '                 </ul>' +
-            '                 <div class="btn btn-file file-field input-field col s2 hoverable">' +
+            '                 <div class="btn btn-file file-field input-field col s6 m6 l2 hoverable">' +
             '                     <span>Add files</span>' +
             `                     <input id="add-files-${partIdx}" type="file" multiple name="partFiles">` +
             '                 </div></div>' +
@@ -594,6 +594,9 @@ function createPartInForm(event) {
     if (cible !== defaultNodeValue.title) {
         const nodeId = idOfchoosenNode;
         const files = parseFormFiles(document.getElementById('import-part-files').files);
+        if (!files.textures.length && !files.files3d.length && !files.specs.length) {
+            return;
+        }
         addPartInModalList(files);
         if (files.files3d.length) {
             if (files.files3d.length !== 1) {
