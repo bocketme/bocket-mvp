@@ -1,9 +1,11 @@
-.axis-canvas
+#axisDiv
 {
     position:   absolute;
     right:      20px;
     top:        20px;
     z-index:    10;
+    height: 11vh;
+    width: 11vh;
 }
 
 #renderSurface

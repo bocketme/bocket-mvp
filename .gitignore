@@ -76,3 +76,6 @@ public/js/viewer/bocket/
 .vscode/
 tsconfig.json
 jsconfig.json
+
+\.data\.backup/
+converter/build/

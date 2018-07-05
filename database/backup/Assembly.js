@@ -1,15 +1,9 @@
 const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
-const TypeEnum = require('../enum/NodeTypeEnum');
-const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
+const TypeEnum = require('../../enum/NodeTypeEnum');
 const NestedComment = require('./nestedSchema/NestedActivitySchema');
 const NestedUser = require('./nestedSchema/NestedUserSchema');
-const configServer = require('../config/server');
 const fs = require('fs');
-const path = require('path');
-const AssemblyFileSystem = require('../config/AssemblyFileSystem');
-
-const directories = Object.values(AssemblyFileSystem);
+const { Schema } = mongoose;
 
 /**
  * Mongoose Schema for
@@ -25,30 +19,21 @@ const AssemblyScheama = mongoose.Schema({
   name: { type: String, require: true, index: true },
 
   // TODO: Access To Assembly => Issue
-  // owners: {type: [nestedOwners], default: []}
-
   description: { type: String, default: 'No description aviable', index: true },
   path: { type: String },
-  ownerOrganization: { type: NestedOrganization, require: true },
   maturity: { type: String, default: TypeEnum.maturity[0] },
+  ownerOrganization: { type: NestedOrganization },
   quality: { type: Number, default: 0 },
-  whereUsed: { type: [String], default: [] },
-  creator: { type: NestedUser, require: true },
+  //TODO: Script to fill the data
+  Creator: { type: Schema.Types.ObjectId, ref: 'User' },
+  creator: { type: NestedUser },
 
   // Update tags unused for the 1.0
   tags: { type: [], default: [] },
 
-  annotation: { type: [NestedAnnotation], default: [] },
   activities: { type: [NestedComment], default: [] },
+  Organization: { type: mongoose.SchemaTypes.ObjectId, required: true, ref: 'Organization' }
 });
-
-function mkdirPromise(chemin) {
-  return new Promise((resolve, reject) => {
-    fs.mkdir(chemin, (err) => {
-      if (err) { reject(err); } else resolve();
-    });
-  });
-}
 
 const Assembly = mongoose.model('Assembly', AssemblyScheama, 'Assemblies');
 

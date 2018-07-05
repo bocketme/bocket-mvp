@@ -118,11 +118,11 @@ function nodeChildrenChargement(event) {
 }
 
 function loadNodeInformation(event) {
-  if (event.target !== event.currentTarget) return;
+  const element = $(event.currentTarget);
+  if (element.hasClass('hide-show')) return;
 
   $('#activity-tab').tabs('select_tab', 'activity');
   // Initialisation
-  const element = $(event.currentTarget);
   const nodeId = element.attr('id');
   idOfchoosenNode = nodeId;
 
@@ -133,7 +133,7 @@ function loadNodeInformation(event) {
 
   if (nodeId === undefined) { Materialize.toast('Error, The node selected has no ID', 2000); }
 
-  if(event.target === event.currentTarget) {
+  if (!element.hasClass('hide-show')) {
     // CSS EFFECT
     if (!element.hasClass('selected-accordion')) {
       $('#specs-collection').empty();

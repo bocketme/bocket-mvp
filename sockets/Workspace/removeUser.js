@@ -5,17 +5,24 @@ const twig = require('twig');
 const log = require('../../utils/log');
 
 module.exports = (io, socket) => {
-  socket.on('[Workspace] - remove user', async (workspaceId, userId) => {
+  socket.on('[Workspace] - remove', async (workspaceId, userId) => {
     try {
-      const currentUser = socket.handshake.session.userId;
+      console.log(workspaceId)
+
+      const currentUser = await userSchema.findById(socket.handshake.session.userId);
+      if (!currentUser) throw new Error('[Workspace] - cannot find the user')
+
       const workspace = await workspaceSchema.findById(workspaceId);
+      if (!workspace) throw new Error('[Workspace] - cannot find the workspace')
+
       const organization = await organizationSchema.findById(workspace.Organization);
+      if (!organization) throw new Error('[Workspace] - cannot find the organization');
 
-      const rights = organization.userRights(currentUser);
+      const rights = organization.userRights(currentUser._id);
 
-      if (organization.isOwner(currentUser) ||
-        organization.isAdmin(currentUser) ||
-        workspace.isProductManager(currentUser) ||
+      if (organization.isOwner(currentUser._id) ||
+        organization.isAdmin(currentUser._id) ||
+        workspace.isProductManager(currentUser._id) ||
         currentUser._id.equals(userId))
         await workspace.removeUser(userId, false);
       else return socket.emit('[Workspace] - remove', 'You have no right for this workspace');
@@ -41,6 +48,7 @@ module.exports = (io, socket) => {
         } return socket.emit('[Workspace] - remove', null, html, workspaceId);
       });
 
+
       const user = await userSchema
         .findById(userId)
         .populate('Manager.Organization Manager.Workspaces')
@@ -57,7 +65,7 @@ module.exports = (io, socket) => {
       });
 
     } catch (error) {
-      console.error(error);
+      log.error(new Error(error));
       socket.emit('[Workspace] - remove', 'Intern Error - Cannot remove the user');
     }
   });

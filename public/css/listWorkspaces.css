@@ -66,17 +66,6 @@
 .circle-responsive-active:hover {
 }
 */
-
-.cube-responsive:hover,
-.circle-user-responsive:hover,
-.circle-responsive:hover,
-.circle-responsive-add:hover,
-.circle-responsive-active:hover,
-.cube-responsive-active:hover {
-    color: #FF2E63;
-    box-shadow: 0 0 0 3px #FF2E63;
-}
-
 .cube-content, .circle-content{
     color: inherit;
 }

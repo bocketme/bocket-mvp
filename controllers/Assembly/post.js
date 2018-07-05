@@ -83,7 +83,7 @@ const newAssembly = async (req, res) => {
   try {
     assembly = await assemblySchema.create({
       name: name,
-      creator: creator._id,
+      Creator: creator._id,
       description: description,
       Organization: parentAssembly.Organization
     });

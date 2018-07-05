@@ -5,8 +5,10 @@
         </div>
     </div>
 
-    <canvas id="axisCanvas" class="viewer-div axis-canvas"></canvas>
-    <canvas id="renderSurface" class="viewer-div viewer-canvas"></canvas>
+    <div id="axisDiv">
+        <canvas id="axisCanvas" class="viewer-div"></canvas>
+    </div>
+    <canvas id="renderSurface" tabindex='1' class="viewer-div viewer-canvas"></canvas>
 
     <ul class="viewer-div-option">
         <li class="viewer-option">
@@ -32,7 +34,7 @@
         </li>
 
         <li class="viewer-option">
-            <div id="distance-option" class="fixed-action-btn horizontal" style="z-index:5" >
+            <div id="distance-option" class="fixed-action-btn horizontal" style="z-index:5">
                 <a id="button-distance" class="btn-floating grey">
                     <img class="button-viewer" src="/img/viewer/03d-Distances.svg" alt="Distance">
                 </a>

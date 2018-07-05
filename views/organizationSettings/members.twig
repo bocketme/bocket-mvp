@@ -7,11 +7,11 @@
 {% block body %}
 
     <div class="row" id="main">
-        <div id="left-pannel" class="col s12 m4 l4 xl3 row">
-            <div id="side-nav" class="col s2 m2 l2 xl2">
+        <div id="left-pannel" class="col s12 m2 l2 xl2 row">
+            <div id="side-nav" class="col s3 m3 l3 xl3">
                 {% include './sideNav.twig' %}
             </div>
-            <div id="options" class="col s10 m10 l10 xl10">
+            <div id="options" class="col s9 m9 l9 xl9">
                 <div>
                     <a href="/organization/{{ currentOrganization._id }}">Organization</a>
                     <hr style="margin: 0% 5%;">
@@ -21,32 +21,32 @@
                 </div>
             </div>
         </div>
-        <div class="col s12 m8 l8 xl9">
+        <div class="col s12 m10 l10 xl10">
 
             {% include './header.twig' %}
 
             <div class="col s12">
-                <h5 class="title-page col s12" style="margin-bottom: 30px; margin-top:20px;">
+                <h5 class="title-page col s12" style="margin-bottom: 30px; margin-top:20px; margin-left:10px">
                     Members of the organization
+                    {#
                     {% if currentUser.rights > 4 %}
-                        {#
                         <a href="#invite-organisation" class="modal-trigger icons-main-button">
                             <i class="material-icons">group_add</i>
                         </a>
 
                         {% include 'modals/invitationOrganisation.twig' %}                    
-                    #}
                     {% endif %}
+                    #}
                 </h5>
 
                 <div class="information">
                     <div id="owner">
-                        <h6>
-                            <span class="title">Owner</span>
+                        <h6 class="sub-title-workspace">
+                            Owner
                         </h6>
                         <div class="bloc-users">
                             <div class="valign-wrapper">
-                                <div class="user-block" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
+                                <div class="user-block" style="display: inline-block')">
                                     <div style="width: 40px; height: 40px;">
                                         <div class="circle-responsive">
                                             <div class="circle-content">
@@ -61,8 +61,8 @@
                     </div>
                     <div id="adminsAndMembers">
                         <div id="admins">
-                            <h6>
-                                <span class="title">Co-owner</span>
+                            <h6 class="sub-title-workspace">
+                                Co-owner
                             </h6>
                             <div class="bloc-users">
                                 {% if (currentOrganization.Admins | length) == 0 %}
@@ -70,7 +70,7 @@
                                 {% endif %}
                                 {% for admin in currentOrganization.Admins %}
                                     <div class="row">
-                                        <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
+                                        <div class="user-block left" style="display: inline-block')">
                                             <div style="width: 40px; height: 40px;">
                                                 <div class="circle-responsive">
                                                     <div class="circle-content" style="color: black!important;">
@@ -88,7 +88,7 @@
                                                 </select>
                                             </div>
                                             <div class="col s4 push-s2">
-                                                <a onclick="removeOrganization({{currentOrganization._id}}, {{admin._id}})" href="#!" class="right" style="display: inline-block; margin-top: 10px">Remove</a>
+                                                <a onclick="removeOrganization('{{currentOrganization._id}}', '{{admin._id}}')" href="#!" class="right" style="display: inline-block; margin-top: 10px">Remove</a>
                                             </div>
                                         {% endif %}
                                     </div>
@@ -97,15 +97,16 @@
 
                         </div>
                         <div id="members">
-                            <h6>
-                                <span class="title">Members</span></h6>
+                            <h6 class="sub-title-workspace">
+                                Members
+                            </h6>
                             <div class="bloc-users">
                                 {% if (currentOrganization.Members | length) == 0 %}
                                     There is no member
                                 {% endif %}
                                 {% for member in currentOrganization.Members %}
                                     <div class="row">
-                                        <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
+                                        <div class="user-block left" style="display: inline-block">
                                             <div style="width: 40px; height: 40px;">
                                                 <div class="circle-responsive">
                                                     <div class="circle-content" style="color: black!important;">
@@ -125,7 +126,7 @@
                                         {% endif %}
                                         {% if currentUser.rights > 4 %}
                                             <div class="col s4 push-s2">
-                                                <a onclick="removeOrganization({{currentOrganization._id}}, {{admin._id}})" href="#!" class="right" style="display: inline-block; margin-top: 10px">Remove</a>
+                                                <a onclick="removeOrganization('{{currentOrganization._id}}', '{{member._id}}')" href="#!" class="right" style="display: inline-block; margin-top: 10px">Remove</a>
                                             </div>
                                         {% endif %}
                                     </div>
@@ -144,5 +145,6 @@
 
 {% block js %}
     <script type="application/javascript" src="/js/settings/invitationOrganization.js"></script>
+    <script src="/js/settings/organizationMember.js"></script>
     <script src="/js/settings/member.js"></script>
 {% endblock %}

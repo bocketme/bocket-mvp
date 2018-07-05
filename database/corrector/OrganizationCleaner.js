@@ -1,5 +1,4 @@
-const organizationSchema = require('../../models/Organization');
-const { OrganizationBackup } = require('../backupdDatabase');
+const {OrganizationModel} = require('../backup');
 
 const log = require('../../utils/log');
 const fs = require('fs');
@@ -10,9 +9,9 @@ const config = require('../../config/server');
 const renameDir = util.promisify(fs.rename);
 module.exports = function* () {
   try {
-    const cursor = organizationSchema.find().cursor();
+    const cursor = OrganizationModel.find().cursor();
     for (let doc = yield cursor.next(); doc !== null; doc = yield cursor.next()) {
-      const organization = yield OrganizationBackup.findById(doc._id);
+      const organization = doc.toObject();
       if (organization.workspaces) {
         const {workspaces} = organization;
         doc.Workspaces = workspaces.map(({ _id }) => _id);

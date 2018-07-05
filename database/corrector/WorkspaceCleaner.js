@@ -1,28 +1,25 @@
 const co = require('co');
-const workspaceSchema = require('../../models/Workspace');
-const { WorkspaceBackup } = require('../backupdDatabase');
-const orgniaztionSchema = require('../../models/Organization');
+const {WorkspaceModel, OrganizationModel} = require('../backup')
 const log = require('../../utils/log');
 
 module.exports = function* () {
-  const cursor = workspaceSchema.find().cursor();
+  const cursor = WorkspaceModel.find().cursor();
   for (let doc = yield cursor.next(); doc !== null; doc = yield cursor.next()) {
     try {
-      const workspace = yield WorkspaceBackup.findById(doc._id);
+      const workspace = doc.toObject();
 
       if (workspace.node_master) {
         doc.nodeMaster = workspace.node_master._id;
         yield doc.save();
       }
-
-      const users = workspace.users;
-      const owner = workspace.owner[0];
-
-      if (users) {
-        if (owner._id) {
+      
+      if (workspace.users) {
+        const users = workspace.users;
+        if (workspace.owner) {
+          const owner = workspace.owner[0];
           doc.ProductManagers = [owner._id];
         } else {
-          const organization = yield orgniaztionSchema.findOne({ "Workspaces": doc._id });
+          const organization = yield OrganizationModel.findOne({ "Workspaces": doc._id });
           doc.ProductManagers = [organization.Owner];
         }
         const usersId = users.map(user => user._id);

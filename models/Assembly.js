@@ -18,7 +18,7 @@ const AssemblyScheama = mongoose.Schema({
   maturity: { type: String, default: TypeEnum.maturity[0] },
   quality: { type: Number, default: 0 },
   //TODO: Script to fill the data
-  creator: { type: Schema.Types.ObjectId, require: true, ref: 'User' },
+  Creator: { type: Schema.Types.ObjectId, require: true, ref: 'User' },
 
   // Update tags unused for the 1.0
   tags: { type: [], default: [] },

@@ -17,17 +17,19 @@ $('#profile-img').click(() => {
   $('#status-options').toggleClass('active');
 });
 
-/*$('#addcontact').click(() => {
+/* $('#addcontact').click(() => {
   document.getElementById('new-tchat-form').style.display = 'flex';
   document.getElementById('new-tchat-form').classList.add('blurred');
-});*/
+}); */
 
 $('#addcontact').on({
   mouseenter: function () {
     $('#addcontact img').attr('src', '/img/add-tchat-btn-hover.svg');
-  }, mouseleave: function () {
+  },
+  mouseleave() {
     $('#addcontact img').attr('src', '/img/add-tchat-btn-normal.svg');
-  }, click: function () {
+  },
+  click() {
     document.getElementById('new-tchat-form').style.display = 'flex';
     document.getElementById('new-tchat-form').classList.add('blurred');
     $('#addcontact img').attr('src', '/img/add-tchat-btn-selected.svg');
@@ -154,7 +156,7 @@ function addContactCard(tchat) {
       socket.emit('[Tchat] - fetchById', tchat._id);
       socket.emit('[Users] - fetchFromWorkspace');
     }
-    if (selectedTchat._id != undefined) {
+    if (selectedTchat._id !== undefined) {
       $(`#${selectedTchat._id} img`).attr('src', '/img/contact-normal.svg');
       document.getElementById(`${selectedTchat._id}`).style.background = '#FAFAFA';
     }
@@ -185,6 +187,7 @@ function addContactCard(tchat) {
     socket.emit('[Tchat] - remove', deletedTchat);
     document.getElementById('new-tchat-form').style.display = 'none';
     document.getElementById('tchat-content').style.display = 'none';
+
     $('#cancel-tchat-rm-btn').click();
   });
 
@@ -206,9 +209,11 @@ function addContactCard(tchat) {
   $('#add-user').on({
     mouseenter: function () {
       $('#add-user img').attr('src', '/img/add-user-hover.svg');
-    }, mouseleave: function () {
+    },
+    mouseleave() {
       $('#add-user img').attr('src', '/img/add-user-normal.svg');
-    }, click: function () {
+    },
+    click() {
       const usersList = [];
       const listItems = $('#add-users-list li');
       listItems.each((idx, li) => {
@@ -239,10 +244,8 @@ function addContactCard(tchat) {
     }
   });
   $('#add-user-btn').on('mouseenter', () => {
-    console.log('mouseenter');
   });
   $('#add-user-btn').on('mouseleave', () => {
-    console.log('mouseleave');
   });
 }
 
@@ -260,6 +263,7 @@ socket.on('[Tchat] - confirmAdd', tchat => {
 socket.on('[Tchat] - remove', deletedTchat => {
   if (selectedTchat._id === deletedTchat._id) {
     document.getElementById('tchat-content').style.display = 'none';
+    selectedTchat = {};
   }
   allTchats = allTchats.filter(tchat => tchat._id !== deletedTchat._id);
   $(`#${deletedTchat._id}`).remove();
@@ -305,7 +309,6 @@ socket.on('[Users] - fetchFromWorkspace', (users) => {
     missingUsers.pop();
   }
   $('#add-users-list').empty();
-  console.log(jQuery.isEmptyObject(selectedTchat));
   if (!jQuery.isEmptyObject(selectedTchat)) {
     for (const user of users) {
       if (!selectedTchat.users.includes(String(user._id))) {
@@ -374,10 +377,10 @@ function getUserAvatar(author, classes) {
 
 function getMessageHtml(message, date) {
   const imgHtml = getUserAvatar(message.author.completeName, 'circle');
-  return '<li class="sent">' + imgHtml +
-    '<p class="msg-info">' +
-    '<strong>' + message.author.completeName + '</strong>' +
-    '<span class="message-data-time">' + date + '</span></p>' +
-    '<p class="message-content">' + message.content + '</p>' +
-    '</li>';
+  return `<li class="sent">${imgHtml
+  }<p class="msg-info">` +
+        `<strong>${message.author.completeName}</strong>` +
+        `<span class="message-data-time">${date}</span></p>` +
+        `<p class="message-content">${message.content}</p>` +
+        '</li>';
 }

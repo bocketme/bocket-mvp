@@ -17,7 +17,7 @@ const signUpController = {
 
   //TODO: FAILLE XSS
 
-  index(req, res) {
+  index (req, res) {
     const tasks = [
       checkEmail,
       checkPassword,
@@ -56,45 +56,45 @@ const workspaceNameInfo = {
   minlength: 1,
 };
 
-function checkOrganizationName(body) {
+function checkOrganizationName (body) {
   body.organizationName = escape(body.organizationName);
   return basicCheck(body.organizationName, organizationNameInfo);
 }
 
-function checkCompleteName(body) {
+function checkCompleteName (body) {
   const regex = /[A-Za-z/-]+ [A-Za-z/-]+/;
   const { completeName } = body;
   body.completeName = escape(body.completeName);
   return basicCheck(completeName, completeNameInfo) && regex.test(completeName);
 }
 
-function checkWorkspaceName(body) {
+function checkWorkspaceName (body) {
   if (!body.workspaceName) return true;
   body.workspaceName = escape(body.workspaceName);
   return basicCheck(body.workspaceName, workspaceNameInfo);
 }
 
-function checkPassword(body) {
+function checkPassword (body) {
   body.password = escape(body.password);
   return basicCheck(body.password, passwordInfo);
 }
 
-function checkEmail(body) {
+function checkEmail (body) {
   body.email = escape(body.email);
   return basicCheck(body.email, emailInfo);
 }
 
-function basicCheck(parameter, parameterInfo) {
+function basicCheck (parameter, parameterInfo) {
   return parameter !== undefined && parameter !== '' && parameter.length >= parameterInfo.minlength;
 }
 
-async function errorIncreationAccount(err, documentsToDelete) {
+async function errorIncreationAccount (err, documentsToDelete) {
   log.error(err);
   asyncForEach(documentsToDelete, async (document) => {
     await document.remove().catch((error) => { log.fatal('Document not Existing \n', error); });
   });
 }
-async function createAccount(req, res) {
+async function createAccount (req, res) {
   const documents = [];
   try {
     // Normal Signin desactivated.
@@ -105,7 +105,6 @@ async function createAccount(req, res) {
       completeName: req.body.completeName,
       password: req.body.password,
       email: req.body.email,
-      Organization: []
     });
 
     await user.save();
@@ -119,6 +118,27 @@ async function createAccount(req, res) {
     await organization.save();
     documents.push(organization);
 
+    console.log(organization);
+
+
+
+    if (req.body.invitationUid) {
+      user.Manager.push({
+        Organization: organization._id,
+        Workspaces: []
+      });
+
+      await user.save();
+
+      const invitationInfo = await acceptInvitation(req.body.invitationUid, user);
+      req.session.email = user.email;
+      req.session.completeName = user.completeName;
+      req.session.currentWorkspace = invitationInfo.workspaceId;
+      req.session.currentOrganization = invitationInfo.organizationId;
+      return res.redirect(invitationInfo.url);
+    }
+
+
     const workspace = await WorkspaceSchema.create({
       name: req.body.workspaceName,
       Organization: organization._id,
@@ -128,15 +148,6 @@ async function createAccount(req, res) {
     await workspace.save();
     documents.push(workspace);
 
-    if (req.body.invitationUid) {
-      const invitationInfo = await acceptInvitation(req.body.invitationUid, user);
-      req.session.email = user.email;
-      req.session.completeName = user.completeName;
-      req.session.currentWorkspace = invitationInfo.workspaceId;
-      req.session.currentOrganization = invitationInfo.organizationId;
-      return res.redirect(invitationInfo.url);
-    }
-
     user.Manager.push({
       Organization: organization._id,
       Workspaces: [workspace._id]
@@ -144,10 +155,12 @@ async function createAccount(req, res) {
 
     await user.save();
 
+
     const assembly = await AssemblySchema.create({
       name: req.body.workspaceName,
       description: nodeMasterConfig.description,
       Organization: organization._id,
+      Creator: user._id,
     });
 
     await assembly.save();

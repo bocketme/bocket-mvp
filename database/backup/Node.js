@@ -2,16 +2,10 @@ const mongoose = require('mongoose');
 const THREE = require('three');
 
 const NestedNode = require('./nestedSchema/NestedNodeSchema');
-const NestedUser = require('./nestedSchema/NestedUserSchema');
 const NestedComment = require('./nestedSchema/NestedActivitySchema');
-const NodeTypeEnum = require('../enum/NodeTypeEnum');
+const NodeTypeEnum = require('../../enum/NodeTypeEnum');
 const NestedTeam = require('./nestedSchema/NestedTeamSchema');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
-
-const NestedWorkspace = mongoose.Schema({
-  _id: { type: mongoose.SchemaTypes.ObjectId, require: true },
-  name: { type: String, require: true },
-});
 
 const NodeSchema = mongoose.Schema({
   // The core Information of the node
@@ -24,8 +18,7 @@ const NodeSchema = mongoose.Schema({
   type: { type: String, require: true },
   content: { type: mongoose.SchemaTypes.ObjectId, require: true },
   matrix: { type: [], default: new THREE.Matrix4() },
-  Workspaces: { type: [NestedWorkspace], require: true },
-
+  Workspace: { type: mongoose.SchemaTypes.ObjectId, require: true },
   // The system Information of the Node
   created: { type: Date, default: Date.now() },
   modified: { type: Date, default: Date.now() },
@@ -37,8 +30,7 @@ const NodeSchema = mongoose.Schema({
   children: { type: [NestedNode], default: [] },
   notes: { type: [NestedAnnotation], default: [] },
 
-  team: { type: NestedTeam, required: true },
-  owners: { type: [NestedUser], default: [] },
+  team: NestedTeam,
 });
 
 let Node = mongoose.model('Node', NodeSchema, 'Nodes');

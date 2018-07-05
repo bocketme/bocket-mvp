@@ -1,11 +1,13 @@
 <div id="organization-block">
-    <a href="/organization/{{currentOrganization._id}}">
-        <div class="cube-container">
-            <div class="text-container">
-                {{ currentOrganization.name|first |capitalize }}
+    <div id="container-organization">
+        <a href="/organization/{{currentOrganization._id}}">
+            <div class="cube-container">
+                <div class="text-container">
+                    {{ currentOrganization.name|first |capitalize }}
+                </div>
             </div>
-        </div>
-    </a>
+        </a>
+    </div>
     <hr>
 </div>
 <div id="workspaces-block" class="side-nav-scrollbar">
@@ -43,12 +45,17 @@
 </div>
 <div id="user-block">
     <hr>
-    <a href="#user-options" class="modal-trigger">
-        <div class="round-container">
-            <div class="text-container">
-                <i class="material-icons">person_outline</i>
+    <div id="container-user">
+        <a href="#user-options" class="modal-trigger">
+            <div class="round-container">
+                <div class="text-container">
+                    <i class="material-icons">person_outline</i>
+                </div>
             </div>
-        </div>
-    </a>
+        </a>
+    </div>
+    <p id="nom-user" class="truncate">
+        {{currentUser.completeName}}
+    </p>
 </div>
 {% include 'modals/userSettings.twig' %}

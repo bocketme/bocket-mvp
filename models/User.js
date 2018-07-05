@@ -167,9 +167,7 @@ UserSchema.methods.removeOrganization = async function (organizationId) {
     const workspaceCursor = workspaceSchema
       .find({ _id: { $in: Workspaces } }).cursor();
 
-    const next = workspaceCursor.next;
-
-    for (workspace = await next(); workspace !== null; workspace = await next()) {
+    for (workspace = await workspaceCursor.next(); workspace !== null; workspace = await workspaceCursor.next()) {
       await workspace.removeUser(this._id, true);
     }
 
@@ -179,6 +177,7 @@ UserSchema.methods.removeOrganization = async function (organizationId) {
 
     this.Manager = this.Manager.filter(filterOrganization);
   }
+
   await this.save();
   return this;
 };

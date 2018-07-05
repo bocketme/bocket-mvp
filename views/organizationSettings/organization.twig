@@ -3,11 +3,11 @@
 {% block body %}
 
     <div class="row" id="main">
-        <div id="left-pannel" class="col s12 m4 l4 xl3 row">
-            <div id="side-nav" class="col s2 m2 l2 xl2">
+        <div id="left-pannel" class="col s12 m2 l2 xl2 row">
+            <div id="side-nav" class="col s3 m3 l3 xl3">
                 {% include './sideNav.twig' %}
             </div>
-            <div id="options" class="col s10 m10 l10 xl10">
+            <div id="options" class="col s9 m9 l9 xl9">
                 <div>
                     <a class="disabled" href="/organization/{{ currentOrganization._id }}">Organization</a>
                     <hr style="margin: 0% 5%;">
@@ -17,13 +17,12 @@
                 </div>
             </div>
         </div>
-        <div class="col s12 m8 l8 xl9" style="position: relative; height: 99%;">
-
+        <div class="col s12 m10 l10 xl10" style="position: relative; height: 99%;">
             {% include './header.twig' %}
 
             <div id="organization-settings" class="row">
                 {#
-                <div id="organization-image" style="background-image: url('/organization/image/{{ currentOrganization._id }}')" class="col s4">
+                <div id="organization-image" class="col s4">
                     <div class="file-field input-field">
                         <div class="change-organization">
                             <span>Edit</span>
@@ -40,11 +39,11 @@
                         <div class="col s12">
                             <div class="row">
                                 <div class="input-field col s6" style="position: relative;">
-                                {% if currentUser.rights == 4 %}
-                                    <input id="organization-name" class="disabled" name="organizationName" type="text" value="{{ currentOrganization.name }}">
-                                {% else %}
-                                    <input id="organization-name" name="organizationName" type="text" value="{{ currentOrganization.name }}">                                  
-                                {% endif %}
+                                    {% if currentUser.rights == 4 %}
+                                        <input id="organization-name" class="disabled" name="organizationName" type="text" value="{{ currentOrganization.name }}">
+                                    {% else %}
+                                        <input id="organization-name" name="organizationName" type="text" value="{{ currentOrganization.name }}">
+                                    {% endif %}
                                     <label for="organization-name">Organization Name</label>
                                     {% if currentUser.rights > 5 %}
                                         <i id="edit" class="material-icons">edit</i>
@@ -91,7 +90,6 @@
             </div>
 
             {% include 'modals/leaveTheOrganization.twig' %}
-
             {% if currentUser.rights == 6 %}
                 {% include 'modals/deleteAnOrganization.twig' %}
             {% endif %}

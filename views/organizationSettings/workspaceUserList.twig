@@ -9,7 +9,7 @@
     </h5>
 </div>
 <div class="col s11 push-s1">
-    <h6>Product Manager</h6>
+    <h6 class="sub-title-workspace">Product Manager</h6>
     <div class="bloc-users">
         {% if (workspace.ProductManagers | length) == 0 %}
             <p class="wrapper-user-list">There is no product manager</p>
@@ -17,7 +17,7 @@
 
         {% for manager in workspace.ProductManagers %}
             <div class="row">
-                <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ manager._id }}')">
+                <div class="user-block left" style="display: inline-block">
                     <div style="width: 40px; height: 40px;">
                         <div class="circle-responsive">
                             <div class="circle-content" style="color: black!important;">
@@ -44,14 +44,14 @@
             </div>
         {% endfor %}
     </div>
-<h6>Members</h6>
-<div class="bloc-users">
-    {% if (workspace.Teammates | length) == 0 %}
-        <p class="wrapper-user-list">There is no Member</p>
-    {% endif %}
+    <h6 class="sub-title-workspace">Members</h6>
+    <div class="bloc-users">
+        {% if (workspace.Teammates | length) == 0 %}
+            <p class="wrapper-user-list">There is no Member</p>
+        {% endif %}
         {% for teammate in workspace.Teammates %}
             <div class="row">
-                <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ teammate._id }}')">
+                <div class="user-block left" style="display: inline-block">
                     <div style="width: 40px; height: 40px;">
                         <div class="circle-responsive">
                             <div class="circle-content" style="color: black!important;">
@@ -79,8 +79,8 @@
                 {% endif %}
             </div>
         {% endfor %}
-</div>
-{#
+    </div>
+    {#
 <h6>Observers</h6>
 {% if (workspace.Observers | length) == 0 %}
     <p>There is no Observer</p>
@@ -88,7 +88,7 @@
 <div class="col s12">
     {% for observer in workspace.Observers %}
         <div class="row">
-            <div class="user-block left" style="display: inline-block; background-image: url('/user/image/{{ currentOrganization.Owner._id }}')">
+            <div class="user-block left" style="display: inline-block">
                 <div style="width: 40px; height: 40px;">
                     <div class="circle-responsive">
                         <div class="circle-content" style="color: black!important;">
