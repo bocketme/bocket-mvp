@@ -39,7 +39,7 @@ module.exports = class NodeManager {
   }
 
   async cancel(workspaceId) {
-    const nodes = await nodeSchema.find({ 'Workspaces._id': workspaceId });
+    const nodes = await nodeSchema.find({ 'Workspace': workspaceId });
     nodes.forEach(node => this.nodeEmitter.emit(loading.emit.updateMatrix, node._id, node.matrix));
   }
 
