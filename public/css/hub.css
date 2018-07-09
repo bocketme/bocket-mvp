@@ -722,7 +722,7 @@ ul#details-tab {
     margin:0 0 10px 0 !important;
 }
 
-.part_file_name, .error-msg {
+.part_file_name, .error-msg, .upload-div {
     padding-top: 2.5% !important;
 }
 
