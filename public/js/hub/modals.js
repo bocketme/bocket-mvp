@@ -80,10 +80,11 @@ function uploadFileToPart(nodeId, type, partId, file, arrId) {
                     fileUploadFailed(fileId);
                 }
             } else if (request.readyState === 3) {
-                $(`${fileId}-file > upload-div`).css('visibility', 'visible');
-                $(`${fileId}-file > upload-div > .preloader-wrapper`).show();
-                $(`${fileId}-file > upload-div > .reload-btn`).hide();
-                $(`${fileId}-file > upload-div > .upload-completed`).hide();
+                $(`#${fileId}-upload-div`).css('visibility', 'visible');
+                $(`#${fileId}-upload-div > .preloader-wrapper`).show();
+                $(`#${fileId}-upload-div > .reload-btn`).hide();
+                $(`#${fileId}-upload-div > .upload-completed`).hide();
+                $(`#${fileId}-upload-div > .separate-part-btn`).hide();
             }
         }
     }
@@ -120,6 +121,7 @@ function fileUploadFailed(idFile) {
     $(`#${idFile}-upload-div > .preloader-wrapper`).hide();
     $(`#${idFile}-upload-div > .reload-btn`).show();
     $(`#${idFile}-upload-div > .upload-completed`).hide();
+    $(`#${fileId}-upload-div > .separate-part-btn`).hide();
 }
 
 function partUploaded(id) {
@@ -183,6 +185,7 @@ function fileUploaded(arrId, type, idFile) {
     $(`#${idFile}-upload-div > .preloader-wrapper`).hide();
     $(`#${idFile}-upload-div > .reload-btn`).hide();
     $(`#${idFile}-upload-div > .upload-completed`).show();
+    $(`#${fileId}-upload-div > .separate-part-btn`).hide();
 }
 
 function uploadParts() {
@@ -272,7 +275,8 @@ function handleChangeFile3d(event) {
     if (value === 'specs') {
         idxToChange = part.files.files3d.findIndex((element) => { return element.file.name === fileName;});
         if (idxToChange !== -1) {
-            part.files.specs.push(part.files.files3d[idxToChange])
+            $(`#${part.files.files3d[idxToChange]._id}-upload-div > .separate-part-btn`).hide();
+            part.files.specs.push(part.files.files3d[idxToChange]);
             part.files.files3d.splice(idxToChange, 1);
         } else {
             console.error('COuld not find file');
@@ -348,6 +352,7 @@ function appendFileToList(idPart, file, fileType) {
             '                           </div>' +
             '                       </div>' +
             '                       <a class="reload-btn material-icons">cached</a>' +
+            '                       <a class="btn btn-normal separate-part-btn tooltipped" data-position="top" data-delay="10" data-tooltip="Create a new part from this file"><i class="material-icons">add</i></a>' +
             '                   </div>' +
             '                </li>'
     } else if (fileType === 'textures') {
@@ -407,11 +412,17 @@ function appendFileToList(idPart, file, fileType) {
 
 }
 
+function reinitFilesBtn(idx) {
+    for (let i = 0; i < partsArray[idx].files.files3d.length; i++) {
+        $(`#${partsArray[idx].files.files3d[i]._id}-upload-div > .separate-part-btn`).show();
+    }
+}
+
 function handlePartsError() {
     var isEnabled = true;
-    for (var i = 0; i < partsArray.length; i++) {
-        var idx = partsArray[i]._id;
-        var files = partsArray[i].files;
+    for (let i = 0; i < partsArray.length; i++) {
+        let idx = partsArray[i]._id;
+        let files = partsArray[i].files;
         (idx % 2 === 0 ? $(`#${idx}-part`).removeClass('red lighten-4'): $(`#${idx}-part`).removeClass('red lighten-5'));
         if (idx % 2 === 0) { $(`#${idx}-part`).removeClass('grey lighten-3') }
         if (files.files3d.length === 0) {
@@ -423,10 +434,13 @@ function handlePartsError() {
             $(`.${idx}-file3d-error`).text('Error: You must have only one 3d file by part');
             isEnabled = false;
             (idx % 2 === 0 ? $(`#${idx}-part`).addClass('red lighten-4'): $(`#${idx}-part`).addClass('red lighten-5'));
+            reinitFilesBtn(i);
         } else {
             $(`#${idx}-error`).text('');
             $(`.${idx}-file3d-error`).text('');
             if (idx % 2 === 0) { $(`#${idx}-part`).addClass('grey lighten-3') }
+            $(`#${files.files3d[0]._id}-upload-div > .separate-part-btn`).hide();
+
         }
     }
     if (!isEnabled) {
@@ -550,22 +564,62 @@ function addFileToPart(idPart, file, idFile, type) {
     }
 }
 
+function initializeUploadDiv(id, type) {
+    if (type === 'file3d') {
+        $(`#${id}-upload-div > .preloader-wrapper`).hide();
+        $(`#${id}-upload-div > .reload-btn`).hide();
+        $(`#${id}-upload-div > .upload-completed`).hide();
+    } else {
+        $(`#${id}-upload-div`).css('visibility', 'hidden');
+    }
+}
+
+function separatePart(event) {
+    const elem = $(event.target);
+    const parent = elem.parent()[0];
+    let idx = parent.id.indexOf('-');
+    if (idx === -1) { return; }
+    let id = Number(parent.id.slice(0, idx));
+    console.log(id, typeof id);
+    let files = {
+        files3d: [],
+        textures: [],
+        specs: []
+    };
+    for (let i = 0; i < partsArray.length; i++) {
+        const file = partsArray[i].files.files3d.find((elem) => { return elem._id === id });
+        if (file) {
+            console.log(i, file);
+            files.files3d.push(file.file);
+            addPartInModalList(files);
+            $(`#${id}-close-${partsArray[i]._id}`).click();
+            return ;
+        } else {
+            console.log(i, file);
+        }
+    }
+}
+
 function linkFilesToList(idPart, files) {
-    for (var idx = 0; idx < files.files3d.length; idx++) {
+    for (let idx = 0; idx < files.files3d.length; idx++) {
         $(`#${idPart}_files_list`).append(appendFileToList(idPart, files.files3d[idx], 'file3d'));
         addFileToPart(idPart, files.files3d[idx], fileId,'file3d');
-        $(`#${fileId}-upload-div`).css('visibility', 'hidden');
+        $('.tooltipped').tooltip();
+        initializeUploadDiv(fileId, 'file3d');
 
         $(`#${fileId}-close-${idPart}`).on('click', (event) => {
             removeFile(event);
         });
+        $(`#${fileId}-upload-div > .separate-part-btn`).on('click', (event) => {
+            separatePart(event);
+        });
 
         fileId++;
     }
-    for (var idx = 0; idx < files.textures.length; idx++) {
+    for (let idx = 0; idx < files.textures.length; idx++) {
         $(`#${idPart}_files_list`).append(appendFileToList(idPart, files.textures[idx], 'textures'));
         addFileToPart(idPart, files.textures[idx], fileId,'texture');
-        $(`#${fileId}-upload-div`).css('visibility', 'hidden');
+        initializeUploadDiv(fileId, 'texture');
 
         $(`#${fileId}-close-${idPart}`).on('click', (event) => {
             removeFile(event);
@@ -573,11 +627,10 @@ function linkFilesToList(idPart, files) {
 
         fileId++;
     }
-    for (var idx = 0; idx < files.specs.length; idx++) {
+    for (let idx = 0; idx < files.specs.length; idx++) {
         $(`#${idPart}_files_list`).append(appendFileToList(idPart, files.specs[idx], 'specs'));
         addFileToPart(idPart, files.specs[idx], fileId,'spec');
-        $(`#${fileId}-upload-div`).css('visibility', 'hidden');
-
+        initializeUploadDiv(fileId, 'spec');
 
         $(`#${fileId}-close-${idPart}`).on('click', (event) => {
             removeFile(event);
