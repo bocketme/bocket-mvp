@@ -377,8 +377,7 @@ function getUserAvatar(author, classes) {
 
 function getMessageHtml(message, date) {
   const imgHtml = getUserAvatar(message.author.completeName, 'circle');
-  return `<li class="sent">${imgHtml
-  }<p class="msg-info">` +
+  return `<li class="sent">${imgHtml}<p class="msg-info">` +
         `<strong>${message.author.completeName}</strong>` +
         `<span class="message-data-time">${date}</span></p>` +
         `<p class="message-content">${message.content}</p>` +

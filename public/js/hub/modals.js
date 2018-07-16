@@ -196,12 +196,13 @@ function uploadParts() {
         var sub_level = $("#" + nodeId).contents().filter("span.p-node").attr("data-sublevel");
         var breadcrumb = $("#" + nodeId).contents().filter("span.p-node").attr("data-breadcrumbs");
 
-        var helperFunc=function(arrIndex, files, itemId) {
+        var helperFunc=function(arrIndex, files, itemId, name) {
             return function() {
                 if(postRequest[arrIndex].readyState === 4) {
                     if (postRequest[arrIndex].status === 200) {
                         const res = JSON.parse(postRequest[arrIndex].response);
                         const { nodeId, partId } = res;
+                        $('#news-feed').trigger('addNews', ['PART', 'ADD', name, '']);
                         sendFilesToPart(nodeId, partId, files, itemId);
                         nodeChildrenLoad(nodeId, res.html);
                         partUploaded(itemId);
@@ -212,6 +213,7 @@ function uploadParts() {
                         Materialize.toast("The selected node is not an assembly", 1000);
                     }
                 } else if (postRequest[arrIndex].readyState === 3) {
+                    // ERROR MESSAGES
                 }
             }
         }
@@ -221,7 +223,9 @@ function uploadParts() {
             if (!partsArray[i].isUpload) {
                 postRequest[i] = new XMLHttpRequest();
                 const partId = partsArray[i]._id;
-                postRequest[i].onreadystatechange=helperFunc(i, partsArray[i].files, partsArray[i]._id);
+                const name =  $(`#${partId}_part_name`).val();
+                const description = $(`#${partId}_part_description`).val();
+                postRequest[i].onreadystatechange=helperFunc(i, partsArray[i].files, partsArray[i]._id, name);
 
                 postRequest[i].addEventListener("error", function (event) {
                     Materialize.toast("The Part was not created", 1000);
@@ -232,8 +236,6 @@ function uploadParts() {
 
                 postRequest[i].open('POST', '/part/' + nodeId, true);
                 postRequest[i].setRequestHeader("Content-Type", "application/json");
-                const name =  $(`#${partId}_part_name`).val();
-                const description = $(`#${partId}_part_description`).val();
                 partsArray[i].name = name;
                 postRequest[i].send(JSON.stringify({ name, description, sub_level, breadcrumb }));
             }
@@ -704,10 +706,6 @@ function createPartInForm(event) {
 
         });
 
-        // Submit the insertion of a new part
-        $('#submit-import-part').click((event) => {
-        });
-
         // Submit the insert of
         $('#submit-import-assembly').click(event => {
             event.preventDefault();
@@ -720,23 +718,30 @@ function createPartInForm(event) {
                     sub_level = $("#" + nodeId).contents().filter("span").attr("data-sublevel"),
                     breadcrumb = $("#" + nodeId).contents().filter("span").attr("data-breadcrumbs");
 
-
                 formdata.append("sub_level", sub_level);
                 formdata.append("breadcrmb", breadcrumb);
+                const name = formdata.get('name');
+                console.log('NAME', name);
 
-                postRequest.addEventListener("load", (reqEvent) => {
-                    if (postRequest.readyState === postRequest.DONE) {
-                        if (postRequest.status === 200) {
-                            $('#' + nodeId + '-body').html(postRequest.response);
-                            var element = document.querySelectorAll('.three-node');
-                            $(element).click(loadNodeInformation);
-                        } else if (postRequest.status === 404) {
-                            Materialize.toast("Not Found", 1000);
-                        } else if (postRequest.status === 401) {
-                            Materialize.toast("The selected node is not an assembly", 1000);
+                var handleErrorsFct = function (name) {
+                    return function () {
+                        if (postRequest.readyState === postRequest.DONE) {
+                            if (postRequest.status === 200) {
+                                $('#' + nodeId + '-body').html(postRequest.response);
+                                var element = document.querySelectorAll('.three-node');
+                                $(element).click(loadNodeInformation);
+                                $('#news-feed').trigger('addNews', ['ASSEMBLY', 'ADD', name, '']);
+                            } else if (postRequest.status === 404) {
+                                Materialize.toast("Not Found", 1000);
+                            } else if (postRequest.status === 401) {
+                                Materialize.toast("The selected node is not an assembly", 1000);
+                            }
                         }
                     }
-                }, false);
+                };
+
+                postRequest.onreadystatechange = handleErrorsFct(name);
+
                 postRequest.addEventListener("error", function (event) {
                     Materialize.toast("The Part was not created", 1000);
                 }, false);
