@@ -1,23 +1,50 @@
 #news-feed {
-    background: #FFFFFF;
 }
 
-#all-feeds, #team-feeds, #object-feeds, #annotation-feeds {
+#all-feeds {
     height: inherit !important;
     overflow-y: auto;
-    display: block;
+}
+
+#all-feeds-list {
+    height: 90%;
+    overflow-y: auto;
 }
 
 .collection-item img {
-    display: inline-block;
-    width: 26px;
+    width: 40px;
+    display: block;
     /*border-radius: 50%;*/
-    float: left;
+}
+
+.item-content {
+    display: inline-block;
+}
+
+.container-img {
+    display: inline-block;
+    position: relative;
+    /*width: 100%;*/
+    max-width: 400px;
     margin-right: 2%;
 }
 
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 10%;
+    width: 10%;
+    opacity: 1;
+    transition: .3s ease;
+}
+
 .icon-action {
-    padding-left: 1%;
-    padding-top: 2%;
-    padding-right: 1%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
 }

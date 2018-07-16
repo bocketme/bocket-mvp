@@ -1,6 +1,13 @@
+let offset = 0;
+const limit = 20;
+let newsfeedLength = 0;
+
 
 $(document).ready(() => {
-  getAllNewsfeed();
+  // getAllNewsfeed();
+  $('#all-feeds-list').empty();
+  getNextNews();
+  $('.select').material_select();
 });
 
 $('#news-feed').on('addNews', (event, type, method, target, role) => {
@@ -15,23 +22,35 @@ $('#news-feed').on('addNews', (event, type, method, target, role) => {
   socket.emit('[Newsfeed] - add', news);
 });
 
+function scrolled(o) {
+  // visible height + pixel scrolled = total height
+  if (o.offsetHeight + o.scrollTop === o.scrollHeight && offset <= newsfeedLength) {
+    getNextNews();
+  }
+}
+
 function getAllNewsfeed() {
   socket.emit('[Newsfeed] - fetch');
   $('#all-feeds-list').empty();
-  $('#object-feeds-list').empty();
-  $('#team-feeds-list').empty();
-  $('#annotation-feeds-list').empty();
 }
 
-socket.on('[Newsfeed] - fetch', (results) => {
+function getNextNews() {
+  socket.emit('[Newsfeed] - fetch', offset, limit);
+  offset += limit;
+}
+
+socket.on('[Newsfeed] - fetch', (results, length) => {
+  newsfeedLength = length;
+  $('#end-of-list').remove();
   for (let i = 0; i < results.length; i++) {
     if (results[i].type === 'PART'
           || results[i].type === 'USER'
           || results[i].type === 'ASSEMBLY'
           || results[i].type === 'ANNOTATION') {
-      addNews(results[i]);
+      addNews(results[i], 'fetch');
     }
   }
+  $('#all-feeds-list').append('<li id="end-of-list" class="collection-item center-align">There are no more news-feed to show :(</li>');
 });
 
 
@@ -40,8 +59,19 @@ socket.on('[Newsfeed] - confirmNewsfeed', (newsfeed) => {
         || newsfeed.type === 'USER'
         || newsfeed.type === 'ASSEMBLY'
         || newsfeed.type === 'ANNOTATION') {
-    addNews(newsfeed);
+    addNews(newsfeed, 'confirm');
   }
+  offset += 1;
+});
+
+socket.on('[Newsfeed] - fetchNewNewsfeed', (newsfeed) => {
+  if (newsfeed.type === 'PART'
+      || newsfeed.type === 'USER'
+      || newsfeed.type === 'ASSEMBLY'
+      || newsfeed.type === 'ANNOTATION') {
+    addNews(newsfeed, 'confirm');
+  }
+  offset += 1;
 });
 
 $('#button-save').on('click', (event) => {
@@ -54,48 +84,63 @@ $('#button-save').on('click', (event) => {
   }
 });
 
-$('#show-all-feeds').on('click', (event) => {
-  event.preventDefault();
-  $('#all-feeds').show();
-  $('#object-feeds').hide();
-  $('#team-feeds').hide();
-  $('#annotation-feeds').hide();
-});
+function showAllNews() {
+  $('.part-class, .annotation-class, .assembly-class, .user-class').fadeIn(100);
+}
 
-$('#show-object-feeds').on('click', (event) => {
-  event.preventDefault();
-  $('#all-feeds').hide();
-  $('#object-feeds').show();
-  $('#team-feeds').hide();
-  $('#annotation-feeds').hide();
-});
+function hideAllNews() {
+  $('.part-class, .annotation-class, .assembly-class, .user-class').hide();
+}
 
-$('#show-team-feeds').on('click', (event) => {
-  event.preventDefault();
-  $('#all-feeds').hide();
-  $('#object-feeds').hide();
-  $('#team-feeds').show();
-  $('#annotation-feeds').hide();
-});
+function showFilteredNews(type) {
+  hideAllNews();
+  switch (type) {
+    case 'PART':
+      $('.part-class').fadeIn(100);
+      break;
+    case 'ASSEMBLY':
+      $('.assembly-class').fadeIn(100);
+      break;
+    case 'ANNOTATION':
+      $('.annotation-class').fadeIn(100);
+      break;
+    case 'USER':
+      $('.user-class').fadeIn(100);
+      break;
+    default:
+      showAllNews();
+      break;
+  }
+}
 
-$('#show-annotation-feeds').on('click', (event) => {
-  event.preventDefault();
-  $('#all-feeds').hide();
-  $('#object-feeds').hide();
-  $('#team-feeds').hide();
-  $('#annotation-feeds').show();
-});
+function handleChangeType(event) {
+  const value = event.target.value;
+  console.log(value);
+  if (value === 'ALL') {
+    showAllNews();
+  } else {
+    showFilteredNews(value);
+  }
+}
 
-function getNewsText(type, author, content, icon) {
+function checkIfHidden(type) {
+  const value = $('#filter-select').val();
+  console.log(value);
+  if (value !== 'ALL') {
+    showFilteredNews(value);
+  }
+}
+
+function getNewsText(type, author, content) {
   switch (type) {
     case 'PART':
       switch (content.method) {
         case 'ADD':
-          return `<strong>${author}</strong>${icon} added a new part : <span style="color: #5f88ef">${content.target}</span>`;
+          return `<strong>${author}</strong> added a new part : <span style="color: #5f88ef">${content.target}</span>`;
         case 'DELETE':
-          return `<strong>${author}</strong>${icon} deleted a part : <span style="color: #5f88ef">${content.target}</span>`;
+          return `<strong>${author}</strong> deleted a part : <span style="color: #5f88ef">${content.target}</span>`;
         case 'UPDATE':
-          return `<strong>${author}</strong>${icon} modified a part : <span style="color: #5f88ef">${content.target}</span>`;
+          return `<strong>${author}</strong> modified a part : <span style="color: #5f88ef">${content.target}</span>`;
         default:
           break;
       }
@@ -103,11 +148,11 @@ function getNewsText(type, author, content, icon) {
     case 'ASSEMBLY':
       switch (content.method) {
         case 'ADD':
-          return `<strong>${author}</strong>${icon} added a new assembly : <span style="color: #38761d">${content.target}</span>`;
+          return `<strong>${author}</strong> added a new assembly : <span style="color: #38761d">${content.target}</span>`;
         case 'DELETE':
-          return `<strong>${author}</strong>${icon} deleted an assembly : <span style="color: #38761d">${content.target}</span>`;
+          return `<strong>${author}</strong> deleted an assembly : <span style="color: #38761d">${content.target}</span>`;
         case 'UPDATE':
-          return `<strong>${author}</strong>${icon} modified an assembly : <span style="color: #38761d">${content.target}</span>`;
+          return `<strong>${author}</strong> modified an assembly : <span style="color: #38761d">${content.target}</span>`;
         default:
           break;
       }
@@ -127,9 +172,9 @@ function getNewsText(type, author, content, icon) {
     case 'ANNOTATION':
       switch (content.method) {
         case 'ADD':
-          return `<strong>${author}</strong>${icon} added an annotation : <span style="color: #e69138">${content.target}</span>`;
+          return `<strong>${author}</strong> added an annotation : <span style="color: #e69138">${content.target}</span>`;
         case 'DELETE':
-          return `<strong>${author}</strong>${icon} deleted an annotation : <span style="color: #e69138">${content.target}</span>`;
+          return `<strong>${author}</strong> deleted an annotation : <span style="color: #e69138">${content.target}</span>`;
         default:
           break;
       }
@@ -140,37 +185,54 @@ function getNewsText(type, author, content, icon) {
 }
 
 function getUserAvatar(author, classes) {
-  return `<img data-name="${author}" class=" avatar profile-pic ${classes}"/>`;
+  return `<img data-name="${author}" class=" profile-pic ${classes}"/>`;
 }
 
 function getIconAction(type, method) {
   if (method === 'ADD') {
-    return '<i class="icon-action material-icons green-text text-lighten-2 tiny">add_circle</i>';
+    return '<i class="icon-action material-icons green-text text-lighten-2 ">add_circle</i>';
   } else if (method === 'DELETE') {
-    return '<i class="icon-action material-icons red-text text-lighten-2 tiny">cancel</i>';
+    return '<i class="icon-action material-icons red-text text-lighten-2 ">cancel</i>';
   } else if (method === 'UPDATE') {
-    return '<i class="icon-action material-icons amber-text text-lighten-2 tiny">edit</i>';
+    return '<i class="icon-action material-icons amber-text text-lighten-2 ">edit</i>';
   }
 }
 
-function addNews(newsfeed) {
+function getClass(type) {
+  switch (type) {
+    case 'PART':
+      return 'part-class';
+    case 'ASSEMBLY':
+      return 'assembly-class';
+    case 'USER':
+      return 'user-class';
+    case 'ANNOTATION':
+      return 'annotation-class';
+    default:
+      return 'no-class';
+  }
+}
+
+function addNews(newsfeed, type) {
   const date = new Date(newsfeed.date);
   const outputDate = `${date.getDate() + 1}/${date.getMonth()}/${date.getFullYear()} - ${
     date.getHours()}:${date.getMinutes()}`;
   const iconAction = getIconAction(newsfeed.type, newsfeed.content.method);
-  const text = getNewsText(newsfeed.type, newsfeed.author.completeName, newsfeed.content, iconAction);
+  const text = getNewsText(newsfeed.type, newsfeed.author.completeName, newsfeed.content);
   const imgAvatar = getUserAvatar(newsfeed.author.completeName, 'circle');
-  const html = '<li class="collection-item newsfeed avatar" >' +
-        `           ${imgAvatar}<p style="display: inline-block" class="col s12"><span style="font-size: smaller">${outputDate}</span><br>${text}</p>` +
-        // `           <a href="#!" class="secondary-content" >${imgAvatar}</a>` +
+  const specClass = getClass(newsfeed.type);
+  const html = `<li class="collection-item newsfeed ${specClass}" >` +
+                  '<div class="container-img">\n' +
+                  `  ${imgAvatar}` +
+                  `  <div class="overlay">${iconAction}</div>` +
+                  '</div>' +
+        `          <p class="item-content">${text}<br><span style="font-size: smaller">${outputDate}</span></p>` +
         '         </li>';
-  $('#all-feeds-list').prepend(html);
-  if (newsfeed.type === 'PART' || newsfeed.type === 'ASSEMBLY') {
-    $('#object-feeds-list').prepend(html);
-  } else if (newsfeed.type === 'USER') {
-    $('#team-feeds-list').prepend(html);
-  } else if (newsfeed.type === 'ANNOTATION') {
-    $('#annotation-feeds-list').prepend(html);
+  if (type === 'fetch') {
+    $('#all-feeds-list').append(html);
+  } else {
+    $('#all-feeds-list').prepend(html);
   }
+  checkIfHidden();
   $('.profile-pic').initial();
 }

@@ -1,12 +1,19 @@
 const Workspace = require('../../models/Workspace');
 
 module.exports = (io, socket) => {
-  socket.on('[Newsfeed] - fetch', (newsfeed) => {
+  socket.on('[Newsfeed] - fetch', (offset = null, limit = 20) => {
     Workspace
       .findById(socket.handshake.session.currentWorkspace)
       .populate('Newsfeed.author', '')
       .then(({ Newsfeed }) => {
-        socket.emit('[Newsfeed] - fetch', Newsfeed, !newsfeed);
+        if (offset !== null) {
+          console.log('LENGTH:', Newsfeed.length);
+          const res = Newsfeed.slice(offset, offset + limit);
+          console.log(offset, limit);
+          socket.emit('[Newsfeed] - fetch', res, Newsfeed.length);
+        } else {
+          socket.emit('[Newsfeed] - fetch', Newsfeed, Newsfeed.length);
+        }
       });
   });
   socket.on('[Newsfeed] - fetchByName', (newsfeed = null) => {

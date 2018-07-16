@@ -3,7 +3,7 @@ const User = require('../../models/User');
 
 async function saveandpopulate(workspace, newsfeed, email) {
   const user = await User.findOne({ email });
-  workspace.Newsfeed.push({ ...newsfeed, author: user._id });
+  workspace.Newsfeed.unshift({ ...newsfeed, author: user._id });
   console.log({ ...newsfeed, creator: user._id });
   await workspace.save();
   return await Workspace.findById(workspace._id).populate('Newsfeed.author', 'completeName');
@@ -16,7 +16,7 @@ module.exports = (io, socket) => {
       .findById(currentWorkspace)
       .then(workspace => saveandpopulate(workspace, newsfeed, userMail))
       .then(({ Newsfeed }) => {
-        const newNewsfeed = Newsfeed[Newsfeed.length - 1];
+        const newNewsfeed = Newsfeed[0];
         console.log('creator : ', newNewsfeed.creator);
         // AFTER MERGE
         socket.emit('[Newsfeed] - confirmNewsfeed', newNewsfeed);

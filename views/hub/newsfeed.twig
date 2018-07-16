@@ -1,22 +1,18 @@
 <div id="news-feed">
     <div class="col s12">
-        <a id="show-all-feeds" href="#all-feeds" class="btn col s3">All</a>
-        <a id="show-object-feeds" href="#object-feeds" class="btn col s3">Objects</a>
-        <a id="show-team-feeds" href="#team-feeds" class="btn col s3">Team</a>
-        <a id="show-annotation-feeds" href="#annotation-feeds" class="btn col s3">Annotations</a>
+        <div class="input-field">
+            <select id="filter-select" onchange="handleChangeType(event)">
+                <option value="ALL" selected>All</option>
+                <option value="ASSEMBLY">Assemblys</option>
+                <option value="PART">Parts</option>
+                <option value="ANNOTATION">Annotations</option>
+                <option value="USER">Teams</option>
+            </select>
+            <label>Filter By</label>
+        </div>
     </div>
     <div id="all-feeds" class="col s12">
-        <ul id="all-feeds-list" class="collection container">
-        </ul>    </div>
-    <div id="object-feeds" class="col s12" style="display: none">
-        <ul id="object-feeds-list" class="collection container">
-        </ul>    </div>
-    <div id="team-feeds" class="col s12" style="display: none">
-        <ul id="team-feeds-list" class="collection container">
-        </ul>
-    </div>
-    <div id="annotation-feeds" class="col s12" style="display: none">
-        <ul id="annotation-feeds-list" class="collection container">
+        <ul id="all-feeds-list" class="collection container" onscroll="scrolled(this)">
         </ul>
     </div>
 </div>
