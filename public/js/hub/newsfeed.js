@@ -25,6 +25,8 @@ $('#news-feed').on('addNews', (event, type, method, target, role) => {
 function scrolled(o) {
   // visible height + pixel scrolled = total height
   if (o.offsetHeight + o.scrollTop === o.scrollHeight && offset <= newsfeedLength) {
+    $('#end-of-list').remove();
+    $('#all-feeds-list').append('<img id="loadingGif" class="collection-item" src="../../img/loading.gif"/>');
     getNextNews();
   }
 }
@@ -51,6 +53,7 @@ socket.on('[Newsfeed] - fetch', (results, length) => {
     }
   }
   $('#all-feeds-list').append('<li id="end-of-list" class="collection-item center-align">There are no more news-feed to show :(</li>');
+  $('#loadingGif').remove();
 });
 
 
@@ -78,9 +81,9 @@ $('#button-save').on('click', (event) => {
   const nodeId = idOfchoosenNode;
   const name = $(`#${nodeId} > .p-node`).text();
   if ($(`#${nodeId}-body`).length) {
-    $('#news-feed').trigger('addNews', ['ASSEMBLY', 'UPDATE', name, '']);
+    $('#news-feed').trigger('addNews', ['ASSEMBLY', 'UPDATE', { _id: nodeId, name }, '']);
   } else {
-    $('#news-feed').trigger('addNews', ['PART', 'UPDATE', name, '']);
+    $('#news-feed').trigger('addNews', ['PART', 'UPDATE', { _id: nodeId, name: $(`#${nodeId} > .p-node`).text() }, '']);
   }
 });
 
@@ -115,7 +118,6 @@ function showFilteredNews(type) {
 
 function handleChangeType(event) {
   const value = event.target.value;
-  console.log(value);
   if (value === 'ALL') {
     showAllNews();
   } else {
@@ -125,7 +127,6 @@ function handleChangeType(event) {
 
 function checkIfHidden(type) {
   const value = $('#filter-select').val();
-  console.log(value);
   if (value !== 'ALL') {
     showFilteredNews(value);
   }
@@ -136,11 +137,11 @@ function getNewsText(type, author, content) {
     case 'PART':
       switch (content.method) {
         case 'ADD':
-          return `<strong>${author}</strong> added a new part : <span style="color: #5f88ef">${content.target}</span>`;
+          return `<strong>${author}</strong> added a new part : <span style="color: #5f88ef">${content.target.name}</span>`;
         case 'DELETE':
-          return `<strong>${author}</strong> deleted a part : <span style="color: #5f88ef">${content.target}</span>`;
+          return `<strong>${author}</strong> deleted a part : <span style="color: #5f88ef">${content.target.name}</span>`;
         case 'UPDATE':
-          return `<strong>${author}</strong> modified a part : <span style="color: #5f88ef">${content.target}</span>`;
+          return `<strong>${author}</strong> modified a part : <span style="color: #5f88ef">${content.target.name}</span>`;
         default:
           break;
       }
@@ -148,11 +149,11 @@ function getNewsText(type, author, content) {
     case 'ASSEMBLY':
       switch (content.method) {
         case 'ADD':
-          return `<strong>${author}</strong> added a new assembly : <span style="color: #38761d">${content.target}</span>`;
+          return `<strong>${author}</strong> added a new assembly : <span style="color: #38761d">${content.target.name}</span>`;
         case 'DELETE':
-          return `<strong>${author}</strong> deleted an assembly : <span style="color: #38761d">${content.target}</span>`;
+          return `<strong>${author}</strong> deleted an assembly : <span style="color: #38761d">${content.target.name}</span>`;
         case 'UPDATE':
-          return `<strong>${author}</strong> modified an assembly : <span style="color: #38761d">${content.target}</span>`;
+          return `<strong>${author}</strong> modified an assembly : <span style="color: #38761d">${content.target.name}</span>`;
         default:
           break;
       }
@@ -160,11 +161,11 @@ function getNewsText(type, author, content) {
     case 'USER':
       switch (content.method) {
         case 'ADD':
-          return `<span style="color: #38761d">${content.target}</span> has joined the team. Welcome ! `;
+          return `<span style="color: #38761d">${content.target.name}</span> has joined the team. Welcome ! `;
         case 'DELETE':
-          return `<span style="color: #38761d">${content.target}</span> has left the team. Bye Bye…`;
+          return `<span style="color: #38761d">${content.target.name}</span> has left the team. Bye Bye…`;
         case 'UPDATE':
-          return `<span style="color: #38761d">${content.target}</span> has changed role in the Workspace `;
+          return `<span style="color: #38761d">${content.target.name}</span> has changed role in the Workspace `;
         default:
           break;
       }
@@ -172,9 +173,9 @@ function getNewsText(type, author, content) {
     case 'ANNOTATION':
       switch (content.method) {
         case 'ADD':
-          return `<strong>${author}</strong> added an annotation : <span style="color: #e69138">${content.target}</span>`;
+          return `<strong>${author}</strong> added an annotation : <span style="color: #e69138">${content.target.name}</span>`;
         case 'DELETE':
-          return `<strong>${author}</strong> deleted an annotation : <span style="color: #e69138">${content.target}</span>`;
+          return `<strong>${author}</strong> deleted an annotation : <span style="color: #e69138">${content.target.name}</span>`;
         default:
           break;
       }
@@ -185,18 +186,31 @@ function getNewsText(type, author, content) {
 }
 
 function getUserAvatar(author, classes) {
-  return `<img data-name="${author}" class=" profile-pic ${classes}"/>`;
+  return `<img data-name="${author}" class=" profile ${classes}"/>`;
 }
 
 function getIconAction(type, method) {
+  if (type === 'USER') {
+    return '<img class="icon-action" src="../../img/member.png"/>';
+  }
   if (method === 'ADD') {
-    return '<i class="icon-action material-icons green-text text-lighten-2 ">add_circle</i>';
+    return '<img class="icon-action" src="../../img/add.png"/>';
   } else if (method === 'DELETE') {
-    return '<i class="icon-action material-icons red-text text-lighten-2 ">cancel</i>';
+    return '<img class="icon-action" src="../../img/delete.png"/>';
   } else if (method === 'UPDATE') {
-    return '<i class="icon-action material-icons amber-text text-lighten-2 ">edit</i>';
+    return '<img class="icon-action" src="../../img/modify.png"/>';
   }
 }
+
+// function getIconAction(type, method) {
+//     if (method === 'ADD') {
+//         return '<i class="icon-action material-icons green-text text-lighten-2 ">add_circle</i>';
+//     } else if (method === 'DELETE') {
+//         return '<i class="icon-action material-icons red-text text-lighten-2 ">cancel</i>';
+//     } else if (method === 'UPDATE') {
+//         return '<i class="icon-action material-icons amber-text text-lighten-2 ">edit</i>';
+//     }
+// }
 
 function getClass(type) {
   switch (type) {
@@ -219,7 +233,7 @@ function addNews(newsfeed, type) {
     date.getHours()}:${date.getMinutes()}`;
   const iconAction = getIconAction(newsfeed.type, newsfeed.content.method);
   const text = getNewsText(newsfeed.type, newsfeed.author.completeName, newsfeed.content);
-  const imgAvatar = getUserAvatar(newsfeed.author.completeName, 'circle');
+  const imgAvatar = getUserAvatar((newsfeed.type === 'USER' ? newsfeed.content.target.name : newsfeed.author.completeName), 'circle');
   const specClass = getClass(newsfeed.type);
   const html = `<li class="collection-item newsfeed ${specClass}" >` +
                   '<div class="container-img">\n' +
@@ -234,5 +248,5 @@ function addNews(newsfeed, type) {
     $('#all-feeds-list').prepend(html);
   }
   checkIfHidden();
-  $('.profile-pic').initial();
+  $('.profile').initial();
 }

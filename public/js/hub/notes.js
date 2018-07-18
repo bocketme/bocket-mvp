@@ -72,7 +72,7 @@ $(document).ready(() => {
           addAnnotationCard(savedAnnotation);
         }
       }
-      $('#news-feed').trigger('addNews', ['ANNOTATION', 'ADD', gettedAnnotation.title, '']);
+      $('#news-feed').trigger('addNews', ['ANNOTATION', 'ADD', { _id: gettedAnnotation._id, name: gettedAnnotation.title }, '']);
     }
   });
 
@@ -250,7 +250,7 @@ function addAnnotationCard(annotation) {
   }
   $(`#${annotation._id}`).on('click', () => {
     socket.emit('[Annotation] - remove', annotation);
-    $('#news-feed').trigger('addNews', ['ANNOTATION', 'DELETE', annotation.title, '']);
+    $('#news-feed').trigger('addNews', ['ANNOTATION', 'DELETE', { _id: annotation._id, name: annotation.title }, '']);
   });
 
   socket.on('[Annotation] - remove', deletedAnnotation => {

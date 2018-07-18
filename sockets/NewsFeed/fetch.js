@@ -1,4 +1,29 @@
 const Workspace = require('../../models/Workspace');
+const User = require('../../models/User');
+
+async function getNamesFromIds(newsfeeds) {
+  for (const elem of newsfeeds) {
+    if (elem.author !== null) {
+      const user = await User.findById(elem.author._id);
+      elem.author = { _id: user._id, completeName: user.completeName };
+    } else {
+      elem.author = { _id: '0', completeName: 'Unknown User' };
+    }
+    if (elem.type === 'USER') {
+      const userTarget = await User.findById(elem.content.target._id);
+      if (userTarget != null)
+        elem.content.target.name = userTarget.completeName;
+    }
+  }
+  return newsfeeds;
+}
+
+async function getNameFromId(newsfeed) {
+  const res = newsfeed;
+  const user = await User.findOne({ email: res.author.email });
+  res.author = { _id: user._id, completeName: user.completeName };
+  return res;
+}
 
 module.exports = (io, socket) => {
   socket.on('[Newsfeed] - fetch', (offset = null, limit = 20) => {
@@ -7,12 +32,14 @@ module.exports = (io, socket) => {
       .populate('Newsfeed.author', '')
       .then(({ Newsfeed }) => {
         if (offset !== null) {
-          console.log('LENGTH:', Newsfeed.length);
           const res = Newsfeed.slice(offset, offset + limit);
-          console.log(offset, limit);
-          socket.emit('[Newsfeed] - fetch', res, Newsfeed.length);
+          getNamesFromIds(res).then((newsfeeds) => {
+            socket.emit('[Newsfeed] - fetch', newsfeeds, Newsfeed.length);
+          });
         } else {
-          socket.emit('[Newsfeed] - fetch', Newsfeed, Newsfeed.length);
+          getNamesFromIds(Newsfeed).then((newsfeeds) => {
+            socket.emit('[Newsfeed] - fetch', newsfeeds, Newsfeed.length);
+          });
         }
       });
   });
@@ -25,7 +52,9 @@ module.exports = (io, socket) => {
           result = Newsfeed
             .filter(nestedNewsfeed => nestedNewsfeed.name === newsfeed.name);
         }
-        socket.emit('[Newsfeed] - fetchByName', result);
+        getNameFromId(result).then((res) => {
+          socket.emit('[Newsfeed] - fetchByName', res);
+        });
       });
   });
 };

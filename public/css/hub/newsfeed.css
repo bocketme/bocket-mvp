@@ -2,16 +2,21 @@
 }
 
 #all-feeds {
-    height: inherit !important;
+    height: 90% !important;
     overflow-y: auto;
 }
 
 #all-feeds-list {
-    height: 90%;
+    height: inherit;
     overflow-y: auto;
 }
 
-.collection-item img {
+.collection-item {
+    padding-top: 2% !important;
+    padding-bottom: 2% !important;
+}
+
+.collection-item .profile {
     width: 40px;
     display: block;
     /*border-radius: 50%;*/
@@ -47,4 +52,9 @@
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     text-align: center;
+    width: 25px;
+}
+
+#loadingGif {
+    width: 40%;
 }

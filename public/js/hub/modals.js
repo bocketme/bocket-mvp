@@ -1,7 +1,7 @@
 
 $(document).ready(() => {
     $('select').material_select();
-    $('.tooltipped').tooltip({delay: 50});
+    $('.tooltipped').tooltip({delay: 1});
 });
 
 var partIdx = 0 // USED TO DIFFERENTIATE PARTS IN PartsArray;
@@ -202,7 +202,7 @@ function uploadParts() {
                     if (postRequest[arrIndex].status === 200) {
                         const res = JSON.parse(postRequest[arrIndex].response);
                         const { nodeId, partId } = res;
-                        $('#news-feed').trigger('addNews', ['PART', 'ADD', name, '']);
+                        $('#news-feed').trigger('addNews', ['PART', 'ADD', { _id: nodeId, name }, '']);
                         sendFilesToPart(nodeId, partId, files, itemId);
                         nodeChildrenLoad(nodeId, res.html);
                         partUploaded(itemId);
@@ -730,7 +730,7 @@ function createPartInForm(event) {
                                 $('#' + nodeId + '-body').html(postRequest.response);
                                 var element = document.querySelectorAll('.three-node');
                                 $(element).click(loadNodeInformation);
-                                $('#news-feed').trigger('addNews', ['ASSEMBLY', 'ADD', name, '']);
+                                $('#news-feed').trigger('addNews', ['ASSEMBLY', 'ADD', { _id: nodeId, name }, '']);
                             } else if (postRequest.status === 404) {
                                 Materialize.toast("Not Found", 1000);
                             } else if (postRequest.status === 401) {
