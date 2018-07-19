@@ -28,7 +28,7 @@ $(document).ready(() => {
     click() {
       const displayValue = document.getElementById('side-info').style.getPropertyValue('display');
       document.getElementById('side-info').style.display = (displayValue === 'block' ? 'none' : 'block');
-      isHidden = !isHidden;
+      isHidden = (displayValue === 'block' ? true : false);
       if (isHidden === true)
         $('#cancel-note-button').click();
       hideOrShowAnnotations();
