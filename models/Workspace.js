@@ -36,6 +36,11 @@ let WorkspaceSchema = new mongoose.Schema({
   //Creation
   creation: { type: Date, default: new Date() },
 
+  Access: [{
+    Node: { type: Schema.Types.ObjectId },
+    Users: [{ type: Schema.Types.ObjectId }]
+  }]
+
   avatar: String,
   //Annotation
   Annotations: { type: [NestedAnnotation], required: true, default: [] }
@@ -47,27 +52,49 @@ WorkspaceSchema.virtual('users').get(function () {
   return [...this.ProductManagers, ...this.Teammates, ...this.Observers];
 });
 
-/*
-WorkspaceSchema.methods.hasUserAccess = async function (nodeId) {
-
+WorkspaceSchema.methods.listNodeAccess = async function (nodeId) {
+  const { Users } = this.access.find(({ Node }) => Node.equals(nodeId));
+  return Users || this.users;
 }
 
-WorkspaceSchema.methods.userAccessToNode = async function (nodeId) {
-  
+WorkspaceSchema.methods.addAccess = async function (nodeId, userId) {
+  const i = this.Access.findIndex(({ Node }) => Node.equals(nodeId));
+
+  if (i < 0)
+    this.Access[i].Users.push(userId);
+  else
+    this.Access.push({ Node: nodeId, Users: [userId] });
+
+  return await this.save();
 }
 
-WorkspaceSchema.methods.addAnAccessToAUser = async function (nodeId, userId) {
+WorkspaceSchema.methods.removeAccess = async function (nodeId, userId) {
+  const i = this.Access.findIndex(({ Node }) => Node.equals(nodeId));
 
+  if (i < 0)
+    this.Access = this.Access[i].Users.filter(user => !user.equals(userId));
+  else
+    throw new Error('Cannot find the userId');
+
+  return await this.save();
 }
 
-WorkspaceSchema.methods.removeAn = async function (nodeId, userId) {
+WorkspaceSchema.methods.checkUserAccess = async function () {
 
+  function filterNonUserWorkspace(user) {
+    return this.users.findIndex(userId => userId.equals(user)) < 0;
+  }
+
+  this.Access.map(({ Node, Users }) => { Node, Users: Users.filter(filterNonUserWorkspace) })
+
+  return this;
 }
 
-WorkspaceSchema.methods.removeAllAccess =  async function (userId) {
-
+WorkspaceSchema.methods.removeUserAccess = async function (userId) {
+  this.Access.map(({ Node, Users }) => { Node, Users: Users.filter(user => !user.equals(userId)) })
+  return await this.save();
 }
-*/
+
 
 /**
   * Returns if the user is the Product Manager or not
