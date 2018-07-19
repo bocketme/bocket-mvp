@@ -19,7 +19,6 @@ async function saveandpopulateById(workspace, newsfeed, userId) {
     newsfeed.content.target.name = targetUser.completeName;
   }
   if (user) {
-    console.log('JE SAVE');
     workspace.Newsfeed.unshift({ ...newsfeed, author: user._id });
   }
   await workspace.save();
@@ -43,11 +42,28 @@ module.exports = (io, socket) => {
         socket.emit('Error', 'The annotation was not created');
       });
   });
-  socket.on('[Newsfeed] - addFromWorkspace', (newsfeed, workspaceId) => {
-    console.log('JARRIVE LAAA', newsfeed, workspaceId);
+  // IS Used when user is added/Deleted to a workspace but doesn't have an account left
+  socket.on('[Newsfeed] - addFromWorkspaceAndUser', (newsfeed, workspaceId) => {
     Workspace
       .findById(workspaceId)
       .then(workspace => saveandpopulateById(workspace, newsfeed, newsfeed.author._id))
+      .then(({ Newsfeed }) => {
+        const newNewsfeed = Newsfeed[0];
+        // AFTER MERGE
+        socket.emit('[Newsfeed] - confirmNewsfeed', newNewsfeed);
+        socket.to(socket.handshake.session.currentWorkspace).broadcast.emit('[Newsfeed] - fetchNewNewsfeed', newNewsfeed);
+      })
+      .catch(err => {
+        console.error(err);
+        socket.emit('Error', 'The annotation was not created');
+      });
+  });
+  // IS Used when user is added/Deleted to a workspace but has still an account
+  socket.on('[Newsfeed] - addFromWorkspace', (newsfeed, workspaceId) => {
+    const { userMail } = socket.handshake.session;
+    Workspace
+      .findById(workspaceId)
+      .then(workspace => saveandpopulate(workspace, newsfeed, userMail))
       .then(({ Newsfeed }) => {
         const newNewsfeed = Newsfeed[0];
         // AFTER MERGE

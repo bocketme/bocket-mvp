@@ -44,7 +44,6 @@ $(document).ready(function () {
       }
     }
     if (people.length > 0) {
-      console.log(people);
       socket.emit("[Invitation] - workspace", hiddenWorkspace.val(), people);
     } else
       invitePeopleError.css("visibility", "visible");
@@ -99,7 +98,6 @@ function deleteUser() {
 
 socket.on('[Invitation] - workspace', (message) => Materialize.toast(message));
 $(document).on('click', '#invite-member-submit', function (event) {
-  console.log('emmm');
   event.preventDefault();
   const forms = $('#invite-member-form').find('input');
   const _id = [];
@@ -112,7 +110,11 @@ $(document).on('click', '#invite-member-submit', function (event) {
   }
   const $form = $('#invite-member-form');
   if(_id.length === 0) return null;
+  var idWorkspace = $form.attr('action').split('/')[2];
   $.post($form.attr('action'), {_id, role},function() {
-    document.location.reload(true);    
+    for (let i = 0; i < _id.length; i++) {
+      $(document).trigger('addNews', ['USER', 'ADD', { _id: _id[i], name: '' }, '', idWorkspace]);
+    }
+    document.location.reload(true);
   })
 });

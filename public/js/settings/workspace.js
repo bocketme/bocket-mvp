@@ -33,11 +33,13 @@ $(document).on('addNews', (event, type, method, target, role, workspaceId) => {
   socket.emit('[Newsfeed] - addFromWorkspace', news, workspaceId);
 });
 
+
 $(document).on('change', 'select[name=workspaceManager]', function (event) {
   const selection = $(this);
   const role = selection.val(),
     userId = selection.attr('userId'),
     workspaceId = selection.attr('workspaceId');
+  $(document).trigger('addNews', ['USER', 'UPDATE', { _id: userId, name: '' }, role, workspaceId]);
   socket.emit('[Workspace] - changeRoles', workspaceId, userId, role);
 });
 

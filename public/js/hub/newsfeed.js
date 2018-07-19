@@ -133,6 +133,7 @@ function checkIfHidden(type) {
 }
 
 function getNewsText(type, author, content) {
+  content.role = (content.role === '3' ? 'Product Manager': 'Teammate');
   switch (type) {
     case 'PART':
       switch (content.method) {
@@ -141,7 +142,17 @@ function getNewsText(type, author, content) {
         case 'DELETE':
           return `<strong>${author}</strong> deleted a part : <span style="color: #5f88ef">${content.target.name}</span>`;
         case 'UPDATE':
-          return `<strong>${author}</strong> modified a part : <span style="color: #5f88ef">${content.target.name}</span>`;
+          return `<strong>${author}</strong> updated a part : <span style="color: #5f88ef">${content.target.name}</span>`;
+        case 'DETAILS':
+          return `<strong>${author}</strong> updated the details of part : <span style="color: #38761d">${content.target.name}</span>`;
+        case 'FILE3D-ADD':
+          return `<strong>${author}</strong> added a new file3D to part : <span style="color: #38761d">${content.target.name}</span>`;
+        case 'FILE3D-DEL':
+          return `<strong>${author}</strong> deleted a file3D of part : <span style="color: #38761d">${content.target.name}</span>`;
+        case 'DOC-ADD':
+          return `<strong>${author}</strong> added a new document to part : <span style="color: #38761d">${content.target.name}</span>`;
+        case 'DOC-DEL':
+          return `<strong>${author}</strong> deleted a document of part : <span style="color: #38761d">${content.target.name}</span>`;
         default:
           break;
       }
@@ -153,7 +164,13 @@ function getNewsText(type, author, content) {
         case 'DELETE':
           return `<strong>${author}</strong> deleted an assembly : <span style="color: #38761d">${content.target.name}</span>`;
         case 'UPDATE':
-          return `<strong>${author}</strong> modified an assembly : <span style="color: #38761d">${content.target.name}</span>`;
+          return `<strong>${author}</strong> updated an assembly : <span style="color: #38761d">${content.target.name}</span>`;
+        case 'DETAILS':
+          return `<strong>${author}</strong> updated the details of assembly : <span style="color: #38761d">${content.target.name}</span>`;
+        case 'DOC-ADD':
+          return `<strong>${author}</strong> added a new document to assembly : <span style="color: #38761d">${content.target.name}</span>`;
+        case 'DOC-DEL':
+          return `<strong>${author}</strong> deleted a document of assembly : <span style="color: #38761d">${content.target.name}</span>`;
         default:
           break;
       }
@@ -165,7 +182,7 @@ function getNewsText(type, author, content) {
         case 'DELETE':
           return `<span style="color: #38761d">${content.target.name}</span> has left the team. Bye Bye…`;
         case 'UPDATE':
-          return `<span style="color: #38761d">${content.target.name}</span> has changed role in the Workspace `;
+          return `<span style="color: #38761d">${content.target.name}</span> is now <span>${content.role}</span> `;
         default:
           break;
       }
@@ -193,11 +210,11 @@ function getIconAction(type, method) {
   if (type === 'USER') {
     return '<img class="icon-action" src="../../img/member.png"/>';
   }
-  if (method === 'ADD') {
+  if (method === 'ADD' || method === 'DOC-ADD' || method === 'FILE3D-ADD') {
     return '<img class="icon-action" src="../../img/add.png"/>';
-  } else if (method === 'DELETE') {
+  } else if (method === 'DELETE' || method === 'DOC-DEL' || method === 'FILE3D-DEL') {
     return '<img class="icon-action" src="../../img/delete.png"/>';
-  } else if (method === 'UPDATE') {
+  } else if (method === 'UPDATE' || method === 'DETAILS') {
     return '<img class="icon-action" src="../../img/modify.png"/>';
   }
 }

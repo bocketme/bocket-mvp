@@ -187,7 +187,7 @@ WorkspaceSchema.methods.changeRole = async function (userId, newRole) {
     await this.save();
     return this;
   } catch (e) {
-    log.error(e);
+    console.error(e);
     throw e;
   }
 };

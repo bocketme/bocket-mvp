@@ -17,7 +17,7 @@ async function sendNewsfeed(authorId, userId, workspaceId) {
         role: '',
       },
     };
-    socket.emit('[Newsfeed] - addFromWorkspace', news, workspaceId);
+    socket.emit('[Newsfeed] - addFromWorkspaceAndUser', news, workspaceId);
   });
 }
 
