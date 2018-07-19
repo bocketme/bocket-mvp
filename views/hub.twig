@@ -112,8 +112,16 @@
                 {% set edgeHelper = optionViewer.edgeHelper %}
                 <ul id="dropdown-settings-rendering" class="dropdown-content">
                     <li class="option-node" id="background-color">
+                        <a class="dropdown-menu" {% if not (celShading == false and edgeHelper == false) %} href="?celShading=false&edgeHelper=false" {% endif %}>
+                            Normal
+                            {% if (celShading == false and edgeHelper == false) %}
+                                <i class='material-icons' style="float: right; margin: 0;">check</i>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="option-node" id="background-color">
                         <a class="dropdown-menu" {% if not (celShading == true and edgeHelper == false) %} href="?celShading=true&edgeHelper=false" {% endif %}>
-                            Cel Shading
+                            Cel Shading without edges
                             {% if (celShading == true and edgeHelper == false) %}
                                 <i class='material-icons' style="float: right; margin: 0;">check</i>
                             {% endif %}
@@ -121,16 +129,8 @@
                     </li>
                     <li class="option-node" id="background-color">
                         <a class="dropdown-menu" {% if not (celShading == true and edgeHelper == true) %} href="?celShading=true&edgeHelper=true" {% endif %}>
-                            Cel Shading ++
+                            Cel Shading with egdes
                             {% if (celShading == true and edgeHelper == true) %}
-                                <i class='material-icons' style="float: right; margin: 0;">check</i>
-                            {% endif %}
-                        </a>
-                    </li>
-                    <li class="option-node" id="background-color">
-                        <a class="dropdown-menu" {% if not (celShading == false and edgeHelper == false) %} href="?celShading=false&edgeHelper=false" {% endif %}>
-                            Normal
-                            {% if (celShading == false and edgeHelper == false) %}
                                 <i class='material-icons' style="float: right; margin: 0;">check</i>
                             {% endif %}
                         </a>
