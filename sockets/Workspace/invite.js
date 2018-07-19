@@ -14,20 +14,21 @@ module.exports = (io, socket) => {
         .exec();
 
       const people = await checkData(userId, data);
-      if(people.length && people.length > 0) {
+      if (people.length && people.length > 0) {
         for (let i = 0; i < people.length; i++) {
 
           const invitation = await Invitation.create({
-            workspace: {id: workspaceId, name: workspace.name},
-            organization: {id: workspace.Organization._id, name: workspace.Organization.name},
+            workspace: { id: workspaceId, name: workspace.name },
+            organization: { id: workspace.Organization._id, name: workspace.Organization.name },
             people: people[i],
             author,
+            authorId: socket.handshake.session.userId
           });
 
           await invitation.save();
         }
       }
-    }catch (e) {
+    } catch (e) {
       log.error(e);
       socket.emit("[Workpsace] - Invite People", 'Cannot save the workspace');
     }

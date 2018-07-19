@@ -1,6 +1,4 @@
 const getEditModalContent = new XMLHttpRequest();
-const trigger1 = document.getElementById();
-const trigger2 = document.getElementById();
 
 $().modal({
   ready: function (modal, trigger) {
@@ -22,22 +20,20 @@ getEditModalContent.onreadystatechange = function (event) {
 }
 
 //Stack CHANGE_INFORMATION
-$(document).on('click', '', function (event) {
+$(document).on('input', '#edit-name-node , #edit-description-node', function (event) {
 
 });
+
+$(document).on('change', '.files-node', function (event) {
 
 //Stack TRANSFERT_3D_TO_SPEC
-$(document).on('click', '', function (event) {
-
-});
 
 //Stack TRANSFERT_SPEC_TO_3D
-$(document).on('click', '', function (event) {
 
-});
+//Stack TRANSFERT_S
 
 //Stack LAUNCH_CONVERSION
-$(document).on('click', '', function (event) {
+
 
 });
 
@@ -80,5 +76,3 @@ $(document).on('click', '', function (event) {
 $(document).on('click', '', function (event) {
 
 });
-
-document.addEventListener('click', EDIT_NODE.ID.NAME )

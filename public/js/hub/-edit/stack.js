@@ -16,6 +16,15 @@ class EditStack {
 
     this.nodeId = nodeId;
 
+    this._status = {
+      ERROR: -1,
+      NULL: 0,
+      NEED_UPLOAD: 1,
+      NEED_REMOVED: 2,
+      TO_3D: 3,
+      TO_SPEC: 4,
+      TO_TEXTURE: 5,
+    }
 
     this._error = document.getElementById(EDIT_NODE.ID.ERROR);
 
@@ -35,6 +44,22 @@ class EditStack {
 
   get seachStack(id) {
     return this.Stack.find(({ _id }) => _id === id);
+  }
+
+  transferFile(status, originalState) {
+    if (status === originalState)
+      return null
+
+    switch (status) {
+      case TO_3D:
+        this.addStack({});
+      case TO_SPEC:
+        this.addStack();
+      case TO_TEXTURE:
+        this.addStack();
+      default:
+        return null
+    }
   }
 
   addStack({ _id, data, action, onDone, onError }) {

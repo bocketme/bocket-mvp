@@ -1,5 +1,6 @@
 module.exports = {
-  File3D: require('./getFile3D'),
-  FileTexture: require('./getFileTexture'),
+  file3D: require('./file3D'),
+  texture: require('./texture'),
+  getInfo: require('./information'),
   NodeInformation: require('./getNodeInformation'),
 };
