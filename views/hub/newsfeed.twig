@@ -1,0 +1,24 @@
+<div id="news-feed">
+    <div class="header">
+        <div class="wrap">
+            <p>NewsFeed</p>
+            {#<a id="addcontact" class="secondary-content" href="#"><img src="/img/add-tchat-btn-normal.svg"></a>#}
+        </div>
+    </div>
+    <div class="col s12">
+        <div class="input-field container">
+            <select id="filter-select" onchange="handleChangeType(event)">
+                <option value="ALL" selected>All</option>
+                <option value="ASSEMBLY">Assemblys</option>
+                <option value="PART">Parts</option>
+                <option value="ANNOTATION">Annotations</option>
+                <option value="USER">Teams</option>
+            </select>
+            <label>Filter By</label>
+        </div>
+    </div>
+    <div id="all-feeds" class="col s12">
+        <ul id="all-feeds-list" class="collection container" onscroll="scrolled(this)">
+        </ul>
+    </div>
+</div>

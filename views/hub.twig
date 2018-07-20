@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/css/hub/invitePeople.css">
     <link rel="stylesheet" href="/css/hub/manageWorkspace.css">
     <link rel="stylesheet" href="/css/hub/tchat.css">
+    <link rel="stylesheet" href="/css/hub/newsfeed.css">
 {% endblock %}
 
 {% block title %}{{ title }}
@@ -229,6 +230,7 @@
     <script>
         const workspaceId = "{{ in_use.id }}";
         let idOfchoosenNode = undefined;
+        let parentNodeId = undefined;
         const NodeTypeEnum = {{ NodeTypeEnum }};
         var ViewTypeEnum = {{ ViewTypeEnum }};
         const optionViewer = {{ optionViewer }};
@@ -256,6 +258,7 @@
     <script src="/js/hub/actions.js"></script>
     <script src="/js/hub/changePassword.js"></script>
     <script src="/js/hub/tchat.js"></script>
+    <script src="/js/hub/newsfeed.js"></script>
     <script src="/js/settings/deleteAccount.js"></script>
     <script type="application/javascript" src="/js/nonAccess.js"></script>
     <script type="application/javascript">

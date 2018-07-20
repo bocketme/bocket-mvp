@@ -156,6 +156,11 @@ function loadNodeInformation(event) {
 }
 
 socket.on('[Node] - Delete', (nodeId) => {
+  if ($(`#${nodeId}-body`).length) {
+    $('#news-feed').trigger('addNews', ['ASSEMBLY', 'DELETE', { _id: nodeId, name: $(`#${nodeId} > .p-node`).text() }, '']);
+  } else {
+    $('#news-feed').trigger('addNews', ['PART', 'DELETE', { _id: nodeId, name: $(`#${nodeId} > .p-node`).text() }, '']);
+  }
   deleteNode(nodeId);
   const updateNodeEvent = new CustomEvent('[Viewer] - remove', { nodeId });
   document.dispatchEvent(updateNodeEvent);
