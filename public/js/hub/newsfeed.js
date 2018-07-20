@@ -26,7 +26,8 @@ function scrolled(o) {
   // visible height + pixel scrolled = total height
   if (o.offsetHeight + o.scrollTop === o.scrollHeight && offset <= newsfeedLength) {
     $('#end-of-list').remove();
-    $('#all-feeds-list').append('<img id="loadingGif" class="collection-item" src="../../img/loading.gif"/>');
+    $('#all-feeds-list').append('<li id="loadingGif" class="col s12"><img class="loading" src="../../img/favicon-bocket.png" alt="" width="60" height="60"></li>');
+    // $('#all-feeds-list').append('<li id="loadingGif" class="col s12"><div class="signal"></div></li>');
     getNextNews();
   }
 }
@@ -178,9 +179,9 @@ function getNewsText(type, author, content) {
     case 'USER':
       switch (content.method) {
         case 'ADD':
-          return `<strong>${content.target.name}</strong> has joined the team. Welcome ! `;
+          return `<strong>${content.target.name}</strong> has joined the team.`;
         case 'DELETE':
-          return `<strong>${content.target.name}</strong> has left the team. Bye Bye…`;
+          return `<strong>${content.target.name}</strong> has left the team.`;
         case 'UPDATE':
           return `<strong>${content.target.name}</strong> is now <strong>${content.role}</strong> `;
         default:

@@ -50,6 +50,7 @@
           Materialize.toast('Please select an Assembly first', 3000);
           this.close();
         }
+        handlePartsError();
       },
     });
 

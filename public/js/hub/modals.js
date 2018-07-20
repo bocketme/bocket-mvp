@@ -222,7 +222,9 @@ function uploadParts() {
             if (!partsArray[i].isUpload) {
                 postRequest[i] = new XMLHttpRequest();
                 const partId = partsArray[i]._id;
-                const name =  $(`#${partId}_part_name`).val();
+                let name =  $(`#${partId}_part_name`).val();
+                if (name.length > 35)
+                    name = name.substring(0, 35);
                 const description = $(`#${partId}_part_description`).val();
                 postRequest[i].onreadystatechange=helperFunc(i, partsArray[i].files, partsArray[i]._id, name);
 
