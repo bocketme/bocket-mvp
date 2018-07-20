@@ -138,21 +138,21 @@ function getNewsText(type, author, content) {
     case 'PART':
       switch (content.method) {
         case 'ADD':
-          return `<strong>${author}</strong> added a new part : <span style="color: #5f88ef">${content.target.name}</span>`;
+          return `<strong>${author}</strong> added a new part : <strong>${content.target.name}</strong>`;
         case 'DELETE':
-          return `<strong>${author}</strong> deleted a part : <span style="color: #5f88ef">${content.target.name}</span>`;
+          return `<strong>${author}</strong> deleted a part : <strong>${content.target.name}</strong>`;
         case 'UPDATE':
-          return `<strong>${author}</strong> updated a part : <span style="color: #5f88ef">${content.target.name}</span>`;
+          return `<strong>${author}</strong> updated a part : <strong>${content.target.name}</strong>`;
         case 'DETAILS':
-          return `<strong>${author}</strong> updated the details of part : <span style="color: #38761d">${content.target.name}</span>`;
+          return `<strong>${author}</strong> updated the details of part : <strong>${content.target.name}</strong>`;
         case 'FILE3D-ADD':
-          return `<strong>${author}</strong> added a new file3D to part : <span style="color: #38761d">${content.target.name}</span>`;
+          return `<strong>${author}</strong> added a new file3D to part : <strong>${content.target.name}</strong>`;
         case 'FILE3D-DEL':
-          return `<strong>${author}</strong> deleted a file3D of part : <span style="color: #38761d">${content.target.name}</span>`;
+          return `<strong>${author}</strong> deleted a file3D of part : <strong>${content.target.name}</strong>`;
         case 'DOC-ADD':
-          return `<strong>${author}</strong> added a new document to part : <span style="color: #38761d">${content.target.name}</span>`;
+          return `<strong>${author}</strong> added a new document to part : <strong>${content.target.name}</strong>`;
         case 'DOC-DEL':
-          return `<strong>${author}</strong> deleted a document of part : <span style="color: #38761d">${content.target.name}</span>`;
+          return `<strong>${author}</strong> deleted a document of part : <strong>${content.target.name}</strong>`;
         default:
           break;
       }
@@ -160,17 +160,17 @@ function getNewsText(type, author, content) {
     case 'ASSEMBLY':
       switch (content.method) {
         case 'ADD':
-          return `<strong>${author}</strong> added a new assembly : <span style="color: #38761d">${content.target.name}</span>`;
+          return `<strong>${author}</strong> added a new assembly : <strong>${content.target.name}</strong>`;
         case 'DELETE':
-          return `<strong>${author}</strong> deleted an assembly : <span style="color: #38761d">${content.target.name}</span>`;
+          return `<strong>${author}</strong> deleted an assembly : <strong>${content.target.name}</strong>`;
         case 'UPDATE':
-          return `<strong>${author}</strong> updated an assembly : <span style="color: #38761d">${content.target.name}</span>`;
+          return `<strong>${author}</strong> updated an assembly : <strong>${content.target.name}</strong>`;
         case 'DETAILS':
-          return `<strong>${author}</strong> updated the details of assembly : <span style="color: #38761d">${content.target.name}</span>`;
+          return `<strong>${author}</strong> updated the details of assembly : <strong>${content.target.name}</strong>`;
         case 'DOC-ADD':
-          return `<strong>${author}</strong> added a new document to assembly : <span style="color: #38761d">${content.target.name}</span>`;
+          return `<strong>${author}</strong> added a new document to assembly : <strong>${content.target.name}</strong>`;
         case 'DOC-DEL':
-          return `<strong>${author}</strong> deleted a document of assembly : <span style="color: #38761d">${content.target.name}</span>`;
+          return `<strong>${author}</strong> deleted a document of assembly : <strong>${content.target.name}</strong>`;
         default:
           break;
       }
@@ -178,11 +178,11 @@ function getNewsText(type, author, content) {
     case 'USER':
       switch (content.method) {
         case 'ADD':
-          return `<span style="color: #38761d">${content.target.name}</span> has joined the team. Welcome ! `;
+          return `<strong>${content.target.name}</strong> has joined the team. Welcome ! `;
         case 'DELETE':
-          return `<span style="color: #38761d">${content.target.name}</span> has left the team. Bye Bye…`;
+          return `<strong>${content.target.name}</strong> has left the team. Bye Bye…`;
         case 'UPDATE':
-          return `<span style="color: #38761d">${content.target.name}</span> is now <span>${content.role}</span> `;
+          return `<strong>${content.target.name}</strong> is now <strong>${content.role}</strong> `;
         default:
           break;
       }
@@ -190,9 +190,9 @@ function getNewsText(type, author, content) {
     case 'ANNOTATION':
       switch (content.method) {
         case 'ADD':
-          return `<strong>${author}</strong> added an annotation : <span style="color: #e69138">${content.target.name}</span>`;
+          return `<strong>${author}</strong> added an annotation : <strong>${content.target.name}</strong>`;
         case 'DELETE':
-          return `<strong>${author}</strong> deleted an annotation : <span style="color: #e69138">${content.target.name}</span>`;
+          return `<strong>${author}</strong> deleted an annotation : <strong>${content.target.name}</strong>`;
         default:
           break;
       }

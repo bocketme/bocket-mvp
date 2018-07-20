@@ -217,7 +217,6 @@ function uploadParts() {
                 }
             }
         }
-
         for (var i = 0; i < partsArray.length; i++) {
 
             if (!partsArray[i].isUpload) {
@@ -239,6 +238,7 @@ function uploadParts() {
                 partsArray[i].name = name;
                 postRequest[i].send(JSON.stringify({ name, description, sub_level, breadcrumb }));
             }
+            $('#upload-parts-btn').addClass('disabled');
         }
     } else {
         Materialize.toast("You must select a node", 1000);
@@ -281,7 +281,7 @@ function handleChangeFile3d(event) {
             part.files.specs.push(part.files.files3d[idxToChange]);
             part.files.files3d.splice(idxToChange, 1);
         } else {
-            console.error('COuld not find file');
+            console.error('Could not find file');
         }
     } else if (value === 'files3d') {
         idxToChange = part.files.specs.findIndex((element) => { return element.file.name === fileName;});
@@ -354,7 +354,7 @@ function appendFileToList(idPart, file, fileType) {
             '                           </div>' +
             '                       </div>' +
             '                       <a class="reload-btn material-icons">cached</a>' +
-            '                       <a class="btn btn-normal separate-part-btn tooltipped" data-position="top" data-delay="10" data-tooltip="Create a new part from this file"><i class="material-icons">add</i></a>' +
+            '                       <a class="btn btn-normal separate-part-btn"><i class="material-icons">library_add</i></a>' +
             '                   </div>' +
             '                </li>'
     } else if (fileType === 'textures') {
@@ -463,8 +463,8 @@ function addPartInModalList(files) {
             '             <div class="row">' +
             `             <a id="${partIdx}-close" class="material-icons close-files left" >highlight_off</a>` +
             '                 <div class="input-field col s6" style="display: inline-block">' +
-            (files.files3d.length ? `<input id="${partIdx}_part_name" type="text" class="validate part_name" value="${getFileName(files.files3d[0].name)}">` : `<input id="${partIdx}_part_name" type="text" class="validate part_name" value="">`) +
-            '                 </div>' +
+            (files.files3d.length ? `<input id="${partIdx}_part_name" type="text" class="validate part_name" value="${getFileName(files.files3d[0].name)}" data-length="35">` : `<input id="${partIdx}_part_name" type="text" class="validate part_name" value="" data-length="35">`) +
+            `                 <label for="${partIdx}_part_name"></label></div>` +
             '                 <div class="part-content"><div class="input-field col s12">' +
             `                     <textarea id="${partIdx}_part_description" class="materialize-textarea"></textarea>` +
             '                     <label for="part_description">Description</label>' +
@@ -480,6 +480,7 @@ function addPartInModalList(files) {
             '        </li>';
 
         $('#parts_list').append(html);
+        $(`input#${partIdx}_part_name`).characterCounter();
 
 
         $(`#add-files-${partIdx}`).on('change', (event) => {
@@ -582,7 +583,6 @@ function separatePart(event) {
     let idx = parent.id.indexOf('-');
     if (idx === -1) { return; }
     let id = Number(parent.id.slice(0, idx));
-    console.log(id, typeof id);
     let files = {
         files3d: [],
         textures: [],
@@ -591,13 +591,10 @@ function separatePart(event) {
     for (let i = 0; i < partsArray.length; i++) {
         const file = partsArray[i].files.files3d.find((elem) => { return elem._id === id });
         if (file) {
-            console.log(i, file);
             files.files3d.push(file.file);
             addPartInModalList(files);
             $(`#${id}-close-${partsArray[i]._id}`).click();
             return ;
-        } else {
-            console.log(i, file);
         }
     }
 }
@@ -721,7 +718,6 @@ function createPartInForm(event) {
                 formdata.append("sub_level", sub_level);
                 formdata.append("breadcrmb", breadcrumb);
                 const name = formdata.get('name');
-                console.log('NAME', name);
 
                 var handleErrorsFct = function (name) {
                     return function () {

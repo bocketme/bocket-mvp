@@ -30,9 +30,6 @@
       startingTop: '2%', // Starting top style attribute
       endingTop: '10%', // Ending top style attribute
       ready(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-        const context = `#${modal.context.id}`;
-        const form = $(context).find('form');
-        if (form[0] && modal.context.id !== 'edit-part') { form[0].reset(); }
       },
     });
     $('.collapsible').collapsible();
@@ -50,12 +47,8 @@
       endingTop: '10%', // Ending top style attribute
       ready(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
         if (idOfchoosenNode === undefined) {
-          Materialize.toast('Please select a Node first', 3000);
+          Materialize.toast('Please select an Assembly first', 3000);
           this.close();
-        } else {
-          const context = `#${modal.context.id}`;
-          const form = $(context).find('form');
-          if (form[0] && modal.context.id !== 'edit-part') { form[0].reset(); }
         }
       },
     });
