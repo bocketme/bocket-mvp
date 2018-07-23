@@ -5,7 +5,7 @@ module.exports = async function changeInformation(req, res) {
     const { userId } = req.session;
     const { completeName, Email } = req.body;
 
-    const user = await user.findById(userId);
+    const user = await userSchema.findById(userId);
 
     user.completeName = completeName;
     user.email = Email;

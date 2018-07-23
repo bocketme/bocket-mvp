@@ -6,12 +6,14 @@ const FileSystemConfig = require('../config/FileSystemConfig');
 const log = require('../utils/log');
 const router = require('express').Router();
 
-const { GET, DELETE } = require('../controllers/User');
+const { GET, DELETE, POST } = require('../controllers/User');
 
 router.get('/', GET.render);
 router.get('/image', GET.image);
 router.get('/membership', GET.membership);
 router.get('/ownership', GET.ownership);
 router.delete('/', DELETE);
+router.post('/update', POST.changeInformation);
+
 
 module.exports = router;

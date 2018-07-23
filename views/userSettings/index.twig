@@ -7,14 +7,17 @@
         <div id="side-nav" class="col s3 m3 l3 xl3" style="width: 4%;">
             {% include 'userSettings/sideNav.twig' %}
         </div>
-        <div class="col s12 m10 l10 xl10" id="user-management">
+        <div class="col s12 m10 l10 xl12" id="user-management">
             <div class="container">
                 <div class="col s12">
                     <h5 class="center-align main-title">My Account</h5>
-                    <div class="col s6 offset-s3 height-separator">
-                        <div id="avatar-div">
-                            <input id="avatar" type="file" style="display:none;">
+                    <div id="avatar-div" class="col s3 center-align">
+                        <img id="profile-picture" src="../img/vincent_mesquita.jpg" class="materialboxed circle">
+                        <div id="input-img-div" class="file-field input-field" style="display: none">
+                            <a class="waves-effect waves-light btn-small"><i class="material-icons right">photo</i>Change picture<input id="picture-input" type="file"></a>
                         </div>
+                    </div>
+                    <div class="col s6 offset-s1">
                         <div class="input-field height-separator">
                             <input disabled="disabled" id="completeName" value="{{ currentUser.completeName }}" type="text" class="validate">
                             <label for="completeName">Complete Name</label>
@@ -73,7 +76,7 @@
                                         <input id="user_confirm_new_password" type="text" class="validate">
                                         <label for="user_confirm_new_password">Confirm new password</label>
                                     </div>
-                                    <button class="btn btn-valid">Change your password</button>
+                                    <button id="change-password-btn" class="btn btn-valid">Change your password</button>
                                 </div>
                             </li>
                         </ul>
