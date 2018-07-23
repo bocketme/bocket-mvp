@@ -37,8 +37,11 @@ async function delete3D(req, res) {
 
   const chemin = path.join(config.files3D, content.path, partFileSystem.data);
 
+  const fileJson = path.basename(file, path.extname(file));
+
   try {
-    await deleteFile(path.join(chemin, file))
+    await deleteFile(path.join(chemin, file));
+    await deleteFile(path.join(chemin, `${fileJson}.json`));
     return res.status(200).send();
   } catch (error) {
     log.error(error);

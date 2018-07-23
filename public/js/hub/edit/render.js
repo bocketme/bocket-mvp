@@ -114,4 +114,13 @@ $(document).ready(() => {
     store.tranfertFile(id, value);
   });
 
+  $(document).on('change', ".user-node", function (event) {
+    if (!store instanceof EditStore) return null;
+
+    const id = $(this).attr('editNode');
+    const checked = $(this).prop("checked");
+    if (checked) store.editWorker(id, checked);
+    else store.removeWorker(id, checked);
+  })
+
 });

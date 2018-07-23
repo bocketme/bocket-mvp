@@ -11,13 +11,15 @@ router.post('/:nodeId/changeInfo', POST.nodeInformation);
 router.post('/:nodeId/3D', upload.single('file'), POST.send3DFile);
 router.post('/:nodeId/Texture', upload.single('file'), POST.sendTexture);
 router.post('/:nodeId/Spec', upload.single('file'), POST.sendSpecFiles);
+router.post('/:nodeId/Access/:userId', POST.addAccess);
 
 router.put('/:nodeId/convert', UPDATE.launchConversion);
-router.put('/:nodeId/changeEmplacementFiles/:file/3dToSpec', UPDATE.transfert3DToSpec);
-router.put('/:nodeId/changeEmplacementFiles/:file/SpecTo3D', UPDATE.transfertSpecTo3D);
+router.put('/:nodeId/changeEmplacementFile/:file/3dToSpec', UPDATE.transfert3DToSpec);
+router.put('/:nodeId/changeEmplacementFile/:file/SpecTo3D', UPDATE.transfertSpecTo3D);
 
 router.delete('/:nodeId/3D/:file', DELETE.delete3D);
 router.delete('/:nodeId/Texture/:file', DELETE.deleteTexture);
 router.delete('/:nodeId/spec/:file', DELETE.deleteSpec);
+router.post('/:nodeId/Access/:userId', DELETE.deleteAccess);
 
 module.exports = router;

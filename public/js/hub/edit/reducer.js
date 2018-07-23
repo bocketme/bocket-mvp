@@ -1,24 +1,25 @@
 let EditRequest = [];
 
 function EditReducer(id, cible, action) {
-  console.log(id, cible, action);
   const newRequest = new XMLHttpRequest();
 
   const _this = this;
+
+  let options;
 
   EditRequest.push(newRequest);
 
   const i = EditRequest[EditRequest.length - 1];
 
-  const { nodeId, cibledFile, file, userId } = cible
+  const { nodeId, cibledFile, file, userId, fileTypeMime, fileName } = cible
 
   newRequest.onreadystatechange = function (event) {
     if (this.readyState === 4) {
-      if (this.status === 200) {
-        _this.changeStatus(id, 0);
-      } else {
-        _this.changeStatus(id, -1);
-      }
+      if (this.status === 200)
+        _this.finished(id);
+      else
+        _this.error(id)
+
       EditRequest = EditRequest.filter((v, index) => i !== index);
       this.inform();
     }
@@ -31,8 +32,8 @@ function EditReducer(id, cible, action) {
         "name": $("#edit-node-title").val(),
         "description": $("#edit-node-description").val()
       })
-        .done(() => _this.changeStatus(id, 0))
-        .fail(() => _this.changeStatus(id, -1));
+        .done(() => _this.verify(id))
+        .fail(() => _this.error(id));
       break;
 
     case TRANSFERT_3D_TO_SPEC:
@@ -51,18 +52,38 @@ function EditReducer(id, cible, action) {
       break;
 
     case ADD_SPEC:
-      newRequest.open("POST", `/node/${nodeId}/Spec`);
-      newRequest.send(file);
+      options = {
+        url: `/node/${nodeId}/Spec`,
+        data: file,
+        type: 'POST',
+        contentType: false,
+        processData: false,
+      }
+      $.ajax(options)
       break;
 
     case ADD_3DFILE:
-      newRequest.open("POST", `/node/${nodeId}/3D`);
-      newRequest.send(file);
+      _this.launchConvert = true;
+      options = {
+        url: `/node/${nodeId}/3D`,
+        data: file,
+        type: 'POST',
+        contentType: false,
+        processData: false,
+      }
+      $.ajax(options);
       break;
 
     case ADD_TEXTURE:
-      newRequest.open("POST", `/node/${nodeId}/Texture`);
-      newRequest.send(file);
+      _this.launchConvert = true;
+      options = {
+        url: `/node/${nodeId}/Texture`,
+        data: file,
+        type: 'POST',
+        contentType: false,
+        processData: false,
+      }
+      $.ajax(options);
       break;
 
     case REMOVE_SPEC:
@@ -70,13 +91,15 @@ function EditReducer(id, cible, action) {
       newRequest.send();
       break;
 
-    case REMOVE_3D:
-      newRequest.open("DELETE", `/node/${nodeId}/3D`);
+    case REMOVE_TEXTURE:
+      _this.launchConvert = true;
+      newRequest.open("DELETE", `/node/${nodeId}/Texture/${cibledFile}`);
       newRequest.send();
       break;
 
-    case REMOVE_TEXTURE:
-      newRequest.open("DELETE", `/node/${nodeId}/Texture/${cibledFile}`);
+    case REMOVE_3D:
+      _this.launchConvert = true;
+      newRequest.open("DELETE", `/node/${nodeId}/3D/${cibledFile}`);
       newRequest.send();
       break;
 

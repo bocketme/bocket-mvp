@@ -8,6 +8,10 @@ class EditStore {
     this._type = type;
     this._nodeId = nodeId;
 
+    this.launchConvert = false;
+
+    this._verify = [];
+
     this._info = $("div#edit-info");
     this._file = $("div#edit-file");
     this._worker = $("div#edit-worker");
@@ -83,7 +87,7 @@ class EditStore {
     const id = this.getId();
 
 
-    this.addStack(id, NO_CHANGEMENT, {}, { type });
+    this.addStack(id, NO_CHANGEMENT, { cibledFile: name, extname }, { type });
 
     $("div#edit-file").append(editFileRender(id, name, extname, type, this._type));
     $(`select[editNode="${id}"]`).material_select();
@@ -107,10 +111,10 @@ class EditStore {
       const file = new FormData();
       file.append("file", data);
 
-      this.addStack(id, ADD_SPEC, { file });
+      this.addStack(id, ADD_SPEC, { file, fileTypeMime: data.type, fileName: data.name });
       $("div#edit-file").append(editFileRender(id, name, extname, SPECIFICATION_FILES, this._type));
       $(`select[editNode="${id}"]`).material_select();
-    } else if (typeof (data) === "string") {
+    } else if (typeof (data) === "number") {
       this.tranfertFile(Number(data), $(`select[editNode=${data}]`).val())
     }
     this.inform();
@@ -119,20 +123,19 @@ class EditStore {
   removeFile(id) {
     const stack = this.retrieveStack(id);
 
+    const { extname } = stack.data
+
     if (Math.floor(stack.status) === 2) {
       $(`#edit-id-${id}`).remove();
       this.removeStack(id);
     } else {
-      switch (stack.initialState.type) {
+      switch (typeFile(extname)) {
         case MODELES3D_FILES:
-          this.changeStatus(stack.id, REMOVE_3D);
-          break;
+          return this.changeStatus(stack.id, REMOVE_3D);
         case TEXTURE_FILES:
-          this.changeStatus(stack.id, REMOVE_TEXTURE);
-          break;
+          return this.changeStatus(stack.id, REMOVE_TEXTURE);
         case SPECIFICATION_FILES:
-          this.changeStatus(stack.id, REMOVE_SPEC);
-          break;
+          return this.changeStatus(stack.id, REMOVE_SPEC);
         default:
           return null;
       }
@@ -213,11 +216,38 @@ class EditStore {
 
   save() {
     this.store.forEach(stack => this.reducer(stack.id, stack.data, stack.status))
+
+  }
+
+  finished(id) {
+    this._verify[id] = true;
+    this.verify();
+  }
+
+  error(id, message = "") {
+    $("#edit-error-message").html(`<p class="center-align" style="color: red;">${message === "" ? "Some error occured, please correct them." : message}</p>`);
+    this._verify[id] = false;
+    this.verify();
+  }
+
+  verify() {
+    if (this._verify.length === this.changes) {
+      if (this.launchConvert) {
+        const convertRequest = new XMLHttpRequest();
+        convertRequest.open("PUT", `/node/${nodeId}/convert`);
+        convertRequest.send();
+      }  
+      if (!this.verify.includes(false))
+        $("#edit-node").modal("close");
+    }
+
+  }
+
+  cancel() {
+    return this.store.find(({ status }) => status !== 0) === null || this.verify.includes(false);
   }
 
   inform() {
-
-    let result = { statusCode: 0, callbacks: [] }
 
     $("#edit-error-message").html("");
     this._save.prop("disabled", false);
@@ -230,42 +260,11 @@ class EditStore {
         $(this).val() === MODELES3D_FILES && $(this).prop("disabled") === false ? files3D.push($(this)) : null
       });
       if (!(files3D.length === 1)) {
-        result.statusCode = -24;
-        files3D.forEach(file => {
-          const callback = function () {
-            console.log($(file).parent(".file-ensemble"))
-            $(file).parent(".file-ensemble").css("background-color", "red");
-          }
-          result.callbacks.push(callback);
-        });
-        result.callbacks.push(() => {
-          $("#edit-error-message").append(`<p class="center-align" style="color: red;">You can only have 1 3D Model, Please put the rest as a specification.</p>`);
-        });
+        files3D.forEach(file => $(file).parent(".file-ensemble").css("background-color", "red"));
+        $("#edit-error-message").append(`<p class="center-align" style="color: red;">You can only have 1 3D Model, Please put the rest as a specification.</p>`);
         this._save.prop("disabled", true);
       }
     }
-
-    const errorState = this.store.filter(({ status }) => status === -1);
-
-    if (!errorState.length === 0) {
-      result.statusCode = -1;
-      const callback = function () {
-        $("#edit-error-message").append(`<p class="center-align" style="color: red;">Some error occured, please correct them.</p>`);
-      }
-      result.callbacks.push(callback);
-
-      const _callback = (error) => $(`.file-information[editNode="${error.id}"] > .text-error`).html("<p>An error has occured during the request</p>")
-      errorState.forEach(_callback);
-    }
-
-    console.log(result.statusCode)
-
-    if (result.statusCode === 0)
-      return 0
-
-    result.callbacks.forEach(callback => callback())
-
-    return result.statusCode
   }
 
   /**

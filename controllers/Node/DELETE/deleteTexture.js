@@ -30,12 +30,12 @@ async function deleteTexture(req, res) {
 
   let content;
 
-  if (type === nodeTypeEnum.part)
+  if (node.type === nodeTypeEnum.part)
     content = await partModel.findById(node.content);
 
   if (!content) return res.status(404).send("Part Not Found");
 
-  const chemin = path.join(config.files3D, part.path, partFileSystem.data);
+  const chemin = path.join(config.files3D, content.path, partFileSystem.data);
 
   try {
     await deleteFile(path.join(chemin, file))
