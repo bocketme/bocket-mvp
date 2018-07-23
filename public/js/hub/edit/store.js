@@ -1,10 +1,11 @@
 class EditStore {
-  constructor (info, files, workers, nodeId) {
+  constructor (info, files, workers, nodeId, type) {
     this._id = 0;
     this.blocked = false;
 
     this.store = [];
 
+    this._type = type;
     this._nodeId = nodeId;
 
     this._info = $("div#edit-info");
@@ -15,37 +16,41 @@ class EditStore {
     this._file.html("");
     this._worker.html("");
 
+    this._save = $("#edit-save");
+
     this.reducer = EditReducer;
 
-    this.initializeTitle(info.title, info.description);
-    files.forEach(({ filename, extname, type }) => this.File(filename, extname, type));
-    workers.forEach(({ userId, name, workHere }) => this.Worker(userId, name, workHere));
+    $("#edit-node-title").html(`${this._type === "part" ? "Edit Part" : "Edit Assembly"}`)
+
+    this.initializeTitle(info.name, info.description);
+    files.forEach(({ name, extname, type }) => this.File(name, extname, type));
+    workers.forEach(({ userId, completeName, workHere }) => this.Worker(userId, completeName, workHere));
   }
 
-  get getId() { return this._id; }
+  getId() { return this._id; }
 
-  set incrementId() { this._id++; }
+  incrementId() { this._id++; }
 
-  get retrieveStack(_id) {
+  retrieveStack(_id) {
     return this.store.find(({ id }) => id === _id);
   }
 
-  set addStack(id, status, data = {}, initialState = null) {
+  addStack(id, status, data = {}, initialState = null) {
 
     data.nodeId = this._nodeId;
 
-    if (id && status)
+    if (id !== undefined && status !== undefined)
       this.store = [...this.store, { id, status, data, initialState }];
   }
 
-  set removeStack(_id) { this.store = this.store.filter(({ id }) => _id !== id); }
+  removeStack(_id) { this.store = this.store.filter(({ id }) => _id !== id); }
 
-  set changeStatus(_id, _status) {
+  changeStatus(id, status) {
     this.store = this.store
-      .map(store => store.id === _id ? { ...store, _status } : store);
+      .map(store => store.id === id ? { ...store, status } : store);
   }
 
-  initializeTitle(title, description) {
+  initializeTitle(title, description = "") {
     this.incrementId();
     this._title = title;
     this._description = description;
@@ -54,16 +59,16 @@ class EditStore {
 
     this.addStack(id, NO_CHANGEMENT);
 
-    $("div#edit-indo").append(editInfoRender(id, title, description));
+    $("div#edit-info").append(editInfoRender(id, title, description));
   }
 
   changeInfo() {
-    const id = $("#edit-id-information").prop("editNode");
+    const id = Number($("#edit-id-information").attr("editNode"));
     const title = $("#edit-node-title").val();
     const description = $("#edit-node-description").val();
 
-    if (title === this._title || description === this._description)
-      this.changeStatus(id, 1);
+    const changement = title === this._title && description === this._description
+    this.changeStatus(id, changement ? 0 : 1)
   }
 
   workingHere(id, checked) {
@@ -77,9 +82,12 @@ class EditStore {
 
     const id = this.getId();
 
-    this.addStack(id, NO_CHANGEMENT, null, { type });
 
-    $("div#edit-file").append(editFileRender(id, name, extname, type));
+    this.addStack(id, NO_CHANGEMENT, {}, { type });
+
+    $("div#edit-file").append(editFileRender(id, name, extname, type, this._type));
+    $(`select[editNode="${id}"]`).material_select();
+    $('.truncate.tooltipped').tooltip({ delay: 50 });
   }
 
   /**
@@ -87,39 +95,49 @@ class EditStore {
    * @param {File} File
    * @memberof EditStore
    */
-  addFile(File) {
-    this.incrementId();
+  addFile(data) {
+    if (data instanceof File) {
+      this.incrementId();
 
-    const id = this.getId();
+      const id = this.getId();
 
-    const name = File.name;
-    const extname = getFileExtension(name);
+      const name = data.name;
+      const extname = '.' + getFileExtension(name);
 
-    const file = new XMLHttpRequest();
-    file.append("file", File);
+      const file = new FormData();
+      file.append("file", data);
 
-    this.addStack(id, ADD_SPEC, { file });
-    $("div#edit-file").append(editFileRender(id, name, extname, SPECIFICATION_FILES));
+      this.addStack(id, ADD_SPEC, { file });
+      $("div#edit-file").append(editFileRender(id, name, extname, SPECIFICATION_FILES, this._type));
+      $(`select[editNode="${id}"]`).material_select();
+    } else if (typeof (data) === "string") {
+      this.tranfertFile(Number(data), $(`select[editNode=${data}]`).val())
+    }
+    this.inform();
   }
 
   removeFile(id) {
     const stack = this.retrieveStack(id);
 
     if (Math.floor(stack.status) === 2) {
-      $("div#edit-file").remove(`#edit-id-${id}`);
-      return this.removeStack(id);
+      $(`#edit-id-${id}`).remove();
+      this.removeStack(id);
+    } else {
+      switch (stack.initialState.type) {
+        case MODELES3D_FILES:
+          this.changeStatus(stack.id, REMOVE_3D);
+          break;
+        case TEXTURE_FILES:
+          this.changeStatus(stack.id, REMOVE_TEXTURE);
+          break;
+        case SPECIFICATION_FILES:
+          this.changeStatus(stack.id, REMOVE_SPEC);
+          break;
+        default:
+          return null;
+      }
     }
-
-    switch (stack.initialState.type) {
-      case MODELES3D_FILES:
-        return this.changeStatus(stack.id, REMOVE_3D);
-      case TEXTURE_FILES:
-        return this.changeStatus(stack.id, REMOVE_TEXTURE);
-      case SPECIFICATION_FILES:
-        return this.changeStatus(stack.id, REMOVE_SPEC);
-      default:
-        return null;
-    }
+    this.inform();
   }
 
   /**
@@ -136,25 +154,33 @@ class EditStore {
       switch (value) {
         case MODELES3D_FILES:
           this.changeStatus(stack.id, type === MODELES3D_FILES ? NO_CHANGEMENT : TRANSFERT_SPEC_TO_3D);
+          break;
         case TEXTURE_FILES:
-          this.changeStatus(stack.id, type === TEXTURE_FILES ? NO_CHANGEMENT : TRANSFERT_SPEC_TO_TEXTURE);
+          this.changeStatus(stack.id, type === MODELES3D_FILES ? NO_CHANGEMENT : TRANSFERT_SPEC_TO_TEXTURE);
+          break;
         case SPECIFICATION_FILES:
           this.changeStatus(stack.id, type === SPECIFICATION_FILES ? NO_CHANGEMENT : TRANSFERT_TEXTURE_TO_SPEC);
+          break;
         default:
           return null;
       }
     } else {
       switch (value) {
         case MODELES3D_FILES:
-          return this.changeStatus(stack.id, 2.1);
+          this.changeStatus(stack.id, 2.1);
+          break;
         case TEXTURE_FILES:
-          return this.changeStatus(stack.id, 2.2);
+          this.changeStatus(stack.id, 2.2);
+          break;
         case SPECIFICATION_FILES:
-          return this.changeStatus(stack.id, 2.3);
+          this.changeStatus(stack.id, 2.3);
+          break;
         default:
           return null;
       }
     }
+
+    this.inform();
   }
 
   /**
@@ -168,9 +194,9 @@ class EditStore {
     this.incrementId();
 
     const id = this.getId();
-    this.addStack(id, NO_CHANGEMENT, { nodeId, userId }, { workingHere })
+    this.addStack(id, NO_CHANGEMENT, { userId }, { workHere })
 
-    $("div#edit-worker").append(editFileRender(id, userId, name, workHere));
+    $("div#edit-worker").append(editWorkerRender(id, userId, name, workHere));
   }
 
   /**
@@ -179,10 +205,67 @@ class EditStore {
    * @param {string} workHere
    * @memberof EditStore
    */
-  addWorker(id, workHere) {
+  editWorker(id, workHere) {
     const { initialState } = this.retrieveStack(id)
     const status = initialState.workingHere === workHere ? NO_CHANGEMENT : ADD_ACCESS;
     this.changeStatus(id, status);
+  }
+
+  save() {
+    this.store.forEach(stack => this.reducer(stack.id, stack.data, stack.status))
+  }
+
+  inform() {
+
+    let result = { statusCode: 0, callbacks: [] }
+
+    $("#edit-error-message").html("");
+    this._save.prop("disabled", false);
+
+    if (this._type === "part") {
+      $(".file-ensemble").css("background-color", "inherit");
+      const File = this._file.find("select");
+      let files3D = [];
+      File.each(function () {
+        $(this).val() === MODELES3D_FILES && $(this).prop("disabled") === false ? files3D.push($(this)) : null
+      });
+      if (!(files3D.length === 1)) {
+        result.statusCode = -24;
+        files3D.forEach(file => {
+          const callback = function () {
+            console.log($(file).parent(".file-ensemble"))
+            $(file).parent(".file-ensemble").css("background-color", "red");
+          }
+          result.callbacks.push(callback);
+        });
+        result.callbacks.push(() => {
+          $("#edit-error-message").append(`<p class="center-align" style="color: red;">You can only have 1 3D Model, Please put the rest as a specification.</p>`);
+        });
+        this._save.prop("disabled", true);
+      }
+    }
+
+    const errorState = this.store.filter(({ status }) => status === -1);
+
+    if (!errorState.length === 0) {
+      result.statusCode = -1;
+      const callback = function () {
+        $("#edit-error-message").append(`<p class="center-align" style="color: red;">Some error occured, please correct them.</p>`);
+      }
+      result.callbacks.push(callback);
+
+      const _callback = (error) => $(`.file-information[editNode="${error.id}"] > .text-error`).html("<p>An error has occured during the request</p>")
+      errorState.forEach(_callback);
+    }
+
+    console.log(result.statusCode)
+
+    if (result.statusCode === 0)
+      return 0
+
+    result.callbacks.forEach(callback => callback())
+
+    return result.statusCode
   }
 
   /**
@@ -197,5 +280,4 @@ class EditStore {
     this.changeStatus(id, status);
   }
 
-  inform() { }
 }

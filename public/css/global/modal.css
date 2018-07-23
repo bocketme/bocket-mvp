@@ -2,6 +2,14 @@
   height: 32%;
 }
 
+#edit-node {
+  width: 55%;
+}
+
+#edit-info-menu, #edit-file-menu, #edit-worker, #edit-worker-menu, #edit-node-btns {
+  padding: 1% 0px;
+}
+
 #workspace-creation{
   overflow-y: visible;
 }
@@ -21,4 +29,22 @@
 
 .modal-information{
   padding: 30px 0px;
+}
+
+.edit-node-file-close {
+  color: #ff2e63;
+  margin-bottom: 5px;
+  padding-right: 10px;
+}
+
+.edit-node-file-close > i::after {
+  color: red;
+  font-family: "Material Icons";
+  content: "highlight_off";
+}
+
+.edit-node-file-close.active > i::after {
+  color: #29B335;
+  font-family: "Material Icons";
+  content: "restore_page";
 }

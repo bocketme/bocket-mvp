@@ -1,79 +1,117 @@
 const getEditModalContent = new XMLHttpRequest();
 let store;
+$(document).ready(() => {
 
-$("#edit-node").modal({
-  ready: function (modal, trigger) {
-    if (trigger === trigger1 || trigger === trigger2) {
-      getEditModalContent.open('GET', `/node/${nodeId}/information`);
-      getEditModalContent.send();
+  getEditModalContent.onreadystatechange = function (event) {
+    if (this.readyState === 4) {
+      if (this.status === 200) {
+        const { info, files, workers, typeofNode } = JSON.parse(this.response);
+        console.log(typeofNode);
+        store = new EditStore(info, files, workers, idOfchoosenNode, typeofNode);
+      } else {
+        Materialize.toast('Cannot Find the Node'),
+          $("#edit-node").modal('close');
+      }
     }
   }
-});
 
-getEditModalContent.onreadystatechange = function (event) {
-  if (this.readyState === 4) {
-    if (this.status === 200) {
-      const { info, files, workers } = this.response;
-      store = new EditStore(info, files, workers);
-    } else {
-      Materialize.toast('Cannot Find the Node'),
-        $("#edit-node").modal('close');
+  $("#edit-node").modal({
+    ready: function (modal, trigger) {
+      if ($(trigger).hasClass("edit-part-btn")) {
+        getEditModalContent.open('GET', `/node/${idOfchoosenNode}/information`);
+        getEditModalContent.send();
+      }
     }
-  }
-}
+  });
 
-//Stack CHANGE_INFORMATION
-$(document).on(
-  'input',
-  '#edit-node-title , #edit-node-description',
-  function (event) {
+
+  //Stack CHANGE_INFORMATION
+  $(document).on(
+    'input',
+    '#edit-node-title , #edit-node-description',
+    function (event) {
+      if (store instanceof EditStore) { store.changeInfo(); }
+    }
+  );
+
+  //Evenements pour modifier l'accès au utilisateur (alpha)
+  $(document).on("change", ".user-node", function () {
+    const id = $(this).attr('editNode');
     if (store instanceof EditStore) {
-      store.changeInfo();
+      store.workingHere();
     }
-  }
-);
+  })
 
-//Evenements pour modifier l'accès au utilisateur (alpha)
-$(document).on("change", ".user-node", function () {
-  const id = $(this).props('editNode');
-  if (store instanceof EditStore) {
-    store.workingHere();
-  }
-})
+  //Evenements pour delete un fichier
+  $(document).on("click", ".edit-node-file-close", function (event) {
+    if (!store instanceof EditStore) return;
 
-//Evenements pour delete un fichier
-$(document).on("click", ".edit-node-file-close", function (event) {
-  const id = $(this);
+    const element = $(this);
+    const parent = element.parent();
+    const p = parent.find("p");
+    const select = parent.parent().find("select");
+    const id = Number(parent.attr("editNode"));
 
-})
+    if (element.hasClass("active")) {
 
-//Evenements pour ajouter un fichier 
-$(document).on("click", "#AddFile", function (event) {
+      element.removeClass("active");
+      p.removeClass("barre");
+      select.prop("disabled", false)
+      select.material_select();
+      store.addFile(id);
 
-  $("#edit-node-files-selection").trigger();
+    } else {
 
-});
+      element.addClass("active");
+      p.addClass("barre");
+      select.prop("disabled", true);
+      select.material_select()
+      store.removeFile(id);
 
-$(document).on("change", "#edit-node-files-selection", function (event) {
-  const Files = $(this).files
-  if (Files.length > 0 && store instanceof EditStore) {
-    for (let i = 0; i > Files.length; i++) {
-      store.addFile();
     }
-  };
-});
+  })
 
-//
-$(document).on('change', '.edit-node-files', function (event) {
-  const id = $(this);
+  //Evenements pour ajouter un fichier 
+  $(document).on("click", "#AddFile", function (event) {
+    $("#edit-node-files-selection").trigger("click");
+  });
 
-  //Stack TRANSFERT_3D_TO_SPEC
+  $(document).on("change", "#edit-node-files-selection", function (event) {
+    const Files = [...document.getElementById('edit-node-files-selection').files];
+    Files.forEach(file => store.addFile(file));
+  });
 
-  //Stack TRANSFERT_SPEC_TO_3D
+  $(document).on('click', "#edit-save", function (event) {
+    store.save();
+  });
 
-  //Stack TRANSFERT_S
+  $(document).on("click", "#edit-cancel", function (event) {
+    let generalState = store.inform();
+    $("#edit-node").modal('close');
+    if (generalState)
+      $("#exit-edit-modal").modal('open');
+  });
 
-  //Stack LAUNCH_CONVERSION
+  $(document).on("click", "#edit-delete", function (event) {
+    $("#edit-node").modal('close');
+    $("#edit-delete-modal").modal('open');
+  });
 
+  $(document).on("click", "#edit-delete-confirm", function (event) {
+    if (store instanceof EditStore)
+      socket.emit('[Node] - Delete', store._nodeId);
+    $("#edit-delete-modal").modal('close');
+  });
+
+  //
+  $(document).on('change', '.edit-node-files', function (event) {
+    if (!store instanceof EditStore)
+      return null;
+
+    const id = Number($(this).parents(".edit-node-file-unique").attr("editNode"));
+    const value = $(this).val();
+
+    store.tranfertFile(id, value);
+  });
 
 });

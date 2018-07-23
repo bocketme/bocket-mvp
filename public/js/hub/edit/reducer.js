@@ -1,9 +1,10 @@
 let EditRequest = [];
 
 function EditReducer(id, cible, action) {
+  console.log(id, cible, action);
   const newRequest = new XMLHttpRequest();
 
-  _this = this;
+  const _this = this;
 
   EditRequest.push(newRequest);
 
@@ -15,38 +16,37 @@ function EditReducer(id, cible, action) {
     if (this.readyState === 4) {
       if (this.status === 200) {
         _this.changeStatus(id, 0);
-        _this.log(id);
       } else {
         _this.changeStatus(id, -1);
-        _this.error(id);
       }
       EditRequest = EditRequest.filter((v, index) => i !== index);
+      this.inform();
     }
   }
 
-  switch (status) {
+  switch (action) {
 
     case CHANGE_INFORMATION:
-      const form = new FormData();
-      form.append("name", $("#edit-name-node").val())
-      form.append("description", $("#edit-description-node").val())
-
-      newRequest.open("UPDATE", `/node/${nodeId}/changeInfo`);
-      newRequest.send(form);
+      $.post(`/node/${nodeId}/changeInfo`, {
+        "name": $("#edit-node-title").val(),
+        "description": $("#edit-node-description").val()
+      })
+        .done(() => _this.changeStatus(id, 0))
+        .fail(() => _this.changeStatus(id, -1));
       break;
 
     case TRANSFERT_3D_TO_SPEC:
-      newRequest.open("UPDATE", `/node/${nodeId}/changeEmplacementFile/${cibledFile}/3DToSpec`);
+      newRequest.open("PUT", `/node/${nodeId}/changeEmplacementFile/${cibledFile}/3DToSpec`);
       newRequest.send();
       break;
 
     case TRANSFERT_SPEC_TO_3D:
-      newRequest.open("UPDATE", `/node/${nodeId}/changeEmplacementFile/${cibledFile}/SpecTo3D`);
+      newRequest.open("PUT", `/node/${nodeId}/changeEmplacementFile/${cibledFile}/SpecTo3D`);
       newRequest.send();
       break;
 
     case LAUNCH_CONVERSION:
-      newRequest.open("UPDATE", `/node/${nodeId}/convert`);
+      newRequest.open("PUT", `/node/${nodeId}/convert`);
       newRequest.send();
       break;
 
