@@ -39,9 +39,8 @@ let WorkspaceSchema = new mongoose.Schema({
   Access: [{
     Node: { type: Schema.Types.ObjectId },
     Users: [{ type: Schema.Types.ObjectId }]
-  }]
+  }],
 
-  avatar: String,
   //Annotation
   Annotations: { type: [NestedAnnotation], required: true, default: [] }
 });
@@ -52,9 +51,9 @@ WorkspaceSchema.virtual('users').get(function () {
   return [...this.ProductManagers, ...this.Teammates, ...this.Observers];
 });
 
-WorkspaceSchema.methods.listNodeAccess = async function (nodeId) {
-  const { Users } = this.access.find(({ Node }) => Node.equals(nodeId));
-  return Users || this.users;
+WorkspaceSchema.methods.listNodeAccess = function (nodeId) {
+  const Node = this.Access.find(({ Node }) => Node.equals(nodeId));
+  return Node ? Node.Users : [];
 }
 
 WorkspaceSchema.methods.addAccess = async function (nodeId, userId) {
@@ -85,13 +84,13 @@ WorkspaceSchema.methods.checkUserAccess = async function () {
     return this.users.findIndex(userId => userId.equals(user)) < 0;
   }
 
-  this.Access.map(({ Node, Users }) => { Node, Users: Users.filter(filterNonUserWorkspace) })
+  this.Access.map(({ Node, Users }) => ({ Node, Users: Users.filter(filterNonUserWorkspace) }))
 
   return this;
 }
 
 WorkspaceSchema.methods.removeUserAccess = async function (userId) {
-  this.Access.map(({ Node, Users }) => { Node, Users: Users.filter(user => !user.equals(userId)) })
+  this.Access.map(({ Node, Users }) => ({ Node, Users: Users.filter(user => !user.equals(userId)) }))
   return await this.save();
 }
 

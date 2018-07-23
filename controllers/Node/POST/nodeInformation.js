@@ -7,15 +7,15 @@ module.exports = async function (req, res, next) {
     const { nodeId } = req.params;
     let { name, description } = req.body;
 
+    console.log(req.body);
+
     const node = await NodeModel.findById(nodeId);
 
     if (!node)
       return next(NotFound())
 
-    if (name && name.length < 40) {
-      name = escape(name);
+    if (name && name.length < 35)
       node.name = name;
-    }
 
     if (description && description.length < 160) {
       description = escape(description);
