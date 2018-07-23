@@ -12,25 +12,24 @@ const { APP, CONTENT } = CHEMIN;
 
 module.exports = async function (req, res, next) {
   try {
-    const { nodeId } = req.params,
-      { file3D } = req.files;
+    const { nodeId } = req.params;
+    const specFile = req.file;
     const node = await NodeModel.findById(nodeId);
 
     if (!node)
       return next(NotFound('[NODE] - Not Found'));
 
-    const { type, content } = node;
+    const content = node.type === NODE_TYPE.PART ?
+      await PartModel.findById(node.content) :
+      await AssemblyModel.findById(node.content);
 
-    let { path } = type === NODE_TYPE.PART ?
-      await PartModel.findById(content) :
-      await AssemblyModel.findById(content);
-
-    if (!path)
+    if (!content.path)
       return next(NotFound('[NODE CONTENT] - Not Found'));
 
-    const chemin = path.join(APP.DATA, part.path, CONTENT["3D"]);
+    const chemin = path.join(APP.FILES3D, content.path, CONTENT["3D"]);
 
-    await promiseWriteFile(path.join(chemin, file3D.originalname), file3D.buffer.toString());
+    await promiseWriteFile(path.join(chemin, specFile.originalname), specFile.buffer.toString());
+    res.status(200).send('ok');
   } catch (err) {
     log.error(err);
     return next(InternalServerError('Cannot operate this request'))

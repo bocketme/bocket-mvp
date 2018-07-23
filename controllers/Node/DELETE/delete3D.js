@@ -30,7 +30,7 @@ async function delete3D(req, res) {
 
   let content;
 
-  if (type === nodeTypeEnum.part)
+  if (node.type === nodeTypeEnum.part)
     content = await partModel.findById(node.content);
 
   if (!content) return res.status(404).send("Part Not Found");

@@ -50,21 +50,17 @@ async function information(req, res) {
         "Spec": [...await readdir(directory["Spec"])].map(file => ({ name: file, extname: path.extname(file), type: "SPECIFICATION" }))
       }
 
+      directoryFiles["3D"] = directoryFiles["3D"].filter(({extname}) => extname !== ".json");
+
       files = [...directoryFiles["3D"], ...directoryFiles["Spec"]];
     } else {
       content = await assemblyModel.findById(node.content);
 
       if (!content) return res.status(404).send("Assembly Not Found");
 
-      const directory = {
-        "Spec": path.join(config.files3D, content.path, partFileSystem.spec)
-      }
+      const directory = path.join(config.files3D, content.path, partFileSystem.spec);
 
-      const directoryFiles = {
-        "Spec": [...await readdir(directory["Spec"])].map(file => ({ name: file, type: "SPECIFICATION" }))
-      }
-
-      files = directoryFiles["Spec"];
+      files = [...await readdir(directory)].map(file => ({ name: file, type: "SPECIFICATION" }));
     }
 
     const workHere = workspace.listNodeAccess(nodeId);
