@@ -1,5 +1,6 @@
-const membership = require('./membership');
-const ownership = require('./ownership');
-const image = require('./image');
-
-module.exports = { membership, ownership, image };
+module.exports = {
+  membership: require('./membership'),
+  ownership: require('./ownership'),
+  image: require('./image'),
+  render: require('./render')
+};

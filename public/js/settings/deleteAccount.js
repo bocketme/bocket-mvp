@@ -1,3 +1,4 @@
+$('#confirmDeleteAccount').modal('');
 $(document).on('click', '#delete-account', function (event) {
   const getUserownership = new XMLHttpRequest();
   getUserownership.open('GET', '/user/ownership');

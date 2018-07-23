@@ -1,0 +1,99 @@
+{% extends './layout.twig' %}
+
+{% block css %}{% endblock %}
+
+{% block body %}
+    <div class="row" id="main">
+        <div id="side-nav" class="col s3 m3 l3 xl3" style="width: 4%;">
+            {% include 'userSettings/sideNav.twig' %}
+        </div>
+        <div class="col s12 m10 l10 xl10" id="user-management">
+            <div class="container">
+                <div class="col s12">
+                    <h5 class="center-align main-title">My Account</h5>
+                    <div class="col s6 offset-s3 height-separator">
+                        <div id="avatar-div">
+                            <input id="avatar" type="file" style="display:none;">
+                        </div>
+                        <div class="input-field height-separator">
+                            <input disabled="disabled" id="completeName" value="{{ currentUser.completeName }}" type="text" class="validate">
+                            <label for="completeName">Complete Name</label>
+                        </div>
+                        <div class="input-field height-separator">
+                            <input disabled="disabled" id="Email" value="{{ currentUser.email }}" type="text" class="validate">
+                            <label for="Email">Email</label>
+                        </div>
+                    </div>
+                    <div id="list-organization" class="col s12">
+                        <h5>Organization I'm In :</h5>
+                        <div class="height-separator">
+                            {% for Organization in Organizations %}
+                                <div class="col s12">
+                                    <div class="row valign-wrapper">
+                                        <div class="col s1">
+                                            <div id="container-organization">
+                                                <a href="/organization/{{Organization._id}}">
+                                                    <div class="cube-container">
+                                                        <div class="text-container">
+                                                            {{ Organization.name|first |capitalize }}
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col s8">
+                                            {{ Organization.name }}
+                                        </div>
+                                        <div class="col s2">
+                                            {{ Organization.status }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div id="change-password" class="col s12" style="display: none;">
+                        <ul class="collapsible" data-collapsible="accordion">
+                            <li>
+                                <div class="collapsible-header">
+                                    <i class="collapsible-icon material-icons">keyboard_arrow_right</i>
+                                    Change Password
+                                </div>
+                                <div class="collapsible-body">
+                                    <div class="input-field height-separator">
+                                        <input id="user_password" type="text" class="validate">
+                                        <label for="user_password">Current Password</label>
+                                    </div>
+                                    <div class="input-field height-separator">
+                                        <input id="user_new_password" type="text" class="validate">
+                                        <label for="user_new_password">New Password</label>
+                                    </div>
+                                    <div class="input-field height-separator">
+                                        <input id="user_confirm_new_password" type="text" class="validate">
+                                        <label for="user_confirm_new_password">Confirm new password</label>
+                                    </div>
+                                    <button class="btn btn-valid">Change your password</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="mode-normal" class="col s12">
+                        <a id="delete-account" class="btn btn-cancel left">Delete</a>
+                        <a class="btn btn-normal right" href="/logOut">Log Out</a>
+                        <a id="modify-user" class="btn btn-valid right" style="margin-right: 2%">Modify</a>
+                    </div>
+                    <div id="mode-modification" class="col s12" style="display: none;">
+                        <a id="accept-modify" class="btn btn-cancel left">Cancel</a>
+                        <a id="cancel-modify" class="btn btn-valid right" style="margin-right: 2%">Save</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include 'modals/confirmDeleteAccount.twig' %}
+    {% endblock %}
+
+    {% block js %}
+        <script type="application/javascript" src="/js/settings/changePassword.js"></script>
+        <script type="application/javascript" src="/js/settings/changeInformation.js"></script>
+    {% endblock %}

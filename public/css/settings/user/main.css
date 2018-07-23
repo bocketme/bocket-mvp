@@ -1,0 +1,35 @@
+.organization-container {
+  color: #3c3c3c;
+  position: relative;
+  background: #F5F5F5;
+  margin-left: 15%;
+  width: 70%;
+  padding-top: 70%; /* 1:1 Aspect Ratio */
+  border-radius: 25%;
+}
+
+#user-management {
+  width: 96%;
+  height: 100%;
+  overflow-x: none;
+  overflow-y: auto;
+}
+
+#avatar-div {
+  width: 100px;
+  height: 100px;
+  padding: 3%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#avatar-div:hover{
+  background-color: coral;
+  opacity: 0.7;
+}
+
+#avatar-div:hover::after {
+  content: "Change";
+  vertical-align: middle;
+  align-content: center;
+}

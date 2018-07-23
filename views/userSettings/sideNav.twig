@@ -12,42 +12,35 @@
 </div>
 <div id="workspaces-block" class="side-nav-scrollbar">
     <div id="list-workspaces-user">
-        {% for workspace in workspaces %}
+        {% for workspace in userWorkspaces %}
             <div class="round-separator">
                 <a href="/workspace/{{workspace._id}}" data-tooltip="{{ workspace.name }}" data-delay="50" data-position="right">
-                    {% if in_use.id.equals(workspace._id) %}
-                        <div class="round-container active">
-                            <div class="text-container">
-                                {{ workspace.name|first |capitalize }}
-                            </div>
+                    <div class="round-container">
+                        <div class="text-container">
+                            {{ workspace.name|first |capitalize }}
                         </div>
-                    {% else %}
-                        <div class="round-container">
-                            <div class="text-container">
-                                {{ workspace.name|first |capitalize }}
-                            </div>
-                        </div>
-                    {% endif %}
+                    </div>
                 </a>
             </div>
         {% endfor %}
     </div>
-    {#
-    <a id="trigger-creation-workspace" class=" modal-trigger" href="#workspace-creation">
-        <div class="round-container">
-            <div class="text-container">
-                +
-            </div>
+    {% if currentUser.rights > 4 %}
+        <div class="round-separator">
+            <a id="trigger-creation-workspace" class=" modal-trigger" href="#workspace-creation">
+                <div class="round-container">
+                    <div class="text-container">
+                        +
+                    </div>
+                </div>
+            </a>
         </div>
-    </a>
-    {% include 'modals/createWorkspace.twig' %}
-    #}
+    {% endif %}
 </div>
 <div id="user-block">
     <hr>
     <div id="container-user">
         <a href="/user">
-            <div class="round-container">
+            <div class="round-container active">
                 <div class="text-container">
                     <i class="material-icons">person_outline</i>
                 </div>
@@ -58,4 +51,3 @@
         {{currentUser.completeName}}
     </p>
 </div>
-{% include 'modals/userSettings.twig' %}

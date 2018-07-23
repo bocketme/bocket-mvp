@@ -11,7 +11,7 @@ module.exports = {
   port: "8080",
   protocol: "http",
   url: "bocket.me" + this.port,
-  mongoDB: "mongodb://localhost/bocketmemvp",
+  mongoDB: "mongodb://localhost:27017/bocketmevp",
   saltRounds: 10,
   data: data,
   files3D: files3D,
