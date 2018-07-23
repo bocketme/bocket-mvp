@@ -13,7 +13,7 @@ const moveFile = util.promisify(fs.rename);
 
 const path = require('path');
 
-function transfert3DToSpec(req, res) {
+async function transfert3DToSpec(req, res) {
   const { nodeId, file } = req.params;
 
   const node = await nodeModel.findById(nodeId);

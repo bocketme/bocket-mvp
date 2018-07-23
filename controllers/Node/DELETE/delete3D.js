@@ -13,7 +13,7 @@ const deleteFile = util.promisify(fs.unlink);
 
 const path = require('path');
 
-function delete3D(req, res) {
+async function delete3D(req, res) {
   const { nodeId, file } = req.params;
 
   const node = await nodeModel.findById(nodeId);

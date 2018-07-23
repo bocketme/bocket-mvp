@@ -14,7 +14,7 @@ const deleteFile = util.promisify(fs.unlink);
 
 const path = require('path');
 
-function deleteSpec(req, res) {
+async function deleteSpec(req, res) {
   const { nodeId, file } = req.params;
 
   const node = await nodeModel.findById(nodeId);

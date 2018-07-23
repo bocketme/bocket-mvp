@@ -13,7 +13,7 @@ const deleteFile = util.promisify(fs.unlink);
 
 const path = require('path');
 
-function deleteTexture(req, res) {
+async function deleteTexture(req, res) {
   const { nodeId, file } = req.params;
 
   const node = await nodeModel.findById(nodeId);
