@@ -5,7 +5,6 @@
 (function () {
 
 	'use strict';
-
 	var GizmoMaterial = function (parameters) {
 
 		THREE.MeshBasicMaterial.call(this);
@@ -436,7 +435,6 @@
 		};
 
 		this.update = function (rotation, eye2) {
-
 			THREE.TransformGizmo.prototype.update.apply(this, arguments);
 
 			var tempMatrix = new THREE.Matrix4();
@@ -796,9 +794,10 @@
 			camera.updateMatrixWorld();
 			camPosition.setFromMatrixPosition(camera.matrixWorld);
 			camRotation.setFromRotationMatrix(tempMatrix.extractRotation(camera.matrixWorld));
-
-			scale = worldPosition.distanceTo(camPosition) / 6 * scope.size;
-			this.position.copy(worldPosition);
+      scale = worldPosition.distanceTo(camPosition) / 6 * scope.size ;
+      scale = (camera instanceof THREE.OrthographicCamera) ? 120 / (scope.size * camera.zoom)  :
+      worldPosition.distanceTo(camPosition) / 6 * scope.size;
+      this.position.copy(worldPosition);
 			this.scale.set(scale, scale, scale);
 
 			if (camera instanceof THREE.PerspectiveCamera) {

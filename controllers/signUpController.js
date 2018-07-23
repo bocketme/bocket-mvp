@@ -118,7 +118,6 @@ async function createAccount (req, res) {
     await organization.save();
     documents.push(organization);
 
-    console.log(organization);
 
 
 

@@ -4,6 +4,7 @@ const NestedTchat = require('./nestedSchema/NestedTchat');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
 const userSchema = require('./User');
 const nodeSchema = require('./Node');
+const NestedNewsfeed = require('./nestedSchema/NestedNewsfeedSchema');
 
 const { Schema } = mongoose;
 
@@ -12,7 +13,6 @@ let WorkspaceSchema = new mongoose.Schema({
   name: { type: String, require: true },
   description: String,
 
-  Annotations: { type: [NestedAnnotation], required: true, default: [] },
   Tchats: { type: [NestedTchat], required: true, default: [] },
 
   //Node Master of the product
@@ -31,7 +31,9 @@ let WorkspaceSchema = new mongoose.Schema({
 
   avatar: String,
   //Annotation
-  Annotations: { type: [NestedAnnotation], required: true, default: [] }
+  Annotations: { type: [NestedAnnotation], required: true, default: [] },
+  // News Feed
+  Newsfeed: { type: [NestedNewsfeed], default: []}
 });
 
 // TODO: DELETE ALL users attribute (workspace.users)
@@ -185,7 +187,7 @@ WorkspaceSchema.methods.changeRole = async function (userId, newRole) {
     await this.save();
     return this;
   } catch (e) {
-    log.error(e);
+    console.error(e);
     throw e;
   }
 };
