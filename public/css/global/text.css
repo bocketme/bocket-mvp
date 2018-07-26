@@ -1,7 +1,12 @@
-.title-organization{
+.title-organization, title-bocket{
   font-weight: bolder;
 }
 
-.sub-title-workspace{
+.sub-title-workspace, sub-title-bocket{
   font-weight: 600;
+}
+
+p.barre {
+  text-decoration: line-through grey;
+  color: grey;
 }

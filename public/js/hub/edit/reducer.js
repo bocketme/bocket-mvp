@@ -1,75 +1,124 @@
-/**
- *
- *
- * @param {Object} data
- * @param {String} data.nodeId The Id of the Node
- * @param {String} data.cibledFile The file that will have a modification 
- * @param {String} data.userId The Id of the User
- * @param {FormData} data.form The Form
- * @param {string} action
- * @param {Function} onDone
- * @param {Function} onError
- */
-function EditReducer(data, action, onDone, onError) {
-    const EditRequest = new XMLHttpRequest();
-    const { nodeId, cibledFile, userId, form } = data
+let EditRequest = [];
 
-    EditRequest.onreadystatechange = function(event) {
-        if (this.readyState === 4) {
-            if (this.status === 200) onDone();
-            else onError();
-        }
-    }
+function EditReducer(id, cible, action) {
+  const newRequest = new XMLHttpRequest();
+  const _this = this;
 
-    switch (action) {
-        case CHANGE_INFORMATION:
-            EditRequest.open("UPDATE", `/node/${nodeId}/changeInfo`);
-            EditRequest.send();
-            break;
-        case TRANSFERT_3D_TO_SPEC:
-            EditRequest.open("UPDATE", `/node/${nodeId}/changeEmplacementFile/${cibledFile}/ToSpec`);
-            EditRequest.send();
-            break;
-        case TRANSFERT_SPEC_TO_3D:
-            EditRequest.open("UPDATE", `/node/${nodeId}/changeEmplacementFile/${cibledFile}/To3D`);
-            EditRequest.send();
-            break;
-        case LAUNCH_CONVERSION:
-            EditRequest.open("UPDATE", `/node/${nodeId}/convert`);
-            EditRequest.send();
-            break;
-        case ADD_SPEC:
-            EditRequest.open("POST", `/node/${nodeId}/Spec`);
-            EditRequest.send();
-            break;
-        case ADD_3DFILE:
-            EditRequest.open("POST", `/node/${nodeId}/3D`);
-            EditRequest.send(form);
-            break;
-        case ADD_TEXTURE:
-        const form = ;
-            EditRequest.open("POST", `/node/${nodeId}/Texture`);
-            EditRequest.send(form);
-            break;
-        case REMOVE_SPEC:
-            EditRequest.open("DELETE", `/node/${nodeId}/spec/${cibledFile}`);
-            EditRequest.send();
-            break;
-        case REMOVE_3D:
-            EditRequest.open("DELETE", `/node/${nodeId}/3D`);
-            EditRequest.send();
-            break;
-        case REMOVE_TEXTURE:
-            EditRequest.open("DELETE", `/node/${nodeId}/Texture/${cibledFile}`);
-            EditRequest.send();
-            break;
-        case ADD_ACCESS:
-            EditRequest.open("POST", `/node/${nodeId}/access/${userId}`);
-            EditRequest.send();
-            break;
-        case REMOVE_ACCESS:
-            EditRequest.open("REMOVE", `/node/${nodeId}/access/${userId}`);
-            EditRequest.send(data);
-            break;
+  let options;
+
+  EditRequest.push(newRequest);
+
+  const i = EditRequest[EditRequest.length - 1];
+
+  const { nodeId, cibledFile, file, userId } = cible
+
+  newRequest.onreadystatechange = function (event) {
+    if (this.readyState === 4) {
+      if (this.status === 200) //Reponse correct du serveur
+        _this.finished(id);
+      else
+        _this.error(id);
+
+      EditRequest = EditRequest.filter((v, index) => i !== index);
     }
+  }
+
+  switch (action) {
+    default:
+      _this.changes--;
+      _this.verify();
+      break;
+
+    case CHANGE_INFORMATION:
+      $.post(`/node/${nodeId}/changeInfo`, {
+        "name": $("#edit-node-name").val(),
+        "description": $("#edit-node-description").val()
+      })
+        .done(function () { _this.finished(id) })
+        .fail(function () { _this.error(id) });
+      break;
+
+    case TRANSFERT_3D_TO_SPEC:
+      newRequest.open("PUT", `/node/${nodeId}/changeEmplacementFile/${cibledFile}/3DToSpec`);
+      newRequest.send();
+      break;
+
+    case TRANSFERT_SPEC_TO_3D:
+      newRequest.open("PUT", `/node/${nodeId}/changeEmplacementFile/${cibledFile}/SpecTo3D`);
+      newRequest.send();
+      break;
+
+    case LAUNCH_CONVERSION:
+      newRequest.open("PUT", `/node/${nodeId}/convert`);
+      newRequest.send();
+      break;
+
+    case ADD_SPEC:
+      options = {
+        url: `/node/${nodeId}/Spec`,
+        data: file,
+        type: 'POST',
+        contentType: false,
+        processData: false,
+      }
+      $.ajax(options)
+        .done(function () { _this.finished(id) })
+        .fail(function () { _this.error(id) });
+      break;
+
+    case ADD_3DFILE:
+      _this.launchConvert = true;
+      options = {
+        url: `/node/${nodeId}/3D`,
+        data: file,
+        type: 'POST',
+        contentType: false,
+        processData: false,
+      }
+      $.ajax(options)
+        .done(function () { _this.finished(id) })
+        .fail(function () { _this.error(id) });
+      break;
+
+    case ADD_TEXTURE:
+      _this.launchConvert = true;
+      options = {
+        url: `/node/${nodeId}/Texture`,
+        data: file,
+        type: 'POST',
+        contentType: false,
+        processData: false,
+      }
+      $.ajax(options)
+        .done(function () { _this.finished(id) })
+        .fail(function () { _this.error(id) });
+      break;
+
+    case REMOVE_SPEC:
+      newRequest.open("DELETE", `/node/${nodeId}/spec/${cibledFile}`);
+      newRequest.send();
+      break;
+
+    case REMOVE_TEXTURE:
+      _this.launchConvert = true;
+      newRequest.open("DELETE", `/node/${nodeId}/Texture/${cibledFile}`);
+      newRequest.send();
+      break;
+
+    case REMOVE_3D:
+      _this.launchConvert = true;
+      newRequest.open("DELETE", `/node/${nodeId}/3D/${cibledFile}`);
+      newRequest.send();
+      break;
+
+    case ADD_ACCESS:
+      newRequest.open("POST", `/node/${nodeId}/access/${userId}`);
+      newRequest.send();
+      break;
+
+    case REMOVE_ACCESS:
+      newRequest.open("DELETE", `/node/${nodeId}/access/${userId}`);
+      newRequest.send();
+      break;
+  }
 }

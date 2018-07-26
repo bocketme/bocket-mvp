@@ -17,6 +17,13 @@ let WorkspaceSchema = new mongoose.Schema({
 
   //Node Master of the product
   nodeMaster: { type: Schema.Types.ObjectId, ref: 'Node' },
+  AccessNode: [{
+    Node: { type: Schema.Types.ObjectId, ref: 'Node' },
+    assignements: [{
+      User: { type: Schema.Types.ObjectId, ref: 'User' },
+      //rights: null
+    }]
+  }],
 
   //Team
   ProductManagers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
@@ -29,7 +36,11 @@ let WorkspaceSchema = new mongoose.Schema({
   //Creation
   creation: { type: Date, default: new Date() },
 
-  avatar: String,
+  Access: [{
+    Node: { type: Schema.Types.ObjectId },
+    Users: [{ type: Schema.Types.ObjectId }]
+  }],
+
   //Annotation
   Annotations: { type: [NestedAnnotation], required: true, default: [] },
   // News Feed
@@ -41,6 +52,57 @@ let WorkspaceSchema = new mongoose.Schema({
 WorkspaceSchema.virtual('users').get(function () {
   return [...this.ProductManagers, ...this.Teammates, ...this.Observers];
 });
+
+WorkspaceSchema.methods.listNodeAccess = function (nodeId) {
+  const Node = this.Access.find(({ Node }) => Node.equals(nodeId));
+  return Node ? Node.Users : [];
+}
+
+
+WorkspaceSchema.methods.addAccess = async function (nodeId, userId) {
+  const i = this.Access.findIndex(({ Node }) => Node.equals(nodeId));
+
+  function hasadoublon(id) {
+    return id.equals(userId);
+  }
+
+  if (i >= 0) {
+    if (this.Access[i].Users.find(hasadoublon))
+      return this;
+    this.Access[i].Users.push(userId);
+  } else
+    this.Access.push({ Node: nodeId, Users: [userId] });
+
+  return await this.save();
+}
+
+WorkspaceSchema.methods.removeAccess = async function (nodeId, userId) {
+  const i = this.Access.findIndex(({ Node }) => Node.equals(nodeId));
+
+  if (i >= 0)
+    this.Access[i] = this.Access[i].Users.filter(user => !user.equals(userId));
+  else
+    throw new Error('Cannot find the userId');
+
+  return await this.save();
+}
+
+WorkspaceSchema.methods.checkUserAccess = async function () {
+
+  function filterNonUserWorkspace(user) {
+    return this.users.findIndex(userId => userId.equals(user)) < 0;
+  }
+
+  this.Access.map(({ Node, Users }) => ({ Node, Users: Users.filter(filterNonUserWorkspace) }))
+
+  return this;
+}
+
+WorkspaceSchema.methods.removeUserAccess = async function (userId) {
+  this.Access.map(({ Node, Users }) => ({ Node, Users: Users.filter(user => !user.equals(userId)) }))
+  return await this.save();
+}
+
 
 /**
   * Returns if the user is the Product Manager or not

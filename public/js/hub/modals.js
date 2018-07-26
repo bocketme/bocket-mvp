@@ -11,14 +11,14 @@ var partsArray = []; // USED TO MANAGE PARTS AND FILES BEFORE SENDING THEM TO TH
 const defaultNodeValue = "Select a node";
 
 const extensions3d = [
-    'dae', 'obj', 'stl',
-    '3ds', 'fbx', 'lwo',
-    'lxo', 'x3d', 'off',
+  'dae', 'obj', 'stl',
+  '3ds', 'fbx', 'lwo',
+  'lxo', 'x3d', 'off',
 ];
 
 const extensionsTextures = [
-    'bmp', 'gif', 'jpg', 'jpeg',
-    'png', 'tga', 'tif', 'mtl',
+  'bmp', 'gif', 'jpg', 'jpeg',
+  'png', 'tga', 'tif', 'mtl',
 ]
 
 function nodeChildrenLoad(nodeId, html) {
