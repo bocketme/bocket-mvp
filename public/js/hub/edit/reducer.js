@@ -1,5 +1,43 @@
 let EditRequest = [];
 
+function handleNewsfeed(name, user, id, type) {
+  const nodeType = ($(`${id}-body`).length ? 'ASSEMBLY' : 'PART');
+  if (!nodeType)
+    return;
+  switch (type) {
+    default:
+      break;
+
+    case CHANGE_INFORMATION:
+      $('#news-feed').trigger('addNews', [nodeType, 'DETAILS', { _id: id, name }, '']);
+      break;
+
+    case ADD_SPEC:
+      $('#news-feed').trigger('addNews', [nodeType, 'DOC-ADD', { _id: id, name }, '']);
+      break;
+
+    case ADD_3DFILE:
+      $('#news-feed').trigger('addNews', [nodeType, 'FILE3D-ADD', { _id: id, name }, '']);
+      break;
+
+    case ADD_TEXTURE:
+      $('#news-feed').trigger('addNews', [nodeType, 'DOC-ADD', { _id: id, name }, '']);
+      break;
+
+    case REMOVE_SPEC:
+      $('#news-feed').trigger('addNews', [nodeType, 'DOC-DEL', { _id: id, name }, '']);
+      break;
+
+    case REMOVE_TEXTURE:
+      $('#news-feed').trigger('addNews', [nodeType, 'DOC-DEL', { _id: id, name }, '']);
+      break;
+
+    case REMOVE_3D:
+      $('#news-feed').trigger('addNews', [nodeType, 'FILE3D-DEL', { _id: id, name }, '']);
+      break;
+  }
+}
+
 function EditReducer(id, cible, action) {
   const newRequest = new XMLHttpRequest();
   const _this = this;
@@ -10,18 +48,22 @@ function EditReducer(id, cible, action) {
 
   const i = EditRequest[EditRequest.length - 1];
 
-  const { nodeId, cibledFile, file, userId } = cible
+  const {
+    nodeId, cibledFile, file, userId,
+  } = cible;
 
   newRequest.onreadystatechange = function (event) {
     if (this.readyState === 4) {
-      if (this.status === 200) //Reponse correct du serveur
+      if (this.status === 200) {
+        const { name, user, _id } = this.response;
+        handleNewsfeed(name, user, _id, action);
         _this.finished(id);
-      else
+      } else
         _this.error(id);
 
       EditRequest = EditRequest.filter((v, index) => i !== index);
     }
-  }
+  };
 
   switch (action) {
     default:
@@ -30,26 +72,37 @@ function EditReducer(id, cible, action) {
       break;
 
     case CHANGE_INFORMATION:
-      $.post(`/node/${nodeId}/changeInfo`, {
-        "name": $("#edit-node-name").val(),
-        "description": $("#edit-node-description").val()
-      })
-        .done(function () { _this.finished(id) })
-        .fail(function () { _this.error(id) });
+      const sendData = {
+        name: $('#edit-node-name').val(),
+        description: $('#edit-node-description').val()
+      };
+      options = {
+        url: `/node/${nodeId}/changeInfo`,
+        data: sendData,
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        success: (d) => {
+          handleNewsfeed(d.name, d.user, d._id, CHANGE_INFORMATION);
+        },
+      };
+      $.ajax(options)
+        .done(() => { _this.finished(id); })
+        .fail(() => { _this.error(id); });
       break;
 
     case TRANSFERT_3D_TO_SPEC:
-      newRequest.open("PUT", `/node/${nodeId}/changeEmplacementFile/${cibledFile}/3DToSpec`);
+      newRequest.open('PUT', `/node/${nodeId}/changeEmplacementFile/${cibledFile}/3DToSpec`);
       newRequest.send();
       break;
 
     case TRANSFERT_SPEC_TO_3D:
-      newRequest.open("PUT", `/node/${nodeId}/changeEmplacementFile/${cibledFile}/SpecTo3D`);
+      newRequest.open('PUT', `/node/${nodeId}/changeEmplacementFile/${cibledFile}/SpecTo3D`);
       newRequest.send();
       break;
 
     case LAUNCH_CONVERSION:
-      newRequest.open("PUT", `/node/${nodeId}/convert`);
+      newRequest.open('PUT', `/node/${nodeId}/convert`);
       newRequest.send();
       break;
 
@@ -60,10 +113,13 @@ function EditReducer(id, cible, action) {
         type: 'POST',
         contentType: false,
         processData: false,
-      }
+        success: (d) => {
+          handleNewsfeed(d.name, d.user, d._id, ADD_SPEC);
+        },
+      };
       $.ajax(options)
-        .done(function () { _this.finished(id) })
-        .fail(function () { _this.error(id) });
+        .done(() => { _this.finished(id); })
+        .fail(() => { _this.error(id); });
       break;
 
     case ADD_3DFILE:
@@ -74,10 +130,13 @@ function EditReducer(id, cible, action) {
         type: 'POST',
         contentType: false,
         processData: false,
-      }
+        success: (d) => {
+          handleNewsfeed(d.name, d.user, d._id, ADD_3DFILE);
+        },
+      };
       $.ajax(options)
-        .done(function () { _this.finished(id) })
-        .fail(function () { _this.error(id) });
+        .done(() => { _this.finished(id); })
+        .fail(() => { _this.error(id); });
       break;
 
     case ADD_TEXTURE:
@@ -88,36 +147,39 @@ function EditReducer(id, cible, action) {
         type: 'POST',
         contentType: false,
         processData: false,
-      }
+        success: (d) => {
+          handleNewsfeed(d.name, d.user, d._id, ADD_TEXTURE);
+        },
+      };
       $.ajax(options)
-        .done(function () { _this.finished(id) })
-        .fail(function () { _this.error(id) });
+        .done(() => { _this.finished(id); })
+        .fail(() => { _this.error(id); });
       break;
 
     case REMOVE_SPEC:
-      newRequest.open("DELETE", `/node/${nodeId}/spec/${cibledFile}`);
+      newRequest.open('DELETE', `/node/${nodeId}/spec/${cibledFile}`);
       newRequest.send();
       break;
 
     case REMOVE_TEXTURE:
       _this.launchConvert = true;
-      newRequest.open("DELETE", `/node/${nodeId}/Texture/${cibledFile}`);
+      newRequest.open('DELETE', `/node/${nodeId}/Texture/${cibledFile}`);
       newRequest.send();
       break;
 
     case REMOVE_3D:
       _this.launchConvert = true;
-      newRequest.open("DELETE", `/node/${nodeId}/3D/${cibledFile}`);
+      newRequest.open('DELETE', `/node/${nodeId}/3D/${cibledFile}`);
       newRequest.send();
       break;
 
     case ADD_ACCESS:
-      newRequest.open("POST", `/node/${nodeId}/access/${userId}`);
+      newRequest.open('POST', `/node/${nodeId}/access/${userId}`);
       newRequest.send();
       break;
 
     case REMOVE_ACCESS:
-      newRequest.open("DELETE", `/node/${nodeId}/access/${userId}`);
+      newRequest.open('DELETE', `/node/${nodeId}/access/${userId}`);
       newRequest.send();
       break;
   }

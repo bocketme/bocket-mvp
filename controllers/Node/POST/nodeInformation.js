@@ -7,8 +7,6 @@ module.exports = async function (req, res, next) {
     const { nodeId } = req.params;
     let { name, description } = req.body;
 
-    console.log(req.body);
-
     const node = await NodeModel.findById(nodeId);
 
     const { userId } = req.session;

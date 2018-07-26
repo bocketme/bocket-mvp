@@ -3,7 +3,6 @@ let store;
 
 socket.on("[Node] - Update Name", (id, name) => {
   const node = $(`#${id} > span.p-node`)
-  console.log(id, name, node);
   if (!node.hasClass("node-name"))
     node.html(name);
 })
@@ -14,7 +13,6 @@ $(document).ready(() => {
     if (this.readyState === 4) {
       if (this.status === 200) {
         const { info, files, workers, typeofNode } = JSON.parse(this.response);
-        console.log(typeofNode);
         store = new EditStore(info, files, workers, idOfchoosenNode, typeofNode);
       } else {
         Materialize.toast('Cannot Find the Node'),
