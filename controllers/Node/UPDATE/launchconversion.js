@@ -29,9 +29,12 @@ module.exports = async function launchConverstion(req, res, next) {
     if (!node)
       return next(NotFound('[Node] - Ressource Not Found'));
 
-    const content = node.type === NODE_TYPE.PART ?
-      await PartModel.findById(node.content) :
-      await AssemblyModel.findById(node.content);
+    let content;
+    
+    if (node.type === NODE_TYPE.PART)
+      content = await PartModel.findById(node.content);
+    else
+      content = await AssemblyModel.findById(node.content);
 
     const chemin = path.join(APP.FILES3D, content.path, CONTENT["3D"]);
 
