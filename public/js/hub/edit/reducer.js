@@ -14,7 +14,7 @@ function EditReducer(id, cible, action) {
 
   newRequest.onreadystatechange = function (event) {
     if (this.readyState === 4) {
-      if (this.status === 200)
+      if (this.status === 200) //Reponse correct du serveur
         _this.finished(id);
       else
         _this.error(id);
