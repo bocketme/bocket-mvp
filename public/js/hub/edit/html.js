@@ -1,18 +1,21 @@
-const editInfoRender = (id, title, description) =>
+const editInfoRender = (id, name, description) =>
   (`
   <div editNode="${id}" id="edit-id-information">
     <div>
       <div class="input-field col s4">
-          <input placeholder="${title}" id="edit-node-title" value="${title}" type="text" class="validate">
-          <label for="edit-node-title">Title</label>
+          <input placeholder="${name}" id="edit-node-name" value="${name}" type="text" class="validate">
+          <label for="edit-node-name">Title</label>
       </div>
       <div class="input-field col s12">
-        <textarea value="${description}" id="edit-node-description" class="materialize-textarea"></textarea>
+        <textarea id="edit-node-description" class="materialize-textarea">${description}</textarea>
         <label for="edit-node-description">Description</label>
       </div>
     </div>
   </div>
   `);
+
+const informAlright = `<i class="material-icons" style="color : green;">check</i>`
+const informError = `<i class="material-icons" style="color : red;">close</i>`
 
 const _extension3D = extensions3d.map(ext => '.' + ext);
 const _extensionsTextures = extensionsTextures.map(ext => '.' + ext);
@@ -72,7 +75,7 @@ const editWorkerRender = (id, userId, name, workHere) =>
       </div>
       <div class="switch col s1">
         <label>
-        <input editNode="${id}" type="checkbox" id="user-${id}" ${workHere ? `checked="checked"` : ''} class="user-node"  />
+        <input editNode="${id}" type="checkbox" id="user-${id}" ${workHere ? "checked" : ""} class="user-node"  />
           <span class="lever"></span>
         </label>
       </div>

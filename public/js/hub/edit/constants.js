@@ -21,3 +21,15 @@ const REMOVE_ACCESS = 5.2;
 const MODELES3D_FILES = "MODELES_3D_FILES";
 const TEXTURE_FILES = "TEXTURE_FILES"
 const SPECIFICATION_FILES = "SPECIFICATION";
+
+const convertRequest = new XMLHttpRequest();
+
+convertRequest.onreadystatechange = function () {
+  if (this.readyState === this.DONE) {
+    if (this.status === 200) {
+      //Update the Viewer
+      document.("[Viewer] - remove", { nodeId: idOfChoosenNode })
+      socket.emit("", idOfChoosenNode);
+    }
+  }
+}

@@ -2,7 +2,6 @@ let EditRequest = [];
 
 function EditReducer(id, cible, action) {
   const newRequest = new XMLHttpRequest();
-
   const _this = this;
 
   let options;
@@ -11,29 +10,32 @@ function EditReducer(id, cible, action) {
 
   const i = EditRequest[EditRequest.length - 1];
 
-  const { nodeId, cibledFile, file, userId, fileTypeMime, fileName } = cible
+  const { nodeId, cibledFile, file, userId } = cible
 
   newRequest.onreadystatechange = function (event) {
     if (this.readyState === 4) {
       if (this.status === 200)
         _this.finished(id);
       else
-        _this.error(id)
+        _this.error(id);
 
       EditRequest = EditRequest.filter((v, index) => i !== index);
-      this.inform();
     }
   }
 
   switch (action) {
+    default:
+      _this.changes--;
+      _this.verify();
+      break;
 
     case CHANGE_INFORMATION:
       $.post(`/node/${nodeId}/changeInfo`, {
-        "name": $("#edit-node-title").val(),
+        "name": $("#edit-node-name").val(),
         "description": $("#edit-node-description").val()
       })
-        .done(() => _this.verify(id))
-        .fail(() => _this.error(id));
+        .done(function () { _this.finished(id) })
+        .fail(function () { _this.error(id) });
       break;
 
     case TRANSFERT_3D_TO_SPEC:
@@ -60,6 +62,8 @@ function EditReducer(id, cible, action) {
         processData: false,
       }
       $.ajax(options)
+        .done(function () { _this.finished(id) })
+        .fail(function () { _this.error(id) });
       break;
 
     case ADD_3DFILE:
@@ -71,7 +75,9 @@ function EditReducer(id, cible, action) {
         contentType: false,
         processData: false,
       }
-      $.ajax(options);
+      $.ajax(options)
+        .done(function () { _this.finished(id) })
+        .fail(function () { _this.error(id) });
       break;
 
     case ADD_TEXTURE:
@@ -83,7 +89,9 @@ function EditReducer(id, cible, action) {
         contentType: false,
         processData: false,
       }
-      $.ajax(options);
+      $.ajax(options)
+        .done(function () { _this.finished(id) })
+        .fail(function () { _this.error(id) });
       break;
 
     case REMOVE_SPEC:
@@ -110,7 +118,7 @@ function EditReducer(id, cible, action) {
 
     case REMOVE_ACCESS:
       newRequest.open("DELETE", `/node/${nodeId}/access/${userId}`);
-      newRequest.send(form);
+      newRequest.send();
       break;
   }
 }

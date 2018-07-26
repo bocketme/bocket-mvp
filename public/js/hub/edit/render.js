@@ -1,7 +1,15 @@
 const getEditModalContent = new XMLHttpRequest();
 let store;
-$(document).ready(() => {
 
+socket.on("[Node] - Update Name", (id, name) => {
+  const node = $(`#${id} > span.p-node`)
+  console.log(id, name, node);
+  if (!node.hasClass("node-name"))
+    node.html(name);
+})
+
+$(document).ready(() => {
+  
   getEditModalContent.onreadystatechange = function (event) {
     if (this.readyState === 4) {
       if (this.status === 200) {
@@ -21,14 +29,21 @@ $(document).ready(() => {
         getEditModalContent.open('GET', `/node/${idOfchoosenNode}/information`);
         getEditModalContent.send();
       }
+    },
+    complete: function () {
+      socket.emit("nodeInformation", idOfchoosenNode);
+      socket.emit("[Node] - Update Name", idOfchoosenNode);
     }
   });
+
+  $("#exit-edit-modal").modal({ dismissible: false })
+  $("#edit-delete-modal").modal({ dismissible: false })
 
 
   //Stack CHANGE_INFORMATION
   $(document).on(
     'input',
-    '#edit-node-title , #edit-node-description',
+    '#edit-node-name , #edit-node-description',
     function (event) {
       if (store instanceof EditStore) { store.changeInfo(); }
     }
@@ -86,9 +101,8 @@ $(document).ready(() => {
   });
 
   $(document).on("click", "#edit-cancel", function (event) {
-    let generalState = store.inform();
     $("#edit-node").modal('close');
-    if (generalState)
+    if (store.cancel())
       $("#exit-edit-modal").modal('open');
   });
 
@@ -117,9 +131,10 @@ $(document).ready(() => {
   $(document).on('change', ".user-node", function (event) {
     if (!store instanceof EditStore) return null;
 
-    const id = $(this).attr('editNode');
+    const id = Number($(this).attr('editNode'));
     const checked = $(this).prop("checked");
-    if (checked) store.editWorker(id, checked);
+
+    if (checked) store.addWorker(id, checked);
     else store.removeWorker(id, checked);
   })
 

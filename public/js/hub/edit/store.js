@@ -3,6 +3,8 @@ class EditStore {
     this._id = 0;
     this.blocked = false;
 
+    $("#edit-worker-menu").show();
+
     this.store = [];
 
     this._type = type;
@@ -26,9 +28,12 @@ class EditStore {
 
     $("#edit-node-title").html(`${this._type === "part" ? "Edit Part" : "Edit Assembly"}`)
 
+    if (this._type !== "part")
+      $("#edit-worker-menu").hide(0);
+
     this.initializeTitle(info.name, info.description);
     files.forEach(({ name, extname, type }) => this.File(name, extname, type));
-    workers.forEach(({ userId, completeName, workHere }) => this.Worker(userId, completeName, workHere));
+    workers.forEach(({ _id, completeName, workHere }) => this.Worker(_id, completeName, workHere));
   }
 
   getId() { return this._id; }
@@ -50,8 +55,7 @@ class EditStore {
   removeStack(_id) { this.store = this.store.filter(({ id }) => _id !== id); }
 
   changeStatus(id, status) {
-    this.store = this.store
-      .map(store => store.id === id ? { ...store, status } : store);
+    this.store = this.store.map(store => store.id === id ? { ...store, status } : store);
   }
 
   initializeTitle(title, description = "") {
@@ -68,10 +72,10 @@ class EditStore {
 
   changeInfo() {
     const id = Number($("#edit-id-information").attr("editNode"));
-    const title = $("#edit-node-title").val();
+    const name = $("#edit-node-name").val();
     const description = $("#edit-node-description").val();
 
-    const changement = title === this._title && description === this._description
+    const changement = name === this._title && description === this._description
     this.changeStatus(id, changement ? 0 : 1)
   }
 
@@ -131,11 +135,14 @@ class EditStore {
     } else {
       switch (typeFile(extname)) {
         case MODELES3D_FILES:
-          return this.changeStatus(stack.id, REMOVE_3D);
+          this.changeStatus(stack.id, REMOVE_3D);
+          break;
         case TEXTURE_FILES:
-          return this.changeStatus(stack.id, REMOVE_TEXTURE);
+          this.changeStatus(stack.id, REMOVE_TEXTURE);
+          break;
         case SPECIFICATION_FILES:
-          return this.changeStatus(stack.id, REMOVE_SPEC);
+          this.changeStatus(stack.id, REMOVE_SPEC);
+          break;
         default:
           return null;
       }
@@ -196,10 +203,15 @@ class EditStore {
   Worker(userId, name, workHere) {
     this.incrementId();
 
+    const optionsWorkerProfile = {
+      userId
+    }
+
     const id = this.getId();
     this.addStack(id, NO_CHANGEMENT, { userId }, { workHere })
 
     $("div#edit-worker").append(editWorkerRender(id, userId, name, workHere));
+    $(`.profile[editNode=${id}]`).profile(optionsWorkerProfile)
   }
 
   /**
@@ -208,57 +220,62 @@ class EditStore {
    * @param {string} workHere
    * @memberof EditStore
    */
-  editWorker(id, workHere) {
+  addWorker(id, workHere) {
     const { initialState } = this.retrieveStack(id)
     const status = initialState.workingHere === workHere ? NO_CHANGEMENT : ADD_ACCESS;
     this.changeStatus(id, status);
   }
 
   save() {
-    this.store.forEach(stack => this.reducer(stack.id, stack.data, stack.status))
-
+    this.changes = this.store.length;
+    this.store.forEach(stack => this.reducer(stack.id, stack.data, stack.status));
   }
 
   finished(id) {
+    this.changes--;
     this._verify[id] = true;
+    $(`.informStatus[editNode="${id}"]`).html(informAlright);
     this.verify();
   }
 
   error(id, message = "") {
+    this.changes--;
     $("#edit-error-message").html(`<p class="center-align" style="color: red;">${message === "" ? "Some error occured, please correct them." : message}</p>`);
+    $(`.informStatus[editNode="${id}"]`).html(informError);
     this._verify[id] = false;
     this.verify();
   }
 
   verify() {
-    if (this._verify.length === this.changes) {
-      if (this.launchConvert) {
-        const convertRequest = new XMLHttpRequest();
-        convertRequest.open("PUT", `/node/${nodeId}/convert`);
-        convertRequest.send();
-      }  
-      if (!this.verify.includes(false))
-        $("#edit-node").modal("close");
+    if (this.changes !== 0) return null;
+
+    if (this.launchConvert) {
+      convertRequest.open("PUT", `/node/${nodeId}/convert`);
+      convertRequest.send();
     }
 
+    if (!this._verify.includes(false)) $("#edit-node").modal("close");
   }
 
   cancel() {
-    return this.store.find(({ status }) => status !== 0) === null || this.verify.includes(false);
+    return this.store.find(({ status }) => status !== 0) !== null || this._verify.includes(false);
   }
 
   inform() {
 
     $("#edit-error-message").html("");
     this._save.prop("disabled", false);
+    $(".file-ensemble").css("background-color", "inherit");
 
     if (this._type === "part") {
-      $(".file-ensemble").css("background-color", "inherit");
       const File = this._file.find("select");
       let files3D = [];
-      File.each(function () {
-        $(this).val() === MODELES3D_FILES && $(this).prop("disabled") === false ? files3D.push($(this)) : null
-      });
+
+      for (let i = 0; i < File.length; i++) {
+        if ($(File[i]).val() === MODELES3D_FILES && $(File[i]).prop("disabled") === false)
+          files3D.push($(File[i]));
+      }
+
       if (!(files3D.length === 1)) {
         files3D.forEach(file => $(file).parent(".file-ensemble").css("background-color", "red"));
         $("#edit-error-message").append(`<p class="center-align" style="color: red;">You can only have 1 3D Model, Please put the rest as a specification.</p>`);

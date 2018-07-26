@@ -20,6 +20,6 @@ router.put('/:nodeId/changeEmplacementFile/:file/SpecTo3D', UPDATE.transfertSpec
 router.delete('/:nodeId/3D/:file', DELETE.delete3D);
 router.delete('/:nodeId/Texture/:file', DELETE.deleteTexture);
 router.delete('/:nodeId/spec/:file', DELETE.deleteSpec);
-router.post('/:nodeId/Access/:userId', DELETE.deleteAccess);
+router.delete('/:nodeId/Access/:userId', DELETE.deleteAccess);
 
 module.exports = router;

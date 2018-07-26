@@ -56,12 +56,19 @@ WorkspaceSchema.methods.listNodeAccess = function (nodeId) {
   return Node ? Node.Users : [];
 }
 
+
 WorkspaceSchema.methods.addAccess = async function (nodeId, userId) {
   const i = this.Access.findIndex(({ Node }) => Node.equals(nodeId));
 
-  if (i < 0)
+  function hasadoublon(id) {
+    return id.equals(userId);
+  }
+
+  if (i >= 0) {
+    if (this.Access[i].Users.find(hasadoublon))
+      return this;
     this.Access[i].Users.push(userId);
-  else
+  } else
     this.Access.push({ Node: nodeId, Users: [userId] });
 
   return await this.save();
@@ -70,8 +77,8 @@ WorkspaceSchema.methods.addAccess = async function (nodeId, userId) {
 WorkspaceSchema.methods.removeAccess = async function (nodeId, userId) {
   const i = this.Access.findIndex(({ Node }) => Node.equals(nodeId));
 
-  if (i < 0)
-    this.Access = this.Access[i].Users.filter(user => !user.equals(userId));
+  if (i >= 0)
+    this.Access[i] = this.Access[i].Users.filter(user => !user.equals(userId));
   else
     throw new Error('Cannot find the userId');
 

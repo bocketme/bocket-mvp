@@ -50,7 +50,7 @@ async function information(req, res) {
         "Spec": [...await readdir(directory["Spec"])].map(file => ({ name: file, extname: path.extname(file), type: "SPECIFICATION" }))
       }
 
-      directoryFiles["3D"] = directoryFiles["3D"].filter(({extname}) => extname !== ".json");
+      directoryFiles["3D"] = directoryFiles["3D"].filter(({ extname }) => extname !== ".json");
 
       files = [...directoryFiles["3D"], ...directoryFiles["Spec"]];
     } else {
@@ -63,13 +63,22 @@ async function information(req, res) {
       files = [...await readdir(directory)].map(file => ({ name: file, type: "SPECIFICATION" }));
     }
 
-    const workHere = workspace.listNodeAccess(nodeId);
+    const workInNode = workspace.listNodeAccess(nodeId);
     const promises = workspace.users.map(userId => userModel.findById(userId).select('completeName').exec());
-    const workers = await Promise.all(promises);
+    const userList = await Promise.all(promises);
+
+    const workers = userList.map(worker => {
+      function findWorker(workId) {
+        return workId.equals(worker._id)
+      }
+      const workHere = workInNode.find(findWorker);
+      return ({ ...worker.toObject(), workHere })
+    })
+
 
     res.json({
       files,
-      workers: workers.map(worker => ({ ...worker.toObject(), workHere: _.includes(workHere, worker) })),
+      workers,
       info: {
         name: node.name,
         description: node.description

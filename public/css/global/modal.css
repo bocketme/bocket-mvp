@@ -32,19 +32,29 @@
 }
 
 .edit-node-file-close {
-  color: #ff2e63;
   margin-bottom: 5px;
   padding-right: 10px;
 }
 
+.edit-node-file-close {
+  color: black;
+}
+
+.edit-node-file-close:hover {
+  color: #ff2e63;
+}
+
+.edit-node-file-close.active:hover {
+  color: #29B335;
+}
+
 .edit-node-file-close > i::after {
-  color: red;
+  color: inherit;
   font-family: "Material Icons";
   content: "highlight_off";
 }
 
 .edit-node-file-close.active > i::after {
-  color: #29B335;
   font-family: "Material Icons";
   content: "restore_page";
 }

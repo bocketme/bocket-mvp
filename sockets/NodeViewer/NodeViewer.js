@@ -14,7 +14,7 @@ module.exports = class NodeManager {
   /**
    * Creates an instance of NodeManager.
    */
-  constructor() {
+  constructor () {
     this.nodeEmitter = new EventEmitter();
   }
 
@@ -50,9 +50,7 @@ module.exports = class NodeManager {
   }
 
   async update(nodeId) {
-    const node = await nodeSchema.findOne({
-      'children._id': nodeId,
-    }).catch(errLog);
+    const node = await nodeSchema.findOne({ 'children._id': nodeId }).catch(errLog);
     await this.loadNode(nodeId, node, true);
     return null;
   }

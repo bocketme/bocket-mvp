@@ -34,13 +34,12 @@ async function deleteSpec(req, res) {
   if (node.type === nodeTypeEnum.part) {
     content = await partModel.findById(node.content);
     if (!content) return res.status(404).send("Part Not Found");
-  } else if (type === nodeTypeEnum.assembly) {
+  } else if (node.type === nodeTypeEnum.assembly) {
     content = await assemblyModel.findById(node.content);
     if (!content) return res.status(404).send("Assembly Not Found");
   }
 
-
-  const chemin = path.join(config.files3D, part.path, partFileSystem.spec);
+  const chemin = path.join(config.files3D, content.path, partFileSystem.spec);
 
   try {
     await deleteFile(path.join(chemin, file))

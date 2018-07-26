@@ -26,7 +26,7 @@ module.exports = async function (req, res, next) {
     if (!content.path)
       return next(NotFound('[NODE CONTENT] - Not Found'));
 
-    const chemin = path.join(APP.FILES3D, content.path, CONTENT["3D"]);
+    const chemin = path.join(APP.FILES3D, content.path, CONTENT["SPEC"]);
 
     await promiseWriteFile(path.join(chemin, specFile.originalname), specFile.buffer.toString());
     res.status(200).send('ok');
