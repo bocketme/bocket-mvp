@@ -2,8 +2,7 @@ class EditStore {
   constructor (info, files, workers, nodeId, type) {
     this._id = 0;
     this.blocked = false;
-
-    $("#edit-worker-menu").show();
+    $("#edit-worker-menu").hide(0);
 
     this.store = [];
 
@@ -28,8 +27,6 @@ class EditStore {
 
     $("#edit-node-title").html(`${this._type === "part" ? "Edit Part" : "Edit Assembly"}`)
 
-    if (this._type !== "part")
-      $("#edit-worker-menu").hide(0);
 
     this.initializeTitle(info.name, info.description);
     files.forEach(({ name, extname, type }) => this.File(name, extname, type));
@@ -211,7 +208,7 @@ class EditStore {
     this.addStack(id, NO_CHANGEMENT, { userId }, { workHere })
 
     $("div#edit-worker").append(editWorkerRender(id, userId, name, workHere));
-    $(`.profile[editNode=${id}]`).profile(optionsWorkerProfile)
+    $(`.profile[editNode=${id}]`).initial(optionsWorkerProfile)
   }
 
   /**
@@ -234,6 +231,7 @@ class EditStore {
   finished(id) {
     this.changes--;
     this._verify[id] = true;
+    this.changeStatus(id, 0);
     $(`.informStatus[editNode="${id}"]`).html(informAlright);
     this.verify();
   }
@@ -250,7 +248,7 @@ class EditStore {
     if (this.changes !== 0) return null;
 
     if (this.launchConvert) {
-      convertRequest.open("PUT", `/node/${nodeId}/convert`);
+      convertRequest.open("PUT", `/node/${idOfchoosenNode}/convert`);
       convertRequest.send();
     }
 

@@ -13,6 +13,7 @@ const { APP, CONTENT } = CHEMIN;
 module.exports = async function (req, res, next) {
   try {
     const { nodeId } = req.params;
+    const { userId } = req.session;
     const specFile = req.file;
     const node = await NodeModel.findById(nodeId);
 

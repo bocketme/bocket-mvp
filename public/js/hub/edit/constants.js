@@ -28,8 +28,8 @@ convertRequest.onreadystatechange = function () {
   if (this.readyState === this.DONE) {
     if (this.status === 200) {
       //Update the Viewer
-      document.("[Viewer] - remove", { nodeId: idOfChoosenNode })
-      socket.emit("", idOfChoosenNode);
+      //document.("[Viewer] - remove", { nodeId: idOfChoosenNode })
+      //socket.emit("", idOfChoosenNode);
     }
   }
 }
