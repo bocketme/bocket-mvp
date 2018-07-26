@@ -75,7 +75,6 @@ UserSchema.pre('save', function (next) {
 UserSchema.pre('remove', async function () {
   try {
     const organizationSchema = require('./Organization');
-    const workspaceSchema = require('./Workspace');
     for (let i = 0; i < this.Manager.length; i++) {
       const manager = this.Manager[i];
 

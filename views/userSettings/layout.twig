@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        {% block meta %}{% endblock %}
+        <title>Bocket.me -
+            {{ title }}
+            Settings</title>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,500,600,300,800,900" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <link rel="stylesheet" href="/css/global.css">
+        <link rel="stylesheet" href="/css/listWorkspaces.css">
+        <link rel="stylesheet" href="/css/dropdown.css">
+        <link rel="stylesheet" href="/css/global/scrollbar.css">
+        <link rel="stylesheet" href="/css/settings/orga/main.css">
+        <link rel="stylesheet" href="/css/global/text.css">
+        <link rel="stylesheet" href="/css/global/button.css">
+        <link rel="stylesheet" href="/css/global/main.css">
+        <link rel="stylesheet" href="/css/global/modal.css">
+        <link rel="stylesheet" href="/css/global/sideNav.css">
+        <link rel="stylesheet" href="/css/settings/user/main.css">
+        <link rel="stylesheet" href="/css/settings/orga/invite.css">
+        {% block css %}{% endblock %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        <!--Import jQuery before materialize.js-->
+        <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script> -->
+        <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+        <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.js"></script>
+        <script type="application/javascript" src="/socket.io/socket.io.js"></script>
+        <script type="application/javascript" src="/js/initial.js"></script>
+        <script type="application/javascript">
+            var socket = io();
+            const CurrentOrganization = "{{ currentOrganization._id }}";
+            const CurrentUser = "{{currentUser._id}}"
+            $(document).ready(function () {
+                $('.collapsible').collapsible();
+            });
+        </script>
+        {% block js %}{% endblock %}
+        <script type="application/javascript" src="/js/app/listWorkspace.js"></script>
+        <script type="application/javascript" src="/js/settings/organization.js"></script>
+        <script type="application/javascript" src="/js/settings/workspace.js"></script>
+        <script type="application/javascript" src="/js/settings/deleteAccount.js"></script>
+        <script src="/js/hub/changePassword.js"></script>
+    </body>
+</html>

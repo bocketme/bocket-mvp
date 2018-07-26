@@ -24,7 +24,7 @@ module.exports = (io, socket) => {
       })
       .catch(err => {
         console.error(err);
-        socket.emit('Error', 'The annotation was not created');
+        socket.emit('Error', 'The Message was not send');
       });
   });
 };

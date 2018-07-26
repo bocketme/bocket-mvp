@@ -96,8 +96,8 @@ async function findNodeByIdAndRemove(id) {
 
   const parentNodes = await Node.find({ 'children._id': id });
 
-  function filterChildId({_id}) {
-    return ! _id.equals(node._id);
+  function filterChildId({ _id }) {
+    return !_id.equals(node._id);
   }
 
   for (let i = 0; i < parentNodes.length; i++) {

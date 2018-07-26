@@ -7,7 +7,6 @@ const log = require('../../utils/log');
 module.exports = (io, socket) => {
   socket.on('[Workspace] - remove', async (workspaceId, userId) => {
     try {
-      console.log(workspaceId)
 
       const currentUser = await userSchema.findById(socket.handshake.session.userId);
       if (!currentUser) throw new Error('[Workspace] - cannot find the user')
