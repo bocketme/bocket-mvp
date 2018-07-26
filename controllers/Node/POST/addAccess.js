@@ -20,7 +20,7 @@ async function addAccess(req, res) {
   
   try {
     await workspace.addAccess(nodeId, userId);
-    return res.status(200).send();
+    return res.json({name: node.name, _id: node._id, user: userId});
   } catch (error) {
     log.error(error);
     return res.status(500).send('Intern Error');

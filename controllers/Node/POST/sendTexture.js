@@ -32,7 +32,7 @@ module.exports = async function (req, res, next) {
     const chemin = path.join(APP.FILES3D, part.path, CONTENT["3D"]);
 
     await promiseWriteFile(path.join(chemin, textureFiles.originalname), textureFiles.buffer.toString());
-    return res.status(200).send('Ok');
+    return res.json({ name: node.name, _id: node._id, user: userId });
   } catch (err) {
     log.error(err);
     return next(InternalServerError('Cannot operate this request'))

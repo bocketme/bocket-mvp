@@ -21,6 +21,7 @@ function file3DFinder(files) {
 
 module.exports = async function launchConverstion(req, res, next) {
   try {
+    const { userId } = req.session;
     const { nodeId } = req.params;
 
     const node = NodeModel.findById(nodeId);
@@ -37,7 +38,7 @@ module.exports = async function launchConverstion(req, res, next) {
     const file3D = file3DFinder(await promiseReaddir(chemin));
 
     convert(path.join(chemin, file3D));
-    return res.status(200).send();
+    return res.json({ name: node.name, _id: node._id, user: userId });
   } catch (error) {
     log.error(error);
     return next(InternalServerError());

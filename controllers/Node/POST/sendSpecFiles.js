@@ -29,7 +29,7 @@ module.exports = async function (req, res, next) {
     const chemin = path.join(APP.FILES3D, content.path, CONTENT["SPEC"]);
 
     await promiseWriteFile(path.join(chemin, specFile.originalname), specFile.buffer.toString());
-    res.status(200).send('ok');
+    return res.json({ name: node.name, _id: node._id, user: userId });
   } catch (err) {
     log.error(err);
     return next(InternalServerError('Cannot operate this request'))

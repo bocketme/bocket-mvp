@@ -11,6 +11,8 @@ module.exports = async function (req, res, next) {
 
     const node = await NodeModel.findById(nodeId);
 
+    const { userId } = req.session;
+
     if (!node)
       return next(NotFound())
 
@@ -23,7 +25,7 @@ module.exports = async function (req, res, next) {
     }
 
     await node.save();
-    return res.status(200).send();
+    return res.json({ name: node.name, _id: node._id, user: userId });
   } catch (error) {
     log.error(error)
     return next(InternalServerError());

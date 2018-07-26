@@ -42,7 +42,7 @@ async function delete3D(req, res) {
   try {
     await deleteFile(path.join(chemin, file));
     await deleteFile(path.join(chemin, `${fileJson}.json`));
-    return res.status(200).send();
+    return res.json({name: node.name, _id: node._id, user: userId});
   } catch (error) {
     log.error(error);
     return res.status(500).send('Intern Error');

@@ -39,7 +39,7 @@ async function transfert3DToSpec(req, res) {
 
   try {
     await moveFile(path.join(chemin, partFileSystem.spec, file), path.join(chemin, partFileSystem.data, file));
-    return res.status(200).send();
+    return res.json({ name: node.name, _id: node._id, user: userId });
   } catch (error) {
     log.error(error);
     return res.status(500).send('Intern Error');
