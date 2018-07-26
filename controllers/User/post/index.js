@@ -1,3 +1,4 @@
 module.exports = {
-    changeInformation: require('./changeInformation')
-}
+  changeInformation: require('./changeInformation'),
+  changeAvatar: require('./image'),
+};

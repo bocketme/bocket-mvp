@@ -12,7 +12,9 @@
                 <div class="col s12">
                     <h5 class="center-align main-title">My Account</h5>
                     <div id="avatar-div" class="col s3 center-align">
-                        <img id="profile-picture" src="../img/vincent_mesquita.jpg" class="materialboxed circle">
+                        <div id="profile-picture">
+                            <img src="" class="materialboxed circle">
+                        </div>
                         <div id="input-img-div" class="file-field input-field" style="display: none">
                             <a class="waves-effect waves-light btn-small"><i class="material-icons right">photo</i>Change picture<input id="picture-input" type="file"></a>
                         </div>
@@ -65,15 +67,15 @@
                                 </div>
                                 <div class="collapsible-body">
                                     <div class="input-field height-separator">
-                                        <input id="user_password" type="text" class="validate">
+                                        <input id="user_password" type="password" class="validate">
                                         <label for="user_password">Current Password</label>
                                     </div>
                                     <div class="input-field height-separator">
-                                        <input id="user_new_password" type="text" class="validate">
+                                        <input id="user_new_password" type="password" class="validate">
                                         <label for="user_new_password">New Password</label>
                                     </div>
                                     <div class="input-field height-separator">
-                                        <input id="user_confirm_new_password" type="text" class="validate">
+                                        <input id="user_confirm_new_password" type="password" class="validate">
                                         <label for="user_confirm_new_password">Confirm new password</label>
                                     </div>
                                     <button id="change-password-btn" class="btn btn-valid">Change your password</button>
@@ -87,8 +89,8 @@
                         <a id="modify-user" class="btn btn-valid right" style="margin-right: 2%">Modify</a>
                     </div>
                     <div id="mode-modification" class="col s12" style="display: none;">
-                        <a id="accept-modify" class="btn btn-cancel left">Cancel</a>
-                        <a id="cancel-modify" class="btn btn-valid right" style="margin-right: 2%">Save</a>
+                        <a id="cancel-modify" class="btn btn-cancel left">Cancel</a>
+                        <a id="accept-modify" class="btn btn-valid right" style="margin-right: 2%">Save</a>
                     </div>
                 </div>
             </div>

@@ -580,7 +580,6 @@ function separatePart(event) {
     let idx = parent.id.indexOf('-');
     if (idx === -1) { return; }
     let id = Number(parent.id.slice(0, idx));
-    console.log(id, typeof id);
     let files = {
         files3d: [],
         textures: [],
@@ -589,13 +588,11 @@ function separatePart(event) {
     for (let i = 0; i < partsArray.length; i++) {
         const file = partsArray[i].files.files3d.find((elem) => { return elem._id === id });
         if (file) {
-            console.log(i, file);
             files.files3d.push(file.file);
             addPartInModalList(files);
             $(`#${id}-close-${partsArray[i]._id}`).click();
             return ;
         } else {
-            console.log(i, file);
         }
     }
 }
