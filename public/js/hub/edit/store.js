@@ -87,7 +87,6 @@ class EditStore {
 
     const id = this.getId();
 
-
     this.addStack(id, NO_CHANGEMENT, { cibledFile: name, extname }, { type });
 
     $("div#edit-file").append(editFileRender(id, name, extname, type, this._type));
@@ -115,22 +114,20 @@ class EditStore {
       this.addStack(id, ADD_SPEC, { file, fileTypeMime: data.type, fileName: data.name });
       $("div#edit-file").append(editFileRender(id, name, extname, SPECIFICATION_FILES, this._type));
       $(`select[editNode="${id}"]`).material_select();
-    } else if (typeof (data) === "number") {
+    } else if (typeof (data) === "number")
       this.tranfertFile(Number(data), $(`select[editNode=${data}]`).val())
-    }
+
     this.inform();
   }
 
   removeFile(id) {
     const stack = this.retrieveStack(id);
-
-    const { extname } = stack.data
-
+    
     if (Math.floor(stack.status) === 2) {
       $(`#edit-id-${id}`).remove();
       this.removeStack(id);
     } else {
-      switch (typeFile(extname)) {
+      switch (stack.initialState.type) {
         case MODELES3D_FILES:
           this.changeStatus(stack.id, REMOVE_3D);
           break;

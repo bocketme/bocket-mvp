@@ -7,18 +7,19 @@ async function changePasswordListener(userMail, { lastPassword, newPassword, con
 
   if (!user) return { error: 'Unknown user' };
 
-  if (newPassword.length < 6 || confirmPassword < 6 || newPassword !== confirmPassword) {
+  if (newPassword.length < 6 || confirmPassword.length < 6 || newPassword !== confirmPassword) {
     return { error: 'Invalid new password, please check the new and the confirm password' };
   } else if (await user.comparePassword(lastPassword, user.password) === false) {
     return { error: 'Invalid last password.' };
   }
   user.password = newPassword;
   await user.save();
-  return null;
+  return { valid: 'Password well changed' };
 }
 
 module.exports = (io, socket) => {
   socket.on(listenerName, (data) => {
+    console.log('CA PASSE');
     changePasswordListener(socket.handshake.session.userMail, data)
       .then(result => socket.emit(listenerName, result))
       .catch((err) => {

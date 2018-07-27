@@ -11,8 +11,6 @@ const optionStream = {
   autoClose: true
 };
 
-const converterInfo = log.child({ type: converter });
-
 async function create3DFile(chemin, file) {
   const filePath = path.join(chemin, partFileSystem.data, file.originalname);
   const file3D = fs.createWriteStream(filePath, optionStream);

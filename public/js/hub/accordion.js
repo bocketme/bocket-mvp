@@ -56,7 +56,7 @@ $(() => {
 });
 
 const headerTitle = new class HeaderTitle {
-  constructor() {
+  constructor () {
     this.title = $('#node-title');
     this.breadcrumb = document.getElementById('node-breadcrumb');
   }
@@ -156,6 +156,8 @@ function loadNodeInformation(event) {
 }
 
 socket.on('[Node] - Delete', (nodeId) => {
+  $('#specs-collection').empty();
+  $('#notes-collection').empty();
   if ($(`#${nodeId}-body`).length) {
     $('#news-feed').trigger('addNews', ['ASSEMBLY', 'DELETE', { _id: nodeId, name: $(`#${nodeId} > .p-node`).text() }, '']);
   } else {

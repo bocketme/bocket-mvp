@@ -3,18 +3,16 @@ let store;
 
 socket.on("[Node] - Update Name", (id, name) => {
   const node = $(`#${id} > span.p-node`)
-  console.log(id, name, node);
   if (!node.hasClass("node-name"))
     node.html(name);
 })
 
 $(document).ready(() => {
-  
+
   getEditModalContent.onreadystatechange = function (event) {
     if (this.readyState === 4) {
       if (this.status === 200) {
         const { info, files, workers, typeofNode } = JSON.parse(this.response);
-        console.log(typeofNode);
         store = new EditStore(info, files, workers, idOfchoosenNode, typeofNode);
       } else {
         Materialize.toast('Cannot Find the Node'),
@@ -23,14 +21,27 @@ $(document).ready(() => {
     }
   }
 
+  $(document).on('click', '.edit-part-btn', function (event) {
+    $("div#edit-info").html("");
+    $("div#edit-file").html("");
+    $("div#edit-worker").html("");
+    $("#edit-error-message").html("");
+  })
+
   $("#edit-node").modal({
     ready: function (modal, trigger) {
       if ($(trigger).hasClass("edit-part-btn")) {
+        $("div#edit-info").html("");
+        $("div#edit-file").html("");
+        $("div#edit-worker").html("");
+        $("#edit-error-message").html("");
         getEditModalContent.open('GET', `/node/${idOfchoosenNode}/information`);
         getEditModalContent.send();
       }
     },
     complete: function () {
+      $('#specs-collection').empty();
+      $('#notes-collection').empty();
       socket.emit("nodeInformation", idOfchoosenNode);
       socket.emit("[Node] - Update Name", idOfchoosenNode);
     }

@@ -4,7 +4,7 @@ module.exports = {
   NodeModel : require('./Node'),
   OrganizationModel : require('./Organization'),
   PartModel : require('./Part'),
-  TeamModel : require('./Team'),
+  // TeamModel : require('./Team'),
   UserModel : require('./User'),
   WorkspaceModel : require('./Workspace'),
 }

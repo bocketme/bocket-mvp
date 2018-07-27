@@ -20,9 +20,7 @@ $(document).ready(() => {
       $('#change-password').find('#error').text(data.error);
     else
     {
-        hideBox($('#change-password'), function () {
-            showBox($(workspacesPicker));
-        });
+
     }
   });
 

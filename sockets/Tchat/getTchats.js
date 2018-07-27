@@ -1,6 +1,12 @@
 const Workspace = require('../../models/Workspace');
 const User = require('../../models/User');
 
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+}
+
 module.exports = (io, socket) => {
   socket.on('[Tchat] - fetch', () => {
     Workspace
@@ -15,7 +21,15 @@ module.exports = (io, socket) => {
       .then(({ Tchats }) => {
         if (tchat) {
           const result = Tchats.find(elem => String(elem._id) === tchat);
-          socket.emit('[Tchat] - fetchById', result);
+          const start = async (res) => {
+            await asyncForEach(res.messages, async (msg) => {
+              const user = await User.findById(msg.author._id);
+              if (user)
+                msg.author.completeName = user.completeName;
+            });
+            socket.emit('[Tchat] - fetchById', res);
+          };
+          start(result);
         } else {
           socket.emit('[Tchat] - 404');
         }

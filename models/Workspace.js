@@ -1,4 +1,3 @@
-const serverConfiguration = require('../config/server');
 const mongoose = require('mongoose');
 const NestedTchat = require('./nestedSchema/NestedTchat');
 const NestedAnnotation = require('./nestedSchema/NestedAnnotation');
@@ -46,8 +45,6 @@ let WorkspaceSchema = new mongoose.Schema({
   // News Feed
   Newsfeed: { type: [NestedNewsfeed], default: []}
 });
-
-// TODO: DELETE ALL users attribute (workspace.users)
 
 WorkspaceSchema.virtual('users').get(function () {
   return [...this.ProductManagers, ...this.Teammates, ...this.Observers];
