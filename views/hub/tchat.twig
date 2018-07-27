@@ -1,13 +1,11 @@
 <div id="social-space">
     <div class="data-header-third-column row">
         <ul class="tabs">
-            <li class="tab col s3"><a class="active" href="#frame">Chat</a></li>
-            <li class="tab col s3"><a href="#news-feed">News Feed</a></li>
+            <li class="tab col s3"><a href="#news-feed" class="active">News Feed</a></li>
+            <li class="tab col s3"><a href="#frame">Chat</a></li>
         </ul>
     </div>
-    <div id="news-feed">
-        <p>This feature will be implemented soon... Please be patient :)</p>
-    </div>
+    {% include "/hub/newsfeed.twig" %}
     <div id="frame">
         <div id="sidepanel" class="col s3">
             <div id="profile">

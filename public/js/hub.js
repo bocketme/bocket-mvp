@@ -10,12 +10,15 @@
         document.getElementById('renderDiv').style.display = 'block';
         document.getElementById('header').style.display = 'block';
         document.getElementById('social-space').style.display = 'none';
+        document.getElementById('third_column_content').style.display = 'block';
         document.getElementById('show-social-space').classList.remove('active');
       } else {
         document.getElementById('renderDiv').style.display = 'none';
         document.getElementById('header').style.display = 'none';
         document.getElementById('social-space').style.display = 'block';
+        document.getElementById('third_column_content').style.display = 'none';
         document.getElementById('show-social-space').classList.add('active');
+        document.getElementById('show-notes').click();
       }
     });
 
@@ -27,9 +30,6 @@
       startingTop: '2%', // Starting top style attribute
       endingTop: '10%', // Ending top style attribute
       ready(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-        const context = `#${modal.context.id}`;
-        const form = $(context).find('form');
-        if (form[0] && modal.context.id !== 'edit-part') { form[0].reset(); }
       },
     });
     $('.collapsible').collapsible();
@@ -47,13 +47,10 @@
       endingTop: '10%', // Ending top style attribute
       ready(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
         if (idOfchoosenNode === undefined) {
-          Materialize.toast('Please select a Node first', 3000);
+          Materialize.toast('Please select an Assembly first', 3000);
           this.close();
-        } else {
-          const context = `#${modal.context.id}`;
-          const form = $(context).find('form');
-          if (form[0] && modal.context.id !== 'edit-part') { form[0].reset(); }
         }
+        handlePartsError();
       },
     });
 

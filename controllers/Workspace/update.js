@@ -7,7 +7,7 @@ const changeOption = async (req, res, next) => {
     if (!req.query || req.query === {})
       return next();
 
-    const { celShading, unit } = req.query;
+    const { celShading, unit, edgeHelper, TypeOfCamPers } = req.query;
     const user = await userSchema.findById(req.session.userId);
 
     if (!user)
@@ -15,8 +15,12 @@ const changeOption = async (req, res, next) => {
 
     if (celShading)
       user.options.celShading = celShading;
-    else if (unit)
+    if (unit)
       user.options.unit = unit;
+    if (edgeHelper)
+      user.options.edgeHelper = edgeHelper;
+    if (TypeOfCamPers)
+      user.options.TypeOfCamPers = TypeOfCamPers;
 
     await user.save();
     return next();

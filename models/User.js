@@ -35,6 +35,8 @@ const UserSchema = new mongoose.Schema({
     celShading: { type: Boolean, default: false },
     unit: { type: String, default: 'cm' },
     colorBackground: { type: String, default: "#e0e0e0" },
+    edgeHelper: { type: Boolean, default: false },
+    TypeOfCamPers: { type: Boolean, default: true },
   }
 });
 
@@ -44,7 +46,7 @@ UserSchema.methods.organizationOwner = async function () {
   for (let i = 0; i < this.Manager.length; i++) {
     const manager = this.Manager[i];
     const organization = await organizationSchema.findById(manager.Organization)
-    if (organization.isOwner(this._id)) owner.push({_id: organization._id, name: organization.name});
+    if (organization.isOwner(this._id)) owner.push({ _id: organization._id, name: organization.name });
   }
   return owner
 };
@@ -73,7 +75,6 @@ UserSchema.pre('save', function (next) {
 UserSchema.pre('remove', async function () {
   try {
     const organizationSchema = require('./Organization');
-    const workspaceSchema = require('./Workspace');
     for (let i = 0; i < this.Manager.length; i++) {
       const manager = this.Manager[i];
 
@@ -104,7 +105,7 @@ UserSchema.pre('remove', async function () {
  * @returns {Boolean}
  */
 UserSchema.methods.checkOrganization = function (organizationId) {
-  function userHasRights(manager) {
+  function userHasRights (manager) {
     return manager.Organization.equals(organizationId);
   }
   return this.Manager.some(userHasRights);
@@ -115,7 +116,7 @@ UserSchema.methods.checkOrganization = function (organizationId) {
  * @param {mongoose.Types.ObjectId} organizationId 
  */
 UserSchema.methods.findIndexOrganization = function (organizationId) {
-  function userOrganization({ Organization }) {
+  function userOrganization ({ Organization }) {
     return !!Organization.equals(organizationId);
   }
   return this.Manager.findIndex(userOrganization);
@@ -126,7 +127,7 @@ UserSchema.methods.findIndexOrganization = function (organizationId) {
  * @param {mongoose.Types.ObjectId} workspaceId
  */
 UserSchema.methods.checkWorkspace = function (workspaceId) {
-  function userHasRights(manager) {
+  function userHasRights (manager) {
     for (let i = 0; i < manager.Workspaces.length; i++) {
       const workspace = manager.Workspaces[i];
       if (workspace.equals(workspaceId)) return true;
@@ -159,7 +160,7 @@ UserSchema.methods.removeOrganization = async function (organizationId) {
 
   if (!isExisting) throw new Error("[Database] - [User] - [Magnager] - Cannot delete an organization that does not exists");
   else {
-    function findWorkspace({ Organization }) {
+    function findWorkspace ({ Organization }) {
       return Organization.equals(organizationId);
     }
     const { Workspaces } = this.Manager.find(findWorkspace);
@@ -171,7 +172,7 @@ UserSchema.methods.removeOrganization = async function (organizationId) {
       await workspace.removeUser(this._id, true);
     }
 
-    function filterOrganization({ Organization }) {
+    function filterOrganization ({ Organization }) {
       return !Organization.equals(organizationId);
     }
 
@@ -213,7 +214,7 @@ UserSchema.methods.removeWorkspace = async function (organizationId, workspaceId
   if (index === -1)
     throw new Error("[Database] - [User] - [Manager] - Cannot find the organization");
   else {
-    function isNotEqual(id) {
+    function isNotEqual (id) {
       const isEqual = id.equals(workspaceId);
       return !isEqual;
     }

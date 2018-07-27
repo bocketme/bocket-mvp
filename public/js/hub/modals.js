@@ -1,7 +1,7 @@
 
 $(document).ready(() => {
     $('select').material_select();
-    $('.tooltipped').tooltip({delay: 50});
+    $('.tooltipped').tooltip({delay: 1});
 });
 
 var partIdx = 0 // USED TO DIFFERENTIATE PARTS IN PartsArray;
@@ -11,14 +11,14 @@ var partsArray = []; // USED TO MANAGE PARTS AND FILES BEFORE SENDING THEM TO TH
 const defaultNodeValue = "Select a node";
 
 const extensions3d = [
-    'dae', 'obj', 'stl',
-    '3ds', 'fbx', 'lwo',
-    'lxo', 'x3d', 'off',
+  'dae', 'obj', 'stl',
+  '3ds', 'fbx', 'lwo',
+  'lxo', 'x3d', 'off',
 ];
 
 const extensionsTextures = [
-    'bmp', 'gif', 'jpg', 'jpeg',
-    'png', 'tga', 'tif', 'mtl',
+  'bmp', 'gif', 'jpg', 'jpeg',
+  'png', 'tga', 'tif', 'mtl',
 ]
 
 function nodeChildrenLoad(nodeId, html) {
@@ -80,10 +80,11 @@ function uploadFileToPart(nodeId, type, partId, file, arrId) {
                     fileUploadFailed(fileId);
                 }
             } else if (request.readyState === 3) {
-                $(`${fileId}-file > upload-div`).css('visibility', 'visible');
-                $(`${fileId}-file > upload-div > .preloader-wrapper`).show();
-                $(`${fileId}-file > upload-div > .reload-btn`).hide();
-                $(`${fileId}-file > upload-div > .upload-completed`).hide();
+                $(`#${fileId}-upload-div`).css('visibility', 'visible');
+                $(`#${fileId}-upload-div > .preloader-wrapper`).show();
+                $(`#${fileId}-upload-div > .reload-btn`).hide();
+                $(`#${fileId}-upload-div > .upload-completed`).hide();
+                $(`#${fileId}-upload-div > .separate-part-btn`).hide();
             }
         }
     }
@@ -120,6 +121,7 @@ function fileUploadFailed(idFile) {
     $(`#${idFile}-upload-div > .preloader-wrapper`).hide();
     $(`#${idFile}-upload-div > .reload-btn`).show();
     $(`#${idFile}-upload-div > .upload-completed`).hide();
+    $(`#${fileId}-upload-div > .separate-part-btn`).hide();
 }
 
 function partUploaded(id) {
@@ -183,6 +185,7 @@ function fileUploaded(arrId, type, idFile) {
     $(`#${idFile}-upload-div > .preloader-wrapper`).hide();
     $(`#${idFile}-upload-div > .reload-btn`).hide();
     $(`#${idFile}-upload-div > .upload-completed`).show();
+    $(`#${fileId}-upload-div > .separate-part-btn`).hide();
 }
 
 function uploadParts() {
@@ -193,12 +196,13 @@ function uploadParts() {
         var sub_level = $("#" + nodeId).contents().filter("span.p-node").attr("data-sublevel");
         var breadcrumb = $("#" + nodeId).contents().filter("span.p-node").attr("data-breadcrumbs");
 
-        var helperFunc=function(arrIndex, files, itemId) {
+        var helperFunc=function(arrIndex, files, itemId, name) {
             return function() {
                 if(postRequest[arrIndex].readyState === 4) {
                     if (postRequest[arrIndex].status === 200) {
                         const res = JSON.parse(postRequest[arrIndex].response);
                         const { nodeId, partId } = res;
+                        $('#news-feed').trigger('addNews', ['PART', 'ADD', { _id: nodeId, name }, '']);
                         sendFilesToPart(nodeId, partId, files, itemId);
                         nodeChildrenLoad(nodeId, res.html);
                         partUploaded(itemId);
@@ -209,16 +213,20 @@ function uploadParts() {
                         Materialize.toast("The selected node is not an assembly", 1000);
                     }
                 } else if (postRequest[arrIndex].readyState === 3) {
+                    // ERROR MESSAGES
                 }
             }
         }
-
         for (var i = 0; i < partsArray.length; i++) {
 
             if (!partsArray[i].isUpload) {
                 postRequest[i] = new XMLHttpRequest();
                 const partId = partsArray[i]._id;
-                postRequest[i].onreadystatechange=helperFunc(i, partsArray[i].files, partsArray[i]._id);
+                let name =  $(`#${partId}_part_name`).val();
+                if (name.length > 35)
+                    name = name.substring(0, 35);
+                const description = $(`#${partId}_part_description`).val();
+                postRequest[i].onreadystatechange=helperFunc(i, partsArray[i].files, partsArray[i]._id, name);
 
                 postRequest[i].addEventListener("error", function (event) {
                     Materialize.toast("The Part was not created", 1000);
@@ -229,11 +237,10 @@ function uploadParts() {
 
                 postRequest[i].open('POST', '/part/' + nodeId, true);
                 postRequest[i].setRequestHeader("Content-Type", "application/json");
-                const name =  $(`#${partId}_part_name`).val();
-                const description = $(`#${partId}_part_description`).val();
                 partsArray[i].name = name;
                 postRequest[i].send(JSON.stringify({ name, description, sub_level, breadcrumb }));
             }
+            $('#upload-parts-btn').addClass('disabled');
         }
     } else {
         Materialize.toast("You must select a node", 1000);
@@ -272,10 +279,11 @@ function handleChangeFile3d(event) {
     if (value === 'specs') {
         idxToChange = part.files.files3d.findIndex((element) => { return element.file.name === fileName;});
         if (idxToChange !== -1) {
-            part.files.specs.push(part.files.files3d[idxToChange])
+            $(`#${part.files.files3d[idxToChange]._id}-upload-div > .separate-part-btn`).hide();
+            part.files.specs.push(part.files.files3d[idxToChange]);
             part.files.files3d.splice(idxToChange, 1);
         } else {
-            console.error('COuld not find file');
+            console.error('Could not find file');
         }
     } else if (value === 'files3d') {
         idxToChange = part.files.specs.findIndex((element) => { return element.file.name === fileName;});
@@ -326,15 +334,15 @@ function appendFileToList(idPart, file, fileType) {
     if (fileType === 'file3d') {
         return `<li id="${fileId}-file" class="file_list_item row file3d" >` +
             `                    <a id="${fileId}-close-${idPart}" class="material-icons close-files col s1">highlight_off</a>` +
-            `                    <span class="part_file_name col s3">${file.name}</span>` +
+            `                    <span class="part_file_name col s5 l3 truncate">${file.name}</span>` +
             `                    <span class="${idPart}-file3d-error error-msg col s5 red-text text-darken-2" ></span>` +
-            '                    <div class="input-field col s2 select-file3d">' +
+            '                    <div class="input-field col s4 l2 select-file3d">' +
             `                        <select id="${file.name}-${fileId}_${idPart}" onchange="handleChangeFile3d(event)">` +
             '                            <option value="files3d" selected>3d file</option>' +
             '                            <option value="specs">Spec file</option>' +
             '                        </select>' +
             '                    </div>' +
-            `                    <div id="${fileId}-upload-div" class="upload-div col s1">` +
+            `                    <div id="${fileId}-upload-div" class="upload-div col s3 l1">` +
             '                       <div class="upload-completed"><i class="material-icons">check</i></div>\n' +
             '                       <div class="preloader-wrapper small active">' +
             '                       <div class="spinner-layer spinner-blue-only">' +
@@ -348,20 +356,21 @@ function appendFileToList(idPart, file, fileType) {
             '                           </div>' +
             '                       </div>' +
             '                       <a class="reload-btn material-icons">cached</a>' +
+            '                       <a class="btn btn-normal separate-part-btn"><i class="material-icons">library_add</i></a>' +
             '                   </div>' +
             '                </li>'
     } else if (fileType === 'textures') {
         return `                <li id="${fileId}-file" class="file_list_item row texture" >` +
             `                    <a id="${fileId}-close-${idPart}" class="material-icons close-files col s1">highlight_off</a>` +
-            `                    <span class="part_file_name col s3">${file.name}</span>` +
+            `                    <span class="part_file_name col s5 l3 truncate">${file.name}</span>` +
             `                    <span class="${idPart}-texture-error error-msg col s5 red-text text-darken-2" ></span>` +
-            '                    <div class="input-field col s2 select-texture">' +
+            '                    <div class="input-field col s4 l2 select-texture">' +
             `                        <select id="${file.name}-${fileId}_${idPart}" onchange="handleChangeTexture(event)">` +
             '                            <option value="textures" selected>Texture file</option>' +
             '                            <option value="specs">Spec file</option>' +
             '                        </select>' +
             '                    </div>' +
-            `                    <div id="${fileId}-upload-div" class="upload-div col s1">` +
+            `                    <div id="${fileId}-upload-div" class="upload-div col s3 l1">` +
             '                       <div class="upload-completed"><i class="material-icons">check</i></div>' +
             '                       <div class="preloader-wrapper small active">' +
             '                       <div class="spinner-layer spinner-blue-only">' +
@@ -380,14 +389,14 @@ function appendFileToList(idPart, file, fileType) {
     } else {
         return `<li id="${fileId}-file" class="file_list_item row texture">` +
             `                    <a id="${fileId}-close-${idPart}" class="material-icons close-files col s1">highlight_off</a>` +
-            `                    <span class="part_file_name col s3">${file.name}</span>` +
+            `                    <span class="part_file_name col s5 l3">${file.name}</span>` +
             `                    <span class="${idPart}-specs-error error-msg col s5 red-text text-darken-2" ></span>` +
-            '                    <div class="input-field col s2 select-spec">' +
+            '                    <div class="input-field col s4 l2 select-spec">' +
             `                        <select id="${file.name}-${fileId}_${idPart}" disabled>` +
             '                            <option value="specs" disabled selected>Spec file</option>' +
             '                        </select>' +
             '                    </div>' +
-            `                    <div id="${fileId}-upload-div" class="upload-div col s1">` +
+            `                    <div id="${fileId}-upload-div" class="upload-div col s3 l1">` +
             '                       <div class="upload-completed"><i class="material-icons">check</i></div>' +
             '                       <div class="preloader-wrapper small active">' +
             '                       <div class="spinner-layer spinner-blue-only">' +
@@ -407,11 +416,17 @@ function appendFileToList(idPart, file, fileType) {
 
 }
 
+function reinitFilesBtn(idx) {
+    for (let i = 0; i < partsArray[idx].files.files3d.length; i++) {
+        $(`#${partsArray[idx].files.files3d[i]._id}-upload-div > .separate-part-btn`).show();
+    }
+}
+
 function handlePartsError() {
     var isEnabled = true;
-    for (var i = 0; i < partsArray.length; i++) {
-        var idx = partsArray[i]._id;
-        var files = partsArray[i].files;
+    for (let i = 0; i < partsArray.length; i++) {
+        let idx = partsArray[i]._id;
+        let files = partsArray[i].files;
         (idx % 2 === 0 ? $(`#${idx}-part`).removeClass('red lighten-4'): $(`#${idx}-part`).removeClass('red lighten-5'));
         if (idx % 2 === 0) { $(`#${idx}-part`).removeClass('grey lighten-3') }
         if (files.files3d.length === 0) {
@@ -423,10 +438,13 @@ function handlePartsError() {
             $(`.${idx}-file3d-error`).text('Error: You must have only one 3d file by part');
             isEnabled = false;
             (idx % 2 === 0 ? $(`#${idx}-part`).addClass('red lighten-4'): $(`#${idx}-part`).addClass('red lighten-5'));
+            reinitFilesBtn(i);
         } else {
             $(`#${idx}-error`).text('');
             $(`.${idx}-file3d-error`).text('');
             if (idx % 2 === 0) { $(`#${idx}-part`).addClass('grey lighten-3') }
+            $(`#${files.files3d[0]._id}-upload-div > .separate-part-btn`).hide();
+
         }
     }
     if (!isEnabled) {
@@ -447,8 +465,8 @@ function addPartInModalList(files) {
             '             <div class="row">' +
             `             <a id="${partIdx}-close" class="material-icons close-files left" >highlight_off</a>` +
             '                 <div class="input-field col s6" style="display: inline-block">' +
-            (files.files3d.length ? `<input id="${partIdx}_part_name" type="text" class="validate part_name" value="${getFileName(files.files3d[0].name)}">` : `<input id="${partIdx}_part_name" type="text" class="validate part_name" value="">`) +
-            '                 </div>' +
+            (files.files3d.length ? `<input id="${partIdx}_part_name" type="text" class="validate part_name" value="${getFileName(files.files3d[0].name)}" data-length="35">` : `<input id="${partIdx}_part_name" type="text" class="validate part_name" value="" data-length="35">`) +
+            `                 <label for="${partIdx}_part_name"></label></div>` +
             '                 <div class="part-content"><div class="input-field col s12">' +
             `                     <textarea id="${partIdx}_part_description" class="materialize-textarea"></textarea>` +
             '                     <label for="part_description">Description</label>' +
@@ -456,7 +474,7 @@ function addPartInModalList(files) {
             `                 <div class="center-align"><span id="${partIdx}-error" class="part-error error-msg col s12 red-text text-darken-2"></span></div>` +
             `                 <ul id="${partIdx}_files_list" class="files-list">` +
             '                 </ul>' +
-            '                 <div class="btn btn-file file-field input-field col s2 hoverable">' +
+            '                 <div class="btn btn-file file-field input-field col s6 m6 l2 hoverable">' +
             '                     <span>Add files</span>' +
             `                     <input id="add-files-${partIdx}" type="file" multiple name="partFiles">` +
             '                 </div></div>' +
@@ -464,6 +482,7 @@ function addPartInModalList(files) {
             '        </li>';
 
         $('#parts_list').append(html);
+        $(`input#${partIdx}_part_name`).characterCounter();
 
 
         $(`#add-files-${partIdx}`).on('change', (event) => {
@@ -550,22 +569,58 @@ function addFileToPart(idPart, file, idFile, type) {
     }
 }
 
+function initializeUploadDiv(id, type) {
+    if (type === 'file3d') {
+        $(`#${id}-upload-div > .preloader-wrapper`).hide();
+        $(`#${id}-upload-div > .reload-btn`).hide();
+        $(`#${id}-upload-div > .upload-completed`).hide();
+    } else {
+        $(`#${id}-upload-div`).css('visibility', 'hidden');
+    }
+}
+
+function separatePart(event) {
+    const elem = $(event.target);
+    const parent = elem.parent()[0];
+    let idx = parent.id.indexOf('-');
+    if (idx === -1) { return; }
+    let id = Number(parent.id.slice(0, idx));
+    let files = {
+        files3d: [],
+        textures: [],
+        specs: []
+    };
+    for (let i = 0; i < partsArray.length; i++) {
+        const file = partsArray[i].files.files3d.find((elem) => { return elem._id === id });
+        if (file) {
+            files.files3d.push(file.file);
+            addPartInModalList(files);
+            $(`#${id}-close-${partsArray[i]._id}`).click();
+            return ;
+        }
+    }
+}
+
 function linkFilesToList(idPart, files) {
-    for (var idx = 0; idx < files.files3d.length; idx++) {
+    for (let idx = 0; idx < files.files3d.length; idx++) {
         $(`#${idPart}_files_list`).append(appendFileToList(idPart, files.files3d[idx], 'file3d'));
         addFileToPart(idPart, files.files3d[idx], fileId,'file3d');
-        $(`#${fileId}-upload-div`).css('visibility', 'hidden');
+        $('.tooltipped').tooltip();
+        initializeUploadDiv(fileId, 'file3d');
 
         $(`#${fileId}-close-${idPart}`).on('click', (event) => {
             removeFile(event);
         });
+        $(`#${fileId}-upload-div > .separate-part-btn`).on('click', (event) => {
+            separatePart(event);
+        });
 
         fileId++;
     }
-    for (var idx = 0; idx < files.textures.length; idx++) {
+    for (let idx = 0; idx < files.textures.length; idx++) {
         $(`#${idPart}_files_list`).append(appendFileToList(idPart, files.textures[idx], 'textures'));
         addFileToPart(idPart, files.textures[idx], fileId,'texture');
-        $(`#${fileId}-upload-div`).css('visibility', 'hidden');
+        initializeUploadDiv(fileId, 'texture');
 
         $(`#${fileId}-close-${idPart}`).on('click', (event) => {
             removeFile(event);
@@ -573,11 +628,10 @@ function linkFilesToList(idPart, files) {
 
         fileId++;
     }
-    for (var idx = 0; idx < files.specs.length; idx++) {
+    for (let idx = 0; idx < files.specs.length; idx++) {
         $(`#${idPart}_files_list`).append(appendFileToList(idPart, files.specs[idx], 'specs'));
         addFileToPart(idPart, files.specs[idx], fileId,'spec');
-        $(`#${fileId}-upload-div`).css('visibility', 'hidden');
-
+        initializeUploadDiv(fileId, 'spec');
 
         $(`#${fileId}-close-${idPart}`).on('click', (event) => {
             removeFile(event);
@@ -594,6 +648,9 @@ function createPartInForm(event) {
     if (cible !== defaultNodeValue.title) {
         const nodeId = idOfchoosenNode;
         const files = parseFormFiles(document.getElementById('import-part-files').files);
+        if (!files.textures.length && !files.files3d.length && !files.specs.length) {
+            return;
+        }
         addPartInModalList(files);
         if (files.files3d.length) {
             if (files.files3d.length !== 1) {
@@ -648,10 +705,6 @@ function createPartInForm(event) {
 
         });
 
-        // Submit the insertion of a new part
-        $('#submit-import-part').click((event) => {
-        });
-
         // Submit the insert of
         $('#submit-import-assembly').click(event => {
             event.preventDefault();
@@ -664,23 +717,29 @@ function createPartInForm(event) {
                     sub_level = $("#" + nodeId).contents().filter("span").attr("data-sublevel"),
                     breadcrumb = $("#" + nodeId).contents().filter("span").attr("data-breadcrumbs");
 
-
                 formdata.append("sub_level", sub_level);
                 formdata.append("breadcrmb", breadcrumb);
+                const name = formdata.get('name');
 
-                postRequest.addEventListener("load", (reqEvent) => {
-                    if (postRequest.readyState === postRequest.DONE) {
-                        if (postRequest.status === 200) {
-                            $('#' + nodeId + '-body').html(postRequest.response);
-                            var element = document.querySelectorAll('.three-node');
-                            $(element).click(loadNodeInformation);
-                        } else if (postRequest.status === 404) {
-                            Materialize.toast("Not Found", 1000);
-                        } else if (postRequest.status === 401) {
-                            Materialize.toast("The selected node is not an assembly", 1000);
+                var handleErrorsFct = function (name) {
+                    return function () {
+                        if (postRequest.readyState === postRequest.DONE) {
+                            if (postRequest.status === 200) {
+                                $('#' + nodeId + '-body').html(postRequest.response);
+                                var element = document.querySelectorAll('.three-node');
+                                $(element).click(loadNodeInformation);
+                                $('#news-feed').trigger('addNews', ['ASSEMBLY', 'ADD', { _id: nodeId, name }, '']);
+                            } else if (postRequest.status === 404) {
+                                Materialize.toast("Not Found", 1000);
+                            } else if (postRequest.status === 401) {
+                                Materialize.toast("The selected node is not an assembly", 1000);
+                            }
                         }
                     }
-                }, false);
+                };
+
+                postRequest.onreadystatechange = handleErrorsFct(name);
+
                 postRequest.addEventListener("error", function (event) {
                     Materialize.toast("The Part was not created", 1000);
                 }, false);

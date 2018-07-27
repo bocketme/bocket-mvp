@@ -14,8 +14,6 @@ router.get('/:workspaceId/listOrganization', controller.get.listOrganization);
 
 //Index ????? logIn + workspace REDIRECTION 
 router.post('/', controller.post.indexPost);
-//Create a new Workspace
-router.post('/:workspaceId');
 
 //Add organization Member to a workspace
 router.post('/:workspaceId/addOrganizationMember', controller.post.addOrganizationMember);

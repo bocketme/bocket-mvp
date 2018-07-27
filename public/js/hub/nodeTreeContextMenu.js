@@ -10,6 +10,8 @@ function removeNode() {
   if (!node.attr('id')) { node = node.parent('div.three-node'); }
   Materialize.toast('Deletion In Process', 1000);
   socket.emit('[Node] - Delete', node.attr('id'));
+  toggleMenuContextOff();
+  idOfchoosenNode = undefined;
 }
 
 /**

@@ -15,32 +15,32 @@ $(document).ready(() => {
 
 
   $('#show-notes').on({
-    mouseenter: function() {
+    mouseenter() {
       $('#show-notes img').attr('src', '/img/pin-hover.svg');
     },
-    mouseleave: function () {
+    mouseleave() {
       if (isHidden === true) {
         $('#show-notes img').attr('src', '/img/pin-normal.svg');
       } else {
         $('#show-notes img').attr('src', '/img/pin-selected.svg');
       }
     },
-    click: function () {
+    click() {
       const displayValue = document.getElementById('side-info').style.getPropertyValue('display');
       document.getElementById('side-info').style.display = (displayValue === 'block' ? 'none' : 'block');
-      isHidden = !isHidden;
+      isHidden = (displayValue === 'block' ? true : false);
       if (isHidden === true)
         $('#cancel-note-button').click();
       hideOrShowAnnotations();
       document.getElementById('side-details').style.display = 'none';
-    }
-  },'img');
+    },
+  }, 'img');
 
   $('#show-info').on({
-    mouseenter: function () {
+    mouseenter() {
       $('#show-info img').attr('src', '/img/details-hover.svg');
     },
-    mouseleave: function () {
+    mouseleave() {
       const displayValue = document.getElementById('side-details').style.getPropertyValue('display');
       if (displayValue === 'none') {
         $('#show-info img').attr('src', '/img/details-normal.svg');
@@ -48,15 +48,15 @@ $(document).ready(() => {
         $('#show-info img').attr('src', '/img/details-selected.svg');
       }
     },
-    click: function () {
+    click() {
       const displayValue = document.getElementById('side-details').style.getPropertyValue('display');
       document.getElementById('side-details').style.display = (displayValue === 'block' ? 'none' : 'block');
       document.getElementById('side-info').style.display = 'none';
       $('#cancel-note-button').click();
       isHidden = true;
       hideOrShowAnnotations();
-    }
-  },'img');
+    },
+  }, 'img');
 
   socket.on('[Annotation] - confirmAnnotation', (gettedAnnotation) => {
     if (gettedAnnotation !== null && gettedAnnotation !== undefined) {
@@ -72,6 +72,7 @@ $(document).ready(() => {
           addAnnotationCard(savedAnnotation);
         }
       }
+      $('#news-feed').trigger('addNews', ['ANNOTATION', 'ADD', { _id: gettedAnnotation._id, name: gettedAnnotation.title }, '']);
     }
   });
 
@@ -141,13 +142,12 @@ $(document).ready(() => {
     document.getElementById('note-card-form').style.display = 'none';
     reinitCardFormContent();
     document.getElementById('addNoteButton').classList.remove('active');
-//    document.getElementById('addNoteButton').style.backgroundColor = '#4A90E2';
+    //    document.getElementById('addNoteButton').style.backgroundColor = '#4A90E2';
     document.getElementById('add-note-icon').innerHTML = 'add';
     isAnnotationMode = false;
     HasClicked = false;
     socket.emit('[Annotation] - add', savedAnnotation);
   });
-
 });
 
 document.addEventListener('annotation3D-added', (e) => {
@@ -250,6 +250,7 @@ function addAnnotationCard(annotation) {
   }
   $(`#${annotation._id}`).on('click', () => {
     socket.emit('[Annotation] - remove', annotation);
+    $('#news-feed').trigger('addNews', ['ANNOTATION', 'DELETE', { _id: annotation._id, name: annotation.title }, '']);
   });
 
   socket.on('[Annotation] - remove', deletedAnnotation => {

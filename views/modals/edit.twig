@@ -1,0 +1,39 @@
+<!-- Modal Structure -->
+<div id="edit-node" class="modal modal-fixed-footer">
+    <div class="modal-content col s12">
+        <div class="col s10 offset-s1">
+            <h5 class="center-align title-bocket">
+                <span id="edit-node-title">EDIT</span>
+                <a class="modal-close" style="color: black;">
+                    <i class="material-icons right">highlight_off</i>
+                </a>
+            </h5>
+
+            <div id="edit-info-menu" class="col s12">
+                <h5 class="sub-title-bocket">General Information</h5>
+                <div id="edit-info" class="col s12"></div>
+            </div>
+
+            <div id="edit-file-menu" class="col s12">
+                <h5 class="sub-title-bocket">Files</h5>
+                <div id="edit-error-message" class="col s12"></div>
+                <div id="edit-file"></div>
+                <input id="edit-node-files-selection" type="file" style="display:none" multiple="multiple"/>
+                <button id="AddFile" style="margin-left: 1.5rem; margin-top: 3rem;" class="btn btn-file file-field input-field col s4 m4 l2 hoverable">Add FILES</button>
+            </div>
+
+            <div id="edit-worker-menu" class="col s12">
+                <h5 class="sub-title-bocket">Teammates who are working on this part</h5>
+                <div id="edit-worker"></div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="edit-delete" class="btn left btn-cancel">Delete</button>
+        <button id="edit-save" class="btn btn-valid">Save</button>
+        <button id="edit-cancel" class="btn btn-cancel">Cancel</button>
+    </div>
+</div>
+
+{% include './exit-edit-node.twig' %}
+{% include './delete-node.twig' %}

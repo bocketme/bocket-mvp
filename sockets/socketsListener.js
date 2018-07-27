@@ -16,6 +16,7 @@ const getCurrentUser = require('./getCurrentUser');
 const Invitation = require('./Invitation');
 const Workspace = require('./Workspace');
 const User = require('./User');
+const Newsfeed = require('./NewsFeed');
 
 const FSconfig = require('../config/FileSystemConfig');
 
@@ -50,6 +51,6 @@ module.exports = function (io) {
     getCurrentUser(io, socket);
     Invitation(io, socket);
     Workspace(io, socket);
-
+    Newsfeed(io, socket);
   });
 };

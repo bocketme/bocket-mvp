@@ -11,8 +11,6 @@ const optionStream = {
   autoClose: true
 };
 
-const converterInfo = log.child({ type: converter });
-
 async function create3DFile(chemin, file) {
   const filePath = path.join(chemin, partFileSystem.data, file.originalname);
   const file3D = fs.createWriteStream(filePath, optionStream);
@@ -22,9 +20,13 @@ async function create3DFile(chemin, file) {
   file3D.on('close', () => {
     console.log('in the if ');
     if (converter) {
-      const resultImport = converter.JSimport(filePath);
-      console.log('Import File 3D : ', resultImport);
-      converterInfo.info(resultImport);
+      return converter.JSimport(filePath);
+    }
+  });
+  file3D.on('finish', () => {
+    console.log('in the if ');
+    if (converter) {
+      return converter.JSimport(filePath);
     }
   });
 }

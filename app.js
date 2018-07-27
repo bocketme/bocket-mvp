@@ -64,13 +64,13 @@ try {
 
 mongoose.Promise = Promise;
 // Set up default mongoose connection
-mongoose.connect(config.mongoDB);
+mongoose.connect(config.mongoDB, { useNewUrlParser: true });
 
 // Get the default connection
 const db = mongoose.connection;
 
 // Bind connection to error event (to get notification of connection errors)
-db.on('error', log.error.bind(console, 'MongoDB connection error:'));
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.use(morgan('dev'));
 

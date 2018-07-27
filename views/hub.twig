@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/css/hub/invitePeople.css">
     <link rel="stylesheet" href="/css/hub/manageWorkspace.css">
     <link rel="stylesheet" href="/css/hub/tchat.css">
+    <link rel="stylesheet" href="/css/hub/newsfeed.css">
 {% endblock %}
 
 {% block title %}{{ title }}
@@ -63,11 +64,15 @@
 
                 <ul id="dropdown-settings-viewer" class="dropdown-content dropdown-nested">
                     <li class="option-node" id="cell-shading-button">
-                        <a class="dropdown-menu" href='?celShading={{optionViewer.celShading ? false : true}}'>
-                            Cel Shading
-                            {% if optionViewer.celShading == true %}
-                                <i class='material-icons' style="margin: 0;">check</i>
-                            {% endif %}
+                        <a class="dropdown-menu dropdown-button" href='#' data-activates='dropdown-settings-rendering' data-hover="hover" data-alignment="left">
+                            Rendering
+                            <i class='material-icons' style="float: right; margin: 0;">keyboard_arrow_right</i>
+                        </a>
+                    </li>
+                    <li class="option-node" id="cell-shading-button">
+                        <a class="dropdown-menu dropdown-button" href='#' data-activates='dropdown-settings-camera' data-hover="hover" data-alignment="left">
+                            Type Of Camera
+                            <i class='material-icons' style="float: right; margin: 0;">keyboard_arrow_right</i>
                         </a>
                     </li>
                     <li class="option-node" id="background-color">
@@ -104,6 +109,53 @@
                         </a>
                     </li>
                 </ul>
+                {% set celShading = optionViewer.celShading %}
+                {% set edgeHelper = optionViewer.edgeHelper %}
+                <ul id="dropdown-settings-rendering" class="dropdown-content">
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu" {% if not (celShading == false and edgeHelper == false) %} href="?celShading=false&edgeHelper=false" {% endif %}>
+                            Normal
+                            {% if (celShading == false and edgeHelper == false) %}
+                                <i class='material-icons' style="float: right; margin: 0;">check</i>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu" {% if not (celShading == true and edgeHelper == false) %} href="?celShading=true&edgeHelper=false" {% endif %}>
+                            Cel Shading without edges
+                            {% if (celShading == true and edgeHelper == false) %}
+                                <i class='material-icons' style="float: right; margin: 0;">check</i>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu" {% if not (celShading == true and edgeHelper == true) %} href="?celShading=true&edgeHelper=true" {% endif %}>
+                            Cel Shading with egdes
+                            {% if (celShading == true and edgeHelper == true) %}
+                                <i class='material-icons' style="float: right; margin: 0;">check</i>
+                            {% endif %}
+                        </a>
+                    </li>
+                </ul>
+                {% set TypeOfCamPers = optionViewer.TypeOfCamPers %}
+                <ul id="dropdown-settings-camera" class="dropdown-content">
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu" {% if not (TypeOfCamPers == true) %} href="?TypeOfCamPers=true" {% endif %}>
+                            Perspective
+                            {% if (TypeOfCamPers == true) %}
+                                <i class='material-icons' style="float: right; margin: 0;">check</i>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu" {% if not (TypeOfCamPers == false) %} href="?TypeOfCamPers=false" {% endif %}>
+                            Orthographic
+                            {% if (TypeOfCamPers == false) %}
+                                <i class='material-icons' style="float: right; margin: 0;">check</i>
+                            {% endif %}
+                        </a>
+                    </li>
+                </ul>
 
                 {# Modals #}
                 {#
@@ -116,7 +168,7 @@
                 {% include "modals/import_part.twig"%}
                 {% include "modals/import_assembly.twig" %}
                 {% include "modals/upload_files3d.twig" %}
-                {% include "modals/edit_part.twig" %}
+                {% include "modals/edit.twig" %}
                 {% include 'modals/organizationDeletion.twig' %}
                 {% include 'modals/organizationRemoved.twig' %}
                 {% include 'modals/workspaceRemoved.twig' %}
@@ -178,6 +230,7 @@
     <script>
         const workspaceId = "{{ in_use.id }}";
         let idOfchoosenNode = undefined;
+        let parentNodeId = undefined;
         const NodeTypeEnum = {{ NodeTypeEnum }};
         var ViewTypeEnum = {{ ViewTypeEnum }};
         const optionViewer = {{ optionViewer }};
@@ -196,19 +249,21 @@
     <script src="/js/hub/content.js"></script>
     <script src="/js/hub/location.js"></script>
     <script src="/js/hub/modals.js"></script>
+    <script src="/js/contextMenu.js"></script>
     <script src="/js/hub/specs.js"></script>
     <script src="/js/hub/notes.js"></script>
     <script src="/js/hub/invitePeople.js"></script>
-    <script src="/js/contextMenu.js"></script>
     <script src="/js/hub/nodeTreeContextMenu.js"></script>
     <script src="/js/initial.js"></script>
     <script src="/js/hub/actions.js"></script>
     <script src="/js/hub/changePassword.js"></script>
     <script src="/js/hub/tchat.js"></script>
+    <script src="/js/hub/newsfeed.js"></script>
     <script src="/js/settings/deleteAccount.js"></script>
     <script type="application/javascript" src="/js/nonAccess.js"></script>
     <script type="application/javascript">
         $('.profile').initial();
     </script>
     {% include "require_viewer.twig" %}
+    {% include "hub/requireEditNode.twig" %}
 {% endblock %}
