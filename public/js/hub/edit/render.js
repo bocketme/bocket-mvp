@@ -21,6 +21,13 @@ $(document).ready(() => {
     }
   }
 
+  $(document).on('click', '.edit-part-btn', function (event) {
+    $("div#edit-info").html("");
+    $("div#edit-file").html("");
+    $("div#edit-worker").html("");
+    $("#edit-error-message").html("");
+  })
+
   $("#edit-node").modal({
     ready: function (modal, trigger) {
       if ($(trigger).hasClass("edit-part-btn")) {
@@ -33,14 +40,8 @@ $(document).ready(() => {
       }
     },
     complete: function () {
-      
-      if ($(trigger).hasClass("edit-part-btn")) {
-        $("div#edit-info").html("");
-        $("div#edit-file").html("");
-        $("div#edit-worker").html("");
-        $("#edit-error-message").html("");
-      }
-
+      $('#specs-collection').empty();
+      $('#notes-collection').empty();
       socket.emit("nodeInformation", idOfchoosenNode);
       socket.emit("[Node] - Update Name", idOfchoosenNode);
     }
