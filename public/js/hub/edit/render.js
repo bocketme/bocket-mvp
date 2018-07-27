@@ -8,7 +8,7 @@ socket.on("[Node] - Update Name", (id, name) => {
 })
 
 $(document).ready(() => {
-  
+
   getEditModalContent.onreadystatechange = function (event) {
     if (this.readyState === 4) {
       if (this.status === 200) {
@@ -24,11 +24,23 @@ $(document).ready(() => {
   $("#edit-node").modal({
     ready: function (modal, trigger) {
       if ($(trigger).hasClass("edit-part-btn")) {
+        $("div#edit-info").html("");
+        $("div#edit-file").html("");
+        $("div#edit-worker").html("");
+        $("#edit-error-message").html("");
         getEditModalContent.open('GET', `/node/${idOfchoosenNode}/information`);
         getEditModalContent.send();
       }
     },
     complete: function () {
+      
+      if ($(trigger).hasClass("edit-part-btn")) {
+        $("div#edit-info").html("");
+        $("div#edit-file").html("");
+        $("div#edit-worker").html("");
+        $("#edit-error-message").html("");
+      }
+
       socket.emit("nodeInformation", idOfchoosenNode);
       socket.emit("[Node] - Update Name", idOfchoosenNode);
     }

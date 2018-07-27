@@ -9,6 +9,7 @@ const nodeTypeEnum = require('../../../enum/NodeTypeEnum');
 const log = require('../../../utils/log');
 const partFileSystem = require("../../../config/PartFileSystem");
 const _ = require('lodash');
+const { FILE_SUPPORTED } = require('../../../constants');
 
 const util = require('util');
 
@@ -46,8 +47,21 @@ async function information(req, res) {
       }
 
       const directoryFiles = {
-        "3D": [...await readdir(directory["3D"])].map(file => ({ name: file, extname: path.extname(file), type: "MODELES_3D_FILES" })),
-        "Spec": [...await readdir(directory["Spec"])].map(file => ({ name: file, extname: path.extname(file), type: "SPECIFICATION" }))
+        "3D": [...await readdir(directory["3D"])]
+          .map(file => {
+            return {
+              name: file,
+              extname: path.extname(file),
+              type: FILE_SUPPORTED.EXTENSION_3D.includes(path.extname(file).substring(1)) ? "MODELES_3D_FILES" : "TEXTURE_FILES"
+            }
+          }),
+        "Spec": [...await readdir(directory["Spec"])].map(file => {
+          return {
+            name: file,
+            extname: path.extname(file),
+            type: "SPECIFICATION"
+          }
+        })
       }
 
       directoryFiles["3D"] = directoryFiles["3D"].filter(({ extname }) => extname !== ".json");

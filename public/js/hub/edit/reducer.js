@@ -72,15 +72,14 @@ function EditReducer(id, cible, action) {
       break;
 
     case CHANGE_INFORMATION:
-      const sendData = {
-        name: $('#edit-node-name').val(),
-        description: $('#edit-node-description').val()
-      };
+      const name = $('#edit-node-name').val(),
+            description = $('#edit-node-description').val();
+      const sendData = JSON.stringify({ name, description });
       options = {
         url: `/node/${nodeId}/changeInfo`,
         data: sendData,
         type: 'POST',
-        contentType: false,
+        contentType: 'application/json',
         processData: false,
         success: (d) => {
           handleNewsfeed(d.name, d.user, d._id, CHANGE_INFORMATION);
@@ -92,11 +91,13 @@ function EditReducer(id, cible, action) {
       break;
 
     case TRANSFERT_3D_TO_SPEC:
+      _this.launchConvert = true;
       newRequest.open('PUT', `/node/${nodeId}/changeEmplacementFile/${cibledFile}/3DToSpec`);
       newRequest.send();
       break;
 
     case TRANSFERT_SPEC_TO_3D:
+      _this.launchConvert = true;
       newRequest.open('PUT', `/node/${nodeId}/changeEmplacementFile/${cibledFile}/SpecTo3D`);
       newRequest.send();
       break;

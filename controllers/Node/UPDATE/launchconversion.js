@@ -1,21 +1,32 @@
-const { NodeModel, PartModel, AssemblyModel } = require('../../../models');
+const nodeModel = require('../../../models/Node');
+const workspaceModel = require('../../../models/Workspace');
+const partModel = require('../../../models/Part');
 const { NODE_TYPE, CHEMIN, FILE_SUPPORTED } = require('../../../constants');
 const path = require('path');
-const { InternalServerError, NotFound } = require('http-errors');
+const { InternalServerError, NotFound, Forbidden } = require('http-errors');
 const log = require('../../../utils/log');
 
-const { readdir } = require('fs');
+const { readdir, unlink } = require('fs');
 const { promisify } = require('util');
 
+const promiseUnlink = promisify(unlink);
 const promiseReaddir = promisify(readdir);
 const { APP, CONTENT } = CHEMIN;
 const { convert } = require('../utils');
 
 function file3DFinder(files) {
   function some(file) {
-    return FILE_SUPPORTED.EXTENSION_3D.includes(path.extname(file))
+    const extname = path.extname(file);
+    const response = FILE_SUPPORTED.EXTENSION_3D.includes(extname.substring(1))
+    return response;
   }
+  return files.find(some);
+}
 
+function fileJsonFinder(files) {
+  function some(file) {
+    return path.extname(file) === ".json";
+  }
   return files.find(some);
 }
 
@@ -24,23 +35,25 @@ module.exports = async function launchConverstion(req, res, next) {
     const { userId } = req.session;
     const { nodeId } = req.params;
 
-    const node = NodeModel.findById(nodeId);
+    const node = await nodeModel.findById(nodeId);
 
     if (!node)
       return next(NotFound('[Node] - Ressource Not Found'));
 
-    let content;
-    
-    if (node.type === NODE_TYPE.PART)
-      content = await PartModel.findById(node.content);
-    else
-      content = await AssemblyModel.findById(node.content);
+    const part = await partModel.findById(node.content);
 
-    const chemin = path.join(APP.FILES3D, content.path, CONTENT["3D"]);
+    if (!part) return next(NotFound());
 
-    const file3D = file3DFinder(await promiseReaddir(chemin));
+    const chemin = path.join(APP.FILES3D, part.path, CONTENT["3D"]);
 
-    convert(path.join(chemin, file3D));
+    const directory3D = await promiseReaddir(chemin)
+
+    const fileJson = fileJsonFinder(directory3D)
+
+    if (fileJson)
+      await promiseUnlink(path.join(chemin, fileJson))
+
+    convert(path.join(chemin, file3DFinder(directory3D)));
     return res.json({ name: node.name, _id: node._id, user: userId });
   } catch (error) {
     log.error(error);
