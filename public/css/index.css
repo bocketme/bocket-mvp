@@ -14,6 +14,11 @@ body {
     width: 100%;
 }
 
+
+.row {
+    margin-bottom: 0 !important;
+}
+
 .home-nav {
     background: #FFFFFF !important;
     height: 70px !important;
@@ -83,7 +88,7 @@ body {
     left: 0;
     opacity: 0;
     z-index: 1000;
-    visibility: hidden;
+    display: none;
     overflow-y: hidden;
 }
 
@@ -96,7 +101,7 @@ body {
 .carousel {
     height: 40em;
     width: inherit;
-    background-image: url("../img/Carouselle-01.png");
+    background-image: url("../img/background.png");
     background-size: cover;
 }
 
@@ -131,7 +136,7 @@ body {
 
 .carousel .request-carousel-btn {
     border: #FFFFFF 2px solid;
-    background: rgba(10, 10, 10, 0) !important;
+    background-image: url("../img/Fond-3-01.png");
     border-radius: 7px;
     box-shadow: none;
     margin-bottom: 5%;
@@ -140,17 +145,23 @@ body {
 
 .content {
     /*margin-left: 5em;*/
+    display: block;
 }
 
 .info1 {
     height: 80%;
+    background-image: url("../img/Fond-3-01.png");
+    background-size: 99%;
+    background-repeat: no-repeat;
+    background-position: center
 }
 
 .info1 h4 {
     /*text-decoration: #00CCA0 underline ;*/
     display: inline;
-    border-bottom: #00CCA0 3px solid;
+    /*border-bottom: #00CCA0 3px solid;*/
     text-transform: uppercase;
+
 }
 
 .info1 .col {
@@ -174,8 +185,7 @@ body {
 
 .info2 {
     height: 80%;
-    background-image: url("../img/Fond-1-01.png");
-    background-size: cover;
+    background-color: #223241;
     color: #FFFFFF;
 }
 
@@ -190,7 +200,7 @@ body {
 
 .info2 h4 {
     display: inline;
-    border-bottom: #223241 3px solid;
+    /*border-bottom: #00CCA0 3px solid;*/
     text-transform: uppercase;
 }
 
@@ -205,11 +215,11 @@ body {
 
 
 .prices {
-    height: 100%;
-    background-image: url("../img/Fond-3-01.png");
-    /*background-size: cover;*/
-    background-size: 60% 100%;
-    background-repeat: no-repeat;
+    height: 150% !important;
+    background-image: url("../img/background.png");
+    background-size: cover;
+    /*background-size: 60% 100%;*/
+    /*background-repeat: no-repeat;*/
     background-position: center;
 }
 
@@ -217,22 +227,16 @@ body {
     padding-left: 5%;
     padding-right: 5%;
     padding-top: 5%;
-    padding-bottom: 3%;
+    padding-bottom: 1%;
 }
 
 .prices .prices-header h4 {
     display: inline;
-    border-bottom: #FF2E63 3px solid;
     text-transform: uppercase;
 }
 
 .prices .prices-header p {
-    margin-top: 3%;
-}
-
-.prices .col .s10 {
-    margin-left: 5%;
-    margin-right: 5%;
+    margin-top: 2%;
 }
 
 .prices .card-container {
@@ -240,18 +244,18 @@ body {
 }
 
 .prices .card {
-    height: 80%;
-    max-width: 350px;
+    /*height: 80%;*/
+    max-width: 400px;
     min-width: 200px;
     border-radius: 25px;
 }
 
-.prices .card-header {
+.prices .header-card {
     text-align: center;
     padding-top: 4%;
 }
 
-.prices .card-header h5 {
+.prices .header-card h5 {
     padding-top: 4%;
 }
 
@@ -266,10 +270,15 @@ body {
 }
 
 .prices .card i {
-    color: #FF2E63;
+    padding-top: 1%;
+    color: #00FFC8;
     display: inline;
     float: left;
     font-size: inherit;
+}
+
+.prices .card ul {
+    height: inherit;
 }
 
 .prices .card ul li {
@@ -277,78 +286,109 @@ body {
     text-align: justify;
 }
 
-.request-access {
-    height: 70%;
-    background-image: url("../img/Fond-2-01.png");
-    background-size: cover;
+.prices .card-btn {
+    margin-top: 10%;
+    margin-bottom: 5%;
+    width: 75%;
 }
 
-.request-access h4 {
-    display: inline;
-    border-bottom: #223241 3px solid;
-    color: #FFFFFF;
-    text-transform: uppercase;
+a {
+    cursor: pointer;
 }
 
-.request-access p {
-    color: #FFFFFF;
-    margin-top: 3%;
+/*.request-access {*/
+    /*height: 70%;*/
+    /*background-image: url("../img/Fond-2-01.png");*/
+    /*background-size: cover;*/
+/*}*/
 
-}
+/*.request-access h4 {*/
+    /*display: inline;*/
+    /*border-bottom: #223241 3px solid;*/
+    /*color: #FFFFFF;*/
+    /*text-transform: uppercase;*/
+/*}*/
 
-.request-access .request-access-header {
-    padding-top: 5%;
-    padding-left: 5%;
-}
+/*.request-access p {*/
+    /*color: #FFFFFF;*/
+    /*margin-top: 3%;*/
 
-.request-access .access-inputs {
-    padding-top: 1%;
-    padding-left: 5%;
-    padding-bottom: 4%;
-}
+/*}*/
 
-.request-access .access-inputs .input-field label {
-    color: #223241;
-}
+/*.request-access .request-access-header {*/
+    /*padding-top: 5%;*/
+    /*padding-left: 5%;*/
+/*}*/
 
-.request-access .access-inputs .input-field {
-    color: #223241;
-}
+/*.request-access .access-inputs {*/
+    /*padding-top: 1%;*/
+    /*padding-left: 5%;*/
+    /*padding-bottom: 4%;*/
+/*}*/
 
-.request-access .access-inputs .input-field input {
-    border-bottom: 1px solid #223241 !important;
-}
+/*.request-access .access-inputs .input-field label {*/
+    /*color: #223241;*/
+/*}*/
 
-.request-access .access-inputs .input-field input[type=text]:focus + label {
-    color: #FFFFFF;
-}
+/*.request-access .access-inputs .input-field {*/
+    /*color: #223241;*/
+/*}*/
 
-.request-access .access-inputs .input-field input[type=text]:focus {
-    border-bottom: 1px solid #FFFFFF !important;
-    box-shadow: 0 1px 0 0 #FFFFFF;
-}
+/*.request-access .access-inputs .input-field input {*/
+    /*border-bottom: 1px solid #223241 !important;*/
+/*}*/
 
-.request-access .access-inputs .input-field input[type=email]:focus + label {
-    color: #FFFFFF;
-}
+/*.request-access .access-inputs .input-field input[type=text]:focus + label {*/
+    /*color: #FFFFFF;*/
+/*}*/
 
-.request-access .access-inputs .input-field input[type=email]:focus {
-    border-bottom: 1px solid #FFFFFF !important;
-    box-shadow: 0 1px 0 0 #FFFFFF;
-}
+/*.request-access .access-inputs .input-field input[type=text]:focus {*/
+    /*border-bottom: 1px solid #FFFFFF !important;*/
+    /*box-shadow: 0 1px 0 0 #FFFFFF;*/
+/*}*/
 
-.request-access .access-inputs .input-field select option {
-    color: #223241;
-}
+/*.request-access .access-inputs .input-field input[type=email]:focus + label {*/
+    /*color: #FFFFFF;*/
+/*}*/
+
+/*.request-access .access-inputs .input-field input[type=email]:focus {*/
+    /*border-bottom: 1px solid #FFFFFF !important;*/
+    /*box-shadow: 0 1px 0 0 #FFFFFF;*/
+/*}*/
+
+/*.request-access .access-inputs .input-field select option {*/
+    /*color: #223241;*/
+/*}*/
 
 .info-footer {
-    padding-left: 5%;
-    padding-right: 5%;
+    padding-top: 2%;
+    background-color: #223241;
+}
+
+.footer-content {
+    padding-left: 2%;
+}
+
+.footer-copyright {
+    font-size: smaller;
+    padding-left: 2% !important;
+    background-color: #4B6176 !important;
 }
 
 .info-footer .brand-logo img {
-    width: 10%;
-    height: 5%;
+    width: 17%;
+    height: 9%;
+    padding-bottom: 3%;
+}
+
+.footer-title {
+    display: inline;
+    padding-bottom: 1%;
+    border-bottom: 5px solid #00FFC8 !important;
+}
+
+.footer-infos li {
+    font-size: smaller;
 }
 
 @media only screen and (max-width : 1024px) {
@@ -416,4 +456,21 @@ body {
     font-weight: bolder !important;
     background-color: #B6C0C1 !important;
     border-bottom: #223241 2px solid;
+}
+
+.line-separator {
+    width: 100px;
+    height:3px;
+}
+
+.line-separator.charte-light-blue {
+    margin-top: 3%;
+    background-color: #00FFC8;
+    border-bottom:3px solid #00FFC8;
+}
+
+.line-separator.charte-dark-blue {
+    margin-top: 1%;
+    background-color: #223241;
+    border-bottom:3px solid #223241;
 }

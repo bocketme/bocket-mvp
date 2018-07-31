@@ -88,3 +88,23 @@
   color: #223241;
   background-color: white !important;
 }
+
+.btn-pink {
+  background-color: #ff2e63;
+  box-shadow: 0px 3px #D72653;
+  color: white;
+
+  font-weight: bolder;
+}
+
+.btn-pink:hover {
+  background-color: #223241;
+  box-shadow: 0px 3px #B6C0C1;
+  color: white;
+}
+
+.btn-pink:focus, .btn-pink:active  {
+  background-color: #B6C0C1;
+  color: #223241;
+  box-shadow: 0px 3px #223241;
+}
