@@ -135,6 +135,8 @@ function checkIfHidden(type) {
 
 function getNewsText(type, author, content) {
   content.role = (content.role === '3' ? 'Product Manager': 'Teammate');
+  if (!content.target)
+    content.target = { name: 'Undefined target' };
   switch (type) {
     case 'PART':
       switch (content.method) {
