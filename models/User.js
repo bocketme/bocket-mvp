@@ -6,6 +6,8 @@ const uniqueValidator = require('mongoose-unique-validator');
 const util = require('util');
 const log = require('../utils/log');
 const compare = util.promisify(bcrypt.compare);
+const genSalt = util.promisify(bcrypt.genSalt);
+const hashPassword = util.promisify(bcrypt.hash);
 
 const ManagerSchema = new mongoose.Schema({
   Organization: { type: Schema.Types.ObjectId, required: true, ref: 'Organization' },
@@ -51,25 +53,13 @@ UserSchema.methods.organizationOwner = async function () {
   return owner
 };
 
-UserSchema.pre('save', function (next) {
-  const user = this;
 
-  user.active = true;
-  if (!user.createDate) { user.createDate = new Date(); }
-  // only hash the password if it has been modified (or is new)
-  if (user.isModified('password')) {
-    // generate a salt
-    bcrypt.genSalt(serverConfiguration.saltRounds, (err, salt) => {
-      if (err) return next(err);
-      // hash the password using our new salt
-      bcrypt.hash(user.password, salt, function (err, hash) {
-        if (err) return next(err);
-        // override the cleartext password with the hashed one
-        user.password = hash;
-        return next();
-      });
-    });
-  } else return next();
+UserSchema.pre('save', async function () {  
+  if(this.isModified('password') || this.isNew) {
+    const salt = await genSalt(10);
+    this.password = await hashPassword(this.password, salt);
+    return null;
+  }
 });
 
 UserSchema.pre('remove', async function () {

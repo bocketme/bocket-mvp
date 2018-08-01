@@ -12,6 +12,6 @@ router.post('/update', POST.changeInformation);
 router.post('/avatar', upload.fields([{ name: 'avatar', maxCount: 1 }]), (req, res, next) => {
   POST.changeAvatar(req, res).catch(err => next(err));
 });
-
+router.post('/register', POST.register);
 
 module.exports = router;

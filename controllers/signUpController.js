@@ -19,12 +19,7 @@ const signUpController = {
 
   index (req, res) {
     const tasks = [
-      checkEmail,
-      checkPassword,
-      checkCompleteName,
-      checkOrganizationName,
-      checkWorkspaceName,
-    ];
+          ];
     for (let i = 0; i < tasks.length; i++) {
       if (tasks[i](req.body) === false) {
         log.error(`Error occured on signing up user on task[${i}]`);
