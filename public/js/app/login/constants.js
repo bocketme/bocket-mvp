@@ -1,0 +1,29 @@
+const IDENTIFICATION_MODAL = '';
+const $IDENTIFICATION_MODAL = $(`#${IDENTIFICATION_MODAL}`);
+
+const REGISTER = '';
+const $REGISTER = $(`#${REGISTER}`);
+
+const REGISTER_TRIGGER = '';
+const $REGISTER_TRIGGER = $(`#${REGISTER_TRIGGER}`);
+
+const LOGIN = '';
+const $LOGIN = $(`#${LOGIN}`);
+
+const LOGIN_TRIGGER = '';
+const $LOGIN_TRIGGER = $(`#${LOGIN_TRIGGER}`);
+
+const IDENTIFICATION_BOX = '';
+const $IDENTIFICATION_BOX = $(`#${IDENTIFICATION_BOX}`);;
+
+const LOGIN_FORM = '';
+const $LOGIN_FORM = $(`#${LOGIN_FORM}`);
+
+const LOGIN_FORM_TRIGGER = '';
+const $LOGIN_FORM_TRIGGER = $(`#${LOGIN_FORM_TRIGGER}`);
+
+const SIGNUP_FORM = '';
+const $SIGNUP_FORM = $(`#${SIGNUP_FORM}`);
+
+const SIGNUP_FORM_TRIGGER = '';
+const $SIGNUP_FORM_TRIGGER = $(`#${SIGNUP_FORM_TRIGGER}`);
