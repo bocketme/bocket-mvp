@@ -4,6 +4,7 @@ var visible = "flex";
 var blurId = "#blur";
 
 function showBlur(blur) {
+    blur.show();
     blur.css({
         opacity: 0,
         visibility: "visible"
