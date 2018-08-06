@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="/css/global/button.css">
         <link rel="stylesheet" href="/css/global/main.css">
         <link rel="stylesheet" href="/css/global/modal.css">
+        <link rel="stylesheet" href="/css/global/text.css">
         <link rel="stylesheet" href="/css/global/sideNav.css">
         <link rel="stylesheet" href="/css/settings/orga/invite.css">
         {% block css %}{% endblock %}
@@ -33,10 +34,10 @@
                         <a id="request-access-btn" class="btn waves-effect" href="#requestAccess">Request an account</a>
                     </li>
                     <li>
-                        <a id="signIn" class="btn waves-effect" href="#">Sign In</a>
+                        <a id="signIn" class="btn modal-trigger waves-effect sign-in-trigger" href="#authentification-modal">Sign In</a>
                     </li>
                     <li>
-                        <a id="signUp" class="btn waves-effect" style="visibility: hidden" href="#">Sign Up</a>
+                        <a id="signUp" class="btn modal-trigger waves-effect sign-up-trigger" href="#authentification-modal">Sign Up</a>
                     </li>
                 </ul>
                 <ul id="mobile-links" class="side-nav collection">
@@ -44,7 +45,10 @@
                         <a class="request-access-btn" href="#requestAccess">Request an account</a>
                     </li>
                     <li class="collection-item">
-                        <a id="signIn-nav" href="#">Sign In</a>
+                        <a id="signIn-nav" class="modal-trigger waves-effect sign-in-trigger" href="#authentification-modal">Sign In</a>
+                    </li>
+                    <li class="collection-item">
+                        <a id="signUp-nav" class="modal-trigger waves-effect sign-up-trigger" href="#authentification-modal">Sign Up</a>
                     </li>
                 </ul>
             </div>

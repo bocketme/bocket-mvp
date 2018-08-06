@@ -1,62 +1,83 @@
 <!-- Modal Structure -->
-<div id="" class="modal large-modal">
+<div id="authentification-modal" class="modal large-modal">
     <div class="modal-content col s10 offset-s1">
-        <div class="col s12">
-            <div class="row">
-                <div class="col s4 valign-wrapper">
-                    <p>Already Have An Account ?</p>
-                    <button class="btn btn-normal">Log In</button>
+        <div id="background-modal" class="col s12">
+            <div class="row" style="height: 100%;">
+                <div id="sign-up-form" class="col s4 offset-s1 center-align" style="height: 100%;">
+                    <p class="center-align text-white">Already Have An Account ?</p>
+                    <br>
+                    <button id="log-in-form-trigger" class="center-align btn btn-normal">Log In</button>
                 </div>
-                <div class="col s4 offset-s6 valign-wrapper">
-                    <p>Need An Account ?</p>
-                    <button class="btn btn-normal">Sign Up</button>
+                <div id="log-in-box" class="center-align col s4 offset-s2" style="height: 100%;">
+                    <p class="center-align text-white">Don't Have An Account ?</p>
+                    <br>
+                    <button id="sign-up-form-trigger" class="center-align btn btn-normal">Sign Up</button>
                 </div>
             </div>
         </div>
-        <div class="col s12">
-            <div class="row">
-                <div class="col s4 valign-wrapper">
-                    <form id="userSignIn" novalidate="novalidate">
-                        <h5 class="titleBox">
-                            Account Login
-                            <i id="bigger-close" class="material-icons closeBox right">highlight_off</i>
-                        </h5>
-                        <div class="input-field col s12">
-                            <input id="emailSignIn" name="email" type="email" class="validate" required="required">
-                            <label for="emailSignIn">Email address</label>
-                        </div>
-                        <div class="input-field col s12">
-                            <input id="passwordSignIn" name="password" type="password" class="validate" required="required">
-                            <label for="passwordSignIn">Password</label>
-                        </div>
-                        <button id="signIn-btn" class="btn waves-effect waves-light submit-btn" type="submit">Sign me in !</button>
-                    </form>
-                </div>
-                <div class="col s4 offset-s6">
-                    <form id="userSignUp" method="post" action="/register" novalidate="novalidate">
-                        <h5 class="titleBox">
-                            Create an account
-                            <i id="bigger-close" class="material-icons closeBox right">highlight_off</i>
-                        </h5>
-                        <h1 class="titleBox"></h1>
-                        <div class="input-field col s12">
-                            <input id="emailSignup" class="validate" name="emailSignup" type="email" required="required">
-                            <label for="emailSignup">Email address</label>
-                        </div>
-                        <div class="input-field col s12">
-                            <input id="passwordSignup" name="passwordSignup" type="password" class="validate" required="required">
-                            <label for="passwordSignup">Password</label>
-                        </div>
-                        <div class="input-field col s12">
-                            <input id="cpasswordSignup" name="cpasswordSignup" type="password" class="validate" required="required">
-                            <label for="cpasswordSignup">Confirm password</label>
-                        </div>
-                        <button id="submit-btn-user" class="btn waves-effect waves-light submit-btn" type="submit" name="action">Sign me up !</button>
-                        {% if signUpError %}
-                            <p class="error">{{ signUpError }}</p>
-                        {% endif %}
-                    </form>
-                </div>
+        <div id="register-form">
+            <div class="col s4" id="sign-in-form-box">
+                <form id="userSignIn" novalidate="novalidate">
+                    <h5 class="center-align">
+                        <span>
+                            Log In
+                        </span>
+                        <i id="bigger-close" class="material-icons modal-close right">highlight_off</i>
+                    </h5>
+                    <div class="col s12">
+                        <img class="little-image separator-image center-image offset-s3" src="/img/logo.png">
+                        <p class="center-align little-text">
+                            Welcolme Back !
+                        </p>
+                    </div>
+                    <div class="input-field col s12">
+                        <input id="emailSignIn" name="email" type="email" class="validate" required="required">
+                        <label for="emailSignIn">E-mail</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input id="passwordSignIn" name="password" type="password" class="validate" required="required">
+                        <label for="passwordSignIn">Password</label>
+                    </div>
+                    <button id="signIn-btn" class="btn btn-valid submit-btn" type="submit">Log me in !</button>
+                </form>
+            </div>
+            <div class="col s4" id="sign-up-form-box">
+                <form id="userSignUp" method="post" action="/register" novalidate="novalidate">
+                    <h5 class="center-align">
+                        <span>
+                            Sign Up
+                        </span>
+                        <i id="bigger-close" class="material-icons modal-close right">highlight_off</i>
+                    </h5>
+                    <div class="col s12">
+                        <img class="little-image separator-image center-image offset-s3" src="/img/logo.png">
+                        <p class="center-align little-text">
+                            Sign up to start collaboring and assembling !
+                            <br>
+                            You have a 7 days free trials.
+                        </p>
+                    </div>
+                    <div class="input-field col s12">
+                        <input id="completeNameSignup" class="validate" name="completeNameSignup" type="text" required="required">
+                        <label for="completeName">Full Name</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input id="emailSignup" class="validate" name="emailSignup" type="email" required="required">
+                        <label for="emailSignup">E-mail</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input id="passwordSignup" name="passwordSignup" type="password" class="validate" required="required">
+                        <label for="passwordSignup">Password</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input id="cpasswordSignup" name="cpasswordSignup" type="password" class="validate" required="required">
+                        <label for="cpasswordSignup">Confirm password</label>
+                    </div>
+                    <button id="submit-btn-user" class="btn btn-valid submit-btn" type="submit" name="action">Sign me up !</button>
+                    {% if signUpError %}
+                        <p class="error">{{ signUpError }}</p>
+                    {% endif %}
+                </form>
             </div>
         </div>
     </div>

@@ -1,5 +1,51 @@
-#forced-create-organization{
+#forced-create-organization {
   height: 32%;
+}
+
+#authentification-modal>.modal-content {
+  padding: 0;
+  position: relative;
+  height: 100%;
+}
+
+#authentification-modal {
+  height: 600px;
+  overflow: visible;
+  background-image: url('/img/background-lab.png');
+  background-size: cover;
+}
+
+#sign-up-form>p, #log-in-box>p {
+  margin-top: 65%;
+}
+
+#background-modal {
+  height: 100%;
+  display: block;
+}
+
+h5>span {
+  margin-left: 24px;
+}
+
+h5>i.modal-close {
+  margin-left: 0px;
+}
+
+#sign-in-form-box, #sign-up-form-box {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+#register-form {
+  position: absolute;
+  top: -10%;
+  left: 10%;
+  height: 120%;
+  z-index: 1004;
+  background-color: white;
+  width: 40%;
 }
 
 #edit-node {
@@ -10,24 +56,26 @@
   padding: 1% 0px;
 }
 
-#workspace-creation{
+#workspace-creation {
   overflow-y: visible;
 }
 
-.fix-icons{
+.fix-icons {
   font-size: 22px;
   will-change: transform;
-  -ms-transform: rotate(-90deg); /* IE 9 */
-  -webkit-transform: rotate(-90deg); /* Safari */
+  -ms-transform: rotate(-90deg);
+  /* IE 9 */
+  -webkit-transform: rotate(-90deg);
+  /* Safari */
   transform: rotate(-90deg);
 }
 
-.active > .fix-icons{
+.active>.fix-icons {
   will-change: transform;
   transform: rotate(0deg);
 }
 
-.modal-information{
+.modal-information {
   padding: 30px 0px;
 }
 
@@ -48,13 +96,13 @@
   color: #29B335;
 }
 
-.edit-node-file-close > i::after {
+.edit-node-file-close>i::after {
   color: inherit;
   font-family: "Material Icons";
   content: "highlight_off";
 }
 
-.edit-node-file-close.active > i::after {
+.edit-node-file-close.active>i::after {
   font-family: "Material Icons";
   content: "restore_page";
 }

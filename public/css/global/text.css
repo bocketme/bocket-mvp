@@ -10,3 +10,24 @@ p.barre {
   text-decoration: line-through grey;
   color: grey;
 }
+
+.text-white {
+  color: white;
+}
+
+.little-text {
+  font-size: 0.7em;
+}
+
+.little-image{
+  width: 55%;
+}
+
+.center-image{
+  display: block;
+  margin: 0 auto;
+}
+
+.separator-image{
+  padding: 24px 0px;
+}
