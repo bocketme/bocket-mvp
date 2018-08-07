@@ -59,10 +59,10 @@ function moveToSignup(event) {
 
 function initialShow(login_show = true) {
   if (login_show) {
-    $IDENTIFICATION_BOX.css({ left: '51.7%' });
-    $SIGNUP_BOX_FORM.show();
-  } else {
     $IDENTIFICATION_BOX.css({ left: '8.3%' });
     $LOGIN_BOX_FORM.show();
+  } else {
+    $IDENTIFICATION_BOX.css({ left: '51.7%' });
+    $SIGNUP_BOX_FORM.show();
   }
 }

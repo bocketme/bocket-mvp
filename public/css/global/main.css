@@ -23,6 +23,16 @@ input[type="text" i]:disabled {
   box-shadow: none !important;
 }
 
+.height-separator-top-20-bottom-6{
+  margin-top: 20% !important;
+  margin-bottom: 6% !important;  
+}
+
+.height-separator-6{
+  margin-top: 6% !important;
+  margin-bottom: 6% !important;  
+}
+
 .height-separator{
   margin-top: 4% !important;
   margin-bottom: 4% !important;

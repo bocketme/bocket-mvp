@@ -4,14 +4,18 @@
         <div id="background-modal" class="col s12">
             <div class="row" style="height: 100%;">
                 <div id="sign-up-form" class="col s4 offset-s1 center-align" style="height: 100%;">
-                    <p class="center-align text-white">Already Have An Account ?</p>
-                    <br>
-                    <button id="log-in-form-trigger" class="center-align btn btn-normal">Log In</button>
+                    <div style="position: relative; top: 35%;">
+                        <p class="text-white center-align">Already Have An Account ?</p>
+                        <br>
+                        <button id="log-in-form-trigger" class="center-align btn btn-border">Log In</button>
+                    </div>
                 </div>
                 <div id="log-in-box" class="center-align col s4 offset-s2" style="height: 100%;">
-                    <p class="center-align text-white">Don't Have An Account ?</p>
-                    <br>
-                    <button id="sign-up-form-trigger" class="center-align btn btn-normal">Sign Up</button>
+                    <div style="position: relative; top: 35%;">
+                        <p class="text-white center-align">Don't Have An Account ?</p>
+                        <br>
+                        <button id="sign-up-form-trigger" class="center-align btn btn-border">Sign Up</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -30,15 +34,15 @@
                             Welcolme Back !
                         </p>
                     </div>
-                    <div class="input-field col s12">
+                    <div class="input-field col s12 height-separator-top-20-bottom-6">
                         <input id="emailSignIn" name="email" type="email" class="validate" required="required">
                         <label for="emailSignIn">E-mail</label>
                     </div>
-                    <div class="input-field col s12">
+                    <div class="input-field col s12 height-separator-6">
                         <input id="passwordSignIn" name="password" type="password" class="validate" required="required">
                         <label for="passwordSignIn">Password</label>
                     </div>
-                    <button id="signIn-btn" class="btn btn-valid submit-btn" type="submit">Log me in !</button>
+                    <button id="signIn-btn" class="height-separator-6 btn btn-normal submit-btn" type="submit">Log me in !</button>
                 </form>
             </div>
             <div class="col s4" id="sign-up-form-box">
@@ -54,26 +58,26 @@
                         <p class="center-align little-text">
                             Sign up to start collaboring and assembling !
                             <br>
-                            You have a 7 days free trials.
+                            You have a 14 days free trial.
                         </p>
                     </div>
-                    <div class="input-field col s12">
+                    <div class="height-separator-6 input-field col s12">
                         <input id="completeNameSignup" class="validate" name="completeNameSignup" type="text" required="required">
                         <label for="completeName">Full Name</label>
                     </div>
-                    <div class="input-field col s12">
+                    <div class="height-separator-6 input-field col s12">
                         <input id="emailSignup" class="validate" name="emailSignup" type="email" required="required">
                         <label for="emailSignup">E-mail</label>
                     </div>
-                    <div class="input-field col s12">
+                    <div class="height-separator-6 input-field col s12">
                         <input id="passwordSignup" name="passwordSignup" type="password" class="validate" required="required">
                         <label for="passwordSignup">Password</label>
                     </div>
-                    <div class="input-field col s12">
+                    <div class="height-separator-6 input-field col s12">
                         <input id="cpasswordSignup" name="cpasswordSignup" type="password" class="validate" required="required">
                         <label for="cpasswordSignup">Confirm password</label>
                     </div>
-                    <button id="submit-btn-user" class="btn btn-valid submit-btn" type="submit" name="action">Sign me up !</button>
+                    <button id="submit-btn-user" class="height-separator-6 btn-normal btn submit-btn" type="submit" name="action">Sign me up !</button>
                     {% if signUpError %}
                         <p class="error">{{ signUpError }}</p>
                     {% endif %}
