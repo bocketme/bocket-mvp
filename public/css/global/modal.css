@@ -24,8 +24,12 @@
   display: block;
 }
 
-h5>span {
+.modal h5>span {
   margin-left: 24px;
+}
+
+.brightness {
+  font-size: small !important;
 }
 
 h5>i.modal-close {
@@ -60,13 +64,24 @@ h5>i.modal-close {
   overflow-y: visible;
 }
 
+#forget-password {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translate(-50%);
+  font-size: 14px;
+}
+
+.checkbox-blue[type="checkbox"]:checked+label::before {
+  border-right: 2px solid #223241;
+  border-bottom: 2px solid #223241;
+}
+
 .fix-icons {
   font-size: 22px;
   will-change: transform;
   -ms-transform: rotate(-90deg);
-  /* IE 9 */
   -webkit-transform: rotate(-90deg);
-  /* Safari */
   transform: rotate(-90deg);
 }
 

@@ -110,12 +110,29 @@
 
 .btn-border {
   background-color: transparent;
+  color: #223241;
+  border: #223241 3px solid;
+  line-height: 200%;
+  font-weight: bolder;
+  box-shadow: none;
+}
+
+.btn-border:hover, .btn-border:focus{
+  color: white;
+  background-color: #223241; 
+  font-weight: bolder;
+  box-shadow: none;
+}
+
+.btn-border-dark {
+  background-color: transparent;
   border: white 1px solid;
   color: white;
   font-weight: bolder;
 }
 
-.btn-border:hover {
+
+.btn-border-dark:hover, .btn-border-dark:focus{
   color: #223241;
   background-color: white;
   font-weight: bolder;

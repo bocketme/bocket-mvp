@@ -7,14 +7,14 @@
                     <div style="position: relative; top: 35%;">
                         <p class="text-white center-align">Already Have An Account ?</p>
                         <br>
-                        <button id="log-in-form-trigger" class="center-align btn btn-border">Log In</button>
+                        <button id="log-in-form-trigger" class="center-align btn btn-border-dark">Log In</button>
                     </div>
                 </div>
                 <div id="log-in-box" class="center-align col s4 offset-s2" style="height: 100%;">
                     <div style="position: relative; top: 35%;">
                         <p class="text-white center-align">Don't Have An Account ?</p>
                         <br>
-                        <button id="sign-up-form-trigger" class="center-align btn btn-border">Sign Up</button>
+                        <button id="sign-up-form-trigger" class="center-align btn btn-border-dark">Sign Up</button>
                     </div>
                 </div>
             </div>
@@ -42,7 +42,12 @@
                         <input id="passwordSignIn" name="password" type="password" class="validate" required="required">
                         <label for="passwordSignIn">Password</label>
                     </div>
+                    <div class="col s12 height-separator-6">
+                        <input class="checkbox-blue" id="keepMeLogin" type="checkbox">
+                        <label for="keepMeLogin">Keep Me Login</label>
+                    </div>
                     <button id="signIn-btn" class="height-separator-6 btn btn-normal submit-btn" type="submit">Log me in !</button>
+                    <a id="forget-password">Forget Password</a>
                 </form>
             </div>
             <div class="col s4" id="sign-up-form-box">
