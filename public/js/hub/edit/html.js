@@ -4,11 +4,11 @@ const editInfoRender = (id, name, description) =>
     <div>
       <div class="input-field col s4">
           <input id="edit-node-name" name="edit-node-name" value="${name}" type="text">
-          <label for="edit-node-name">Title</label>
+          <label class="active" for="edit-node-name">Title</label>
       </div>
       <div class="input-field col s12">
         <textarea id="edit-node-description" name="edit-node-description" class="materialize-textarea">${description}</textarea>
-        <label for="edit-node-description">Description</label>
+        <label class="active" for="edit-node-description">Description</label>
       </div>
     </div>
   </div>
