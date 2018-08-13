@@ -58,7 +58,7 @@ nav .brand-logo {
 .carousel {
   height: 40em;
   width: inherit;
-  background-image: url("../img/background.png");
+  background-image: url("../img/main-cover.png");
   background-size: cover;
 }
 
@@ -82,6 +82,7 @@ nav .brand-logo {
 
 .carousel h1 {
   padding-top: 15%;
+  font-weight: bold;
   vertical-align: center;
   font-size: calc(2.3em + 1vmax);
 }
