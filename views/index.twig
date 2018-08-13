@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block body %}
+    <div id="blur" style="visibility:hidden;"></div>
     <div class="landing-page-body row">
         <div class="main col s12">
             <div id="fleches">
@@ -143,7 +144,7 @@
                             </li>
                         </ul>
                         <div class="col s12">
-                            <a id="signUp" class="card-btn btn modal-trigger btn-pink sign-up-trigger" href="#authentification-modal">Start free trial !</a>
+                            <a class="card-btn btn btn-pink">Start free trial !</a>
                         </div>
                     </div>
                 </div>
@@ -279,8 +280,7 @@
                 © 2018 PLUM. ALL RIGHT RESERVED. DEM-4382871//DEM-4382874
             </div>
         </div>
-</footer>
-    <div id="blur"></div>
+    </footer>
     {% include 'forgetPassword.twig' %}
     {% include "signupAccountBox.twig" %}
     {% include "signupWorkspace.twig" %}
@@ -304,17 +304,13 @@
     <script type="application/javascript" src="/js/signup.js"></script>
     <script type="application/javascript" src="/js/signin.js"></script>
     <script type="application/javascript" src="/js/resetPassword.js"></script>
+    <script type="application/javascript" src="/js/app/landing_page.js"></script>
     <script type="application/javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#nameAccess').val('');
             $('#surnameAccess').val('');
             $('#email_beta').val('');
             $('#choiceAccess').val('');
-            $('.carousel.carousel-slider').carousel({fullWidth: true});
-            $('select').material_select();
-            $('.carousel-item').on('click', () => {
-                $('.carousel').carousel('next');
-            });
         });
     </script>
     {% if not invitation %}
