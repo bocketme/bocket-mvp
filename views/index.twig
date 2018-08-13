@@ -5,130 +5,281 @@
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/logbox.css">
     <link rel="stylesheet" href="/css/workspace.css">
+    <link rel="stylesheet" href="/css/global/button.css">
 {% endblock %}
 
 {% block body %}
-    <div class="landing-page-body">
-        <div class="main col s12 row">
+    <div class="landing-page-body row">
+        <div class="main col s12">
+            <div id="fleches">
+                <i id="left_slide" class="material-icons left">chevron_left</i>
+                <i id="right_slide" class="material-icons right">chevron_right</i>
+            </div>
             <div class="carousel carousel-slider center" data-indicators="true">
                 <div class="carousel-fixed-item center">
-                    <a class="btn waves-effect request-carousel-btn" href="#requestAccess">Request an Account</a>
+                    <a class="btn btn-pink" href="#try-for-free">Try Bocket for free</a>
                 </div>
-                <div class="carousel-item white-text col s9" href="#">
-                    <h1>Working together on 3D projects has never been easier</h1>
-                </div>
-                <div class="carousel-item white-text col s9" href="#">
-                    <h1>A new way to design 3D as a team</h1>
-                </div>
-                <div class="carousel-item white-text col s9" href="#">
-                    <h1>Kneel down frontiers between 3D CAD software</h1>
-                </div>
-            </div>
-        </div>
-        <div class="info1 row">
-            <div class="col s12 m12 l6 xl6" >
-                <h4>Why use our platform ?</h4>
-                <p>
-                    <h5>Compatibility</h5>
-                    No more headaches between files types, we accept all ! Stay focus on your projects !
-                </p>
-                <p>
-                    <h5>Freedom</h5>
-                Free your team from using the same CAD software, let them chose !
-                <br>Free them from none efficient meeting.
-                <br>Share the same workspace and keep an eye on projects... all together !
-                </p>
-                <p>
-                    <h5>Efficiency</h5>
-                A faster and better way to work by having everything in one place. Use a flexible and versatile environment.
-                </p>
-            </div>
-            <div class="col s6 hide-on-med-and-down"><img src="img/info1-img.png" /></div>
-        </div>
-        <div class="info2 row">
-            <div class="col s6 hide-on-med-and-down"><img  src="img/info2-img.png"/></div>
-            <div class="col s12 m12 l6 xl6">
-                <h4>How can we help you ?</h4>
-                <p>
-                <h5>Unite</h5>
-                We are here to help you reunite your team around your project.<br/>
-                Team and projects are in one place !
-                </p>
-                <p>
-                <h5>Collaborate</h5>
-                No more emails or meetings, communicate directly with your teammates through the platform and follow the evolution of everyone’s works !
-                </p>
-                <p>
-                <h5>Assemble</h5>
-                Smoothly assemble your project online without having any compatibility problems !
-                </p>
-            </div>
-        </div>
-        <div class="prices row">
-            <div class="prices-header">
-                <h4>What about the costs ?</h4>
-                <p>3 different packs for different uses and needs ! Please contact us for the prices or furthermore questions.</p>
-            </div>
-            <div class="card-container col s12 m12 l8 xl8 center-align">
-                <div class="card l8 xl8 z-depth-4 center-align">
-                    <div class="card-header">
-                        <span class="card-title">Starter</span>
-                        <p class="prices-description">Get started and discover new possibilities</p>
-                        <h5>39,95 €</h5>
+                <div class="carousel-item">
+                    <div class="col m6 offset-m3 s8 offset-s2">
+                        <h1>Working together on 3D projects has never been easier</h1>
                     </div>
-                    <div class="card-content">
-                        <ul>
-                            <li><i class="material-icons">check</i><div class="center">Manage 3D open formats</div></li>
-                            <li><i class="material-icons">check</i><div class="center">Textual annotations</div></li>
-                            <li><i class="material-icons">check</i><div class="center">Measuring tool</div></li>
-                            <li><i class="material-icons">check</i><div class="center">Live chat and groups</div></li>
-                            <li><i class="material-icons">check</i><div class="center">Project news feed</div></li>
-                        </ul>
+                </div>
+                <div class="carousel-item">
+                    <div class="col m6 offset-m3 s8 offset-s2">
+                        <h1>
+                            Specify and assemble your prototype online
+                        </h1>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="col m6 offset-m3 s8 offset-s2">
+                        <h1>Kneel down frontiers between 3D CAD software</h1>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="requestAccess" class="request-access row">
-            <div class="request-access-header">
-                <h4>Account Request</h4>
-                <p>Want to participate in our journey and help us improve it ? Contact us to create your account ! </p>
-            </div>
-            <form class="access-inputs col s12">
-                <div class="row">
-                    <div class="input-field col s6 m3 l2">
-                        <input id="nameAccess" name="name" type="text" class="validate" required>
-                        <label for="nameAccess">Name</label>
-                    </div>
-                    <div class="input-field col s6 m3 l2">
-                        <input id="surnameAccess" name="surname" type="text" class="validate" required>
-                        <label for="surnameAccess">Surname</label>
-                    </div>
-                    <div class="input-field col s6 m3 l2">
-                        <input id="email_beta" name="email" type="email" class="validate" required>
-                        <label for="email_beta">Email</label>
-                    </div>
-                    <div class="col s12 m3 l2">
-                        <a id="beta_button" class="btn waves-effect center">Send Request</a>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="info-footer row">
-            <div class="link-buttons ">
-                <a href="/" class="link-logo col s6 m6 l6 xl6 hide-on-med-and-down" ><img src="/img/logo.png"></a>
+        <div id="info1" class="col s12">
+            <div class="col s10 offset-s1 row">
                 <div class="col s12 m12 l6 xl6">
-                    <a href="https://www.facebook.com/bocketme/" class="link-icons" ><img src="/img/facebook-icon-dark.png"></a>
-                    <a href="https://www.linkedin.com/company/bocket/?originalSubdomain=fr" class="link-icons" ><img  src="/img/linkedin-icon-dark.png"></a>
-                    <a href="https://twitter.com/hellobocket" class="link-icons " ><img src="/img/twitter-icon-dark.png"></a>
+                    <h4>SIMPLIFY PRODUCT PROTOTYPING</h4>
+                    <div class="line-separator hide-on-med-and-down charte-light-blue"></div>
+                    <h5>One Place</h5>
+                    <p>
+                        Create workspaces for your 3D projects, develop and share your digital mock-up in team. From everywhere.
+                    </p>
+                    <h5>CAD free</h5>
+                    <p>
+                        Do not lose time managing files types, Bocket accepts most of them.
+                        <br>Keep focus on your projects.
+                    </p>
+                    <h5>Traceability</h5>
+                    <p>
+                        Access in real time to your product and check what has been done by the team members. In a single click.
+                    </p>
+                </div>
+                <div class="col s5 offset-s1 hide-on-med-and-down">
+                    <img src="img/info1-img.png"/>
                 </div>
             </div>
-            <div class="legal-links col s12">
-                <span>Legal Notice</span>
-                <span>Terms of Service</span>
-                <span>© Bocket.me - 2017 DEM-4382871//DEM-4382874</span>
+        </div>
+        <div class="info2 col s12">
+            <div class="col s10 offset-s1 row">
+                <div class="col s5 hide-on-med-and-down"><img src="img/info2-img.png"/></div>
+                <div class="col s12 m12 l6 offset-l1 xl6 offset-xl1">
+                    <h4>Work better, Work faster</h4>
+                    <div class="line-separator hide-on-med-and-down charte-light-blue"></div>
+                    <h5>Assemble</h5>
+                    <p>
+                        Organize and structure your product nomenclature, check components integration online. Whatever your CAD software is.
+                    </p>
+                    <h5>Collaborate</h5>
+                    <p>
+                        Communicate directly with your teammates through the platform, prepare your design reviews online. No more emails needed.
+                    </p>
+                    <h5>Specify</h5>
+                    <p>
+                        Store and share your parts or assemblies specifications, make information reachable. Finally.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div id="try-for-free" class="prices col s12">
+            <div class="col s10 offset-s1">
+                <div class="prices-header">
+                    <h4>Choose your plan</h4>
+                    <div class="line-separator hide-on-med-and-down charte-dark-blue"></div>
+                    <p>
+                        2 differents packs are available.
+                        <br>
+                        Please contact us for the price or furthermore questions.
+                    </p>
+                </div>
+            </div>
+            <div class="card-container col s12 center-align">
+                <div class="card z-depth-4 col s12 l4 offset-l2">
+                    <div class="col s12 card-content center-align">
+                        <div class="header-card">
+                            <span class="card-title">Starter Kit</span>
+                            <p class="prices-description">Get started and discover new possibilities<br>Perfect for small teams.</p>
+                            <h5>59.95€<span class="prices-description">/ month</span></h5>
+                            <p class="prices-description">Includes unlimited workspaces</p>
+                        </div>
+                        <ul class="card-text center-align col s12">
+                            <li class="col s12 row">
+                                <br>
+                                <i class="material-icons brightness col s1">brightness_1</i>
+                                <p class="col s10 offset-s1">Manage 3D open formats</p>
+                                <p class="col s10 offset-s2 prices-description">IFC, STP, OBJ, STL and more</p>
+                            </li>
+                            <li class="col s12 row">
+                                <br>
+                                <i class="material-icons brightness col s1">brightness_1</i>
+                                <p class="col s10 offset-s1">Tesselation access</p>
+                                <p class="col s10 offset-s2 prices-description">Consult 3D geometries</p>
+                            </li>
+                            <li class="col s12 row">
+                                <br>
+                                <i class="material-icons brightness col s1">brightness_1</i>
+                                <p class="col s10 offset-s1">Textual Annotations</p>
+                                <p class="col s10 offset-s2 prices-description">Add and share remarks with team</p>
+                            </li>
+                            <li class="col s12 row">
+                                <br>
+                                <i class="material-icons brightness col s1">brightness_1</i>
+                                <p class="col s10 offset-s1">3D Measuring tool</p>
+                                <p class="col s10 offset-s2 prices-description">Manage 3D integration precisely</p>
+                            </li>
+                            <li class="col s12 row">
+                                <br>
+                                <i class="material-icons brightness col s1">brightness_1</i>
+                                <p class="col s10 offset-s1">Live chat and groups</p>
+                                <p class="col s10 offset-s2 prices-description">Simplify communication</p>
+                            </li>
+                            <li class="col s12 row">
+                                <br>
+                                <i class="material-icons brightness col s1">brightness_1</i>
+                                <p class="col s10 offset-s1">Project news feed</p>
+                                <p class="col s10 offset-s2 prices-description">Keep in touch with all updates</p>
+                            </li>
+                        </ul>
+                        <div class="col s12">
+                            <a id="signUp" class="card-btn btn modal-trigger btn-pink sign-up-trigger" href="#authentification-modal">Start free trial !</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card z-depth-4 col s12 l4 offset-l2">
+                    <div class="col s12 card-content center-align">
+                        <div class="col s12 header-card">
+                            <span class="card-title">Entreprise</span>
+                            <p class="prices-description">Discover breakthrough features<br>Perfect for high performance teams.</p>
+                            <h5>On demand</h5>
+                            <span class="prices-description">Includes all features from Starter Kit</span>
+                        </div>
+                        <ul class="card-text col s12">
+                            <li class="col s12 row">
+                                <br>
+                                <i class="material-icons brightness col s1">brightness_1</i>
+                                <p class="col s10 offset-s1">Manage 3D CAD formats</p>
+                                <p class="col s10 offset-s2 prices-description">CATIA, SOLIDWORKS, and more</p>
+                            </li>
+                            <li class="col s12 row">
+                                <br>
+                                <i class="material-icons brightness col s1">brightness_1</i>
+                                <p class="col s10 offset-s1">3D formats exportation tools</p>
+                                <p class="col s10 offset-s2 prices-description">Export 3D geometries in a click</p>
+                            </li>
+                            <li class="col s12 row">
+                                <br>
+                                <i class="material-icons brightness col s1">brightness_1</i>
+                                <p class="col s10 offset-s1">Enable branching for co-design</p>
+                                <p class="col s10 offset-s2 prices-description">Allow your team to work live</p>
+                            </li>
+                            <li class="col s12 row">
+                                <br>
+                                <i class="material-icons brightness col s1">brightness_1</i>
+                                <p class="col s10 offset-s1">Manage team confidentiality</p>
+                                <p class="col s10 offset-s2 prices-description">Protect your IP easily</p>
+                            </li>
+                            <li class="col s12 row">
+                                <br>
+                                <i class="material-icons brightness col s1">brightness_1</i>
+                                <p class="col s10 offset-s1">Auto data synchronisation</p>
+                                <p class="col s10 offset-s2 prices-description">Share your updates instantly</p>
+                            </li>
+                            <li class="col s12 row">
+                                <br>
+                                <i class="material-icons brightness col s1">brightness_1</i>
+                                <p class="col s10 offset-s1">One premise deployment</p>
+                                <p class="col s10 offset-s2 prices-description">Plug Bocket into your infrastructure</p>
+                            </li>
+                        </ul>
+                        <a target="_blank" href="mailto:?to=hello@bocket.me &subject=Ask%20for%20information" class="card-btn btn btn-pink contact-us">Contact us !</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <footer class="page-footer info-footer">
+        <div class="footer-content">
+            <div class="row">
+                <div class="brand-logo col s12">
+                    <a href="/" class="link-logo col s7 hide-on-med-and-down"><img src="/img/logo-white.png"></a>
+                </div>
+                <div class="footer-bloc col s12 l2">
+                    <h5 class="white-text footer-title">Meet Us</h5>
+                    <div class="hr"></div>
+                    <ul class="footer-infos">
+                        <li>The Bocketery</li>
+                        <li>47 Avenue de la grande Armée</li>
+                        <li>75116 Paris</li>
+                        <li>France</li>
+                        <br>
+                        <li>Phone: +33 (0)6 66 75 37 96</li>
+                        <li>
+                            <a target="_blank" href="mailto:?to=hello@bocket.me &subject=Ask%20for%20information" class="contact-us white-text">Contact us</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-bloc col s12 l2">
+                    <h5 class="white-text footer-title">About Us</h5>
+                    <div class="hr"></div>
+                    <ul class="footer-infos">
+                        <li>Get to know us</li>
+                        <li>
+                            <a class="contact-us white-text">Team</a>
+                        </li>
+                        <li>Jobs</li>
+                        <li>CGU & CGV</li>
+                        <li>Data Protection Policy</li>
+                    </ul>
+                </div>
+                <div class="footer-bloc col s12 l2">
+                    <h5 class="white-text footer-title">Use Bocket</h5>
+                    <div class="hr"></div>
+                    <ul class="footer-infos">
+                        <li>
+                            <a href="#try-for-free" class="create-account white-text">Create your account</a>
+                        </li>
+                        <li>
+                            <a href="#info1" class="white-text">What is Bocket</a>
+                        </li>
+                        <li>
+                            <a class="white-text">Join our community</a>
+                        </li>
+                        <br>
+                        <li>
+                            <a class="white-text">Viewer API</a>
+                        </li>
+                        <li>
+                            <a class="white-text">Converter API</a>
+                        </li>
+                        <li>
+                            <a class="white-text">BIM Management</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="footer-logo">
+                <a target="_blank" href="https://www.facebook.com/bocketme/">
+                    <img src="/img/facebook_logo.png">
+                </a>
+                <a target="_blank" href="https://twitter.com/hellobocket">
+                    <img src="/img/twitter_logo.png">
+                </a>
+                <a target="_blank" href="https://www.instagram.com/bocket.me/">
+                    <img src="/img/instagram_logo.png">
+                </a>
+                <a target="_blank" href="https://www.linkedin.com/company/bocket">
+                    <img src="/img/linkedin_logo.png">
+                </a>
+            </div>
+        </div>
+        <div id="footer-copyright" class="col s12">
+            <div>
+                © 2018 PLUM. ALL RIGHT RESERVED. DEM-4382871//DEM-4382874
+            </div>
+        </div>
+</footer>
     <div id="blur"></div>
     {% include 'forgetPassword.twig' %}
     {% include "signupAccountBox.twig" %}

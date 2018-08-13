@@ -5,18 +5,18 @@
   font-weight: bolder;
 }
 
-.btn{
+.btn {
   border-radius: 0px !important;
 }
 
-.btn-cancel:hover{
+.btn-cancel:hover {
   border: 1px solid #223241;
   background-color: white;
   color: #223241;
   font-weight: bolder;
 }
 
-.btn-cancel:focus, .btn-cancel:active  {
+.btn-cancel:focus, .btn-cancel:active {
   background-color: #ff2e63;
   color: white;
   font-weight: bolder;
@@ -35,7 +35,7 @@
   font-weight: bolder;
 }
 
-.btn-valid:focus, .btn-valid:active  {
+.btn-valid:focus, .btn-valid:active {
   background-color: #218a2a;
   box-shadow: 0px 3px #218a2a;
   font-weight: bolder;
@@ -43,7 +43,7 @@
 
 .btn.fix {
   float: right;
-  margin-top: -8px; 
+  margin-top: -8px;
 }
 
 .btn-normal {
@@ -59,14 +59,14 @@
   color: white;
 }
 
-.btn-normal:focus, .btn-normal:active  {
+.btn-normal:focus, .btn-normal:active {
   background-color: #B6C0C1;
   color: #223241;
   box-shadow: 0px 3px #223241;
 }
 
-.btn.disabled, .btn.disabled:hover, .btn.disabled:focus, .btn.disabled:active  {
-  background-color: #9b9b9b !important; 
+.btn.disabled, .btn.disabled:hover, .btn.disabled:focus, .btn.disabled:active {
+  background-color: #9b9b9b !important;
   color: #50677D !important;
 }
 
@@ -87,4 +87,52 @@
   border: 1px solid #223241;
   color: #223241;
   background-color: white !important;
+}
+
+.btn-pink {
+  background-color: #ff2e63;
+  box-shadow: 0px 3px #D72653;
+  color: white;
+  font-weight: bolder;
+}
+
+.btn-pink:hover {
+  background-color: #223241;
+  box-shadow: 0px 3px #B6C0C1;
+  color: white;
+}
+
+.btn-pink:focus, .btn-pink:active {
+  background-color: #B6C0C1;
+  color: #223241;
+  box-shadow: 0px 3px #223241;
+}
+
+.btn-border {
+  background-color: transparent;
+  color: #223241;
+  border: #223241 3px solid;
+  line-height: 200%;
+  font-weight: bolder;
+  box-shadow: none;
+}
+
+.btn-border:hover, .btn-border:focus {
+  color: white;
+  background-color: #223241;
+  font-weight: bolder;
+  box-shadow: none;
+}
+
+.btn-border-dark {
+  background-color: transparent;
+  border: white 1px solid;
+  color: white;
+  font-weight: bolder;
+}
+
+.btn-border-dark:hover, .btn-border-dark:focus {
+  color: #223241;
+  background-color: white;
+  font-weight: bolder;
 }
