@@ -14,6 +14,12 @@
   top: 0;
 }
 
+#Coordinates {
+  position: absolute;
+  z-index: 5;
+  bottom: 2%;
+}
+
 #renderDiv{
     padding: 0;
     height: 99%;
