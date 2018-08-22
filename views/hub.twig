@@ -81,6 +81,12 @@
                             <i class='material-icons' style="float: right; margin: 0;">keyboard_arrow_right</i>
                         </a>
                     </li>
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu dropdown-button" href='#' data-activates='dropdown-settings-background-color' data-hover="hover" data-alignment="left">
+                            Background Color
+                            <i class='material-icons' style="float: right; margin: 0;">keyboard_arrow_right</i>
+                        </a>
+                    </li>
                 </ul>
                 {% set unit = optionViewer.unit %}
                 <ul id="dropdown-settings-unit" class="dropdown-content">
@@ -111,6 +117,7 @@
                 </ul>
                 {% set celShading = optionViewer.celShading %}
                 {% set edgeHelper = optionViewer.edgeHelper %}
+                {% set backgroundColor = optionViewer.backgroundColor %}
                 <ul id="dropdown-settings-rendering" class="dropdown-content">
                     <li class="option-node" id="background-color">
                         <a class="dropdown-menu" {% if not (celShading == false and edgeHelper == false) %} href="?celShading=false&edgeHelper=false" {% endif %}>
@@ -155,6 +162,42 @@
                             {% endif %}
                         </a>
                     </li>
+                </ul>
+
+                {% set color1 = "f4f4f4" %}
+                {% set color2 = "cccccc" %}
+                {% set color3 = "adadad" %}
+
+                <ul id="dropdown-settings-background-color" class="dropdown-content">
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu" {% if not (backgroundColor == color1) %} href="?backgroundColor={{color1}}" {% endif %}>
+                            <i id="grey1" class="material-icons" style="color:#{{color1}};background-color:#{{color1}};">insert_chart</i>
+                            Color 1
+                            {% if (backgroundColor == color1) %}
+                                <i class='material-icons' style="float: right; margin: 0;">check</i>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu" {% if not (backgroundColor == color2) %} href="?backgroundColor={{color2}}" {% endif %}>
+                            <i id="grey1" class="material-icons" style="color:#{{color2}};background-color:#{{color2}};">insert_chart</i>
+                            Color 2
+                            {% if (backgroundColor == color2) %}
+                                <i class='material-icons' style="float: right; margin: 0;">check</i>
+                            {% endif %}
+                        </a>
+                    </li>
+
+                    <li class="option-node" id="background-color">
+                        <a class="dropdown-menu" {% if not (backgroundColor == color3) %} href="?backgroundColor={{color3}}" {% endif %}>
+                            <i id="grey1" class="material-icons" style="color:#{{color3}};background-color:#{{color3}};">insert_chart</i>
+                            Color 3
+                            {% if (backgroundColor == color3) %}
+                                <i class='material-icons' style="float: right; margin: 0;">check</i>
+                            {% endif %}
+                        </a>
+                    </li>
+
                 </ul>
 
                 {# Modals #}

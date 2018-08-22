@@ -37,6 +37,7 @@ const UserSchema = new mongoose.Schema({
     colorBackground: { type: String, default: "#e0e0e0" },
     edgeHelper: { type: Boolean, default: false },
     TypeOfCamPers: { type: Boolean, default: true },
+    backgroundColor: { type: String, default: 'f4f4f4' }
   }
 });
 
@@ -53,6 +54,9 @@ UserSchema.methods.organizationOwner = async function () {
 
 UserSchema.pre('save', function (next) {
   const user = this;
+
+  if (user.options.backgroundColor.length > 6)
+    user.options.backgroundColor = "f4f4f4";
 
   user.active = true;
   if (!user.createDate) { user.createDate = new Date(); }
