@@ -1,38 +1,31 @@
 .switch label input[type=checkbox]:checked+.lever {
-    background-color: #4286f4;
+  background-color: #4286f4;
 }
 
 .switch label input[type=checkbox]:checked+.lever:after {
-    background-color: #4286f4;
-}
-
-#logo {
-    width: 70%;
-    margin-top: 9%;
-    margin-left: 9%;
-    z-index: 50;
+  background-color: #4286f4;
 }
 
 .no-margin-top {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .noborder {
-    border: none !important;
+  border: none !important;
 }
 
 .error {
-    color: #FF5A92;
+  color: #FF5A92;
 }
 
 .bocket-nav {
-    background: #262626;
+  background: #262626;
 }
 
 .display-none {
-    display: none;
+  display: none;
 }
 
 .display-block {
-    display: block;
+  display: block;
 }

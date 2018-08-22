@@ -17,39 +17,40 @@
         <link rel="stylesheet" href="/css/global/button.css">
         <link rel="stylesheet" href="/css/global/main.css">
         <link rel="stylesheet" href="/css/global/modal.css">
+        <link rel="stylesheet" href="/css/global/text.css">
         <link rel="stylesheet" href="/css/global/sideNav.css">
         <link rel="stylesheet" href="/css/settings/orga/invite.css">
         {% block css %}{% endblock %}
     </head>
     <body>
-        <nav class="home-nav">
-            <div class="nav-wrapper">
-                <a href="/" class="brand-logo"><img id="logo" src="/img/logo.png"></a>
-                <a href="#" data-activates="mobile-links" class="button-collapse">
-                    <i class="material-icons black-text">menu</i>
-                </a>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li>
-                        <a id="request-access-btn" class="btn waves-effect" href="#requestAccess">Request an account</a>
-                    </li>
-                    <li>
-                        <a id="signIn" class="btn waves-effect" href="#">Sign In</a>
-                    </li>
-                    <li>
-                        <a id="signUp" class="btn waves-effect" style="visibility: hidden" href="#">Sign Up</a>
-                    </li>
-                </ul>
-                <ul id="mobile-links" class="side-nav collection">
-                    <li class="collection-item">
-                        <a class="request-access-btn" href="#requestAccess">Request an account</a>
-                    </li>
-                    <li class="collection-item">
-                        <a id="signIn-nav" href="#">Sign In</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
+        <div class="navbar-fixed col s12">
+            <nav class="home-nav col s12">
+                <div class="nav-wrapper col s12">
+                    <a href="/">
+                        <img id="logo" class="brand-logo" src="/img/Logo-blue.png">
+                    </a>
+                    <a href="#" data-activates="mobile-links" class="button-collapse">
+                        <i class="material-icons black-text">menu</i>
+                    </a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li>
+                            <a class="card-btn btn btn-border" href="#try-for-free">Try it for free</a>
+                        </li>
+                        <li>
+                            <a id="signIn" class="btn modal-trigger btn-normal sign-in-trigger" href="#authentification-modal">Sign In</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <ul id="mobile-links" class="side-nav collection">
+            <li class="collection-item">
+                <a id="signUp-nav" href="#try-for-free">Try it for free</a>
+            </li>
+            <li class="collection-item">
+                <a id="signIn-nav" class="modal-trigger sign-in-trigger" href="#authentification-modal">Sign In</a>
+            </li>
+        </ul>
         {% block body %}{% endblock %}
 
         <!--Import jQuery before materialize.js-->
