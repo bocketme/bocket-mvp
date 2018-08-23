@@ -16,7 +16,7 @@
 
 #Coordinates {
   position: absolute;
-  z-index: -1;
+  z-index: 5;
   bottom: 2%;
   left: 1%;
   font-size: 11px
