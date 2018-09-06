@@ -13,7 +13,7 @@ const defaultNodeValue = "Select a node";
 const extensions3d = [
   'dae', 'obj', 'stl',
   '3ds', 'fbx', 'lwo',
-  'lxo', 'x3d', 'off',
+  'lxo', 'x3d', 'off','catpart'
 ];
 
 const extensionsTextures = [
