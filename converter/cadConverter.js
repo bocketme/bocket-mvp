@@ -6,20 +6,32 @@ var exportLib = "cd " + datakitPath + " && export LD_LIBRARY_PATH=$LD_LIBRARY_PA
 
 
   async function convertFiles(file_Path){
+    var mfile_Path = file_Path ;
     //./crossmanagerDtk_x64.run in="$file" out="./Converted / ModelG / $filename".obj fmtin=CATIAV5 fmtout=OBJ conf=config.dtk
     var command = exportLib + " && " + datakitPath ;
     command += './crossmanagerDtk_x64.run in=';
-    command += file_Path + ' out=';
-    let filePathNoExt = file_Path.indexOf(".",file_Path.length-10);
-    let convertedPath = file_Path.substring(0, filePathNoExt) + ".obj ";
+    var j = 0 ;
+    for (var i=0;i<file_Path.length;i++){
+      if(file_Path[i]===" "){
+        var output = [mfile_Path.slice(0, i + j ), "\\", mfile_Path.slice( i + j)].join('');
+        mfile_Path = output ;
+        j= j + 1 ;
+      }
+    }
+    console.log("realfilepath",file_Path);
+    console.log("filepath  ", mfile_Path);
+
+    command += mfile_Path + ' out=';
+    let filePathNoExt = mfile_Path.indexOf(".",file_Path.length-10);
+    let convertedPath = mfile_Path.substring(0, filePathNoExt) + ".obj ";
     command += convertedPath + "fmtout=OBJ conf="+datakitPath+"config.dtk" ;
     var child = exec(command, function (error, stdout, stderr) {
-      sys.print('stdout: ' + stdout);
-      sys.print('stderr: ' + stderr);
+      console.log('stdout: ' + stdout);
+      console.log('stderr: ' + stderr); 
       if (error !== null) {
         console.log('exec error: ' + error);
       }
-      return error 
+      return true 
     });
 
 }
@@ -27,9 +39,3 @@ var exportLib = "cd " + datakitPath + " && export LD_LIBRARY_PATH=$LD_LIBRARY_PA
 module.exports = {
   convertFiles,
 }
-
-
-// let cadConverter = require('./cadConverter');
-// async function JSimport (file_path) {
-  // var secondResult = await cadConverter.exportLibrary();
-  // var result = await cadConverter.convertFiles(file_path);
