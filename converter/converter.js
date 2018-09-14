@@ -11,9 +11,6 @@ let	sharedObjectLoader = require("./SharedObjectLoader/build/Release/sharedObjec
 async function JSimport(file_path) {
   // var secondResult = await cadConverter.exportLibrary();
   var result = await cadConverter.convertFiles(file_path);
-  console.log(result);
-  // let filePathNoExt = file_path.indexOf(".", file_path.length - 10);
-  // let convertedPath = file_path.substring(0, filePathNoExt) + ".obj";
   return sharedObjectLoader.converter("module", file_path);  
 
 }

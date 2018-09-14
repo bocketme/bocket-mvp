@@ -7,7 +7,6 @@ var exportLib = "cd " + datakitPath + " && export LD_LIBRARY_PATH=$LD_LIBRARY_PA
 
   async function convertFiles(file_Path){
     var mfile_Path = file_Path ;
-    //./crossmanagerDtk_x64.run in="$file" out="./Converted / ModelG / $filename".obj fmtin=CATIAV5 fmtout=OBJ conf=config.dtk
     var command = exportLib + " && " + datakitPath ;
     command += './crossmanagerDtk_x64.run in=';
     var j = 0 ;
@@ -18,9 +17,6 @@ var exportLib = "cd " + datakitPath + " && export LD_LIBRARY_PATH=$LD_LIBRARY_PA
         j= j + 1 ;
       }
     }
-    console.log("realfilepath",file_Path);
-    console.log("filepath  ", mfile_Path);
-
     command += mfile_Path + ' out=';
     let filePathNoExt = mfile_Path.indexOf(".",file_Path.length-10);
     let convertedPath = mfile_Path.substring(0, filePathNoExt) + ".obj ";
