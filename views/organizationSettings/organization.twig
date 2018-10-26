@@ -66,18 +66,18 @@
 
             <div id="organization-info">
                 <p>
-                    <u style="text-decoration:none;">Owner:</u>
+                    <u style="text-decoration:none; font-weight:bolder;">Owner:</u>
                     {{ currentOrganization.Owner.completeName }}
                 </p>
                 <p>
-                    <u style="text-decoration:none;">Date of creation:</u>
+                    <u style="text-decoration:none; font-weight:bolder;">Date of creation:</u>
                     <span id="creation"></span></p>
                 <p>
-                    <u style="text-decoration:none;">Number of workspaces:</u>
+                    <u style="text-decoration:none; font-weight:bolder;">Number of workspaces:</u>
                     {{ currentOrganization.Workspaces.length }}
                 </p>
                 <p>
-                    <u style="text-decoration:none;">Number of member:</u>
+                    <u style="text-decoration:none; font-weight:bolder;">Number of member:</u>
                     {{ 1 + currentOrganization.Members|length + currentOrganizaiton.Admins|length }}
                 </p>
             </div>
