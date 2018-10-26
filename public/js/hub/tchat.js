@@ -171,7 +171,7 @@ function addContactCard(tchat) {
     document.getElementById(`${tchat._id}`).style.color = '#000000';
     if (selectedTchat._id === tchat._id) {
       $(`#${tchat._id} img`).attr('src', '/img/contact-selected.svg');
-    } else {
+  } else {
       $(`#${tchat._id} img`).attr('src', '/img/contact-normal.svg');
     }
   });
@@ -214,7 +214,7 @@ function addContactCard(tchat) {
       $('#add-user img').attr('src', '/img/add-user-normal.svg');
     },
     click() {
-      const usersList = [];
+      const usersList = []; 
       const listItems = $('#add-users-list li');
       listItems.each((idx, li) => {
         const idUser = $(li).attr('id').split('-')[0];
@@ -225,8 +225,8 @@ function addContactCard(tchat) {
       if (!jQuery.isEmptyObject(selectedTchat)) {
         socket.emit('[Tchat] - addUser', selectedTchat._id, usersList);
         document.getElementById('cancel-add-btn').click();
-      }
-    }
+      } 
+    }   
   }, 'img');
 
   $('#add-user-btn').on('click', () => {
@@ -302,6 +302,7 @@ socket.on('[Tchat] - notifUserAdded', (tchat, addedUsers) => {
   if (selectedTchat !== undefined && selectedTchat._id === tchat._id)
     selectedTchat = tchat;
   socket.emit('[Users] - fetchFromWorkspace');
+  
 });
 
 socket.on('[Users] - fetchFromWorkspace', (users) => {
@@ -363,6 +364,9 @@ function getUserId() {
     /*
     $('#profile-name').text(user.completeName);
 */
+console.log('USER', user);
+console.log('NAMEID', userId);
+console.log('NAME', userName);
   });
 }
 
